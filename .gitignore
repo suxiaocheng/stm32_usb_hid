@@ -1,0 +1,23 @@
+# Obj file
+*.o
+*.plg
+*.tra
+*.axf
+*.crf
+*.d
+*.html
+*.lnp
+*.map
+
+# Other type of project
+EWARM/
+RIDE/
+TASKING/
+TureSTUDIO/
+
+# ignore sourceinsight file
+sf/
+
+# ignore the Hex file
+*.hex
+
