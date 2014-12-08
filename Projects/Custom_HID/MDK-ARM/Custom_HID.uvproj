@@ -76,7 +76,7 @@
           <AfterMake>
             <RunUserProg1>0</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
-            <UserProg1Name>E:\work\stm32\stm32f1\demo_code\usb\STM32_USB-FS-Device_Lib_V4.0.0\Projects\Custom_HID\MDK-ARM\build_fw.bat</UserProg1Name>
+            <UserProg1Name>.\build_fw.bat</UserProg1Name>
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
@@ -102,13 +102,13 @@
         </CommonProperty>
         <DllOption>
           <SimDllName>SARMCM3.DLL</SimDllName>
-          <SimDllArguments> -REMAP</SimDllArguments>
-          <SimDlgDll>DCM.DLL</SimDlgDll>
-          <SimDlgDllArguments>-pCM3</SimDlgDllArguments>
+          <SimDllArguments></SimDllArguments>
+          <SimDlgDll>DARMSTM.DLL</SimDlgDll>
+          <SimDlgDllArguments>-pSTM32F103VB</SimDlgDllArguments>
           <TargetDllName>SARMCM3.DLL</TargetDllName>
           <TargetDllArguments></TargetDllArguments>
-          <TargetDlgDll>TCM.DLL</TargetDlgDll>
-          <TargetDlgDllArguments>-pCM3</TargetDlgDllArguments>
+          <TargetDlgDll>TARMSTM.DLL</TargetDlgDll>
+          <TargetDlgDllArguments>-pSTM32F103VB</TargetDlgDllArguments>
         </DllOption>
         <DebugOption>
           <OPTHX>
@@ -138,7 +138,7 @@
             <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
             <RestoreFunctions>0</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
-            <RestoreTracepoints>0</RestoreTracepoints>
+            <RestoreTracepoints>1</RestoreTracepoints>
             <RestoreTracepoints>1</RestoreTracepoints>
             <RestoreTracepoints>1</RestoreTracepoints>
           </Target>
@@ -496,6 +496,11 @@
               <FileName>stm32_it.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\stm32_it.c</FilePath>
+            </File>
+            <File>
+              <FileName>callback.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\callback.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2087,7 +2092,7 @@
             <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
             <RestoreFunctions>0</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
-            <RestoreTracepoints>0</RestoreTracepoints>
+            <RestoreTracepoints>1</RestoreTracepoints>
             <RestoreTracepoints>1</RestoreTracepoints>
             <RestoreTracepoints>1</RestoreTracepoints>
           </Target>
@@ -2445,6 +2450,11 @@
               <FileName>stm32_it.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\stm32_it.c</FilePath>
+            </File>
+            <File>
+              <FileName>callback.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\callback.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -4036,7 +4046,7 @@
             <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
             <RestoreFunctions>0</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
-            <RestoreTracepoints>0</RestoreTracepoints>
+            <RestoreTracepoints>1</RestoreTracepoints>
             <RestoreTracepoints>1</RestoreTracepoints>
             <RestoreTracepoints>1</RestoreTracepoints>
           </Target>
@@ -4394,6 +4404,11 @@
               <FileName>stm32_it.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\stm32_it.c</FilePath>
+            </File>
+            <File>
+              <FileName>callback.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\callback.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -5985,7 +6000,7 @@
             <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
             <RestoreFunctions>0</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
-            <RestoreTracepoints>0</RestoreTracepoints>
+            <RestoreTracepoints>1</RestoreTracepoints>
             <RestoreTracepoints>1</RestoreTracepoints>
             <RestoreTracepoints>1</RestoreTracepoints>
           </Target>
@@ -6343,6 +6358,11 @@
               <FileName>stm32_it.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\stm32_it.c</FilePath>
+            </File>
+            <File>
+              <FileName>callback.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\callback.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -7934,7 +7954,7 @@
             <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
             <RestoreFunctions>0</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
-            <RestoreTracepoints>0</RestoreTracepoints>
+            <RestoreTracepoints>1</RestoreTracepoints>
             <RestoreTracepoints>1</RestoreTracepoints>
             <RestoreTracepoints>1</RestoreTracepoints>
           </Target>
@@ -8292,6 +8312,11 @@
               <FileName>stm32_it.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\stm32_it.c</FilePath>
+            </File>
+            <File>
+              <FileName>callback.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\callback.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -9883,7 +9908,7 @@
             <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
             <RestoreFunctions>0</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
-            <RestoreTracepoints>0</RestoreTracepoints>
+            <RestoreTracepoints>1</RestoreTracepoints>
             <RestoreTracepoints>1</RestoreTracepoints>
             <RestoreTracepoints>1</RestoreTracepoints>
           </Target>
@@ -10241,6 +10266,11 @@
               <FileName>stm32_it.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\stm32_it.c</FilePath>
+            </File>
+            <File>
+              <FileName>callback.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\callback.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -11832,7 +11862,7 @@
             <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
             <RestoreFunctions>0</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
-            <RestoreTracepoints>0</RestoreTracepoints>
+            <RestoreTracepoints>1</RestoreTracepoints>
             <RestoreTracepoints>1</RestoreTracepoints>
             <RestoreTracepoints>1</RestoreTracepoints>
           </Target>
@@ -12233,6 +12263,11 @@
               <FileName>stm32_it.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\stm32_it.c</FilePath>
+            </File>
+            <File>
+              <FileName>callback.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\callback.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -13824,7 +13859,7 @@
             <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
             <RestoreFunctions>0</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
-            <RestoreTracepoints>0</RestoreTracepoints>
+            <RestoreTracepoints>1</RestoreTracepoints>
             <RestoreTracepoints>1</RestoreTracepoints>
             <RestoreTracepoints>1</RestoreTracepoints>
           </Target>
@@ -14182,6 +14217,11 @@
               <FileName>stm32_it.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\stm32_it.c</FilePath>
+            </File>
+            <File>
+              <FileName>callback.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\callback.c</FilePath>
             </File>
           </Files>
         </Group>

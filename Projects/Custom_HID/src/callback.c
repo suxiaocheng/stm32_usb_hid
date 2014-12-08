@@ -31,10 +31,15 @@
 #include "usb_pwr.h"
 #include "usb_istr.h"
 
+uint8_t control_state_string[][16] = {"WAIT_SETUP", "SETTING_UP", \
+			"IN_DATA", "OUT_DATA", "LAST_IN_DATA", "LAST_OUT_DATA", \
+			"", "WAIT_STATUS_IN", "WAIT_STATUS_OUT", "STALLED", "PAUSE"};
+
 #ifdef CTR_CALLBACK
 void CTR_Callback(void)
 {
     /* dump endpoint transfer status */
     usb_printf("e0_E:%x\n", _GetENDPOINT(ENDP0));
+	usb_printf("c_s:%s\n", control_state_string[pInformation->ControlState]);
 }
 #endif
