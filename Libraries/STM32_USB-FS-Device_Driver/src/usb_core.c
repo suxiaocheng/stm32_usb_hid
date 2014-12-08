@@ -831,6 +831,7 @@ void Data_Setup0(void)
     
     else if (pInformation->Ctrl_Info.Usb_wLength < pInformation->USBwLength)
     {
+      #if 1
       if (pInformation->Ctrl_Info.Usb_wLength < pProperty->MaxPacketSize)
       {
         Data_Mul_MaxPacketSize = FALSE;
@@ -839,6 +840,14 @@ void Data_Setup0(void)
       {
         Data_Mul_MaxPacketSize = TRUE;
       }
+      #else
+      /* Make the function more normal */
+      Data_Mul_MaxPacketSize = FALSE;
+      if ((pInformation->Ctrl_Info.Usb_wLength % pProperty->MaxPacketSize) == 0)
+      {
+        Data_Mul_MaxPacketSize = TRUE;
+      }
+      #endif
     }   
 
     pInformation->Ctrl_Info.PacketSize = pProperty->MaxPacketSize;
