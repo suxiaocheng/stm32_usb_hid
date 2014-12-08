@@ -24,3 +24,6 @@ sf/
 # ignore the Hex file
 *.hex
 
+# ignore the pdf file
+*.pdf
+
