@@ -467,6 +467,7 @@ void DataStageOut(void)
 
   if (pEPinfo->Usb_rLength != 0)
   {
+    /* Why here?? Does USB start the current transfer rapidly, and next transfer is determinate by next interrupt */
     vSetEPRxStatus(EP_RX_VALID);/* re-enable for next data reception */
     SetEPTxCount(ENDP0, 0);
     vSetEPTxStatus(EP_TX_VALID);/* Expect the host to abort the data OUT stage */

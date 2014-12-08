@@ -8,12 +8,15 @@
 *.html
 *.lnp
 *.map
+*.dep
+*.__i
+*.htm
 
 # Other type of project
 EWARM/
 RIDE/
 TASKING/
-TureSTUDIO/
+TrueSTUDIO/
 
 # ignore sourceinsight file
 sf/
