@@ -135,7 +135,7 @@ void Set_System(void)
   STM_EVAL_PBInit(Button_RIGHT, Mode_EXTI);
 #else  
   /* Configure the KEY button in EXTI mode */
-  STM_EVAL_PBInit(Button_KEY, Mode_EXTI);
+  //STM_EVAL_PBInit(Button_KEY, Mode_EXTI);
 #if !defined(STM32L1XX_HD)&& !defined(STM32L1XX_MD_PLUS) && !defined(STM32F37X) && !defined(STM32F30X) 
   /* Configure the Tamper button in EXTI mode */
   STM_EVAL_PBInit(Button_TAMPER, Mode_EXTI);
@@ -173,12 +173,18 @@ void Set_USBClock(void)
   RCC_APB1PeriphClockCmd(RCC_APB1Periph_USB, ENABLE);
   
 #else
-  /* Select USBCLK source */
-  RCC_USBCLKConfig(RCC_USBCLKSource_PLLCLK_1Div5);
-  
-  /* Enable the USB clock */
-  RCC_APB1PeriphClockCmd(RCC_APB1Periph_USB, ENABLE);
-#endif /* STM32L1XX_MD */
+    /* first reset the usb module */
+    RCC_APB1PeriphResetCmd(RCC_APB1Periph_USB, ENABLE);
+
+    /* Select USBCLK source */
+    RCC_USBCLKConfig(RCC_USBCLKSource_PLLCLK_1Div5);
+
+    /* Enable the USB clock */
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_USB, ENABLE);
+
+    /* Clear the reset status */
+    RCC_APB1PeriphResetCmd(RCC_APB1Periph_USB, DISABLE);
+#endif				/* STM32L1XX_MD */
 }
 
 /*******************************************************************************
@@ -268,35 +274,39 @@ void USB_Interrupts_Config(void)
   NVIC_Init(&NVIC_InitStructure);
   
 #else
-  /* Enable the USB interrupt */
-  NVIC_InitStructure.NVIC_IRQChannel = USB_LP_CAN1_RX0_IRQn;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
-  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-  NVIC_Init(&NVIC_InitStructure);
-  
-  /* Enable the USB Wake-up interrupt */
-  NVIC_InitStructure.NVIC_IRQChannel = USBWakeUp_IRQn;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-  NVIC_Init(&NVIC_InitStructure);
-#endif /* STM32L1XX_XD */
-  
-  /* Enable the EXTI9_5 Interrupt */
-  NVIC_InitStructure.NVIC_IRQChannel = EXTI9_5_IRQn;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-  NVIC_Init(&NVIC_InitStructure);
-  
-  /* Enable the EXTI15_10 Interrupt */
-  NVIC_InitStructure.NVIC_IRQChannel = EXTI15_10_IRQn;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-  NVIC_Init(&NVIC_InitStructure);
-  
-  /* Enable the DMA1 Channel1 Interrupt */
-  NVIC_InitStructure.NVIC_IRQChannel = DMA1_Channel1_IRQn;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;
-  NVIC_Init(&NVIC_InitStructure);
-  
+
+/* Comment out the usb interrupt to check weather is fail at these situation */
+#if 1
+    /* Enable the USB interrupt */
+    NVIC_InitStructure.NVIC_IRQChannel = USB_LP_CAN1_RX0_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_InitStructure);
+#else
+    /* Enable the USB Wake-up interrupt */
+    NVIC_InitStructure.NVIC_IRQChannel = USBWakeUp_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_InitStructure);
+#endif
+
+#endif				/* STM32L1XX_XD */
+
+    /* Enable the EXTI9_5 Interrupt */
+    /*NVIC_InitStructure.NVIC_IRQChannel = EXTI9_5_IRQn;
+       NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+       NVIC_Init(&NVIC_InitStructure); */
+
+    /* Enable the EXTI15_10 Interrupt */
+    /*NVIC_InitStructure.NVIC_IRQChannel = EXTI15_10_IRQn;
+       NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+       NVIC_Init(&NVIC_InitStructure); */
+
+    /* Enable the DMA1 Channel1 Interrupt */
+    /*NVIC_InitStructure.NVIC_IRQChannel = DMA1_Channel1_IRQn;
+       NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;
+       NVIC_Init(&NVIC_InitStructure); */
 }
 
 /*******************************************************************************
@@ -373,35 +383,35 @@ void EXTI_Configuration(void)
   EXTI_InitTypeDef EXTI_InitStructure;
   
 #if defined (USE_STM32L152_EVAL)
-  /* Configure RIGHT EXTI line to generate an interrupt on rising & falling edges */  
-  EXTI_InitStructure.EXTI_Line = RIGHT_BUTTON_EXTI_LINE;
-  EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
-  EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising_Falling;
-  EXTI_InitStructure.EXTI_LineCmd = ENABLE;
-  EXTI_Init(&EXTI_InitStructure);
-  
-  /* Clear the RIGHT EXTI line pending bit */
-  EXTI_ClearITPendingBit(RIGHT_BUTTON_EXTI_LINE);
-  
-  /* Configure LEFT EXTI Line to generate an interrupt rising & falling edges */  
-  EXTI_InitStructure.EXTI_Line = LEFT_BUTTON_EXTI_LINE;
-  EXTI_Init(&EXTI_InitStructure);
-  
-  /* Clear the LEFT EXTI line pending bit */
-  EXTI_ClearITPendingBit(LEFT_BUTTON_EXTI_LINE);
-  
-#else    
-  /* Configure Key EXTI line to generate an interrupt on rising & falling edges */  
-  EXTI_InitStructure.EXTI_Line = KEY_BUTTON_EXTI_LINE;
-  EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
-  EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising_Falling;
-  EXTI_InitStructure.EXTI_LineCmd = ENABLE;
-  EXTI_Init(&EXTI_InitStructure);
-  
-  /* Clear the Key EXTI line pending bit */
-  EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
-  
-  /* Configure Tamper EXTI Line to generate an interrupt rising & falling edges */  
+    /* Configure RIGHT EXTI line to generate an interrupt on rising & falling edges */
+    EXTI_InitStructure.EXTI_Line = RIGHT_BUTTON_EXTI_LINE;
+    EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+    EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising_Falling;
+    EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+    EXTI_Init(&EXTI_InitStructure);
+
+    /* Clear the RIGHT EXTI line pending bit */
+    EXTI_ClearITPendingBit(RIGHT_BUTTON_EXTI_LINE);
+
+    /* Configure LEFT EXTI Line to generate an interrupt rising & falling edges */
+    EXTI_InitStructure.EXTI_Line = LEFT_BUTTON_EXTI_LINE;
+    EXTI_Init(&EXTI_InitStructure);
+
+    /* Clear the LEFT EXTI line pending bit */
+    EXTI_ClearITPendingBit(LEFT_BUTTON_EXTI_LINE);
+
+#else
+    /* Configure Key EXTI line to generate an interrupt on rising & falling edges */
+    /*EXTI_InitStructure.EXTI_Line = KEY_BUTTON_EXTI_LINE;
+       EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+       EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising_Falling;
+       EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+       EXTI_Init(&EXTI_InitStructure); */
+
+    /* Clear the Key EXTI line pending bit */
+    //EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
+
+    /* Configure Tamper EXTI Line to generate an interrupt rising & falling edges */
 #if !defined (USE_STM32L152D_EVAL) && !defined (STM32F30X)
   EXTI_InitStructure.EXTI_Line = TAMPER_BUTTON_EXTI_LINE;
   EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;

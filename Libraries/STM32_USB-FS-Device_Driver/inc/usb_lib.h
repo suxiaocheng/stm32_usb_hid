@@ -41,6 +41,17 @@
 #include "usb_mem.h"
 #include "usb_int.h"
 
+#ifndef DEBUG
+#undef USB_DEBUG
+#endif
+
+#ifdef USB_DEBUG
+int stm_printf(const char *fmt, ...);
+#define usb_printf	stm_printf
+#else
+#define usb_printf(fmt, ...)
+#endif
+
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/

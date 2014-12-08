@@ -68,10 +68,14 @@ void CTR_LP(void)
       /* and set both to NAK */
       
 	    SaveRState = _GetENDPOINT(ENDP0);
+
+		usb_printf("e0:%x\n", SaveRState);
+	  
 	    SaveTState = SaveRState & EPTX_STAT;
 	    SaveRState &=  EPRX_STAT;	
 
-	    _SetEPRxTxStatus(ENDP0,EP_RX_NAK,EP_TX_NAK);
+		//no need to do the things here, the usb hardware already done.
+	    //_SetEPRxTxStatus(ENDP0,EP_RX_NAK,EP_TX_NAK);
 
       /* DIR bit = origin of the interrupt */
 

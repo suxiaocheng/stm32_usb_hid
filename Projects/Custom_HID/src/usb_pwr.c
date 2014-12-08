@@ -37,7 +37,7 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 __IO uint32_t bDeviceState = UNCONNECTED; /* USB device status */
-__IO bool fSuspendEnabled = TRUE;  /* true when suspend is possible */
+__IO bool fSuspendEnabled = FALSE;	//TRUE;  /* true when suspend is possible */
 __IO uint32_t EP[8];
 
 struct
@@ -66,12 +66,14 @@ RESULT PowerOn(void)
   uint16_t wRegVal;
 
   /*** cable plugged-in ? ***/
-  USB_Cable_Config(ENABLE);
+    //USB_Cable_Config(ENABLE);
 
   /*** CNTR_PWDN = 0 ***/
   wRegVal = CNTR_FRES;
   _SetCNTR(wRegVal);
 
+    /* delay 1us for Tstartup time(PWDN used) */
+    busy_delay_100us(2);
   /*** CNTR_FRES = 0 ***/
   wInterrupt_Mask = 0;
   _SetCNTR(wInterrupt_Mask);
