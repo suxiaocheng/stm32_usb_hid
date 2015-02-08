@@ -57,24 +57,28 @@ void Delay(__IO uint32_t nCount);
 int main(void)
 {
     /* if debug in ram, reset the interrupt vectors to ram area */
-#ifndef VECT_TAB_SRAM
+#ifdef VECT_TAB_SRAM
     SCB->VTOR = (uint32_t) & __Vectors | SCB_VTOR_TBLBASE;
+#else
+	SCB->VTOR = (uint32_t) & __Vectors;
 #endif
 
     /* enable the timer and the uart debug function */
     init_sys_timer();
     init_debug_fun();
 
-    stm_printf("system startup\n");
+    stm_printf("startup\n");
 
+#if 0
     /* test the system clock is OK */
-    /*{
+    {
        uint32_t count;
-       for(count=0; count < 30; count++){
+       for(count=0; count < 5; count++){
        busy_delay_ms(1000);
        stm_printf("tick\n");
        }
-       } */
+    } 
+#endif
 
     Set_System();
     Set_USBClock();

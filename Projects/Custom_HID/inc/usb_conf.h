@@ -92,6 +92,7 @@
 #define  EP7_OUT_Callback   NOP_Process
 
 #define CTR_CALLBACK
+#define RESET_CALLBACK
 
 #endif /*__USB_CONF_H*/
 

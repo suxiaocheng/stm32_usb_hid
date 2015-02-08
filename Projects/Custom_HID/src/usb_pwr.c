@@ -49,6 +49,8 @@ ResumeS;
 
 __IO uint32_t remotewakeupon=0;
 
+void busy_delay_100us(uint32_t time_us);
+
 /* Extern variables ----------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 /* Extern function prototypes ------------------------------------------------*/
@@ -72,7 +74,7 @@ RESULT PowerOn(void)
   wRegVal = CNTR_FRES;
   _SetCNTR(wRegVal);
 
-    /* delay 1us for Tstartup time(PWDN used) */
+    /* delay 1us for Tstartup time(PWDN used) */	
     busy_delay_100us(2);
   /*** CNTR_FRES = 0 ***/
   wInterrupt_Mask = 0;

@@ -75,7 +75,7 @@ void CTR_LP(void)
 	    SaveRState &=  EPRX_STAT;	
 
 		//no need to do the things here, the usb hardware already done.
-	    //_SetEPRxTxStatus(ENDP0,EP_RX_NAK,EP_TX_NAK);
+	    _SetEPRxTxStatus(ENDP0,EP_RX_NAK,EP_TX_NAK);
 
       /* DIR bit = origin of the interrupt */
 

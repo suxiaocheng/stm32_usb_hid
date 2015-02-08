@@ -576,16 +576,19 @@ void NoData_Setup0(void)
     /*SET ADDRESS*/
     else if (RequestNo == SET_ADDRESS)
     {
+      usb_printf("usb set address ");
       if ((pInformation->USBwValue0 > 127) || (pInformation->USBwValue1 != 0)
           || (pInformation->USBwIndex != 0)
           || (pInformation->Current_Configuration != 0))
         /* Device Address should be 127 or less*/
       {
+      	usb_printf("fail\n");
         ControlState = STALLED;
         goto exit_NoData_Setup0;
       }
       else
       {
+        usb_printf("sucessfully\n");
         Result = USB_SUCCESS;
       }
     }

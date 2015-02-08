@@ -136,27 +136,24 @@
   * @param  ADCx: where x can be 1, 2,3 or 4 to select the ADC peripheral.
   * @retval None
   */
-void ADC_DeInit(ADC_TypeDef* ADCx)
+void ADC_DeInit(ADC_TypeDef * ADCx)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
 
-
-  if((ADCx == ADC1) || (ADCx == ADC2))
-  {
-    /* Enable ADC1/ADC2 reset state */
-    RCC_AHBPeriphResetCmd(RCC_AHBPeriph_ADC12, ENABLE);
-    /* Release ADC1/ADC2 from reset state */
-    RCC_AHBPeriphResetCmd(RCC_AHBPeriph_ADC12, DISABLE);
-  }
-  else if((ADCx == ADC3) || (ADCx == ADC4))
-  {
-    /* Enable ADC3/ADC4 reset state */
-    RCC_AHBPeriphResetCmd(RCC_AHBPeriph_ADC34, ENABLE);
-    /* Release ADC3/ADC4 from reset state */
-    RCC_AHBPeriphResetCmd(RCC_AHBPeriph_ADC34, DISABLE);
-  }
+	if ((ADCx == ADC1) || (ADCx == ADC2)) {
+		/* Enable ADC1/ADC2 reset state */
+		RCC_AHBPeriphResetCmd(RCC_AHBPeriph_ADC12, ENABLE);
+		/* Release ADC1/ADC2 from reset state */
+		RCC_AHBPeriphResetCmd(RCC_AHBPeriph_ADC12, DISABLE);
+	} else if ((ADCx == ADC3) || (ADCx == ADC4)) {
+		/* Enable ADC3/ADC4 reset state */
+		RCC_AHBPeriphResetCmd(RCC_AHBPeriph_ADC34, ENABLE);
+		/* Release ADC3/ADC4 from reset state */
+		RCC_AHBPeriphResetCmd(RCC_AHBPeriph_ADC34, DISABLE);
+	}
 }
+
 /**
   * @brief  Initializes the ADCx peripheral according to the specified parameters
   *         in the ADC_InitStruct.
@@ -165,67 +162,70 @@ void ADC_DeInit(ADC_TypeDef* ADCx)
   *         the configuration information for the specified ADC peripheral.
   * @retval None
   */
-void ADC_Init(ADC_TypeDef* ADCx, ADC_InitTypeDef* ADC_InitStruct)
+void ADC_Init(ADC_TypeDef * ADCx, ADC_InitTypeDef * ADC_InitStruct)
 {
-  uint32_t tmpreg1 = 0;
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_ADC_CONVMODE(ADC_InitStruct->ADC_ContinuousConvMode));
-  assert_param(IS_ADC_RESOLUTION(ADC_InitStruct->ADC_Resolution));
-  assert_param(IS_ADC_EXT_TRIG(ADC_InitStruct->ADC_ExternalTrigConvEvent)); 
-  assert_param(IS_EXTERNALTRIG_EDGE(ADC_InitStruct->ADC_ExternalTrigEventEdge));  
-  assert_param(IS_ADC_DATA_ALIGN(ADC_InitStruct->ADC_DataAlign)); 
-  assert_param(IS_ADC_OVRUNMODE(ADC_InitStruct->ADC_OverrunMode));
-  assert_param(IS_ADC_AUTOINJECMODE(ADC_InitStruct->ADC_AutoInjMode));
-  assert_param(IS_ADC_REGULAR_LENGTH(ADC_InitStruct->ADC_NbrOfRegChannel));
+	uint32_t tmpreg1 = 0;
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_ADC_CONVMODE(ADC_InitStruct->ADC_ContinuousConvMode));
+	assert_param(IS_ADC_RESOLUTION(ADC_InitStruct->ADC_Resolution));
+	assert_param(IS_ADC_EXT_TRIG
+		     (ADC_InitStruct->ADC_ExternalTrigConvEvent));
+	assert_param(IS_EXTERNALTRIG_EDGE
+		     (ADC_InitStruct->ADC_ExternalTrigEventEdge));
+	assert_param(IS_ADC_DATA_ALIGN(ADC_InitStruct->ADC_DataAlign));
+	assert_param(IS_ADC_OVRUNMODE(ADC_InitStruct->ADC_OverrunMode));
+	assert_param(IS_ADC_AUTOINJECMODE(ADC_InitStruct->ADC_AutoInjMode));
+	assert_param(IS_ADC_REGULAR_LENGTH
+		     (ADC_InitStruct->ADC_NbrOfRegChannel));
 
   /*---------------------------- ADCx CFGR Configuration -----------------*/
-  /* Get the ADCx CFGR value */
-  tmpreg1 = ADCx->CFGR;
-  /* Clear SCAN bit */
-  tmpreg1 &= CFGR_CLEAR_Mask; 
-  /* Configure ADCx: scan conversion mode */
-  /* Set SCAN bit according to ADC_ScanConvMode value */
-  tmpreg1 |= (uint32_t)ADC_InitStruct->ADC_ContinuousConvMode | 
-  ADC_InitStruct->ADC_Resolution|                 
-  ADC_InitStruct->ADC_ExternalTrigConvEvent|         
-  ADC_InitStruct->ADC_ExternalTrigEventEdge|     
-  ADC_InitStruct->ADC_DataAlign|                 
-  ADC_InitStruct->ADC_OverrunMode|        
-  ADC_InitStruct->ADC_AutoInjMode;
-  
-  /* Write to ADCx CFGR */
-  ADCx->CFGR = tmpreg1;
-  
+	/* Get the ADCx CFGR value */
+	tmpreg1 = ADCx->CFGR;
+	/* Clear SCAN bit */
+	tmpreg1 &= CFGR_CLEAR_Mask;
+	/* Configure ADCx: scan conversion mode */
+	/* Set SCAN bit according to ADC_ScanConvMode value */
+	tmpreg1 |= (uint32_t) ADC_InitStruct->ADC_ContinuousConvMode |
+	    ADC_InitStruct->ADC_Resolution |
+	    ADC_InitStruct->ADC_ExternalTrigConvEvent |
+	    ADC_InitStruct->ADC_ExternalTrigEventEdge |
+	    ADC_InitStruct->ADC_DataAlign |
+	    ADC_InitStruct->ADC_OverrunMode | ADC_InitStruct->ADC_AutoInjMode;
+
+	/* Write to ADCx CFGR */
+	ADCx->CFGR = tmpreg1;
+
   /*---------------------------- ADCx SQR1 Configuration -----------------*/
-  /* Get the ADCx SQR1 value */
-  tmpreg1 = ADCx->SQR1;
-  /* Clear L bits */
-  tmpreg1 &= ~(uint32_t)(ADC_SQR1_L);
-  /* Configure ADCx: regular channel sequence length */
-  /* Set L bits according to ADC_NbrOfRegChannel value */
-  tmpreg1 |= (uint32_t) (ADC_InitStruct->ADC_NbrOfRegChannel - 1);
-  /* Write to ADCx SQR1 */
-  ADCx->SQR1 = tmpreg1; 
-   
-}  
+	/* Get the ADCx SQR1 value */
+	tmpreg1 = ADCx->SQR1;
+	/* Clear L bits */
+	tmpreg1 &= ~(uint32_t) (ADC_SQR1_L);
+	/* Configure ADCx: regular channel sequence length */
+	/* Set L bits according to ADC_NbrOfRegChannel value */
+	tmpreg1 |= (uint32_t) (ADC_InitStruct->ADC_NbrOfRegChannel - 1);
+	/* Write to ADCx SQR1 */
+	ADCx->SQR1 = tmpreg1;
+
+}
 
 /**
   * @brief  Fills each ADC_InitStruct member with its default value.
   * @param  ADC_InitStruct : pointer to an ADC_InitTypeDef structure which will be initialized.
   * @retval None
   */
-void ADC_StructInit(ADC_InitTypeDef* ADC_InitStruct)
+void ADC_StructInit(ADC_InitTypeDef * ADC_InitStruct)
 {
-  /* Reset ADC init structure parameters values */
-  ADC_InitStruct->ADC_ContinuousConvMode = DISABLE;
-  ADC_InitStruct->ADC_Resolution = ADC_Resolution_12b;                 
-  ADC_InitStruct->ADC_ExternalTrigConvEvent = ADC_ExternalTrigConvEvent_0;         
-  ADC_InitStruct->ADC_ExternalTrigEventEdge = ADC_ExternalTrigEventEdge_None;
-  ADC_InitStruct->ADC_DataAlign = ADC_DataAlign_Right;                 
-  ADC_InitStruct->ADC_OverrunMode = DISABLE;   
-  ADC_InitStruct->ADC_AutoInjMode = DISABLE;  
-  ADC_InitStruct->ADC_NbrOfRegChannel = 1; 
+	/* Reset ADC init structure parameters values */
+	ADC_InitStruct->ADC_ContinuousConvMode = DISABLE;
+	ADC_InitStruct->ADC_Resolution = ADC_Resolution_12b;
+	ADC_InitStruct->ADC_ExternalTrigConvEvent = ADC_ExternalTrigConvEvent_0;
+	ADC_InitStruct->ADC_ExternalTrigEventEdge =
+	    ADC_ExternalTrigEventEdge_None;
+	ADC_InitStruct->ADC_DataAlign = ADC_DataAlign_Right;
+	ADC_InitStruct->ADC_OverrunMode = DISABLE;
+	ADC_InitStruct->ADC_AutoInjMode = DISABLE;
+	ADC_InitStruct->ADC_NbrOfRegChannel = 1;
 }
 
 /**
@@ -236,36 +236,51 @@ void ADC_StructInit(ADC_InitTypeDef* ADC_InitStruct)
   *         the configuration information for the specified ADC injected channel.
   * @retval None
   */
-void ADC_InjectedInit(ADC_TypeDef* ADCx, ADC_InjectedInitTypeDef* ADC_InjectedInitStruct)
+void
+ADC_InjectedInit(ADC_TypeDef * ADCx,
+		 ADC_InjectedInitTypeDef * ADC_InjectedInitStruct)
 {
-  uint32_t tmpreg1 = 0;
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_ADC_EXT_INJEC_TRIG(ADC_InjectedInitStruct->ADC_ExternalTrigInjecConvEvent)); 
-  assert_param(IS_EXTERNALTRIGINJ_EDGE(ADC_InjectedInitStruct->ADC_ExternalTrigInjecEventEdge));   
-  assert_param(IS_ADC_INJECTED_LENGTH(ADC_InjectedInitStruct->ADC_NbrOfInjecChannel));
-  assert_param(IS_ADC_INJECTED_CHANNEL(ADC_InjectedInitStruct->ADC_InjecSequence1));
-  assert_param(IS_ADC_INJECTED_CHANNEL(ADC_InjectedInitStruct->ADC_InjecSequence2));
-  assert_param(IS_ADC_INJECTED_CHANNEL(ADC_InjectedInitStruct->ADC_InjecSequence3));
-  assert_param(IS_ADC_INJECTED_CHANNEL(ADC_InjectedInitStruct->ADC_InjecSequence4));
-  
+	uint32_t tmpreg1 = 0;
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_ADC_EXT_INJEC_TRIG
+		     (ADC_InjectedInitStruct->ADC_ExternalTrigInjecConvEvent));
+	assert_param(IS_EXTERNALTRIGINJ_EDGE
+		     (ADC_InjectedInitStruct->ADC_ExternalTrigInjecEventEdge));
+	assert_param(IS_ADC_INJECTED_LENGTH
+		     (ADC_InjectedInitStruct->ADC_NbrOfInjecChannel));
+	assert_param(IS_ADC_INJECTED_CHANNEL
+		     (ADC_InjectedInitStruct->ADC_InjecSequence1));
+	assert_param(IS_ADC_INJECTED_CHANNEL
+		     (ADC_InjectedInitStruct->ADC_InjecSequence2));
+	assert_param(IS_ADC_INJECTED_CHANNEL
+		     (ADC_InjectedInitStruct->ADC_InjecSequence3));
+	assert_param(IS_ADC_INJECTED_CHANNEL
+		     (ADC_InjectedInitStruct->ADC_InjecSequence4));
+
   /*---------------------------- ADCx JSQR Configuration -----------------*/
-  /* Get the ADCx JSQR value */
-  tmpreg1 = ADCx->JSQR;
-  /* Clear L bits */
-  tmpreg1 &= JSQR_CLEAR_Mask;
-  /* Configure ADCx: Injected channel sequence length, external trigger, 
-     external trigger edge and sequences
-  */
-  tmpreg1 = (uint32_t) ((ADC_InjectedInitStruct->ADC_NbrOfInjecChannel - (uint8_t)1) |
-                         ADC_InjectedInitStruct->ADC_ExternalTrigInjecConvEvent |         
-                         ADC_InjectedInitStruct->ADC_ExternalTrigInjecEventEdge |
-                         (uint32_t)((ADC_InjectedInitStruct->ADC_InjecSequence1) << 8) |
-                         (uint32_t)((ADC_InjectedInitStruct->ADC_InjecSequence2) << 14) |
-                         (uint32_t)((ADC_InjectedInitStruct->ADC_InjecSequence3) << 20) |
-                         (uint32_t)((ADC_InjectedInitStruct->ADC_InjecSequence4) << 26));
-  /* Write to ADCx SQR1 */
-  ADCx->JSQR = tmpreg1;  
+	/* Get the ADCx JSQR value */
+	tmpreg1 = ADCx->JSQR;
+	/* Clear L bits */
+	tmpreg1 &= JSQR_CLEAR_Mask;
+	/* Configure ADCx: Injected channel sequence length, external trigger, 
+	   external trigger edge and sequences
+	 */
+	tmpreg1 =
+	    (uint32_t) ((ADC_InjectedInitStruct->ADC_NbrOfInjecChannel -
+			 (uint8_t) 1) |
+			ADC_InjectedInitStruct->ADC_ExternalTrigInjecConvEvent |
+			ADC_InjectedInitStruct->ADC_ExternalTrigInjecEventEdge |
+			(uint32_t) ((ADC_InjectedInitStruct->ADC_InjecSequence1)
+				    << 8) |
+			(uint32_t) ((ADC_InjectedInitStruct->ADC_InjecSequence2)
+				    << 14) |
+			(uint32_t) ((ADC_InjectedInitStruct->ADC_InjecSequence3)
+				    << 20) |
+			(uint32_t) ((ADC_InjectedInitStruct->ADC_InjecSequence4)
+				    << 26));
+	/* Write to ADCx SQR1 */
+	ADCx->JSQR = tmpreg1;
 }
 
 /**
@@ -273,17 +288,19 @@ void ADC_InjectedInit(ADC_TypeDef* ADCx, ADC_InjectedInitTypeDef* ADC_InjectedIn
   * @param  ADC_InjectedInitStruct : pointer to an ADC_InjectedInitTypeDef structure which will be initialized.
   * @retval None
   */
-void ADC_InjectedStructInit(ADC_InjectedInitTypeDef* ADC_InjectedInitStruct)
+void ADC_InjectedStructInit(ADC_InjectedInitTypeDef * ADC_InjectedInitStruct)
 {
-  ADC_InjectedInitStruct->ADC_ExternalTrigInjecConvEvent = ADC_ExternalTrigInjecConvEvent_0;    
-  ADC_InjectedInitStruct->ADC_ExternalTrigInjecEventEdge = ADC_ExternalTrigInjecEventEdge_None;     
-  ADC_InjectedInitStruct->ADC_NbrOfInjecChannel = 1;                                                             
-  ADC_InjectedInitStruct->ADC_InjecSequence1 = ADC_InjectedChannel_1; 
-  ADC_InjectedInitStruct->ADC_InjecSequence2 = ADC_InjectedChannel_1;
-  ADC_InjectedInitStruct->ADC_InjecSequence3 = ADC_InjectedChannel_1;
-  ADC_InjectedInitStruct->ADC_InjecSequence4 = ADC_InjectedChannel_1; 
+	ADC_InjectedInitStruct->ADC_ExternalTrigInjecConvEvent =
+	    ADC_ExternalTrigInjecConvEvent_0;
+	ADC_InjectedInitStruct->ADC_ExternalTrigInjecEventEdge =
+	    ADC_ExternalTrigInjecEventEdge_None;
+	ADC_InjectedInitStruct->ADC_NbrOfInjecChannel = 1;
+	ADC_InjectedInitStruct->ADC_InjecSequence1 = ADC_InjectedChannel_1;
+	ADC_InjectedInitStruct->ADC_InjecSequence2 = ADC_InjectedChannel_1;
+	ADC_InjectedInitStruct->ADC_InjecSequence3 = ADC_InjectedChannel_1;
+	ADC_InjectedInitStruct->ADC_InjecSequence4 = ADC_InjectedChannel_1;
 }
-    
+
 /**
   * @brief  Initializes the ADCs peripherals according to the specified parameters 
   *         in the ADC_CommonInitStruct.
@@ -292,56 +309,55 @@ void ADC_InjectedStructInit(ADC_InjectedInitTypeDef* ADC_InjectedInitStruct)
   *         that contains the configuration information for  All ADCs peripherals.
   * @retval None
   */
-void ADC_CommonInit(ADC_TypeDef* ADCx, ADC_CommonInitTypeDef* ADC_CommonInitStruct)
+void
+ADC_CommonInit(ADC_TypeDef * ADCx, ADC_CommonInitTypeDef * ADC_CommonInitStruct)
 {
-  uint32_t tmpreg1 = 0;
-  /* Check the parameters */
-  assert_param(IS_ADC_MODE(ADC_CommonInitStruct->ADC_Mode));
-  assert_param(IS_ADC_CLOCKMODE(ADC_CommonInitStruct->ADC_Clock));
-  assert_param(IS_ADC_DMA_MODE(ADC_CommonInitStruct->ADC_DMAMode));
-  assert_param(IS_ADC_DMA_ACCESS_MODE(ADC_CommonInitStruct->ADC_DMAAccessMode));
-  assert_param(IS_ADC_TWOSAMPLING_DELAY(ADC_CommonInitStruct->ADC_TwoSamplingDelay));
+	uint32_t tmpreg1 = 0;
+	/* Check the parameters */
+	assert_param(IS_ADC_MODE(ADC_CommonInitStruct->ADC_Mode));
+	assert_param(IS_ADC_CLOCKMODE(ADC_CommonInitStruct->ADC_Clock));
+	assert_param(IS_ADC_DMA_MODE(ADC_CommonInitStruct->ADC_DMAMode));
+	assert_param(IS_ADC_DMA_ACCESS_MODE
+		     (ADC_CommonInitStruct->ADC_DMAAccessMode));
+	assert_param(IS_ADC_TWOSAMPLING_DELAY
+		     (ADC_CommonInitStruct->ADC_TwoSamplingDelay));
 
-  if((ADCx == ADC1) || (ADCx == ADC2))
-  {
-    /* Get the ADC CCR value */
-    tmpreg1 = ADC1_2->CCR;
-  
-    /* Clear MULTI, DELAY, DMA and ADCPRE bits */
-    tmpreg1 &= CCR_CLEAR_MASK;
-  }
-  else
-  {
-    /* Get the ADC CCR value */
-    tmpreg1 = ADC3_4->CCR;
-  
-    /* Clear MULTI, DELAY, DMA and ADCPRE bits */
-    tmpreg1 &= CCR_CLEAR_MASK;
-  }
-  /*---------------------------- ADC CCR Configuration -----------------*/  
-  /* Configure ADCx: Multi mode, Delay between two sampling time, ADC clock, DMA mode
-     and DMA access mode for dual mode */
-  /* Set MULTI bits according to ADC_Mode value */
-  /* Set CKMODE bits according to ADC_Clock value */
-  /* Set MDMA bits according to ADC_DMAAccessMode value */
-  /* Set DMACFG bits according to ADC_DMAMode value */
-  /* Set DELAY bits according to ADC_TwoSamplingDelay value */    
-  tmpreg1 |= (uint32_t)(ADC_CommonInitStruct->ADC_Mode | 
-                        ADC_CommonInitStruct->ADC_Clock | 
-                        ADC_CommonInitStruct->ADC_DMAAccessMode | 
-                        (uint32_t)(ADC_CommonInitStruct->ADC_DMAMode << 12) |
-                        (uint32_t)((uint32_t)ADC_CommonInitStruct->ADC_TwoSamplingDelay << 8));
+	if ((ADCx == ADC1) || (ADCx == ADC2)) {
+		/* Get the ADC CCR value */
+		tmpreg1 = ADC1_2->CCR;
 
-  if((ADCx == ADC1) || (ADCx == ADC2))
-  {                        
-    /* Write to ADC CCR */
-    ADC1_2->CCR = tmpreg1;
-  }
-  else
-  {
-    /* Write to ADC CCR */
-    ADC3_4->CCR = tmpreg1;
-  }
+		/* Clear MULTI, DELAY, DMA and ADCPRE bits */
+		tmpreg1 &= CCR_CLEAR_MASK;
+	} else {
+		/* Get the ADC CCR value */
+		tmpreg1 = ADC3_4->CCR;
+
+		/* Clear MULTI, DELAY, DMA and ADCPRE bits */
+		tmpreg1 &= CCR_CLEAR_MASK;
+	}
+  /*---------------------------- ADC CCR Configuration -----------------*/
+	/* Configure ADCx: Multi mode, Delay between two sampling time, ADC clock, DMA mode
+	   and DMA access mode for dual mode */
+	/* Set MULTI bits according to ADC_Mode value */
+	/* Set CKMODE bits according to ADC_Clock value */
+	/* Set MDMA bits according to ADC_DMAAccessMode value */
+	/* Set DMACFG bits according to ADC_DMAMode value */
+	/* Set DELAY bits according to ADC_TwoSamplingDelay value */
+	tmpreg1 |= (uint32_t) (ADC_CommonInitStruct->ADC_Mode |
+			       ADC_CommonInitStruct->ADC_Clock |
+			       ADC_CommonInitStruct->ADC_DMAAccessMode |
+			       (uint32_t) (ADC_CommonInitStruct->ADC_DMAMode <<
+					   12) | (uint32_t) ((uint32_t)
+							     ADC_CommonInitStruct->ADC_TwoSamplingDelay
+							     << 8));
+
+	if ((ADCx == ADC1) || (ADCx == ADC2)) {
+		/* Write to ADC CCR */
+		ADC1_2->CCR = tmpreg1;
+	} else {
+		/* Write to ADC CCR */
+		ADC3_4->CCR = tmpreg1;
+	}
 }
 
 /**
@@ -350,22 +366,22 @@ void ADC_CommonInit(ADC_TypeDef* ADCx, ADC_CommonInitTypeDef* ADC_CommonInitStru
   *         which will be initialized.
   * @retval None
   */
-void ADC_CommonStructInit(ADC_CommonInitTypeDef* ADC_CommonInitStruct)
+void ADC_CommonStructInit(ADC_CommonInitTypeDef * ADC_CommonInitStruct)
 {
-  /* Initialize the ADC_Mode member */
-  ADC_CommonInitStruct->ADC_Mode = ADC_Mode_Independent;
+	/* Initialize the ADC_Mode member */
+	ADC_CommonInitStruct->ADC_Mode = ADC_Mode_Independent;
 
-  /* initialize the ADC_Clock member */
-  ADC_CommonInitStruct->ADC_Clock = ADC_Clock_AsynClkMode;
+	/* initialize the ADC_Clock member */
+	ADC_CommonInitStruct->ADC_Clock = ADC_Clock_AsynClkMode;
 
-  /* Initialize the ADC_DMAAccessMode member */
-  ADC_CommonInitStruct->ADC_DMAAccessMode = ADC_DMAAccessMode_Disabled;
+	/* Initialize the ADC_DMAAccessMode member */
+	ADC_CommonInitStruct->ADC_DMAAccessMode = ADC_DMAAccessMode_Disabled;
 
-  /* Initialize the ADC_DMAMode member */
-  ADC_CommonInitStruct->ADC_DMAMode = ADC_DMAMode_OneShot;
+	/* Initialize the ADC_DMAMode member */
+	ADC_CommonInitStruct->ADC_DMAMode = ADC_DMAMode_OneShot;
 
-  /* Initialize the ADC_TwoSamplingDelay member */
-  ADC_CommonInitStruct->ADC_TwoSamplingDelay = 0;
+	/* Initialize the ADC_TwoSamplingDelay member */
+	ADC_CommonInitStruct->ADC_TwoSamplingDelay = 0;
 
 }
 
@@ -376,22 +392,19 @@ void ADC_CommonStructInit(ADC_CommonInitTypeDef* ADC_CommonInitStruct)
   *   This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void ADC_Cmd(ADC_TypeDef* ADCx, FunctionalState NewState)
+void ADC_Cmd(ADC_TypeDef * ADCx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Set the ADEN bit */
-    ADCx->CR |= ADC_CR_ADEN;
-  }
-  else
-  {
-    /* Disable the selected ADC peripheral: Set the ADDIS bit */
-    ADCx->CR |= ADC_CR_ADDIS;
-  }
+	if (NewState != DISABLE) {
+		/* Set the ADEN bit */
+		ADCx->CR |= ADC_CR_ADEN;
+	} else {
+		/* Disable the selected ADC peripheral: Set the ADDIS bit */
+		ADCx->CR |= ADC_CR_ADDIS;
+	}
 }
 
 /**
@@ -399,13 +412,13 @@ void ADC_Cmd(ADC_TypeDef* ADCx, FunctionalState NewState)
   * @param  ADCx: where x can be 1, 2, 3 or 4 to select the ADC peripheral.
   * @retval None
   */
-void ADC_StartCalibration(ADC_TypeDef* ADCx)
+void ADC_StartCalibration(ADC_TypeDef * ADCx)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
 
-  /* Set the ADCAL bit */
-  ADCx->CR |= ADC_CR_ADCAL;
+	/* Set the ADCAL bit */
+	ADCx->CR |= ADC_CR_ADCAL;
 }
 
 /**
@@ -413,13 +426,13 @@ void ADC_StartCalibration(ADC_TypeDef* ADCx)
   * @param  ADCx: where x can be 1, 2, 3 or 4 to select the ADC peripheral.
   * @retval None
   */
-uint32_t ADC_GetCalibrationValue(ADC_TypeDef* ADCx)
+uint32_t ADC_GetCalibrationValue(ADC_TypeDef * ADCx)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
 
-  /* Return the selected ADC calibration value */
-  return (uint32_t)ADCx->CALFACT;
+	/* Return the selected ADC calibration value */
+	return (uint32_t) ADCx->CALFACT;
 }
 
 /**
@@ -427,13 +440,13 @@ uint32_t ADC_GetCalibrationValue(ADC_TypeDef* ADCx)
   * @param  ADCx: where x can be 1, 2, 3 or 4 to select the ADC peripheral.
   * @retval None
   */
-void ADC_SetCalibrationValue(ADC_TypeDef* ADCx, uint32_t ADC_Calibration)
+void ADC_SetCalibrationValue(ADC_TypeDef * ADCx, uint32_t ADC_Calibration)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
 
-  /* Set the ADC calibration register value */
-  ADCx->CALFACT = ADC_Calibration;
+	/* Set the ADC calibration register value */
+	ADCx->CALFACT = ADC_Calibration;
 }
 
 /**
@@ -445,14 +458,14 @@ void ADC_SetCalibrationValue(ADC_TypeDef* ADCx, uint32_t ADC_Calibration)
   *          @arg ADC_CalibrationMode_Differential: to select the calibration for differential channel         
   * @retval None
   */
-void ADC_SelectCalibrationMode(ADC_TypeDef* ADCx, uint32_t ADC_CalibrationMode)
+void ADC_SelectCalibrationMode(ADC_TypeDef * ADCx, uint32_t ADC_CalibrationMode)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_ADC_CALIBRATION_MODE(ADC_CalibrationMode));
-  /* Set or Reset the ADCALDIF bit */
-  ADCx->CR &= (~ADC_CR_ADCALDIF);
-  ADCx->CR |= ADC_CalibrationMode;
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_ADC_CALIBRATION_MODE(ADC_CalibrationMode));
+	/* Set or Reset the ADCALDIF bit */
+	ADCx->CR &= (~ADC_CR_ADCALDIF);
+	ADCx->CR |= ADC_CalibrationMode;
 
 }
 
@@ -461,24 +474,21 @@ void ADC_SelectCalibrationMode(ADC_TypeDef* ADCx, uint32_t ADC_CalibrationMode)
   * @param  ADCx: where x can be 1, 2, 3 or 4 to select the ADC peripheral.
   * @retval The new state of ADC calibration (SET or RESET).
   */
-FlagStatus ADC_GetCalibrationStatus(ADC_TypeDef* ADCx)
+FlagStatus ADC_GetCalibrationStatus(ADC_TypeDef * ADCx)
 {
-  FlagStatus bitstatus = RESET;
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  /* Check the status of CAL bit */
-  if ((ADCx->CR & ADC_CR_ADCAL) != (uint32_t)RESET)
-  {
-    /* CAL bit is set: calibration on going */
-    bitstatus = SET;
-  }
-  else
-  {
-    /* CAL bit is reset: end of calibration */
-    bitstatus = RESET;
-  }
-  /* Return the CAL bit status */
-  return  bitstatus;
+	FlagStatus bitstatus = RESET;
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	/* Check the status of CAL bit */
+	if ((ADCx->CR & ADC_CR_ADCAL) != (uint32_t) RESET) {
+		/* CAL bit is set: calibration on going */
+		bitstatus = SET;
+	} else {
+		/* CAL bit is reset: end of calibration */
+		bitstatus = RESET;
+	}
+	/* Return the CAL bit status */
+	return bitstatus;
 }
 
 /**
@@ -486,40 +496,36 @@ FlagStatus ADC_GetCalibrationStatus(ADC_TypeDef* ADCx)
   * @param  ADCx: where x can be 1, 2, 3 or 4 to select the ADC peripheral.
   * @retval None
   */
-void ADC_DisableCmd(ADC_TypeDef* ADCx)
+void ADC_DisableCmd(ADC_TypeDef * ADCx)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
 
-  /* Set the ADDIS bit */
-  ADCx->CR |= ADC_CR_ADDIS;
+	/* Set the ADDIS bit */
+	ADCx->CR |= ADC_CR_ADDIS;
 }
-
 
 /**
   * @brief  Gets the selected ADC disable command Status.
   * @param  ADCx: where x can be 1, 2, 3 or 4 to select the ADC peripheral.
   * @retval The new state of ADC ADC disable command (SET or RESET).
   */
-FlagStatus ADC_GetDisableCmdStatus(ADC_TypeDef* ADCx)
+FlagStatus ADC_GetDisableCmdStatus(ADC_TypeDef * ADCx)
 {
-  FlagStatus bitstatus = RESET;
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	FlagStatus bitstatus = RESET;
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
 
-  /* Check the status of ADDIS bit */
-  if ((ADCx->CR & ADC_CR_ADDIS) != (uint32_t)RESET)
-  {
-    /* ADDIS bit is set */
-    bitstatus = SET;
-  }
-  else
-  {
-    /* ADDIS bit is reset */
-    bitstatus = RESET;
-  }
-  /* Return the ADDIS bit status */
-  return  bitstatus;
+	/* Check the status of ADDIS bit */
+	if ((ADCx->CR & ADC_CR_ADDIS) != (uint32_t) RESET) {
+		/* ADDIS bit is set */
+		bitstatus = SET;
+	} else {
+		/* ADDIS bit is reset */
+		bitstatus = RESET;
+	}
+	/* Return the ADDIS bit status */
+	return bitstatus;
 }
 
 /**
@@ -529,26 +535,23 @@ FlagStatus ADC_GetDisableCmdStatus(ADC_TypeDef* ADCx)
   *         This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void ADC_VoltageRegulatorCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
+void ADC_VoltageRegulatorCmd(ADC_TypeDef * ADCx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  /* set the intermediate state before moving the ADC voltage regulator 
-  from enable state to disable state or from disable state to enable state */
-  ADCx->CR &= ~(ADC_CR_ADVREGEN);
-  
-  if (NewState != DISABLE)
-  {
-    /* Set the ADVREGEN bit 0 */
-    ADCx->CR |= ADC_CR_ADVREGEN_0;
-  }
-  else
-  {
-    /* Set the ADVREGEN bit 1 */
-    ADCx->CR |=ADC_CR_ADVREGEN_1;
-  }
+	/* set the intermediate state before moving the ADC voltage regulator 
+	   from enable state to disable state or from disable state to enable state */
+	ADCx->CR &= ~(ADC_CR_ADVREGEN);
+
+	if (NewState != DISABLE) {
+		/* Set the ADVREGEN bit 0 */
+		ADCx->CR |= ADC_CR_ADVREGEN_0;
+	} else {
+		/* Set the ADVREGEN bit 1 */
+		ADCx->CR |= ADC_CR_ADVREGEN_1;
+	}
 }
 
 /**
@@ -573,23 +576,22 @@ void ADC_VoltageRegulatorCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
   * @note : Channel 15, 16 and 17 are fixed to single-ended inputs mode.
   * @retval None
   */
-void ADC_SelectDifferentialMode(ADC_TypeDef* ADCx, uint8_t ADC_Channel, FunctionalState NewState)
+void
+ADC_SelectDifferentialMode(ADC_TypeDef * ADCx, uint8_t ADC_Channel,
+			   FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx)); 
-  assert_param(IS_ADC_DIFFCHANNEL(ADC_Channel)); 
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_ADC_DIFFCHANNEL(ADC_Channel));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Set the DIFSEL bit */
-   ADCx->DIFSEL |= (uint32_t)(1 << ADC_Channel );
-  }
-  else
-  {
-    /* Reset the DIFSEL bit */
-   ADCx->DIFSEL &= ~(uint32_t)(1 << ADC_Channel);
-  }
+	if (NewState != DISABLE) {
+		/* Set the DIFSEL bit */
+		ADCx->DIFSEL |= (uint32_t) (1 << ADC_Channel);
+	} else {
+		/* Reset the DIFSEL bit */
+		ADCx->DIFSEL &= ~(uint32_t) (1 << ADC_Channel);
+	}
 }
 
 /**
@@ -599,22 +601,19 @@ void ADC_SelectDifferentialMode(ADC_TypeDef* ADCx, uint8_t ADC_Channel, Function
   *   This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void ADC_SelectQueueOfContextMode(ADC_TypeDef* ADCx, FunctionalState NewState)
+void ADC_SelectQueueOfContextMode(ADC_TypeDef * ADCx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx)); 
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Set the JQM bit */
-    ADCx->CFGR |= (uint32_t)(ADC_CFGR_JQM );
-  }
-  else
-  {
-    /* Reset the JQM bit */
-    ADCx->CFGR &= ~(uint32_t)(ADC_CFGR_JQM);
-  }
+	if (NewState != DISABLE) {
+		/* Set the JQM bit */
+		ADCx->CFGR |= (uint32_t) (ADC_CFGR_JQM);
+	} else {
+		/* Reset the JQM bit */
+		ADCx->CFGR &= ~(uint32_t) (ADC_CFGR_JQM);
+	}
 }
 
 /**
@@ -624,22 +623,19 @@ void ADC_SelectQueueOfContextMode(ADC_TypeDef* ADCx, FunctionalState NewState)
   *   This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void ADC_AutoDelayCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
+void ADC_AutoDelayCmd(ADC_TypeDef * ADCx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx)); 
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Set the AUTDLY bit */
-    ADCx->CFGR |= (uint32_t)(ADC_CFGR_AUTDLY );
-  }
-  else
-  {
-    /* Reset the AUTDLY bit */
-    ADCx->CFGR &= ~(uint32_t)(ADC_CFGR_AUTDLY);
-  }
+	if (NewState != DISABLE) {
+		/* Set the AUTDLY bit */
+		ADCx->CFGR |= (uint32_t) (ADC_CFGR_AUTDLY);
+	} else {
+		/* Reset the AUTDLY bit */
+		ADCx->CFGR &= ~(uint32_t) (ADC_CFGR_AUTDLY);
+	}
 }
 
 /**
@@ -691,20 +687,21 @@ void ADC_AutoDelayCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
   *     @arg ADC_AnalogWatchdog_None: No channel guarded by the analog watchdog
   * @retval None	  
   */
-void ADC_AnalogWatchdogCmd(ADC_TypeDef* ADCx, uint32_t ADC_AnalogWatchdog)
+void ADC_AnalogWatchdogCmd(ADC_TypeDef * ADCx, uint32_t ADC_AnalogWatchdog)
 {
-  uint32_t tmpreg = 0;
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_ADC_ANALOG_WATCHDOG(ADC_AnalogWatchdog));
-  /* Get the old register value */
-  tmpreg = ADCx->CFGR;
-  /* Clear AWDEN, AWDENJ and AWDSGL bits */
-  tmpreg &= ~(uint32_t)(ADC_CFGR_AWD1SGL|ADC_CFGR_AWD1EN|ADC_CFGR_JAWD1EN);
-  /* Set the analog watchdog enable mode */
-  tmpreg |= ADC_AnalogWatchdog;
-  /* Store the new register value */
-  ADCx->CFGR = tmpreg;
+	uint32_t tmpreg = 0;
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_ADC_ANALOG_WATCHDOG(ADC_AnalogWatchdog));
+	/* Get the old register value */
+	tmpreg = ADCx->CFGR;
+	/* Clear AWDEN, AWDENJ and AWDSGL bits */
+	tmpreg &=
+	    ~(uint32_t) (ADC_CFGR_AWD1SGL | ADC_CFGR_AWD1EN | ADC_CFGR_JAWD1EN);
+	/* Set the analog watchdog enable mode */
+	tmpreg |= ADC_AnalogWatchdog;
+	/* Store the new register value */
+	ADCx->CFGR = tmpreg;
 }
 
 /**
@@ -716,20 +713,22 @@ void ADC_AnalogWatchdogCmd(ADC_TypeDef* ADCx, uint32_t ADC_AnalogWatchdog)
   *   This parameter must be a 12bit value.
   * @retval None
   */
-void ADC_AnalogWatchdog1ThresholdsConfig(ADC_TypeDef* ADCx, uint16_t HighThreshold,
-                                         uint16_t LowThreshold)
+void
+ADC_AnalogWatchdog1ThresholdsConfig(ADC_TypeDef * ADCx,
+				    uint16_t HighThreshold,
+				    uint16_t LowThreshold)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_ADC_THRESHOLD(HighThreshold));
-  assert_param(IS_ADC_THRESHOLD(LowThreshold));
-  /* Set the ADCx high threshold */
-  ADCx->TR1 &= ~(uint32_t)ADC_TR1_HT1;
-  ADCx->TR1 |= (uint32_t)((uint32_t)HighThreshold << 16);
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_ADC_THRESHOLD(HighThreshold));
+	assert_param(IS_ADC_THRESHOLD(LowThreshold));
+	/* Set the ADCx high threshold */
+	ADCx->TR1 &= ~(uint32_t) ADC_TR1_HT1;
+	ADCx->TR1 |= (uint32_t) ((uint32_t) HighThreshold << 16);
 
-  /* Set the ADCx low threshold */
-  ADCx->TR1 &= ~(uint32_t)ADC_TR1_LT1;
-  ADCx->TR1 |= LowThreshold;
+	/* Set the ADCx low threshold */
+	ADCx->TR1 &= ~(uint32_t) ADC_TR1_LT1;
+	ADCx->TR1 |= LowThreshold;
 }
 
 /**
@@ -741,19 +740,20 @@ void ADC_AnalogWatchdog1ThresholdsConfig(ADC_TypeDef* ADCx, uint16_t HighThresho
   *   This parameter must be a 8bit value.
   * @retval None
   */
-void ADC_AnalogWatchdog2ThresholdsConfig(ADC_TypeDef* ADCx, uint8_t HighThreshold,
-                                         uint8_t LowThreshold)
+void
+ADC_AnalogWatchdog2ThresholdsConfig(ADC_TypeDef * ADCx,
+				    uint8_t HighThreshold, uint8_t LowThreshold)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  
-  /* Set the ADCx high threshold */
-  ADCx->TR2 &= ~(uint32_t)ADC_TR2_HT2;
-  ADCx->TR2 |= (uint32_t)((uint32_t)HighThreshold << 16);
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
 
-  /* Set the ADCx low threshold */
-  ADCx->TR2 &= ~(uint32_t)ADC_TR2_LT2;
-  ADCx->TR2 |= LowThreshold;
+	/* Set the ADCx high threshold */
+	ADCx->TR2 &= ~(uint32_t) ADC_TR2_HT2;
+	ADCx->TR2 |= (uint32_t) ((uint32_t) HighThreshold << 16);
+
+	/* Set the ADCx low threshold */
+	ADCx->TR2 &= ~(uint32_t) ADC_TR2_LT2;
+	ADCx->TR2 |= LowThreshold;
 }
 
 /**
@@ -765,19 +765,20 @@ void ADC_AnalogWatchdog2ThresholdsConfig(ADC_TypeDef* ADCx, uint8_t HighThreshol
   *   This parameter must be a 8bit value.
   * @retval None
   */
-void ADC_AnalogWatchdog3ThresholdsConfig(ADC_TypeDef* ADCx, uint8_t HighThreshold,
-                                         uint8_t LowThreshold)
+void
+ADC_AnalogWatchdog3ThresholdsConfig(ADC_TypeDef * ADCx,
+				    uint8_t HighThreshold, uint8_t LowThreshold)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
 
-  /* Set the ADCx high threshold */
-  ADCx->TR3 &= ~(uint32_t)ADC_TR3_HT3;
-  ADCx->TR3 |= (uint32_t)((uint32_t)HighThreshold << 16);
+	/* Set the ADCx high threshold */
+	ADCx->TR3 &= ~(uint32_t) ADC_TR3_HT3;
+	ADCx->TR3 |= (uint32_t) ((uint32_t) HighThreshold << 16);
 
-  /* Set the ADCx low threshold */
-  ADCx->TR3 &= ~(uint32_t)ADC_TR3_LT3;
-  ADCx->TR3 |= LowThreshold;
+	/* Set the ADCx low threshold */
+	ADCx->TR3 &= ~(uint32_t) ADC_TR3_LT3;
+	ADCx->TR3 |= LowThreshold;
 }
 
 /**
@@ -805,20 +806,21 @@ void ADC_AnalogWatchdog3ThresholdsConfig(ADC_TypeDef* ADCx, uint8_t HighThreshol
   *     @arg ADC_Channel_18: ADC Channel18 selected
   * @retval None
   */
-void ADC_AnalogWatchdog1SingleChannelConfig(ADC_TypeDef* ADCx, uint8_t ADC_Channel)
+void
+ADC_AnalogWatchdog1SingleChannelConfig(ADC_TypeDef * ADCx, uint8_t ADC_Channel)
 {
-  uint32_t tmpreg = 0;
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_ADC_CHANNEL(ADC_Channel));
-  /* Get the old register value */
-  tmpreg = ADCx->CFGR;
-  /* Clear the Analog watchdog channel select bits */
-  tmpreg &= ~(uint32_t)ADC_CFGR_AWD1CH;
-  /* Set the Analog watchdog channel */
-  tmpreg |= (uint32_t)((uint32_t)ADC_Channel << 26);
-  /* Store the new register value */
-  ADCx->CFGR = tmpreg;
+	uint32_t tmpreg = 0;
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_ADC_CHANNEL(ADC_Channel));
+	/* Get the old register value */
+	tmpreg = ADCx->CFGR;
+	/* Clear the Analog watchdog channel select bits */
+	tmpreg &= ~(uint32_t) ADC_CFGR_AWD1CH;
+	/* Set the Analog watchdog channel */
+	tmpreg |= (uint32_t) ((uint32_t) ADC_Channel << 26);
+	/* Store the new register value */
+	ADCx->CFGR = tmpreg;
 }
 
 /**
@@ -846,20 +848,21 @@ void ADC_AnalogWatchdog1SingleChannelConfig(ADC_TypeDef* ADCx, uint8_t ADC_Chann
   *     @arg ADC_Channel_18: ADC Channel18 selected
   * @retval None
   */
-void ADC_AnalogWatchdog2SingleChannelConfig(ADC_TypeDef* ADCx, uint8_t ADC_Channel)
+void
+ADC_AnalogWatchdog2SingleChannelConfig(ADC_TypeDef * ADCx, uint8_t ADC_Channel)
 {
-  uint32_t tmpreg = 0;
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_ADC_CHANNEL(ADC_Channel));
-  /* Get the old register value */
-  tmpreg = ADCx->AWD2CR;
-  /* Clear the Analog watchdog channel select bits */
-  tmpreg &= ~(uint32_t)ADC_AWD2CR_AWD2CH;
-  /* Set the Analog watchdog channel */
-  tmpreg |= (uint32_t)1 << (ADC_Channel);
-  /* Store the new register value */
-  ADCx->AWD2CR |= tmpreg;
+	uint32_t tmpreg = 0;
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_ADC_CHANNEL(ADC_Channel));
+	/* Get the old register value */
+	tmpreg = ADCx->AWD2CR;
+	/* Clear the Analog watchdog channel select bits */
+	tmpreg &= ~(uint32_t) ADC_AWD2CR_AWD2CH;
+	/* Set the Analog watchdog channel */
+	tmpreg |= (uint32_t) 1 << (ADC_Channel);
+	/* Store the new register value */
+	ADCx->AWD2CR |= tmpreg;
 }
 
 /**
@@ -887,20 +890,21 @@ void ADC_AnalogWatchdog2SingleChannelConfig(ADC_TypeDef* ADCx, uint8_t ADC_Chann
   *     @arg ADC_Channel_18: ADC Channel18 selected
   * @retval None
   */
-void ADC_AnalogWatchdog3SingleChannelConfig(ADC_TypeDef* ADCx, uint8_t ADC_Channel)
+void
+ADC_AnalogWatchdog3SingleChannelConfig(ADC_TypeDef * ADCx, uint8_t ADC_Channel)
 {
-  uint32_t tmpreg = 0;
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_ADC_CHANNEL(ADC_Channel));
-  /* Get the old register value */
-  tmpreg = ADCx->AWD3CR;
-  /* Clear the Analog watchdog channel select bits */
-  tmpreg &= ~(uint32_t)ADC_AWD3CR_AWD3CH;
-  /* Set the Analog watchdog channel */
-  tmpreg |= (uint32_t)1 << (ADC_Channel);
-  /* Store the new register value */
-  ADCx->AWD3CR |= tmpreg;
+	uint32_t tmpreg = 0;
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_ADC_CHANNEL(ADC_Channel));
+	/* Get the old register value */
+	tmpreg = ADCx->AWD3CR;
+	/* Clear the Analog watchdog channel select bits */
+	tmpreg &= ~(uint32_t) ADC_AWD3CR_AWD3CH;
+	/* Set the Analog watchdog channel */
+	tmpreg |= (uint32_t) 1 << (ADC_Channel);
+	/* Store the new register value */
+	ADCx->AWD3CR |= tmpreg;
 }
 
 /**
@@ -945,38 +949,29 @@ void ADC_AnalogWatchdog3SingleChannelConfig(ADC_TypeDef* ADCx, uint8_t ADC_Chann
   *   This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void ADC_TempSensorCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
+void ADC_TempSensorCmd(ADC_TypeDef * ADCx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if((ADCx == ADC1) || (ADCx == ADC2))
-  {
-    if (NewState != DISABLE)
-    {
-      /* Enable the temperature sensor channel*/
-      ADC1_2->CCR |= ADC12_CCR_TSEN;
-    }
-    else
-    {
-      /* Disable the temperature sensor channel*/
-      ADC1_2->CCR &= ~(uint32_t)ADC12_CCR_TSEN;
-    }
-  }
-  else
-  {
-    if (NewState != DISABLE)
-    {
-      /* Enable the temperature sensor channel*/
-      ADC3_4->CCR |= ADC34_CCR_TSEN;
-    }
-    else
-    {
-      /* Disable the temperature sensor channel*/
-      ADC3_4->CCR &= ~(uint32_t)ADC34_CCR_TSEN;
-    }
-  }
+	if ((ADCx == ADC1) || (ADCx == ADC2)) {
+		if (NewState != DISABLE) {
+			/* Enable the temperature sensor channel */
+			ADC1_2->CCR |= ADC12_CCR_TSEN;
+		} else {
+			/* Disable the temperature sensor channel */
+			ADC1_2->CCR &= ~(uint32_t) ADC12_CCR_TSEN;
+		}
+	} else {
+		if (NewState != DISABLE) {
+			/* Enable the temperature sensor channel */
+			ADC3_4->CCR |= ADC34_CCR_TSEN;
+		} else {
+			/* Disable the temperature sensor channel */
+			ADC3_4->CCR &= ~(uint32_t) ADC34_CCR_TSEN;
+		}
+	}
 }
 
 /**
@@ -986,38 +981,29 @@ void ADC_TempSensorCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
   *   This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void ADC_VrefintCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
+void ADC_VrefintCmd(ADC_TypeDef * ADCx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if((ADCx == ADC1) || (ADCx == ADC2))
-  {
-    if (NewState != DISABLE)
-    {
-      /* Enable the Vrefint channel*/
-      ADC1_2->CCR |= ADC12_CCR_VREFEN;
-    }
-    else
-    {
-      /* Disable the Vrefint channel*/
-      ADC1_2->CCR &= ~(uint32_t)ADC12_CCR_VREFEN;
-    }
-  }
-  else
-  {
-    if (NewState != DISABLE)
-    {
-      /* Enable the Vrefint channel*/
-      ADC3_4->CCR |= ADC34_CCR_VREFEN;
-    }
-    else
-    {
-      /* Disable the Vrefint channel*/
-      ADC3_4->CCR &= ~(uint32_t)ADC34_CCR_VREFEN;
-    }
-  }
+	if ((ADCx == ADC1) || (ADCx == ADC2)) {
+		if (NewState != DISABLE) {
+			/* Enable the Vrefint channel */
+			ADC1_2->CCR |= ADC12_CCR_VREFEN;
+		} else {
+			/* Disable the Vrefint channel */
+			ADC1_2->CCR &= ~(uint32_t) ADC12_CCR_VREFEN;
+		}
+	} else {
+		if (NewState != DISABLE) {
+			/* Enable the Vrefint channel */
+			ADC3_4->CCR |= ADC34_CCR_VREFEN;
+		} else {
+			/* Disable the Vrefint channel */
+			ADC3_4->CCR &= ~(uint32_t) ADC34_CCR_VREFEN;
+		}
+	}
 }
 
 /**
@@ -1027,38 +1013,29 @@ void ADC_VrefintCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
   *   This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void ADC_VbatCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
+void ADC_VbatCmd(ADC_TypeDef * ADCx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if((ADCx == ADC1) || (ADCx == ADC2))
-  {
-    if (NewState != DISABLE)
-    {
-      /* Enable the Vbat channel*/
-      ADC1_2->CCR |= ADC12_CCR_VBATEN;
-    }
-    else
-    {
-      /* Disable the Vbat channel*/
-      ADC1_2->CCR &= ~(uint32_t)ADC12_CCR_VBATEN;
-    }
-  }
-  else
-  {
-    if (NewState != DISABLE)
-    {
-      /* Enable the Vbat channel*/
-      ADC3_4->CCR |= ADC34_CCR_VBATEN;
-    }
-    else
-    {
-      /* Disable the Vbat channel*/
-      ADC3_4->CCR &= ~(uint32_t)ADC34_CCR_VBATEN;
-    }
-  }
+	if ((ADCx == ADC1) || (ADCx == ADC2)) {
+		if (NewState != DISABLE) {
+			/* Enable the Vbat channel */
+			ADC1_2->CCR |= ADC12_CCR_VBATEN;
+		} else {
+			/* Disable the Vbat channel */
+			ADC1_2->CCR &= ~(uint32_t) ADC12_CCR_VBATEN;
+		}
+	} else {
+		if (NewState != DISABLE) {
+			/* Enable the Vbat channel */
+			ADC3_4->CCR |= ADC34_CCR_VBATEN;
+		} else {
+			/* Disable the Vbat channel */
+			ADC3_4->CCR &= ~(uint32_t) ADC34_CCR_VBATEN;
+		}
+	}
 }
 
 /**
@@ -1159,104 +1136,100 @@ void ADC_VbatCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
   *     @arg ADC_SampleTime_601Cycles5: Sample time equal to 601.5 cycles	
   * @retval None
   */
-void ADC_RegularChannelConfig(ADC_TypeDef* ADCx, uint8_t ADC_Channel, uint8_t Rank, uint8_t ADC_SampleTime)
+void
+ADC_RegularChannelConfig(ADC_TypeDef * ADCx, uint8_t ADC_Channel,
+			 uint8_t Rank, uint8_t ADC_SampleTime)
 {
-  uint32_t tmpreg1 = 0, tmpreg2 = 0;
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_ADC_CHANNEL(ADC_Channel));
-  assert_param(IS_ADC_SAMPLE_TIME(ADC_SampleTime));
+	uint32_t tmpreg1 = 0, tmpreg2 = 0;
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_ADC_CHANNEL(ADC_Channel));
+	assert_param(IS_ADC_SAMPLE_TIME(ADC_SampleTime));
 
-  /* Regular sequence configuration */
-  /* For Rank 1 to 4 */
-  if (Rank < 5)
-  {
-    /* Get the old register value */
-    tmpreg1 = ADCx->SQR1;
-    /* Calculate the mask to clear */
-    tmpreg2 = 0x1F << (6 * (Rank ));
-    /* Clear the old SQx bits for the selected rank */
-    tmpreg1 &= ~tmpreg2;
-    /* Calculate the mask to set */
-    tmpreg2 = (uint32_t)(ADC_Channel) << (6 * (Rank));
-    /* Set the SQx bits for the selected rank */
-    tmpreg1 |= tmpreg2;
-    /* Store the new register value */
-    ADCx->SQR1 = tmpreg1;
-  }
-  /* For Rank 5 to 9 */
-  else if (Rank < 10)
-  {
-    /* Get the old register value */
-    tmpreg1 = ADCx->SQR2;
-    /* Calculate the mask to clear */
-    tmpreg2 = ADC_SQR2_SQ5 << (6 * (Rank - 5));
-    /* Clear the old SQx bits for the selected rank */
-    tmpreg1 &= ~tmpreg2;
-    /* Calculate the mask to set */
-    tmpreg2 = (uint32_t)(ADC_Channel) << (6 * (Rank - 5));
-    /* Set the SQx bits for the selected rank */
-    tmpreg1 |= tmpreg2;
-    /* Store the new register value */
-    ADCx->SQR2 = tmpreg1;
-  }
-  /* For Rank 10 to 14 */
-  else if (Rank < 15)
-  {
-    /* Get the old register value */
-    tmpreg1 = ADCx->SQR3;
-    /* Calculate the mask to clear */
-    tmpreg2 = ADC_SQR3_SQ10 << (6 * (Rank - 10));
-    /* Clear the old SQx bits for the selected rank */
-    tmpreg1 &= ~tmpreg2;
-    /* Calculate the mask to set */
-    tmpreg2 = (uint32_t)(ADC_Channel) << (6 * (Rank - 10));
-    /* Set the SQx bits for the selected rank */
-    tmpreg1 |= tmpreg2;
-    /* Store the new register value */
-    ADCx->SQR3 = tmpreg1;
-  }
-  else 
-  {
-    /* Get the old register value */
-    tmpreg1 = ADCx->SQR4;
-    /* Calculate the mask to clear */
-    tmpreg2 = ADC_SQR3_SQ15 << (6 * (Rank - 15));
-    /* Clear the old SQx bits for the selected rank */
-    tmpreg1 &= ~tmpreg2;
-    /* Calculate the mask to set */
-    tmpreg2 = (uint32_t)(ADC_Channel) << (6 * (Rank - 15));
-    /* Set the SQx bits for the selected rank */
-    tmpreg1 |= tmpreg2;
-    /* Store the new register value */
-    ADCx->SQR4 = tmpreg1;
-  }
+	/* Regular sequence configuration */
+	/* For Rank 1 to 4 */
+	if (Rank < 5) {
+		/* Get the old register value */
+		tmpreg1 = ADCx->SQR1;
+		/* Calculate the mask to clear */
+		tmpreg2 = 0x1F << (6 * (Rank));
+		/* Clear the old SQx bits for the selected rank */
+		tmpreg1 &= ~tmpreg2;
+		/* Calculate the mask to set */
+		tmpreg2 = (uint32_t) (ADC_Channel) << (6 * (Rank));
+		/* Set the SQx bits for the selected rank */
+		tmpreg1 |= tmpreg2;
+		/* Store the new register value */
+		ADCx->SQR1 = tmpreg1;
+	}
+	/* For Rank 5 to 9 */
+	else if (Rank < 10) {
+		/* Get the old register value */
+		tmpreg1 = ADCx->SQR2;
+		/* Calculate the mask to clear */
+		tmpreg2 = ADC_SQR2_SQ5 << (6 * (Rank - 5));
+		/* Clear the old SQx bits for the selected rank */
+		tmpreg1 &= ~tmpreg2;
+		/* Calculate the mask to set */
+		tmpreg2 = (uint32_t) (ADC_Channel) << (6 * (Rank - 5));
+		/* Set the SQx bits for the selected rank */
+		tmpreg1 |= tmpreg2;
+		/* Store the new register value */
+		ADCx->SQR2 = tmpreg1;
+	}
+	/* For Rank 10 to 14 */
+	else if (Rank < 15) {
+		/* Get the old register value */
+		tmpreg1 = ADCx->SQR3;
+		/* Calculate the mask to clear */
+		tmpreg2 = ADC_SQR3_SQ10 << (6 * (Rank - 10));
+		/* Clear the old SQx bits for the selected rank */
+		tmpreg1 &= ~tmpreg2;
+		/* Calculate the mask to set */
+		tmpreg2 = (uint32_t) (ADC_Channel) << (6 * (Rank - 10));
+		/* Set the SQx bits for the selected rank */
+		tmpreg1 |= tmpreg2;
+		/* Store the new register value */
+		ADCx->SQR3 = tmpreg1;
+	} else {
+		/* Get the old register value */
+		tmpreg1 = ADCx->SQR4;
+		/* Calculate the mask to clear */
+		tmpreg2 = ADC_SQR3_SQ15 << (6 * (Rank - 15));
+		/* Clear the old SQx bits for the selected rank */
+		tmpreg1 &= ~tmpreg2;
+		/* Calculate the mask to set */
+		tmpreg2 = (uint32_t) (ADC_Channel) << (6 * (Rank - 15));
+		/* Set the SQx bits for the selected rank */
+		tmpreg1 |= tmpreg2;
+		/* Store the new register value */
+		ADCx->SQR4 = tmpreg1;
+	}
 
-  /* Channel sampling configuration */
-  /* if ADC_Channel_10 ... ADC_Channel_18 is selected */
-  if (ADC_Channel > ADC_Channel_9)
-  {
-    /* Get the old register value */
-    tmpreg1 = ADCx->SMPR2;
-    /* Calculate the mask to clear */
-    tmpreg2 = ADC_SMPR2_SMP10 << (3 * (ADC_Channel - 10));
-    /* Clear the old channel sample time */
-	ADCx->SMPR2 &= ~tmpreg2;
-    /* Calculate the mask to set */
-	ADCx->SMPR2 |= (uint32_t)ADC_SampleTime << (3 * (ADC_Channel - 10));
+	/* Channel sampling configuration */
+	/* if ADC_Channel_10 ... ADC_Channel_18 is selected */
+	if (ADC_Channel > ADC_Channel_9) {
+		/* Get the old register value */
+		tmpreg1 = ADCx->SMPR2;
+		/* Calculate the mask to clear */
+		tmpreg2 = ADC_SMPR2_SMP10 << (3 * (ADC_Channel - 10));
+		/* Clear the old channel sample time */
+		ADCx->SMPR2 &= ~tmpreg2;
+		/* Calculate the mask to set */
+		ADCx->SMPR2 |=
+		    (uint32_t) ADC_SampleTime << (3 * (ADC_Channel - 10));
 
-  }
-  else /* ADC_Channel include in ADC_Channel_[0..9] */
-  {
-    /* Get the old register value */
-    tmpreg1 = ADCx->SMPR1;
-    /* Calculate the mask to clear */
-    tmpreg2 = ADC_SMPR1_SMP1 << (3 * (ADC_Channel - 1));
-    /* Clear the old channel sample time */
-	ADCx->SMPR1 &= ~tmpreg2;
-    /* Calculate the mask to set */
-	ADCx->SMPR1 |= (uint32_t)ADC_SampleTime << (3 * (ADC_Channel));
-  }
+	} else {		/* ADC_Channel include in ADC_Channel_[0..9] */
+
+		/* Get the old register value */
+		tmpreg1 = ADCx->SMPR1;
+		/* Calculate the mask to clear */
+		tmpreg2 = ADC_SMPR1_SMP1 << (3 * (ADC_Channel - 1));
+		/* Clear the old channel sample time */
+		ADCx->SMPR1 &= ~tmpreg2;
+		/* Calculate the mask to set */
+		ADCx->SMPR1 |= (uint32_t) ADC_SampleTime << (3 * (ADC_Channel));
+	}
 }
 
 /**
@@ -1266,14 +1239,16 @@ void ADC_RegularChannelConfig(ADC_TypeDef* ADCx, uint8_t ADC_Channel, uint8_t Ra
   *   This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void ADC_RegularChannelSequencerLengthConfig(ADC_TypeDef* ADCx, uint8_t SequencerLength)
+void
+ADC_RegularChannelSequencerLengthConfig(ADC_TypeDef * ADCx,
+					uint8_t SequencerLength)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
 
-  /* Configure the ADC sequence lenght */  
-  ADCx->SQR1 &= ~(uint32_t)ADC_SQR1_L;
-  ADCx->SQR1 |= (uint32_t)(SequencerLength - 1);   
+	/* Configure the ADC sequence lenght */
+	ADCx->SQR1 &= ~(uint32_t) ADC_SQR1_L;
+	ADCx->SQR1 |= (uint32_t) (SequencerLength - 1);
 }
 
 /**
@@ -1306,16 +1281,20 @@ void ADC_RegularChannelSequencerLengthConfig(ADC_TypeDef* ADCx, uint8_t Sequence
   *     @arg ADC_ExternalTrigEventEdge_BothEdge: Hardware trigger detection on both the rising and falling edges	
   * @retval None
   */
-void ADC_ExternalTriggerConfig(ADC_TypeDef* ADCx, uint16_t ADC_ExternalTrigConvEvent, uint16_t ADC_ExternalTrigEventEdge)
+void
+ADC_ExternalTriggerConfig(ADC_TypeDef * ADCx,
+			  uint16_t ADC_ExternalTrigConvEvent,
+			  uint16_t ADC_ExternalTrigEventEdge)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_ADC_EXT_TRIG(ADC_ExternalTrigConvEvent));
-  assert_param(IS_EXTERNALTRIG_EDGE(ADC_ExternalTrigEventEdge));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_ADC_EXT_TRIG(ADC_ExternalTrigConvEvent));
+	assert_param(IS_EXTERNALTRIG_EDGE(ADC_ExternalTrigEventEdge));
 
-  /* Disable the selected ADC conversion on external event */
-  ADCx->CFGR &= ~(ADC_CFGR_EXTEN | ADC_CFGR_EXTSEL);
-  ADCx->CFGR |= (uint32_t)(ADC_ExternalTrigEventEdge | ADC_ExternalTrigConvEvent);
+	/* Disable the selected ADC conversion on external event */
+	ADCx->CFGR &= ~(ADC_CFGR_EXTEN | ADC_CFGR_EXTSEL);
+	ADCx->CFGR |=
+	    (uint32_t) (ADC_ExternalTrigEventEdge | ADC_ExternalTrigConvEvent);
 }
 
 /**
@@ -1323,13 +1302,13 @@ void ADC_ExternalTriggerConfig(ADC_TypeDef* ADCx, uint16_t ADC_ExternalTrigConvE
   * @param  ADCx: where x can be 1, 2, 3 or 4 to select the ADC peripheral.
   * @retval None
   */
-void ADC_StartConversion(ADC_TypeDef* ADCx)
+void ADC_StartConversion(ADC_TypeDef * ADCx)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
 
-  /* Set the ADSTART bit */
-  ADCx->CR |= ADC_CR_ADSTART;
+	/* Set the ADSTART bit */
+	ADCx->CR |= ADC_CR_ADSTART;
 }
 
 /**
@@ -1337,24 +1316,21 @@ void ADC_StartConversion(ADC_TypeDef* ADCx)
   * @param  ADCx: where x can be 1, 2, 3 or 4 to select the ADC peripheral.
   * @retval The new state of ADC start conversion (SET or RESET).
   */
-FlagStatus ADC_GetStartConversionStatus(ADC_TypeDef* ADCx)
+FlagStatus ADC_GetStartConversionStatus(ADC_TypeDef * ADCx)
 {
-  FlagStatus bitstatus = RESET;
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  /* Check the status of ADSTART bit */
-  if ((ADCx->CR & ADC_CR_ADSTART) != (uint32_t)RESET)
-  {
-    /* ADSTART bit is set */
-    bitstatus = SET;
-  }
-  else
-  {
-    /* ADSTART bit is reset */
-    bitstatus = RESET;
-  }
-  /* Return the ADSTART bit status */
-  return  bitstatus;
+	FlagStatus bitstatus = RESET;
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	/* Check the status of ADSTART bit */
+	if ((ADCx->CR & ADC_CR_ADSTART) != (uint32_t) RESET) {
+		/* ADSTART bit is set */
+		bitstatus = SET;
+	} else {
+		/* ADSTART bit is reset */
+		bitstatus = RESET;
+	}
+	/* Return the ADSTART bit status */
+	return bitstatus;
 }
 
 /**
@@ -1362,15 +1338,14 @@ FlagStatus ADC_GetStartConversionStatus(ADC_TypeDef* ADCx)
   * @param  ADCx: where x can be 1, 2, 3 or 4 to select the ADC peripheral.
   * @retval None
   */
-void ADC_StopConversion(ADC_TypeDef* ADCx)
+void ADC_StopConversion(ADC_TypeDef * ADCx)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
 
-  /* Set the ADSTP bit */
-   ADCx->CR |= ADC_CR_ADSTP;
+	/* Set the ADSTP bit */
+	ADCx->CR |= ADC_CR_ADSTP;
 }
-
 
 /**
   * @brief  Configures the discontinuous mode for the selected ADC regular
@@ -1380,22 +1355,22 @@ void ADC_StopConversion(ADC_TypeDef* ADCx)
   *         count value. This number must be between 1 and 8.
   * @retval None
   */
-void ADC_DiscModeChannelCountConfig(ADC_TypeDef* ADCx, uint8_t Number)
+void ADC_DiscModeChannelCountConfig(ADC_TypeDef * ADCx, uint8_t Number)
 {
-  uint32_t tmpreg1 = 0;
-  uint32_t tmpreg2 = 0;
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_ADC_REGULAR_DISC_NUMBER(Number));
-  /* Get the old register value */
-  tmpreg1 = ADCx->CFGR;
-  /* Clear the old discontinuous mode channel count */
-  tmpreg1 &= ~(uint32_t)(ADC_CFGR_DISCNUM);
-  /* Set the discontinuous mode channel count */
-  tmpreg2 = Number - 1;
-  tmpreg1 |= tmpreg2 << 17;
-  /* Store the new register value */
-  ADCx->CFGR = tmpreg1;
+	uint32_t tmpreg1 = 0;
+	uint32_t tmpreg2 = 0;
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_ADC_REGULAR_DISC_NUMBER(Number));
+	/* Get the old register value */
+	tmpreg1 = ADCx->CFGR;
+	/* Clear the old discontinuous mode channel count */
+	tmpreg1 &= ~(uint32_t) (ADC_CFGR_DISCNUM);
+	/* Set the discontinuous mode channel count */
+	tmpreg2 = Number - 1;
+	tmpreg1 |= tmpreg2 << 17;
+	/* Store the new register value */
+	ADCx->CFGR = tmpreg1;
 }
 
 /**
@@ -1407,21 +1382,18 @@ void ADC_DiscModeChannelCountConfig(ADC_TypeDef* ADCx, uint8_t Number)
   *         This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void ADC_DiscModeCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
+void ADC_DiscModeCmd(ADC_TypeDef * ADCx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  if (NewState != DISABLE)
-  {
-    /* Enable the selected ADC regular discontinuous mode */
-    ADCx->CFGR |= ADC_CFGR_DISCEN;
-  }
-  else
-  {
-    /* Disable the selected ADC regular discontinuous mode */
-    ADCx->CFGR &= ~(uint32_t)(ADC_CFGR_DISCEN);
-  }
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
+	if (NewState != DISABLE) {
+		/* Enable the selected ADC regular discontinuous mode */
+		ADCx->CFGR |= ADC_CFGR_DISCEN;
+	} else {
+		/* Disable the selected ADC regular discontinuous mode */
+		ADCx->CFGR &= ~(uint32_t) (ADC_CFGR_DISCEN);
+	}
 }
 
 /**
@@ -1429,12 +1401,12 @@ void ADC_DiscModeCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
   * @param  ADCx: where x can be 1, 2, 3 or 4 to select the ADC peripheral.
   * @retval The Data conversion value.
   */
-uint16_t ADC_GetConversionValue(ADC_TypeDef* ADCx)
+uint16_t ADC_GetConversionValue(ADC_TypeDef * ADCx)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  /* Return the selected ADC conversion value */
-  return (uint16_t) ADCx->DR;
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	/* Return the selected ADC conversion value */
+	return (uint16_t) ADCx->DR;
 }
 
 /**
@@ -1446,25 +1418,22 @@ uint16_t ADC_GetConversionValue(ADC_TypeDef* ADCx)
   *           Data[15:0] : these bits contain the regular data of the Master ADC.
   *           Data[31:16]: these bits contain the regular data of the Slave ADC.           
   */
-uint32_t ADC_GetDualModeConversionValue(ADC_TypeDef* ADCx)
+uint32_t ADC_GetDualModeConversionValue(ADC_TypeDef * ADCx)
 {
-  uint32_t tmpreg1 = 0;
+	uint32_t tmpreg1 = 0;
 
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
 
-  if((ADCx == ADC1) || (ADCx== ADC2))
-  {
-    /* Get the dual mode conversion value */
-    tmpreg1 = ADC1_2->CDR;
-  }
-  else
-  {	
-    /* Get the dual mode conversion value */
-    tmpreg1 = ADC3_4->CDR;
-  }
-  /* Return the dual mode conversion value */
-  return (uint32_t) tmpreg1;
+	if ((ADCx == ADC1) || (ADCx == ADC2)) {
+		/* Get the dual mode conversion value */
+		tmpreg1 = ADC1_2->CDR;
+	} else {
+		/* Get the dual mode conversion value */
+		tmpreg1 = ADC3_4->CDR;
+	}
+	/* Return the dual mode conversion value */
+	return (uint32_t) tmpreg1;
 }
 
 /**
@@ -1494,20 +1463,21 @@ uint32_t ADC_GetDualModeConversionValue(ADC_TypeDef* ADCx)
   *   This parameter must be a 12bit value.
   * @retval None
   */
-void ADC_SetChannelOffset1(ADC_TypeDef* ADCx, uint8_t ADC_Channel, uint16_t Offset)
+void
+ADC_SetChannelOffset1(ADC_TypeDef * ADCx, uint8_t ADC_Channel, uint16_t Offset)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_ADC_CHANNEL(ADC_Channel));
-  assert_param(IS_ADC_OFFSET(Offset));
-    
-  /* Select the Channel */
-  ADCx->OFR1 &= ~ (uint32_t) ADC_OFR1_OFFSET1_CH;
-  ADCx->OFR1 |=	(uint32_t)((uint32_t)ADC_Channel << 26);
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_ADC_CHANNEL(ADC_Channel));
+	assert_param(IS_ADC_OFFSET(Offset));
 
-  /* Set the data offset */
-  ADCx->OFR1 &= ~ (uint32_t) ADC_OFR1_OFFSET1;
-  ADCx->OFR1 |= (uint32_t)Offset;
+	/* Select the Channel */
+	ADCx->OFR1 &= ~(uint32_t) ADC_OFR1_OFFSET1_CH;
+	ADCx->OFR1 |= (uint32_t) ((uint32_t) ADC_Channel << 26);
+
+	/* Set the data offset */
+	ADCx->OFR1 &= ~(uint32_t) ADC_OFR1_OFFSET1;
+	ADCx->OFR1 |= (uint32_t) Offset;
 }
 
 /**
@@ -1537,20 +1507,21 @@ void ADC_SetChannelOffset1(ADC_TypeDef* ADCx, uint8_t ADC_Channel, uint16_t Offs
   *   This parameter must be a 12bit value.
   * @retval None
   */
-void ADC_SetChannelOffset2(ADC_TypeDef* ADCx, uint8_t ADC_Channel, uint16_t Offset)
+void
+ADC_SetChannelOffset2(ADC_TypeDef * ADCx, uint8_t ADC_Channel, uint16_t Offset)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_ADC_CHANNEL(ADC_Channel));
-  assert_param(IS_ADC_OFFSET(Offset));
-    
-  /* Select the Channel */
-  ADCx->OFR2 &= ~ (uint32_t) ADC_OFR2_OFFSET2_CH;
-  ADCx->OFR2 |=	(uint32_t)((uint32_t)ADC_Channel << 26);
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_ADC_CHANNEL(ADC_Channel));
+	assert_param(IS_ADC_OFFSET(Offset));
 
-  /* Set the data offset */
-  ADCx->OFR2 &= ~ (uint32_t) ADC_OFR2_OFFSET2;
-  ADCx->OFR2 |= (uint32_t)Offset;
+	/* Select the Channel */
+	ADCx->OFR2 &= ~(uint32_t) ADC_OFR2_OFFSET2_CH;
+	ADCx->OFR2 |= (uint32_t) ((uint32_t) ADC_Channel << 26);
+
+	/* Set the data offset */
+	ADCx->OFR2 &= ~(uint32_t) ADC_OFR2_OFFSET2;
+	ADCx->OFR2 |= (uint32_t) Offset;
 }
 
 /**
@@ -1580,20 +1551,21 @@ void ADC_SetChannelOffset2(ADC_TypeDef* ADCx, uint8_t ADC_Channel, uint16_t Offs
   *   This parameter must be a 12bit value.
   * @retval None
   */
-void ADC_SetChannelOffset3(ADC_TypeDef* ADCx, uint8_t ADC_Channel, uint16_t Offset)
+void
+ADC_SetChannelOffset3(ADC_TypeDef * ADCx, uint8_t ADC_Channel, uint16_t Offset)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_ADC_CHANNEL(ADC_Channel));
-  assert_param(IS_ADC_OFFSET(Offset));
-    
-  /* Select the Channel */
-  ADCx->OFR3 &= ~ (uint32_t) ADC_OFR3_OFFSET3_CH;
-  ADCx->OFR3 |=	(uint32_t)((uint32_t)ADC_Channel << 26);
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_ADC_CHANNEL(ADC_Channel));
+	assert_param(IS_ADC_OFFSET(Offset));
 
-  /* Set the data offset */
-  ADCx->OFR3 &= ~ (uint32_t) ADC_OFR3_OFFSET3;
-  ADCx->OFR3 |= (uint32_t)Offset;
+	/* Select the Channel */
+	ADCx->OFR3 &= ~(uint32_t) ADC_OFR3_OFFSET3_CH;
+	ADCx->OFR3 |= (uint32_t) ((uint32_t) ADC_Channel << 26);
+
+	/* Set the data offset */
+	ADCx->OFR3 &= ~(uint32_t) ADC_OFR3_OFFSET3;
+	ADCx->OFR3 |= (uint32_t) Offset;
 }
 
 /**
@@ -1623,20 +1595,21 @@ void ADC_SetChannelOffset3(ADC_TypeDef* ADCx, uint8_t ADC_Channel, uint16_t Offs
   *   This parameter must be a 12bit value.
   * @retval None
   */
-void ADC_SetChannelOffset4(ADC_TypeDef* ADCx, uint8_t ADC_Channel, uint16_t Offset)
+void
+ADC_SetChannelOffset4(ADC_TypeDef * ADCx, uint8_t ADC_Channel, uint16_t Offset)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_ADC_CHANNEL(ADC_Channel));
-  assert_param(IS_ADC_OFFSET(Offset));
-    
-  /* Select the Channel */
-  ADCx->OFR4 &= ~ (uint32_t) ADC_OFR4_OFFSET4_CH;
-  ADCx->OFR4 |=	(uint32_t)((uint32_t)ADC_Channel << 26);
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_ADC_CHANNEL(ADC_Channel));
+	assert_param(IS_ADC_OFFSET(Offset));
 
-  /* Set the data offset */
-  ADCx->OFR4 &= ~ (uint32_t) ADC_OFR4_OFFSET4;
-  ADCx->OFR4 |= (uint32_t)Offset;
+	/* Select the Channel */
+	ADCx->OFR4 &= ~(uint32_t) ADC_OFR4_OFFSET4_CH;
+	ADCx->OFR4 |= (uint32_t) ((uint32_t) ADC_Channel << 26);
+
+	/* Set the data offset */
+	ADCx->OFR4 &= ~(uint32_t) ADC_OFR4_OFFSET4;
+	ADCx->OFR4 |= (uint32_t) Offset;
 }
 
 /**
@@ -1646,22 +1619,19 @@ void ADC_SetChannelOffset4(ADC_TypeDef* ADCx, uint8_t ADC_Channel, uint16_t Offs
   *   This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void ADC_ChannelOffset1Cmd(ADC_TypeDef* ADCx, FunctionalState NewState)
+void ADC_ChannelOffset1Cmd(ADC_TypeDef * ADCx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Set the OFFSET1_EN bit */
-    ADCx->OFR1 |= ADC_OFR1_OFFSET1_EN;
-  }
-  else
-  {
-    /* Reset the OFFSET1_EN bit */
-    ADCx->OFR1 &= ~(ADC_OFR1_OFFSET1_EN);
-  }
+	if (NewState != DISABLE) {
+		/* Set the OFFSET1_EN bit */
+		ADCx->OFR1 |= ADC_OFR1_OFFSET1_EN;
+	} else {
+		/* Reset the OFFSET1_EN bit */
+		ADCx->OFR1 &= ~(ADC_OFR1_OFFSET1_EN);
+	}
 }
 
 /**
@@ -1671,22 +1641,19 @@ void ADC_ChannelOffset1Cmd(ADC_TypeDef* ADCx, FunctionalState NewState)
   *   This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void ADC_ChannelOffset2Cmd(ADC_TypeDef* ADCx, FunctionalState NewState)
+void ADC_ChannelOffset2Cmd(ADC_TypeDef * ADCx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Set the OFFSET1_EN bit */
-    ADCx->OFR2 |= ADC_OFR2_OFFSET2_EN;
-  }
-  else
-  {
-    /* Reset the OFFSET1_EN bit */
-    ADCx->OFR2 &= ~(ADC_OFR2_OFFSET2_EN);
-  }
+	if (NewState != DISABLE) {
+		/* Set the OFFSET1_EN bit */
+		ADCx->OFR2 |= ADC_OFR2_OFFSET2_EN;
+	} else {
+		/* Reset the OFFSET1_EN bit */
+		ADCx->OFR2 &= ~(ADC_OFR2_OFFSET2_EN);
+	}
 }
 
 /**
@@ -1696,22 +1663,19 @@ void ADC_ChannelOffset2Cmd(ADC_TypeDef* ADCx, FunctionalState NewState)
   *   This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void ADC_ChannelOffset3Cmd(ADC_TypeDef* ADCx, FunctionalState NewState)
+void ADC_ChannelOffset3Cmd(ADC_TypeDef * ADCx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Set the OFFSET1_EN bit */
-    ADCx->OFR3 |= ADC_OFR3_OFFSET3_EN;
-  }
-  else
-  {
-    /* Reset the OFFSET1_EN bit */
-    ADCx->OFR3 &= ~(ADC_OFR3_OFFSET3_EN);
-  }
+	if (NewState != DISABLE) {
+		/* Set the OFFSET1_EN bit */
+		ADCx->OFR3 |= ADC_OFR3_OFFSET3_EN;
+	} else {
+		/* Reset the OFFSET1_EN bit */
+		ADCx->OFR3 &= ~(ADC_OFR3_OFFSET3_EN);
+	}
 }
 
 /**
@@ -1721,22 +1685,19 @@ void ADC_ChannelOffset3Cmd(ADC_TypeDef* ADCx, FunctionalState NewState)
   *   This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void ADC_ChannelOffset4Cmd(ADC_TypeDef* ADCx, FunctionalState NewState)
+void ADC_ChannelOffset4Cmd(ADC_TypeDef * ADCx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Set the OFFSET1_EN bit */
-    ADCx->OFR4 |= ADC_OFR4_OFFSET4_EN;
-  }
-  else
-  {
-    /* Reset the OFFSET1_EN bit */
-    ADCx->OFR4 &= ~(ADC_OFR4_OFFSET4_EN);
-  }
+	if (NewState != DISABLE) {
+		/* Set the OFFSET1_EN bit */
+		ADCx->OFR4 |= ADC_OFR4_OFFSET4_EN;
+	} else {
+		/* Reset the OFFSET1_EN bit */
+		ADCx->OFR4 &= ~(ADC_OFR4_OFFSET4_EN);
+	}
 }
 
 /**
@@ -1772,21 +1733,18 @@ void ADC_ChannelOffset4Cmd(ADC_TypeDef* ADCx, FunctionalState NewState)
   *   This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void ADC_DMACmd(ADC_TypeDef* ADCx, FunctionalState NewState)
+void ADC_DMACmd(ADC_TypeDef * ADCx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_DMA_PERIPH(ADCx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  if (NewState != DISABLE)
-  {
-    /* Enable the selected ADC DMA request */
-    ADCx->CFGR |= ADC_CFGR_DMAEN;
-  }
-  else
-  {
-    /* Disable the selected ADC DMA request */
-    ADCx->CFGR &= ~(uint32_t)ADC_CFGR_DMAEN;
-  }
+	/* Check the parameters */
+	assert_param(IS_ADC_DMA_PERIPH(ADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
+	if (NewState != DISABLE) {
+		/* Enable the selected ADC DMA request */
+		ADCx->CFGR |= ADC_CFGR_DMAEN;
+	} else {
+		/* Disable the selected ADC DMA request */
+		ADCx->CFGR &= ~(uint32_t) ADC_CFGR_DMAEN;
+	}
 }
 
 /**
@@ -1796,15 +1754,15 @@ void ADC_DMACmd(ADC_TypeDef* ADCx, FunctionalState NewState)
   *   This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void ADC_DMAConfig(ADC_TypeDef* ADCx, uint32_t ADC_DMAMode)
+void ADC_DMAConfig(ADC_TypeDef * ADCx, uint32_t ADC_DMAMode)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_DMA_PERIPH(ADCx));
-  assert_param(IS_ADC_DMA_MODE(ADC_DMAMode));
+	/* Check the parameters */
+	assert_param(IS_ADC_DMA_PERIPH(ADCx));
+	assert_param(IS_ADC_DMA_MODE(ADC_DMAMode));
 
-  /* Set or reset the DMACFG bit */
-   ADCx->CFGR &= ~(uint32_t)ADC_CFGR_DMACFG;
-   ADCx->CFGR |= ADC_DMAMode;
+	/* Set or reset the DMACFG bit */
+	ADCx->CFGR &= ~(uint32_t) ADC_CFGR_DMACFG;
+	ADCx->CFGR |= ADC_DMAMode;
 }
 
 /**
@@ -1831,7 +1789,7 @@ void ADC_DMAConfig(ADC_TypeDef* ADCx, uint32_t ADC_DMAMode)
 
 @endverbatim
   * @{
-  */ 
+  */
 
 /**
   * @brief  Configures for the selected ADC injected channel its corresponding
@@ -1869,35 +1827,39 @@ void ADC_DMAConfig(ADC_TypeDef* ADCx, uint32_t ADC_DMAMode)
   *     @arg ADC_SampleTime_601Cycles5: Sample time equal to 601.5 cycles	
   * @retval None
   */
-void ADC_InjectedChannelSampleTimeConfig(ADC_TypeDef* ADCx, uint8_t ADC_InjectedChannel, uint8_t ADC_SampleTime)
+void
+ADC_InjectedChannelSampleTimeConfig(ADC_TypeDef * ADCx,
+				    uint8_t ADC_InjectedChannel,
+				    uint8_t ADC_SampleTime)
 {
-  uint32_t tmpreg1 = 0;
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_ADC_INJECTED_CHANNEL(ADC_InjectedChannel));
-  assert_param(IS_ADC_SAMPLE_TIME(ADC_SampleTime));
+	uint32_t tmpreg1 = 0;
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_ADC_INJECTED_CHANNEL(ADC_InjectedChannel));
+	assert_param(IS_ADC_SAMPLE_TIME(ADC_SampleTime));
 
-  /* Channel sampling configuration */
-  /* if ADC_InjectedChannel_10 ... ADC_InjectedChannel_18 is selected */
-  if (ADC_InjectedChannel > ADC_InjectedChannel_9)
-  {
-    /* Calculate the mask to clear */
-    tmpreg1 = ADC_SMPR2_SMP10 << (3 * (ADC_InjectedChannel - 10));
-    /* Clear the old channel sample time */
-	ADCx->SMPR2 &= ~tmpreg1;
-    /* Calculate the mask to set */
-	ADCx->SMPR2 |= (uint32_t)ADC_SampleTime << (3 * (ADC_InjectedChannel - 10));
+	/* Channel sampling configuration */
+	/* if ADC_InjectedChannel_10 ... ADC_InjectedChannel_18 is selected */
+	if (ADC_InjectedChannel > ADC_InjectedChannel_9) {
+		/* Calculate the mask to clear */
+		tmpreg1 = ADC_SMPR2_SMP10 << (3 * (ADC_InjectedChannel - 10));
+		/* Clear the old channel sample time */
+		ADCx->SMPR2 &= ~tmpreg1;
+		/* Calculate the mask to set */
+		ADCx->SMPR2 |=
+		    (uint32_t) ADC_SampleTime << (3 *
+						  (ADC_InjectedChannel - 10));
 
-  }
-  else /* ADC_InjectedChannel include in ADC_InjectedChannel_[0..9] */
-  {
-    /* Calculate the mask to clear */
-    tmpreg1 = ADC_SMPR1_SMP1 << (3 * (ADC_InjectedChannel - 1));
-    /* Clear the old channel sample time */
-	ADCx->SMPR1 &= ~tmpreg1;
-    /* Calculate the mask to set */
-	ADCx->SMPR1 |= (uint32_t)ADC_SampleTime << (3 * (ADC_InjectedChannel));
-  }  
+	} else {		/* ADC_InjectedChannel include in ADC_InjectedChannel_[0..9] */
+
+		/* Calculate the mask to clear */
+		tmpreg1 = ADC_SMPR1_SMP1 << (3 * (ADC_InjectedChannel - 1));
+		/* Clear the old channel sample time */
+		ADCx->SMPR1 &= ~tmpreg1;
+		/* Calculate the mask to set */
+		ADCx->SMPR1 |=
+		    (uint32_t) ADC_SampleTime << (3 * (ADC_InjectedChannel));
+	}
 }
 
 /**
@@ -1908,14 +1870,14 @@ void ADC_InjectedChannelSampleTimeConfig(ADC_TypeDef* ADCx, uint8_t ADC_Injected
   *   This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void ADC_StartInjectedConversion(ADC_TypeDef* ADCx)
+void ADC_StartInjectedConversion(ADC_TypeDef * ADCx)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
 
-  /* Enable the selected ADC conversion for injected group on external event and start the selected
-     ADC injected conversion */
-  ADCx->CR |= ADC_CR_JADSTART;
+	/* Enable the selected ADC conversion for injected group on external event and start the selected
+	   ADC injected conversion */
+	ADCx->CR |= ADC_CR_JADSTART;
 }
 
 /**
@@ -1923,13 +1885,13 @@ void ADC_StartInjectedConversion(ADC_TypeDef* ADCx)
   * @param  ADCx: where x can be 1, 2, 3 or 4 to select the ADC peripheral.
   * @retval None
   */
-void ADC_StopInjectedConversion(ADC_TypeDef* ADCx)
+void ADC_StopInjectedConversion(ADC_TypeDef * ADCx)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
 
-  /* Set the JADSTP bit */
-   ADCx->CR |= ADC_CR_JADSTP;
+	/* Set the JADSTP bit */
+	ADCx->CR |= ADC_CR_JADSTP;
 }
 
 /**
@@ -1937,25 +1899,22 @@ void ADC_StopInjectedConversion(ADC_TypeDef* ADCx)
   * @param  ADCx: where x can be 1, 2, 3 or 4 to select the ADC peripheral.
   * @retval The new state of ADC start injected conversion (SET or RESET).
   */
-FlagStatus ADC_GetStartInjectedConversionStatus(ADC_TypeDef* ADCx)
+FlagStatus ADC_GetStartInjectedConversionStatus(ADC_TypeDef * ADCx)
 {
-  FlagStatus bitstatus = RESET;
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	FlagStatus bitstatus = RESET;
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
 
-  /* Check the status of JADSTART bit */
-  if ((ADCx->CR & ADC_CR_JADSTART) != (uint32_t)RESET)
-  {
-    /* JADSTART bit is set */
-    bitstatus = SET;
-  }
-  else
-  {
-    /* JADSTART bit is reset */
-    bitstatus = RESET;
-  }
-  /* Return the JADSTART bit status */
-  return  bitstatus;
+	/* Check the status of JADSTART bit */
+	if ((ADCx->CR & ADC_CR_JADSTART) != (uint32_t) RESET) {
+		/* JADSTART bit is set */
+		bitstatus = SET;
+	} else {
+		/* JADSTART bit is reset */
+		bitstatus = RESET;
+	}
+	/* Return the JADSTART bit status */
+	return bitstatus;
 }
 
 /**
@@ -1966,21 +1925,18 @@ FlagStatus ADC_GetStartInjectedConversionStatus(ADC_TypeDef* ADCx)
   *   This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void ADC_AutoInjectedConvCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
+void ADC_AutoInjectedConvCmd(ADC_TypeDef * ADCx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  if (NewState != DISABLE)
-  {
-    /* Enable the selected ADC automatic injected group conversion */
-    ADCx->CFGR |= ADC_CFGR_JAUTO;
-  }
-  else
-  {
-    /* Disable the selected ADC automatic injected group conversion */
-    ADCx->CFGR &= ~ADC_CFGR_JAUTO;
-  }
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
+	if (NewState != DISABLE) {
+		/* Enable the selected ADC automatic injected group conversion */
+		ADCx->CFGR |= ADC_CFGR_JAUTO;
+	} else {
+		/* Disable the selected ADC automatic injected group conversion */
+		ADCx->CFGR &= ~ADC_CFGR_JAUTO;
+	}
 }
 
 /**
@@ -1992,21 +1948,18 @@ void ADC_AutoInjectedConvCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
   *   This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void ADC_InjectedDiscModeCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
+void ADC_InjectedDiscModeCmd(ADC_TypeDef * ADCx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  if (NewState != DISABLE)
-  {
-    /* Enable the selected ADC injected discontinuous mode */
-    ADCx->CFGR |= ADC_CFGR_JDISCEN;
-  }
-  else
-  {
-    /* Disable the selected ADC injected discontinuous mode */
-    ADCx->CFGR &= ~ADC_CFGR_JDISCEN;
-  }
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
+	if (NewState != DISABLE) {
+		/* Enable the selected ADC injected discontinuous mode */
+		ADCx->CFGR |= ADC_CFGR_JDISCEN;
+	} else {
+		/* Disable the selected ADC injected discontinuous mode */
+		ADCx->CFGR &= ~ADC_CFGR_JDISCEN;
+	}
 }
 
 /**
@@ -2020,19 +1973,20 @@ void ADC_InjectedDiscModeCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
   *     @arg ADC_InjectedSequence_4: Injected Sequence4 selected
   * @retval The Data conversion value.
   */
-uint16_t ADC_GetInjectedConversionValue(ADC_TypeDef* ADCx, uint8_t ADC_InjectedSequence)
+uint16_t
+ADC_GetInjectedConversionValue(ADC_TypeDef * ADCx, uint8_t ADC_InjectedSequence)
 {
-  __IO uint32_t tmp = 0;
-  
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_ADC_INJECTED_SEQUENCE(ADC_InjectedSequence));
+	__IO uint32_t tmp = 0;
 
-  tmp = (uint32_t)ADCx;
-  tmp += ((ADC_InjectedSequence - 1 )<< 2) + JDR_Offset;
-  
-  /* Returns the selected injected channel conversion data value */
-  return (uint16_t) (*(__IO uint32_t*)  tmp);   
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_ADC_INJECTED_SEQUENCE(ADC_InjectedSequence));
+
+	tmp = (uint32_t) ADCx;
+	tmp += ((ADC_InjectedSequence - 1) << 2) + JDR_Offset;
+
+	/* Returns the selected injected channel conversion data value */
+	return (uint16_t) (*(__IO uint32_t *) tmp);
 }
 
 /**
@@ -2131,7 +2085,7 @@ uint16_t ADC_GetInjectedConversionValue(ADC_TypeDef* ADCx, uint8_t ADC_InjectedS
                                 (corresponding Flag). 
 @endverbatim
   * @{
-  */ 
+  */
 
 /**
   * @brief  Enables or disables the specified ADC interrupts.
@@ -2153,23 +2107,20 @@ uint16_t ADC_GetInjectedConversionValue(ADC_TypeDef* ADCx, uint8_t ADC_InjectedS
   *   This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void ADC_ITConfig(ADC_TypeDef* ADCx, uint32_t ADC_IT, FunctionalState NewState)
+void ADC_ITConfig(ADC_TypeDef * ADCx, uint32_t ADC_IT, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  assert_param(IS_ADC_IT(ADC_IT));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
+	assert_param(IS_ADC_IT(ADC_IT));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the selected ADC interrupts */
-    ADCx->IER |= ADC_IT;
-  }
-  else
-  {
-    /* Disable the selected ADC interrupts */
-    ADCx->IER &= (~(uint32_t)ADC_IT);
-  }
+	if (NewState != DISABLE) {
+		/* Enable the selected ADC interrupts */
+		ADCx->IER |= ADC_IT;
+	} else {
+		/* Disable the selected ADC interrupts */
+		ADCx->IER &= (~(uint32_t) ADC_IT);
+	}
 }
 
 /**
@@ -2190,26 +2141,23 @@ void ADC_ITConfig(ADC_TypeDef* ADCx, uint32_t ADC_IT, FunctionalState NewState)
   *     @arg ADC_FLAG_JQOVF: ADC Injected Context Queue Overflow flag 
   * @retval The new state of ADC_FLAG (SET or RESET).
   */
-FlagStatus ADC_GetFlagStatus(ADC_TypeDef* ADCx, uint32_t ADC_FLAG)
+FlagStatus ADC_GetFlagStatus(ADC_TypeDef * ADCx, uint32_t ADC_FLAG)
 {
-  FlagStatus bitstatus = RESET;
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_ADC_GET_FLAG(ADC_FLAG));
+	FlagStatus bitstatus = RESET;
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_ADC_GET_FLAG(ADC_FLAG));
 
-  /* Check the status of the specified ADC flag */
-  if ((ADCx->ISR & ADC_FLAG) != (uint32_t)RESET)
-  {
-    /* ADC_FLAG is set */
-    bitstatus = SET;
-  }
-  else
-  {
-    /* ADC_FLAG is reset */
-    bitstatus = RESET;
-  }
-  /* Return the ADC_FLAG status */
-  return  bitstatus;
+	/* Check the status of the specified ADC flag */
+	if ((ADCx->ISR & ADC_FLAG) != (uint32_t) RESET) {
+		/* ADC_FLAG is set */
+		bitstatus = SET;
+	} else {
+		/* ADC_FLAG is reset */
+		bitstatus = RESET;
+	}
+	/* Return the ADC_FLAG status */
+	return bitstatus;
 }
 
 /**
@@ -2230,13 +2178,13 @@ FlagStatus ADC_GetFlagStatus(ADC_TypeDef* ADCx, uint32_t ADC_FLAG)
   *     @arg ADC_FLAG_JQOVF: ADC Injected Context Queue Overflow flag 
   * @retval None
   */
-void ADC_ClearFlag(ADC_TypeDef* ADCx, uint32_t ADC_FLAG)
+void ADC_ClearFlag(ADC_TypeDef * ADCx, uint32_t ADC_FLAG)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_ADC_CLEAR_FLAG(ADC_FLAG));
-  /* Clear the selected ADC flags */
-  ADCx->ISR = (uint32_t)ADC_FLAG;
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_ADC_CLEAR_FLAG(ADC_FLAG));
+	/* Clear the selected ADC flags */
+	ADCx->ISR = (uint32_t) ADC_FLAG;
 }
 
 /**
@@ -2268,36 +2216,30 @@ void ADC_ClearFlag(ADC_TypeDef* ADCx, uint32_t ADC_FLAG)
   *     @arg ADC_FLAG_SLVJQOVF: ADC slave Injected Context Queue Overflow flag 
   * @retval The new state of ADC_FLAG (SET or RESET).
   */
-FlagStatus ADC_GetCommonFlagStatus(ADC_TypeDef* ADCx, uint32_t ADC_FLAG)
+FlagStatus ADC_GetCommonFlagStatus(ADC_TypeDef * ADCx, uint32_t ADC_FLAG)
 {
-  uint32_t tmpreg1 = 0;
-  FlagStatus bitstatus = RESET;
+	uint32_t tmpreg1 = 0;
+	FlagStatus bitstatus = RESET;
 
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_ADC_GET_COMMONFLAG(ADC_FLAG));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_ADC_GET_COMMONFLAG(ADC_FLAG));
 
-  if((ADCx == ADC1) || (ADCx == ADC2))
-  {
-    tmpreg1 = ADC1_2->CSR;
-  }
-  else
-  {
-    tmpreg1 = ADC3_4->CSR;
-  }  
-  /* Check the status of the specified ADC flag */
-  if ((tmpreg1 & ADC_FLAG) != (uint32_t)RESET)
-  {
-    /* ADC_FLAG is set */
-    bitstatus = SET;
-  }
-  else
-  {
-    /* ADC_FLAG is reset */
-    bitstatus = RESET;
-  }
-  /* Return the ADC_FLAG status */
-  return  bitstatus;
+	if ((ADCx == ADC1) || (ADCx == ADC2)) {
+		tmpreg1 = ADC1_2->CSR;
+	} else {
+		tmpreg1 = ADC3_4->CSR;
+	}
+	/* Check the status of the specified ADC flag */
+	if ((tmpreg1 & ADC_FLAG) != (uint32_t) RESET) {
+		/* ADC_FLAG is set */
+		bitstatus = SET;
+	} else {
+		/* ADC_FLAG is reset */
+		bitstatus = RESET;
+	}
+	/* Return the ADC_FLAG status */
+	return bitstatus;
 }
 
 /**
@@ -2329,22 +2271,19 @@ FlagStatus ADC_GetCommonFlagStatus(ADC_TypeDef* ADCx, uint32_t ADC_FLAG)
   *     @arg ADC_FLAG_SLVJQOVF: ADC slave Injected Context Queue Overflow flag 
   * @retval None
   */
-void ADC_ClearCommonFlag(ADC_TypeDef* ADCx, uint32_t ADC_FLAG)
+void ADC_ClearCommonFlag(ADC_TypeDef * ADCx, uint32_t ADC_FLAG)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_ADC_CLEAR_COMMONFLAG(ADC_FLAG));
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_ADC_CLEAR_COMMONFLAG(ADC_FLAG));
 
-  if((ADCx == ADC1) || (ADCx == ADC2))
-  {
-    /* Clear the selected ADC flags */
-    ADC1_2->CSR |= (uint32_t)ADC_FLAG;
-  }
-  else
-  {
-    /* Clear the selected ADC flags */
-    ADC3_4->CSR |= (uint32_t)ADC_FLAG;
-  }  
+	if ((ADCx == ADC1) || (ADCx == ADC2)) {
+		/* Clear the selected ADC flags */
+		ADC1_2->CSR |= (uint32_t) ADC_FLAG;
+	} else {
+		/* Clear the selected ADC flags */
+		ADC3_4->CSR |= (uint32_t) ADC_FLAG;
+	}
 }
 
 /**
@@ -2365,26 +2304,23 @@ void ADC_ClearCommonFlag(ADC_TypeDef* ADCx, uint32_t ADC_FLAG)
   *     @arg ADC_IT_JQOVF: ADC Injected Context Queue Overflow interrupt source 
   * @retval The new state of ADC_IT (SET or RESET).
   */
-ITStatus ADC_GetITStatus(ADC_TypeDef* ADCx, uint32_t ADC_IT)
+ITStatus ADC_GetITStatus(ADC_TypeDef * ADCx, uint32_t ADC_IT)
 {
-  ITStatus bitstatus = RESET;  
-  uint16_t itstatus = 0x0, itenable = 0x0;
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_ADC_GET_IT(ADC_IT));
-   
-  itstatus = ADCx->ISR & ADC_IT;
-  
-  itenable = ADCx->IER & ADC_IT;
-  if ((itstatus != (uint32_t)RESET) && (itenable != (uint32_t)RESET))
-  {
-    bitstatus = SET;
-  }
-  else
-  {
-    bitstatus = RESET;
-  }
-  return bitstatus;
+	ITStatus bitstatus = RESET;
+	uint16_t itstatus = 0x0, itenable = 0x0;
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_ADC_GET_IT(ADC_IT));
+
+	itstatus = ADCx->ISR & ADC_IT;
+
+	itenable = ADCx->IER & ADC_IT;
+	if ((itstatus != (uint32_t) RESET) && (itenable != (uint32_t) RESET)) {
+		bitstatus = SET;
+	} else {
+		bitstatus = RESET;
+	}
+	return bitstatus;
 }
 
 /**
@@ -2405,13 +2341,13 @@ ITStatus ADC_GetITStatus(ADC_TypeDef* ADCx, uint32_t ADC_IT)
   *     @arg ADC_IT_JQOVF: ADC Injected Context Queue Overflow interrupt source
   * @retval None
   */
-void ADC_ClearITPendingBit(ADC_TypeDef* ADCx, uint32_t ADC_IT)
+void ADC_ClearITPendingBit(ADC_TypeDef * ADCx, uint32_t ADC_IT)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_PERIPH(ADCx));
-  assert_param(IS_ADC_IT(ADC_IT));
-  /* Clear the selected ADC interrupt pending bit */
-  ADCx->ISR |= (uint32_t)ADC_IT;
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_PERIPH(ADCx));
+	assert_param(IS_ADC_IT(ADC_IT));
+	/* Clear the selected ADC interrupt pending bit */
+	ADCx->ISR |= (uint32_t) ADC_IT;
 }
 
 /**
@@ -2420,14 +2356,14 @@ void ADC_ClearITPendingBit(ADC_TypeDef* ADCx, uint32_t ADC_IT)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

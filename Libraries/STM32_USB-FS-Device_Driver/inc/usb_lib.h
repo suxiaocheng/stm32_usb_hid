@@ -41,6 +41,15 @@
 #include "usb_mem.h"
 #include "usb_int.h"
 
+#ifndef false
+#define false 0
+#endif
+
+#ifndef true
+#define true 1
+#endif
+
+
 #ifndef DEBUG
 #undef USB_DEBUG
 #endif
