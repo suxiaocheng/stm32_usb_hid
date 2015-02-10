@@ -31,7 +31,7 @@
 #define __STM32F0XX_CEC_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -45,28 +45,27 @@
   * @{
   */
 /* Exported types ------------------------------------------------------------*/
-  
+
 /** 
   * @brief  CEC Init structure definition  
   */
-typedef struct
-{
-  uint32_t CEC_SignalFreeTime;     /*!< Specifies the CEC Signal Free Time configuration.
-                                   This parameter can be a value of @ref CEC_Signal_Free_Time */
-  uint32_t CEC_RxTolerance;        /*!< Specifies the CEC Reception Tolerance.
-                                   This parameter can be a value of @ref CEC_RxTolerance */
-  uint32_t CEC_StopReception;      /*!< Specifies the CEC Stop Reception.
-                                   This parameter can be a value of @ref CEC_Stop_Reception */
-  uint32_t CEC_BitRisingError;     /*!< Specifies the CEC Bit Rising Error generation.
-                                   This parameter can be a value of @ref CEC_Bit_Rising_Error_Generation */
-  uint32_t CEC_LongBitPeriodError; /*!< Specifies the CEC Long Bit Error generation.
-                                   This parameter can be a value of @ref CEC_Long_Bit_Error_Generation */
-  uint32_t CEC_BRDNoGen;           /*!< Specifies the CEC Broadcast Error generation.
-                                   This parameter can be a value of @ref CEC_BDR_No_Gen */
-  uint32_t CEC_SFTOption;          /*!< Specifies the CEC Signal Free Time option.
-                                   This parameter can be a value of @ref CEC_SFT_Option */
+	typedef struct {
+		uint32_t CEC_SignalFreeTime;	/*!< Specifies the CEC Signal Free Time configuration.
+						   This parameter can be a value of @ref CEC_Signal_Free_Time */
+		uint32_t CEC_RxTolerance;	/*!< Specifies the CEC Reception Tolerance.
+						   This parameter can be a value of @ref CEC_RxTolerance */
+		uint32_t CEC_StopReception;	/*!< Specifies the CEC Stop Reception.
+						   This parameter can be a value of @ref CEC_Stop_Reception */
+		uint32_t CEC_BitRisingError;	/*!< Specifies the CEC Bit Rising Error generation.
+						   This parameter can be a value of @ref CEC_Bit_Rising_Error_Generation */
+		uint32_t CEC_LongBitPeriodError;	/*!< Specifies the CEC Long Bit Error generation.
+							   This parameter can be a value of @ref CEC_Long_Bit_Error_Generation */
+		uint32_t CEC_BRDNoGen;	/*!< Specifies the CEC Broadcast Error generation.
+					   This parameter can be a value of @ref CEC_BDR_No_Gen */
+		uint32_t CEC_SFTOption;	/*!< Specifies the CEC Signal Free Time option.
+					   This parameter can be a value of @ref CEC_SFT_Option */
 
-}CEC_InitTypeDef;
+	} CEC_InitTypeDef;
 
 /* Exported constants --------------------------------------------------------*/
 
@@ -77,14 +76,14 @@ typedef struct
 /** @defgroup CEC_Signal_Free_Time
   * @{
   */
-#define CEC_SignalFreeTime_Standard     ((uint32_t)0x00000000) /*!< CEC Signal Free Time Standard     */
-#define CEC_SignalFreeTime_1T           ((uint32_t)0x00000001) /*!< CEC  1.5 nominal data bit periods */
-#define CEC_SignalFreeTime_2T           ((uint32_t)0x00000002) /*!< CEC  2.5 nominal data bit periods */
-#define CEC_SignalFreeTime_3T           ((uint32_t)0x00000003) /*!< CEC  3.5 nominal data bit periods */
-#define CEC_SignalFreeTime_4T           ((uint32_t)0x00000004) /*!< CEC  4.5 nominal data bit periods */
-#define CEC_SignalFreeTime_5T           ((uint32_t)0x00000005) /*!< CEC  5.5 nominal data bit periods */
-#define CEC_SignalFreeTime_6T           ((uint32_t)0x00000006) /*!< CEC  6.5 nominal data bit periods */
-#define CEC_SignalFreeTime_7T           ((uint32_t)0x00000007) /*!< CEC  7.5 nominal data bit periods */
+#define CEC_SignalFreeTime_Standard     ((uint32_t)0x00000000)	/*!< CEC Signal Free Time Standard     */
+#define CEC_SignalFreeTime_1T           ((uint32_t)0x00000001)	/*!< CEC  1.5 nominal data bit periods */
+#define CEC_SignalFreeTime_2T           ((uint32_t)0x00000002)	/*!< CEC  2.5 nominal data bit periods */
+#define CEC_SignalFreeTime_3T           ((uint32_t)0x00000003)	/*!< CEC  3.5 nominal data bit periods */
+#define CEC_SignalFreeTime_4T           ((uint32_t)0x00000004)	/*!< CEC  4.5 nominal data bit periods */
+#define CEC_SignalFreeTime_5T           ((uint32_t)0x00000005)	/*!< CEC  5.5 nominal data bit periods */
+#define CEC_SignalFreeTime_6T           ((uint32_t)0x00000006)	/*!< CEC  6.5 nominal data bit periods */
+#define CEC_SignalFreeTime_7T           ((uint32_t)0x00000007)	/*!< CEC  7.5 nominal data bit periods */
 
 #define IS_CEC_SIGNAL_FREE_TIME(TIME) (((TIME) == CEC_SignalFreeTime_Standard) || \
                                        ((TIME) == CEC_SignalFreeTime_1T)|| \
@@ -101,8 +100,8 @@ typedef struct
 /** @defgroup CEC_RxTolerance
   * @{
   */
-#define CEC_RxTolerance_Standard        ((uint32_t)0x00000000) /*!< Standard Tolerance Margin              */
-#define CEC_RxTolerance_Extended        CEC_CFGR_RXTOL         /*!< Extended Tolerance Margin              */
+#define CEC_RxTolerance_Standard        ((uint32_t)0x00000000)	/*!< Standard Tolerance Margin              */
+#define CEC_RxTolerance_Extended        CEC_CFGR_RXTOL	/*!< Extended Tolerance Margin              */
 
 #define IS_CEC_RX_TOLERANCE(TOLERANCE) (((TOLERANCE) == CEC_RxTolerance_Standard) || \
                                         ((TOLERANCE) == CEC_RxTolerance_Extended))
@@ -113,8 +112,8 @@ typedef struct
 /** @defgroup CEC_Stop_Reception
   * @{
   */
-#define CEC_StopReception_Off           ((uint32_t)0x00000000) /*!< No RX Stop on bit Rising Error (BRE)    */
-#define CEC_StopReception_On            CEC_CFGR_BRESTP        /*!< RX Stop on bit Rising Error (BRE)       */
+#define CEC_StopReception_Off           ((uint32_t)0x00000000)	/*!< No RX Stop on bit Rising Error (BRE)    */
+#define CEC_StopReception_On            CEC_CFGR_BRESTP	/*!< RX Stop on bit Rising Error (BRE)       */
 
 #define IS_CEC_STOP_RECEPTION(RECEPTION) (((RECEPTION) == CEC_StopReception_On) || \
                                           ((RECEPTION) == CEC_StopReception_Off))
@@ -125,8 +124,8 @@ typedef struct
 /** @defgroup CEC_Bit_Rising_Error_Generation
   * @{
   */
-#define CEC_BitRisingError_Off          ((uint32_t)0x00000000)  /*!< Bit Rising Error generation turned Off */
-#define CEC_BitRisingError_On           CEC_CFGR_BREGEN         /*!< Bit Rising Error generation turned On */
+#define CEC_BitRisingError_Off          ((uint32_t)0x00000000)	/*!< Bit Rising Error generation turned Off */
+#define CEC_BitRisingError_On           CEC_CFGR_BREGEN	/*!< Bit Rising Error generation turned On */
 
 #define IS_CEC_BIT_RISING_ERROR(ERROR) (((ERROR) == CEC_BitRisingError_Off) || \
                                         ((ERROR) == CEC_BitRisingError_On))
@@ -137,8 +136,8 @@ typedef struct
 /** @defgroup CEC_Long_Bit_Error_Generation
   * @{
   */
-#define CEC_LongBitPeriodError_Off      ((uint32_t)0x00000000)  /*!< Long Bit Period Error generation turned Off */
-#define CEC_LongBitPeriodError_On       CEC_CFGR_LREGEN         /*!< Long Bit Period Error generation turned On */
+#define CEC_LongBitPeriodError_Off      ((uint32_t)0x00000000)	/*!< Long Bit Period Error generation turned Off */
+#define CEC_LongBitPeriodError_On       CEC_CFGR_LREGEN	/*!< Long Bit Period Error generation turned On */
 
 #define IS_CEC_LONG_BIT_PERIOD_ERROR(ERROR) (((ERROR) == CEC_LongBitPeriodError_Off) || \
                                              ((ERROR) == CEC_LongBitPeriodError_On))
@@ -149,8 +148,8 @@ typedef struct
 /** @defgroup CEC_SFT_Option
   * @{
   */
-#define CEC_SFTOption_Off              ((uint32_t)0x00000000)  /*!< SFT option turned Off                      */
-#define CEC_SFTOption_On               CEC_CFGR_SFTOPT         /*!< SFT option turned On                       */
+#define CEC_SFTOption_Off              ((uint32_t)0x00000000)	/*!< SFT option turned Off                      */
+#define CEC_SFTOption_On               CEC_CFGR_SFTOPT	/*!< SFT option turned On                       */
 
 #define IS_CEC_SFT_OPTION(OPTION) (((OPTION) == CEC_SFTOption_Off) || \
                                    ((OPTION) == CEC_SFTOption_On))
@@ -162,9 +161,9 @@ typedef struct
   * @{
   */
 
-#define CEC_BRDNoGen_Off      ((uint32_t)0x00000000)  /*!< Broadcast Bit Rising Error generation turned Off */
-#define CEC_BRDNoGen_On       CEC_CFGR_BRDNOGEN       /*!< Broadcast Bit Rising Error generation turned On  */
- 
+#define CEC_BRDNoGen_Off      ((uint32_t)0x00000000)	/*!< Broadcast Bit Rising Error generation turned Off */
+#define CEC_BRDNoGen_On       CEC_CFGR_BRDNOGEN	/*!< Broadcast Bit Rising Error generation turned On  */
+
 #define IS_CEC_BDR_NO_GEN_ERROR(ERROR) (((ERROR) == CEC_BRDNoGen_Off) || \
                                         ((ERROR) == CEC_BRDNoGen_On))
 /**
@@ -261,41 +260,35 @@ typedef struct
 /* Exported functions ------------------------------------------------------- */
 
 /*  Function used to set the CEC configuration to the default reset state *****/
-void CEC_DeInit(void);
+	void CEC_DeInit(void);
 
 /* CEC_Initialization and Configuration functions *****************************/
-void CEC_Init(CEC_InitTypeDef* CEC_InitStruct);
-void CEC_StructInit(CEC_InitTypeDef* CEC_InitStruct);
-void CEC_Cmd(FunctionalState NewState);
-void CEC_ListenModeCmd(FunctionalState NewState);
-void CEC_OwnAddressConfig(uint8_t CEC_OwnAddress);
-void CEC_OwnAddressClear(void);
+	void CEC_Init(CEC_InitTypeDef * CEC_InitStruct);
+	void CEC_StructInit(CEC_InitTypeDef * CEC_InitStruct);
+	void CEC_Cmd(FunctionalState NewState);
+	void CEC_ListenModeCmd(FunctionalState NewState);
+	void CEC_OwnAddressConfig(uint8_t CEC_OwnAddress);
+	void CEC_OwnAddressClear(void);
 
 /* CEC_Data transfers functions ***********************************************/
-void CEC_SendData(uint8_t Data);
-uint8_t CEC_ReceiveData(void);
-void CEC_StartOfMessage(void);
-void CEC_EndOfMessage(void);
+	void CEC_SendData(uint8_t Data);
+	uint8_t CEC_ReceiveData(void);
+	void CEC_StartOfMessage(void);
+	void CEC_EndOfMessage(void);
 
 /* CEC_Interrupts and flags management functions ******************************/
-void CEC_ITConfig(uint16_t CEC_IT, FunctionalState NewState);
-FlagStatus CEC_GetFlagStatus(uint16_t CEC_FLAG);
-void CEC_ClearFlag(uint16_t CEC_FLAG);
-ITStatus CEC_GetITStatus(uint16_t CEC_IT);
-void CEC_ClearITPendingBit(uint16_t CEC_IT);
+	void CEC_ITConfig(uint16_t CEC_IT, FunctionalState NewState);
+	FlagStatus CEC_GetFlagStatus(uint16_t CEC_FLAG);
+	void CEC_ClearFlag(uint16_t CEC_FLAG);
+	ITStatus CEC_GetITStatus(uint16_t CEC_IT);
+	void CEC_ClearITPendingBit(uint16_t CEC_IT);
 
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __STM32F37X_CEC_H */
-
+#endif				/* __STM32F37X_CEC_H */
 /**
   * @}
-  */
-
-/**
+  *//**
   * @}
-  */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+  *//************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

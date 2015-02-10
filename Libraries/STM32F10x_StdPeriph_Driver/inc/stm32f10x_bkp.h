@@ -31,7 +31,7 @@
 #define __STM32F10x_BKP_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -168,34 +168,27 @@
   * @{
   */
 
-void BKP_DeInit(void);
-void BKP_TamperPinLevelConfig(uint16_t BKP_TamperPinLevel);
-void BKP_TamperPinCmd(FunctionalState NewState);
-void BKP_ITConfig(FunctionalState NewState);
-void BKP_RTCOutputConfig(uint16_t BKP_RTCOutputSource);
-void BKP_SetRTCCalibrationValue(uint8_t CalibrationValue);
-void BKP_WriteBackupRegister(uint16_t BKP_DR, uint16_t Data);
-uint16_t BKP_ReadBackupRegister(uint16_t BKP_DR);
-FlagStatus BKP_GetFlagStatus(void);
-void BKP_ClearFlag(void);
-ITStatus BKP_GetITStatus(void);
-void BKP_ClearITPendingBit(void);
+	void BKP_DeInit(void);
+	void BKP_TamperPinLevelConfig(uint16_t BKP_TamperPinLevel);
+	void BKP_TamperPinCmd(FunctionalState NewState);
+	void BKP_ITConfig(FunctionalState NewState);
+	void BKP_RTCOutputConfig(uint16_t BKP_RTCOutputSource);
+	void BKP_SetRTCCalibrationValue(uint8_t CalibrationValue);
+	void BKP_WriteBackupRegister(uint16_t BKP_DR, uint16_t Data);
+	uint16_t BKP_ReadBackupRegister(uint16_t BKP_DR);
+	FlagStatus BKP_GetFlagStatus(void);
+	void BKP_ClearFlag(void);
+	ITStatus BKP_GetITStatus(void);
+	void BKP_ClearITPendingBit(void);
 
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __STM32F10x_BKP_H */
+#endif				/* __STM32F10x_BKP_H */
 /**
   * @}
-  */
-
-/**
+  *//**
   * @}
-  */
-
-/**
+  *//**
   * @}
-  */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+  *//************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

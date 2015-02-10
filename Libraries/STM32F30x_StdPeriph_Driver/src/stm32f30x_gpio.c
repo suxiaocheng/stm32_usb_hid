@@ -197,23 +197,24 @@ void GPIO_Init(GPIO_TypeDef * GPIOx, GPIO_InitTypeDef * GPIO_InitStruct)
 				    ~((GPIO_OTYPER_OT_0) <<
 				      ((uint16_t) pinpos));
 				GPIOx->OTYPER |=
-				    (uint16_t) (((uint16_t) GPIO_InitStruct->
-						 GPIO_OType) << ((uint16_t)
-								 pinpos));
+				    (uint16_t) (((uint16_t)
+						 GPIO_InitStruct->GPIO_OType) <<
+						((uint16_t)
+						 pinpos));
 			}
 
 			GPIOx->MODER &= ~(GPIO_MODER_MODER0 << (pinpos * 2));
 
 			GPIOx->MODER |=
-			    (((uint32_t) GPIO_InitStruct->
-			      GPIO_Mode) << (pinpos * 2));
+			    (((uint32_t) GPIO_InitStruct->GPIO_Mode) <<
+			     (pinpos * 2));
 
 			/* Pull-up Pull down resistor configuration */
 			GPIOx->PUPDR &=
 			    ~(GPIO_PUPDR_PUPDR0 << ((uint16_t) pinpos * 2));
 			GPIOx->PUPDR |=
-			    (((uint32_t) GPIO_InitStruct->
-			      GPIO_PuPd) << (pinpos * 2));
+			    (((uint32_t) GPIO_InitStruct->GPIO_PuPd) <<
+			     (pinpos * 2));
 		}
 	}
 }

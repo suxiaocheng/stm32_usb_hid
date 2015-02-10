@@ -30,7 +30,7 @@
 #define __STM32F37X_DBGMCU_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -42,14 +42,14 @@
 
 /** @addtogroup DBGMCU
   * @{
-  */ 
+  */
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 
 /** @defgroup DBGMCU_Exported_Constants
   * @{
-  */ 
+  */
 #define DBGMCU_SLEEP                          DBGMCU_CR_DBG_SLEEP
 #define DBGMCU_STOP                           DBGMCU_CR_DBG_STOP
 #define DBGMCU_STANDBY                        DBGMCU_CR_DBG_STANDBY
@@ -82,32 +82,28 @@
 
 /**
   * @}
-  */ 
+  */
 
 /* Exported macro ------------------------------------------------------------*/
-/* Exported functions --------------------------------------------------------*/ 
+/* Exported functions --------------------------------------------------------*/
 
 /* Device and Revision ID management functions ********************************/
-uint32_t DBGMCU_GetREVID(void);
-uint32_t DBGMCU_GetDEVID(void);
+	uint32_t DBGMCU_GetREVID(void);
+	uint32_t DBGMCU_GetDEVID(void);
 
 /* Peripherals Configuration functions ****************************************/
-void DBGMCU_Config(uint32_t DBGMCU_Periph, FunctionalState NewState);
-void DBGMCU_APB1PeriphConfig(uint32_t DBGMCU_Periph, FunctionalState NewState);
-void DBGMCU_APB2PeriphConfig(uint32_t DBGMCU_Periph, FunctionalState NewState);
+	void DBGMCU_Config(uint32_t DBGMCU_Periph, FunctionalState NewState);
+	void DBGMCU_APB1PeriphConfig(uint32_t DBGMCU_Periph,
+				     FunctionalState NewState);
+	void DBGMCU_APB2PeriphConfig(uint32_t DBGMCU_Periph,
+				     FunctionalState NewState);
 
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __STM32F37X_DBGMCU_H */
-
+#endif				/* __STM32F37X_DBGMCU_H */
 /**
   * @}
-  */ 
-
-/**
+  *//**
   * @}
-  */ 
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+  *//************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

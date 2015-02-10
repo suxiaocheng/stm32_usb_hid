@@ -187,14 +187,13 @@ void SPI_Init(SPI_TypeDef * SPIx, SPI_InitTypeDef * SPI_InitStruct)
 	/* Set CPOL bit according to SPI_CPOL value */
 	/* Set CPHA bit according to SPI_CPHA value */
 	tmpreg |=
-	    (uint16_t) ((uint32_t) SPI_InitStruct->
-			SPI_Direction | SPI_InitStruct->SPI_Mode |
+	    (uint16_t) ((uint32_t) SPI_InitStruct->SPI_Direction |
 			SPI_InitStruct->
-			SPI_DataSize | SPI_InitStruct->SPI_CPOL |
+			SPI_Mode | SPI_InitStruct->SPI_DataSize |
 			SPI_InitStruct->
-			SPI_CPHA | SPI_InitStruct->SPI_NSS |
-			SPI_InitStruct->SPI_BaudRatePrescaler | SPI_InitStruct->
-			SPI_FirstBit);
+			SPI_CPOL | SPI_InitStruct->SPI_CPHA | SPI_InitStruct->
+			SPI_NSS | SPI_InitStruct->
+			SPI_BaudRatePrescaler | SPI_InitStruct->SPI_FirstBit);
 	/* Write to SPIx CR1 */
 	SPIx->CR1 = tmpreg;
 
@@ -344,10 +343,9 @@ void I2S_Init(SPI_TypeDef * SPIx, I2S_InitTypeDef * I2S_InitStruct)
 	}
 
 	/* Write to SPIx I2SPR register the computed value */
-	SPIx->I2SPR =
-	    (uint16_t) (i2sdiv |
-			(uint16_t) (i2sodd | (uint16_t)
-				    I2S_InitStruct->I2S_MCLKOutput));
+	SPIx->I2SPR = (uint16_t) (i2sdiv | (uint16_t) (i2sodd | (uint16_t)
+						       I2S_InitStruct->
+						       I2S_MCLKOutput));
 
 	/* Configure the I2S with the SPI_InitStruct values */
 	tmpreg |=

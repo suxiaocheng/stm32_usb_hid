@@ -25,13 +25,13 @@
   *
   ******************************************************************************
   */
-  
+
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32L152_EVAL_H
 #define __STM32L152_EVAL_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -49,67 +49,61 @@
 /** @addtogroup STM32L152_EVAL
   * @{
   */
-      
+
 /** @addtogroup STM32L152_EVAL_LOW_LEVEL
   * @{
-  */ 
+  */
 
 /** @defgroup STM32L152_EVAL_LOW_LEVEL_Exported_Types
   * @{
   */
-typedef enum 
-{
-  LED1 = 0,
-  LED2 = 1,
-  LED3 = 2,
-  LED4 = 3
-} Led_TypeDef;
+	typedef enum {
+		LED1 = 0,
+		LED2 = 1,
+		LED3 = 2,
+		LED4 = 3
+	} Led_TypeDef;
 
-typedef enum 
-{
-  BUTTON_KEY = 0,
-  BUTTON_RIGHT = 1,
-  BUTTON_LEFT = 2,
-  BUTTON_UP = 3,
-  BUTTON_DOWN = 4,
-  BUTTON_SEL = 5
-} Button_TypeDef;
+	typedef enum {
+		BUTTON_KEY = 0,
+		BUTTON_RIGHT = 1,
+		BUTTON_LEFT = 2,
+		BUTTON_UP = 3,
+		BUTTON_DOWN = 4,
+		BUTTON_SEL = 5
+	} Button_TypeDef;
 
-typedef enum 
-{  
-  BUTTON_MODE_GPIO = 0,
-  BUTTON_MODE_EXTI = 1
-} ButtonMode_TypeDef;
+	typedef enum {
+		BUTTON_MODE_GPIO = 0,
+		BUTTON_MODE_EXTI = 1
+	} ButtonMode_TypeDef;
 
-typedef enum 
-{ 
-  JOY_NONE = 0,
-  JOY_SEL = 1,
-  JOY_DOWN = 2,
-  JOY_LEFT = 3,
-  JOY_RIGHT = 4,
-  JOY_UP = 5
-} JOYState_TypeDef
-;
+	typedef enum {
+		JOY_NONE = 0,
+		JOY_SEL = 1,
+		JOY_DOWN = 2,
+		JOY_LEFT = 3,
+		JOY_RIGHT = 4,
+		JOY_UP = 5
+	} JOYState_TypeDef;
 
-typedef enum 
-{
-  COM1 = 0,
-  COM2 = 1
-} COM_TypeDef;  
+	typedef enum {
+		COM1 = 0,
+		COM2 = 1
+	} COM_TypeDef;
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup STM32L152_EVAL_LOW_LEVEL_Exported_Constants
   * @{
-  */ 
+  */
 
 /** 
   * @brief  Define for STM32L152_EVAL board  
-  */ 
+  */
 #if !defined (USE_STM32L152_EVAL)
- #define USE_STM32L152_EVAL
+#define USE_STM32L152_EVAL
 #endif
 
 /** @addtogroup STM32L152_EVAL_LOW_LEVEL_LED
@@ -119,28 +113,28 @@ typedef enum
 
 #define LED1_PIN                         GPIO_Pin_0
 #define LED1_GPIO_PORT                   GPIOD
-#define LED1_GPIO_CLK                    RCC_AHBPeriph_GPIOD  
-  
+#define LED1_GPIO_CLK                    RCC_AHBPeriph_GPIOD
+
 #define LED2_PIN                         GPIO_Pin_1
 #define LED2_GPIO_PORT                   GPIOD
-#define LED2_GPIO_CLK                    RCC_AHBPeriph_GPIOD  
-  
+#define LED2_GPIO_CLK                    RCC_AHBPeriph_GPIOD
+
 #define LED3_PIN                         GPIO_Pin_4
 #define LED3_GPIO_PORT                   GPIOD
-#define LED3_GPIO_CLK                    RCC_AHBPeriph_GPIOD  
-  
+#define LED3_GPIO_CLK                    RCC_AHBPeriph_GPIOD
+
 #define LED4_PIN                         GPIO_Pin_5
 #define LED4_GPIO_PORT                   GPIOD
 #define LED4_GPIO_CLK                    RCC_AHBPeriph_GPIOD
 
 /**
   * @}
-  */ 
-  
+  */
+
 /** @addtogroup STM32L152_EVAL_LOW_LEVEL_BUTTON
   * @{
-  */  
-#define BUTTONn                          6 
+  */
+#define BUTTONn                          6
 /* On STM32L152-EVAL board, the KEY button is connected to PA.00 and it can
    be use as Wakeup pin button. */
 
@@ -175,7 +169,7 @@ typedef enum
 #define LEFT_BUTTON_EXTI_LINE            EXTI_Line12
 #define LEFT_BUTTON_EXTI_PORT_SOURCE     EXTI_PortSourceGPIOE
 #define LEFT_BUTTON_EXTI_PIN_SOURCE      EXTI_PinSource12
-#define LEFT_BUTTON_EXTI_IRQn            EXTI15_10_IRQn  
+#define LEFT_BUTTON_EXTI_IRQn            EXTI15_10_IRQn
 
 /**
  * @brief Joystick Up push-button
@@ -186,18 +180,18 @@ typedef enum
 #define UP_BUTTON_EXTI_LINE              EXTI_Line9
 #define UP_BUTTON_EXTI_PORT_SOURCE       EXTI_PortSourceGPIOE
 #define UP_BUTTON_EXTI_PIN_SOURCE        EXTI_PinSource9
-#define UP_BUTTON_EXTI_IRQn              EXTI9_5_IRQn  
+#define UP_BUTTON_EXTI_IRQn              EXTI9_5_IRQn
 
 /**
  * @brief Joystick Down push-button
- */  
+ */
 #define DOWN_BUTTON_PIN                  GPIO_Pin_10
 #define DOWN_BUTTON_GPIO_PORT            GPIOE
 #define DOWN_BUTTON_GPIO_CLK             RCC_AHBPeriph_GPIOE
 #define DOWN_BUTTON_EXTI_LINE            EXTI_Line10
 #define DOWN_BUTTON_EXTI_PORT_SOURCE     EXTI_PortSourceGPIOE
 #define DOWN_BUTTON_EXTI_PIN_SOURCE      EXTI_PinSource10
-#define DOWN_BUTTON_EXTI_IRQn            EXTI15_10_IRQn  
+#define DOWN_BUTTON_EXTI_IRQn            EXTI15_10_IRQn
 
 /**
  * @brief Joystick Sel push-button
@@ -208,11 +202,11 @@ typedef enum
 #define SEL_BUTTON_EXTI_LINE             EXTI_Line8
 #define SEL_BUTTON_EXTI_PORT_SOURCE      EXTI_PortSourceGPIOE
 #define SEL_BUTTON_EXTI_PIN_SOURCE       EXTI_PinSource8
-#define SEL_BUTTON_EXTI_IRQn             EXTI9_5_IRQn 
+#define SEL_BUTTON_EXTI_IRQn             EXTI9_5_IRQn
 
 /**
   * @}
-  */ 
+  */
 
 /** @addtogroup STM32L152_EVAL_LOW_LEVEL_COM
   * @{
@@ -221,7 +215,7 @@ typedef enum
 
 /**
  * @brief Definition for COM port1, connected to USART2
- */ 
+ */
 #define EVAL_COM1                        USART2
 #define EVAL_COM1_CLK                    RCC_APB1Periph_USART2
 
@@ -253,7 +247,7 @@ typedef enum
 
 /**
  * @brief Definition for COM port2, connected to USART3
- */ 
+ */
 #define EVAL_COM2                        USART3
 #define EVAL_COM2_CLK                    RCC_APB1Periph_USART3
 
@@ -273,66 +267,66 @@ typedef enum
 
 /**
   * @}
-  */ 
+  */
 
 /** @addtogroup STM32L152_EVAL_LOW_LEVEL_SD_FLASH
   * @{
-  */ 
+  */
 /**
   * @brief  SD Card SPI Interface
-  */  
+  */
 #define SD_SPI                           SPI2
 #define SD_SPI_CLK                       RCC_APB1Periph_SPI2
-#define SD_SPI_SCK_PIN                   GPIO_Pin_13                 /* PB.13 */
-#define SD_SPI_SCK_GPIO_PORT             GPIOB                       /* GPIOB */
+#define SD_SPI_SCK_PIN                   GPIO_Pin_13	/* PB.13 */
+#define SD_SPI_SCK_GPIO_PORT             GPIOB	/* GPIOB */
 #define SD_SPI_SCK_GPIO_CLK              RCC_AHBPeriph_GPIOB
 #define SD_SPI_SCK_SOURCE                GPIO_PinSource13
 #define SD_SPI_SCK_AF                    GPIO_AF_SPI2
-#define SD_SPI_MISO_PIN                  GPIO_Pin_14                 /* PB.14 */
-#define SD_SPI_MISO_GPIO_PORT            GPIOB                       /* GPIOB */
+#define SD_SPI_MISO_PIN                  GPIO_Pin_14	/* PB.14 */
+#define SD_SPI_MISO_GPIO_PORT            GPIOB	/* GPIOB */
 #define SD_SPI_MISO_GPIO_CLK             RCC_AHBPeriph_GPIOB
 #define SD_SPI_MISO_SOURCE               GPIO_PinSource14
 #define SD_SPI_MISO_AF                   GPIO_AF_SPI2
-#define SD_SPI_MOSI_PIN                  GPIO_Pin_15                 /* PB.15 */
-#define SD_SPI_MOSI_GPIO_PORT            GPIOB                       /* GPIOB */
+#define SD_SPI_MOSI_PIN                  GPIO_Pin_15	/* PB.15 */
+#define SD_SPI_MOSI_GPIO_PORT            GPIOB	/* GPIOB */
 #define SD_SPI_MOSI_GPIO_CLK             RCC_AHBPeriph_GPIOB
 #define SD_SPI_MOSI_SOURCE               GPIO_PinSource15
 #define SD_SPI_MOSI_AF                   GPIO_AF_SPI2
-#define SD_CS_PIN                        GPIO_Pin_7                  /* PD.07 */
-#define SD_CS_GPIO_PORT                  GPIOD                       /* GPIOD */
+#define SD_CS_PIN                        GPIO_Pin_7	/* PD.07 */
+#define SD_CS_GPIO_PORT                  GPIOD	/* GPIOD */
 #define SD_CS_GPIO_CLK                   RCC_AHBPeriph_GPIOD
-#define SD_DETECT_PIN                    GPIO_Pin_6                  /* PE.06 */
+#define SD_DETECT_PIN                    GPIO_Pin_6	/* PE.06 */
 #define SD_DETECT_EXTI_LINE              EXTI_Line6
 #define SD_DETECT_EXTI_PIN_SOURCE        EXTI_PinSource6
 
-#define SD_DETECT_GPIO_PORT              GPIOE                       /* GPIOE */
+#define SD_DETECT_GPIO_PORT              GPIOE	/* GPIOE */
 #define SD_DETECT_GPIO_CLK               RCC_AHBPeriph_GPIOE
 #define SD_DETECT_EXTI_PORT_SOURCE       EXTI_PortSourceGPIOE
-#define SD_DETECT_EXTI_IRQn              EXTI9_5_IRQn 
+#define SD_DETECT_EXTI_IRQn              EXTI9_5_IRQn
 /**
   * @}
-  */ 
-  
+  */
+
 /** @addtogroup STM32L152_EVAL_LOW_LEVEL_TSENSOR_I2C
   * @{
   */
 /**
   * @brief  LM75 Temperature Sensor I2C Interface pins
-  */  
+  */
 #define LM75_I2C                         I2C1
 #define LM75_I2C_CLK                     RCC_APB1Periph_I2C1
-#define LM75_I2C_SCL_PIN                 GPIO_Pin_6                  /* PB.06 */
-#define LM75_I2C_SCL_GPIO_PORT           GPIOB                       /* GPIOB */
+#define LM75_I2C_SCL_PIN                 GPIO_Pin_6	/* PB.06 */
+#define LM75_I2C_SCL_GPIO_PORT           GPIOB	/* GPIOB */
 #define LM75_I2C_SCL_GPIO_CLK            RCC_AHBPeriph_GPIOB
 #define LM75_I2C_SCL_SOURCE              GPIO_PinSource6
 #define LM75_I2C_SCL_AF                  GPIO_AF_I2C1
-#define LM75_I2C_SDA_PIN                 GPIO_Pin_7                  /* PB.07 */
-#define LM75_I2C_SDA_GPIO_PORT           GPIOB                       /* GPIOB */
+#define LM75_I2C_SDA_PIN                 GPIO_Pin_7	/* PB.07 */
+#define LM75_I2C_SDA_GPIO_PORT           GPIOB	/* GPIOB */
 #define LM75_I2C_SDA_GPIO_CLK            RCC_AHBPeriph_GPIOB
 #define LM75_I2C_SDA_SOURCE              GPIO_PinSource7
 #define LM75_I2C_SDA_AF                  GPIO_AF_I2C1
-#define LM75_I2C_SMBUSALERT_PIN          GPIO_Pin_5                  /* PB.05 */
-#define LM75_I2C_SMBUSALERT_GPIO_PORT    GPIOB                       /* GPIOB */
+#define LM75_I2C_SMBUSALERT_PIN          GPIO_Pin_5	/* PB.05 */
+#define LM75_I2C_SMBUSALERT_GPIO_PORT    GPIOB	/* GPIOB */
 #define LM75_I2C_SMBUSALERT_GPIO_CLK     RCC_AHBPeriph_GPIOB
 #define LM75_I2C_SMBUSALERT_SOURCE       GPIO_PinSource5
 #define LM75_I2C_SMBUSALERT_AF           GPIO_AF_I2C1
@@ -346,112 +340,105 @@ typedef enum
 
 /**
   * @}
-  */  
+  */
 
 /** @addtogroup STM32L152_EVAL_LOW_LEVEL_I2C_EE
   * @{
   */
 /**
   * @brief  I2C EEPROM Interface pins
-  */  
+  */
 
 #define sEE_I2C                          I2C1
 #define sEE_I2C_CLK                      RCC_APB1Periph_I2C1
-#define sEE_I2C_SCL_PIN                  GPIO_Pin_6                  /* PB.06 */
-#define sEE_I2C_SCL_GPIO_PORT            GPIOB                       /* GPIOB */
+#define sEE_I2C_SCL_PIN                  GPIO_Pin_6	/* PB.06 */
+#define sEE_I2C_SCL_GPIO_PORT            GPIOB	/* GPIOB */
 #define sEE_I2C_SCL_GPIO_CLK             RCC_AHBPeriph_GPIOB
 #define sEE_I2C_SCL_SOURCE               GPIO_PinSource6
 #define sEE_I2C_SCL_AF                   GPIO_AF_I2C1
-#define sEE_I2C_SDA_PIN                  GPIO_Pin_7                  /* PB.07 */
-#define sEE_I2C_SDA_GPIO_PORT            GPIOB                       /* GPIOB */
+#define sEE_I2C_SDA_PIN                  GPIO_Pin_7	/* PB.07 */
+#define sEE_I2C_SDA_GPIO_PORT            GPIOB	/* GPIOB */
 #define sEE_I2C_SDA_GPIO_CLK             RCC_AHBPeriph_GPIOB
 #define sEE_I2C_SDA_SOURCE               GPIO_PinSource7
 #define sEE_I2C_SDA_AF                   GPIO_AF_I2C1
 #define sEE_M24C64_32
 
-#define sEE_I2C_DMA                      DMA1   
+#define sEE_I2C_DMA                      DMA1
 #define sEE_I2C_DMA_CHANNEL_TX           DMA1_Channel6
-#define sEE_I2C_DMA_CHANNEL_RX           DMA1_Channel7 
-#define sEE_I2C_DMA_FLAG_TX_TC           DMA1_IT_TC6   
-#define sEE_I2C_DMA_FLAG_TX_GL           DMA1_IT_GL6 
-#define sEE_I2C_DMA_FLAG_RX_TC           DMA1_IT_TC7 
-#define sEE_I2C_DMA_FLAG_RX_GL           DMA1_IT_GL7    
+#define sEE_I2C_DMA_CHANNEL_RX           DMA1_Channel7
+#define sEE_I2C_DMA_FLAG_TX_TC           DMA1_IT_TC6
+#define sEE_I2C_DMA_FLAG_TX_GL           DMA1_IT_GL6
+#define sEE_I2C_DMA_FLAG_RX_TC           DMA1_IT_TC7
+#define sEE_I2C_DMA_FLAG_RX_GL           DMA1_IT_GL7
 #define sEE_I2C_DMA_CLK                  RCC_AHBPeriph_DMA1
 #define sEE_I2C_DR_Address               ((uint32_t)0x40005410)
 #define sEE_USE_DMA
-   
+
 #define sEE_I2C_DMA_TX_IRQn              DMA1_Channel6_IRQn
 #define sEE_I2C_DMA_RX_IRQn              DMA1_Channel7_IRQn
 #define sEE_I2C_DMA_TX_IRQHandler        DMA1_Channel6_IRQHandler
-#define sEE_I2C_DMA_RX_IRQHandler        DMA1_Channel7_IRQHandler  
+#define sEE_I2C_DMA_RX_IRQHandler        DMA1_Channel7_IRQHandler
 #define sEE_I2C_DMA_PREPRIO              0
 #define sEE_I2C_DMA_SUBPRIO              0
- 
+
 #define sEE_DIRECTION_TX                 0
-#define sEE_DIRECTION_RX                 1 
+#define sEE_DIRECTION_RX                 1
 
 /* Time constant for the delay caclulation allowing to have a millisecond 
    incrementing counter. This value should be equal to (System Clock / 1000).
    ie. if system clock = 32MHz then sEE_TIME_CONST should be 32. */
-#define sEE_TIME_CONST          32 
+#define sEE_TIME_CONST          32
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
-  
+  */
+
 /** @defgroup STM32L152_EVAL_LOW_LEVEL_Exported_Macros
   * @{
-  */  
+  */
 /**
   * @}
-  */ 
-
+  */
 
 /** @defgroup STM32L152_EVAL_LOW_LEVEL_Exported_Functions
   * @{
   */
-void STM_EVAL_LEDInit(Led_TypeDef Led);
-void STM_EVAL_LEDOn(Led_TypeDef Led);
-void STM_EVAL_LEDOff(Led_TypeDef Led);
-void STM_EVAL_LEDToggle(Led_TypeDef Led);
-void STM_EVAL_PBInit(Button_TypeDef Button, ButtonMode_TypeDef Button_Mode);
-uint32_t STM_EVAL_PBGetState(Button_TypeDef Button);
-void STM_EVAL_COMInit(COM_TypeDef COM, USART_InitTypeDef* USART_InitStruct); 
-void SD_LowLevel_DeInit(void);
-void SD_LowLevel_Init(void); 
-void LM75_LowLevel_DeInit(void);
-void LM75_LowLevel_Init(void);  
-void sEE_LowLevel_DeInit(void);
-void sEE_LowLevel_Init(void);
-void sEE_LowLevel_DMAConfig(uint32_t pBuffer, uint32_t BufferSize, uint32_t Direction);
+	void STM_EVAL_LEDInit(Led_TypeDef Led);
+	void STM_EVAL_LEDOn(Led_TypeDef Led);
+	void STM_EVAL_LEDOff(Led_TypeDef Led);
+	void STM_EVAL_LEDToggle(Led_TypeDef Led);
+	void STM_EVAL_PBInit(Button_TypeDef Button,
+			     ButtonMode_TypeDef Button_Mode);
+	uint32_t STM_EVAL_PBGetState(Button_TypeDef Button);
+	void STM_EVAL_COMInit(COM_TypeDef COM,
+			      USART_InitTypeDef * USART_InitStruct);
+	void SD_LowLevel_DeInit(void);
+	void SD_LowLevel_Init(void);
+	void LM75_LowLevel_DeInit(void);
+	void LM75_LowLevel_Init(void);
+	void sEE_LowLevel_DeInit(void);
+	void sEE_LowLevel_Init(void);
+	void sEE_LowLevel_DMAConfig(uint32_t pBuffer, uint32_t BufferSize,
+				    uint32_t Direction);
 
 /**
   * @}
   */
-  
+
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __STM32L152_EVAL_H */
+#endif				/* __STM32L152_EVAL_H */
 /**
   * @}
-  */ 
-
-/**
+  *//**
   * @}
-  */ 
-
-/**
+  *//**
   * @}
-  */
-
-/**
+  *//**
   * @}
-  */  
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+  *//************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

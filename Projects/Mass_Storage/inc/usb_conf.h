@@ -55,7 +55,6 @@
 /* Rx buffer base address */
 #define ENDP2_RXADDR        (0xD8)
 
-
 /* ISTR events */
 /* IMR_MSK */
 /* mask defining which events has to be handled */
@@ -72,7 +71,6 @@
 #define  EP5_IN_Callback   NOP_Process
 #define  EP6_IN_Callback   NOP_Process
 #define  EP7_IN_Callback   NOP_Process
-
 
 #define  EP1_OUT_Callback   NOP_Process
 //#define  EP2_OUT_Callback   NOP_Process

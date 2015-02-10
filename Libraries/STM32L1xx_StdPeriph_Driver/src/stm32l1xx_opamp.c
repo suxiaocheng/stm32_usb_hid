@@ -64,7 +64,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32l1xx_opamp.h"
 
-
 /** @addtogroup STM32L1xx_StdPeriph_Driver
   * @{
   */
@@ -72,7 +71,7 @@
 /** @defgroup OPAMP 
   * @brief OPAMP driver modules
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -95,7 +94,7 @@
 
 @endverbatim
   * @{
-  */  
+  */
 
 /**
   * @brief  Deinitialize the OPAMPs register to its default reset value.
@@ -105,12 +104,12 @@
   */
 void OPAMP_DeInit(void)
 {
-  /*!< Set OPAMP_CSR register to reset value */
-  OPAMP->CSR = 0x00010101;
-  /*!< Set OPAMP_OTR register to reset value */
-  OPAMP->OTR = (uint32_t)(* (uint32_t*)FLASH_R_BASE + 0x00000038);
-  /*!< Set OPAMP_LPOTR register to reset value */
-  OPAMP->LPOTR = (uint32_t)(* (uint32_t*)FLASH_R_BASE + 0x0000003C);
+	/*!< Set OPAMP_CSR register to reset value */
+	OPAMP->CSR = 0x00010101;
+	/*!< Set OPAMP_OTR register to reset value */
+	OPAMP->OTR = (uint32_t) (*(uint32_t *) FLASH_R_BASE + 0x00000038);
+	/*!< Set OPAMP_LPOTR register to reset value */
+	OPAMP->LPOTR = (uint32_t) (*(uint32_t *) FLASH_R_BASE + 0x0000003C);
 }
 
 /**
@@ -146,20 +145,17 @@ void OPAMP_DeInit(void)
   */
 void OPAMP_SwitchCmd(uint32_t OPAMP_OPAMPxSwitchy, FunctionalState NewState)
 {
-  /* Check the parameter */
-  assert_param(IS_OPAMP_SWITCH(OPAMP_OPAMPxSwitchy));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameter */
+	assert_param(IS_OPAMP_SWITCH(OPAMP_OPAMPxSwitchy));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Close the selected switches */
-    OPAMP->CSR |= (uint32_t) OPAMP_OPAMPxSwitchy;
-  }
-  else
-  {
-    /* Open the selected switches */
-    OPAMP->CSR &= (~(uint32_t)OPAMP_OPAMPxSwitchy);
-  }
+	if (NewState != DISABLE) {
+		/* Close the selected switches */
+		OPAMP->CSR |= (uint32_t) OPAMP_OPAMPxSwitchy;
+	} else {
+		/* Open the selected switches */
+		OPAMP->CSR &= (~(uint32_t) OPAMP_OPAMPxSwitchy);
+	}
 }
 
 /**
@@ -175,20 +171,17 @@ void OPAMP_SwitchCmd(uint32_t OPAMP_OPAMPxSwitchy, FunctionalState NewState)
   */
 void OPAMP_Cmd(uint32_t OPAMP_Selection, FunctionalState NewState)
 {
-  /* Check the parameter */
-  assert_param(IS_OPAMP_ALL_PERIPH(OPAMP_Selection));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameter */
+	assert_param(IS_OPAMP_ALL_PERIPH(OPAMP_Selection));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the selected OPAMP */
-    OPAMP->CSR &= (~(uint32_t) OPAMP_Selection);
-  }
-  else
-  {
-    /* Disable the selected OPAMP */
-    OPAMP->CSR |= (uint32_t) OPAMP_Selection;
-  }
+	if (NewState != DISABLE) {
+		/* Enable the selected OPAMP */
+		OPAMP->CSR &= (~(uint32_t) OPAMP_Selection);
+	} else {
+		/* Disable the selected OPAMP */
+		OPAMP->CSR |= (uint32_t) OPAMP_Selection;
+	}
 }
 
 /**
@@ -204,20 +197,17 @@ void OPAMP_Cmd(uint32_t OPAMP_Selection, FunctionalState NewState)
   */
 void OPAMP_LowPowerCmd(uint32_t OPAMP_Selection, FunctionalState NewState)
 {
-  /* Check the parameter */
-  assert_param(IS_OPAMP_ALL_PERIPH(OPAMP_Selection));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameter */
+	assert_param(IS_OPAMP_ALL_PERIPH(OPAMP_Selection));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Set the selected OPAMP in low power mode */
-    OPAMP->CSR |= (uint32_t) (OPAMP_Selection << 7);
-  }
-  else
-  {
-    /* Disable the low power mode for the selected OPAMP */
-    OPAMP->CSR &= (~(uint32_t) (OPAMP_Selection << 7));
-  }
+	if (NewState != DISABLE) {
+		/* Set the selected OPAMP in low power mode */
+		OPAMP->CSR |= (uint32_t) (OPAMP_Selection << 7);
+	} else {
+		/* Disable the low power mode for the selected OPAMP */
+		OPAMP->CSR &= (~(uint32_t) (OPAMP_Selection << 7));
+	}
 }
 
 /**
@@ -231,14 +221,14 @@ void OPAMP_LowPowerCmd(uint32_t OPAMP_Selection, FunctionalState NewState)
   */
 void OPAMP_PowerRangeSelect(uint32_t OPAMP_PowerRange)
 {
-  /* Check the parameter */
-  assert_param(IS_OPAMP_RANGE(OPAMP_PowerRange));
+	/* Check the parameter */
+	assert_param(IS_OPAMP_RANGE(OPAMP_PowerRange));
 
-  /* Reset the OPAMP range bit */
-  OPAMP->CSR &= (~(uint32_t) (OPAMP_CSR_AOP_RANGE));
+	/* Reset the OPAMP range bit */
+	OPAMP->CSR &= (~(uint32_t) (OPAMP_CSR_AOP_RANGE));
 
-  /* Select the OPAMP power range */
-  OPAMP->CSR |= OPAMP_PowerRange;
+	/* Select the OPAMP power range */
+	OPAMP->CSR |= OPAMP_PowerRange;
 }
 
 /**
@@ -272,14 +262,14 @@ void OPAMP_PowerRangeSelect(uint32_t OPAMP_PowerRange)
   */
 void OPAMP_OffsetTrimmingModeSelect(uint32_t OPAMP_Trimming)
 {
-  /* Check the parameter */
-  assert_param(IS_OPAMP_TRIMMING(OPAMP_Trimming));
+	/* Check the parameter */
+	assert_param(IS_OPAMP_TRIMMING(OPAMP_Trimming));
 
-  /* Reset the OPAMP_OTR range bit */
-  OPAMP->CSR &= (~(uint32_t) (OPAMP_OTR_OT_USER));
+	/* Reset the OPAMP_OTR range bit */
+	OPAMP->CSR &= (~(uint32_t) (OPAMP_OTR_OT_USER));
 
-  /* Select the OPAMP offset trimming  */
-  OPAMP->CSR |= OPAMP_Trimming;
+	/* Select the OPAMP offset trimming  */
+	OPAMP->CSR |= OPAMP_Trimming;
 
 }
 
@@ -298,87 +288,77 @@ void OPAMP_OffsetTrimmingModeSelect(uint32_t OPAMP_Trimming)
   *         or equal to 0x0000001F. 
   * @retval None
   */
-void OPAMP_OffsetTrimConfig(uint32_t OPAMP_Selection, uint32_t OPAMP_Input, uint32_t OPAMP_TrimValue)
+void OPAMP_OffsetTrimConfig(uint32_t OPAMP_Selection, uint32_t OPAMP_Input,
+			    uint32_t OPAMP_TrimValue)
 {
-  uint32_t tmpreg = 0;
+	uint32_t tmpreg = 0;
 
-  /* Check the parameter */
-  assert_param(IS_OPAMP_ALL_PERIPH(OPAMP_Selection));
-  assert_param(IS_OPAMP_INPUT(OPAMP_Input));
-  assert_param(IS_OPAMP_TRIMMINGVALUE(OPAMP_TrimValue));
+	/* Check the parameter */
+	assert_param(IS_OPAMP_ALL_PERIPH(OPAMP_Selection));
+	assert_param(IS_OPAMP_INPUT(OPAMP_Input));
+	assert_param(IS_OPAMP_TRIMMINGVALUE(OPAMP_TrimValue));
 
-  /* Get the OPAMP_OTR value */
-  tmpreg = OPAMP->OTR;
+	/* Get the OPAMP_OTR value */
+	tmpreg = OPAMP->OTR;
 
-  if(OPAMP_Selection == OPAMP_Selection_OPAMP1)
-  {
-    /* Reset the OPAMP inputs selection */
-    tmpreg &= (uint32_t)~(OPAMP_CSR_OPA1CAL_L | OPAMP_CSR_OPA1CAL_H);
-    /* Select the OPAMP input */
-    tmpreg |= OPAMP_Input;
+	if (OPAMP_Selection == OPAMP_Selection_OPAMP1) {
+		/* Reset the OPAMP inputs selection */
+		tmpreg &=
+		    (uint32_t) ~ (OPAMP_CSR_OPA1CAL_L | OPAMP_CSR_OPA1CAL_H);
+		/* Select the OPAMP input */
+		tmpreg |= OPAMP_Input;
 
-    if(OPAMP_Input == OPAMP_Input_PMOS)
-    {
-      /* Reset the trimming value corresponding to OPAMP1 PMOS input */
-      tmpreg &= (0xFFFFFFE0);
-      /* Set the new trimming value corresponding to OPAMP1 PMOS input */
-      tmpreg |= (OPAMP_TrimValue);
-    }
-    else
-    {
-      /* Reset the trimming value corresponding to OPAMP1 NMOS input */
-      tmpreg &= (0xFFFFFC1F);
-      /* Set the new trimming value corresponding to OPAMP1 NMOS input */
-      tmpreg |= (OPAMP_TrimValue<<5);
-    }
-  }
-  else if (OPAMP_Selection == OPAMP_Selection_OPAMP2)
-  {
-    /* Reset the OPAMP inputs selection */
-    tmpreg &= (uint32_t)~(OPAMP_CSR_OPA2CAL_L | OPAMP_CSR_OPA2CAL_H);
-    /* Select the OPAMP input */
-    tmpreg |= (uint32_t)(OPAMP_Input<<8);
+		if (OPAMP_Input == OPAMP_Input_PMOS) {
+			/* Reset the trimming value corresponding to OPAMP1 PMOS input */
+			tmpreg &= (0xFFFFFFE0);
+			/* Set the new trimming value corresponding to OPAMP1 PMOS input */
+			tmpreg |= (OPAMP_TrimValue);
+		} else {
+			/* Reset the trimming value corresponding to OPAMP1 NMOS input */
+			tmpreg &= (0xFFFFFC1F);
+			/* Set the new trimming value corresponding to OPAMP1 NMOS input */
+			tmpreg |= (OPAMP_TrimValue << 5);
+		}
+	} else if (OPAMP_Selection == OPAMP_Selection_OPAMP2) {
+		/* Reset the OPAMP inputs selection */
+		tmpreg &=
+		    (uint32_t) ~ (OPAMP_CSR_OPA2CAL_L | OPAMP_CSR_OPA2CAL_H);
+		/* Select the OPAMP input */
+		tmpreg |= (uint32_t) (OPAMP_Input << 8);
 
-    if(OPAMP_Input == OPAMP_Input_PMOS)
-    {
-      /* Reset the trimming value corresponding to OPAMP2 PMOS input */
-      tmpreg &= (0xFFFF83FF);
-      /* Set the new trimming value corresponding to OPAMP2 PMOS input */
-      tmpreg |= (OPAMP_TrimValue<<10);
-    }
-    else
-    {
-      /* Reset the trimming value corresponding to OPAMP2 NMOS input */
-      tmpreg &= (0xFFF07FFF);
-      /* Set the new trimming value corresponding to OPAMP2 NMOS input */
-      tmpreg |= (OPAMP_TrimValue<<15);
-    }
-  }
-  else
-  {
-    /* Reset the OPAMP inputs selection */
-    tmpreg &= (uint32_t)~(OPAMP_CSR_OPA3CAL_L | OPAMP_CSR_OPA3CAL_H);
-    /* Select the OPAMP input */
-    tmpreg |= (uint32_t)(OPAMP_Input<<16);
+		if (OPAMP_Input == OPAMP_Input_PMOS) {
+			/* Reset the trimming value corresponding to OPAMP2 PMOS input */
+			tmpreg &= (0xFFFF83FF);
+			/* Set the new trimming value corresponding to OPAMP2 PMOS input */
+			tmpreg |= (OPAMP_TrimValue << 10);
+		} else {
+			/* Reset the trimming value corresponding to OPAMP2 NMOS input */
+			tmpreg &= (0xFFF07FFF);
+			/* Set the new trimming value corresponding to OPAMP2 NMOS input */
+			tmpreg |= (OPAMP_TrimValue << 15);
+		}
+	} else {
+		/* Reset the OPAMP inputs selection */
+		tmpreg &=
+		    (uint32_t) ~ (OPAMP_CSR_OPA3CAL_L | OPAMP_CSR_OPA3CAL_H);
+		/* Select the OPAMP input */
+		tmpreg |= (uint32_t) (OPAMP_Input << 16);
 
-    if(OPAMP_Input == OPAMP_Input_PMOS)
-    {
-      /* Reset the trimming value corresponding to OPAMP3 PMOS input */
-      tmpreg &= (0xFE0FFFFF);
-      /* Set the new trimming value corresponding to OPAMP3 PMOS input */
-      tmpreg |= (OPAMP_TrimValue<<20);
-    }
-    else
-    {
-      /* Reset the trimming value corresponding to OPAMP3 NMOS input */
-      tmpreg &= (0xC1FFFFFF);
-      /* Set the new trimming value corresponding to OPAMP3 NMOS input */
-      tmpreg |= (OPAMP_TrimValue<<25);
-    }
-  }
+		if (OPAMP_Input == OPAMP_Input_PMOS) {
+			/* Reset the trimming value corresponding to OPAMP3 PMOS input */
+			tmpreg &= (0xFE0FFFFF);
+			/* Set the new trimming value corresponding to OPAMP3 PMOS input */
+			tmpreg |= (OPAMP_TrimValue << 20);
+		} else {
+			/* Reset the trimming value corresponding to OPAMP3 NMOS input */
+			tmpreg &= (0xC1FFFFFF);
+			/* Set the new trimming value corresponding to OPAMP3 NMOS input */
+			tmpreg |= (OPAMP_TrimValue << 25);
+		}
+	}
 
-  /* Set the OPAMP_OTR register */
-  OPAMP->OTR = tmpreg;
+	/* Set the OPAMP_OTR register */
+	OPAMP->OTR = tmpreg;
 }
 
 /**
@@ -396,87 +376,78 @@ void OPAMP_OffsetTrimConfig(uint32_t OPAMP_Selection, uint32_t OPAMP_Input, uint
   *    This parameter can be any value lower or equal to 0x0000001F. 
   * @retval None
   */
-void OPAMP_OffsetTrimLowPowerConfig(uint32_t OPAMP_Selection, uint32_t OPAMP_Input, uint32_t OPAMP_TrimValue)
+void OPAMP_OffsetTrimLowPowerConfig(uint32_t OPAMP_Selection,
+				    uint32_t OPAMP_Input,
+				    uint32_t OPAMP_TrimValue)
 {
-  uint32_t tmpreg = 0;
+	uint32_t tmpreg = 0;
 
-  /* Check the parameter */
-  assert_param(IS_OPAMP_ALL_PERIPH(OPAMP_Selection));
-  assert_param(IS_OPAMP_INPUT(OPAMP_Input));
-  assert_param(IS_OPAMP_TRIMMINGVALUE(OPAMP_TrimValue));
+	/* Check the parameter */
+	assert_param(IS_OPAMP_ALL_PERIPH(OPAMP_Selection));
+	assert_param(IS_OPAMP_INPUT(OPAMP_Input));
+	assert_param(IS_OPAMP_TRIMMINGVALUE(OPAMP_TrimValue));
 
-  /* Get the OPAMP_LPOTR value */
-  tmpreg = OPAMP->LPOTR;
+	/* Get the OPAMP_LPOTR value */
+	tmpreg = OPAMP->LPOTR;
 
-  if(OPAMP_Selection == OPAMP_Selection_OPAMP1)
-  {
-    /* Reset the OPAMP inputs selection */
-    tmpreg &= (uint32_t)~(OPAMP_CSR_OPA1CAL_L | OPAMP_CSR_OPA1CAL_H);
-    /* Select the OPAMP input */
-    tmpreg |= OPAMP_Input;
+	if (OPAMP_Selection == OPAMP_Selection_OPAMP1) {
+		/* Reset the OPAMP inputs selection */
+		tmpreg &=
+		    (uint32_t) ~ (OPAMP_CSR_OPA1CAL_L | OPAMP_CSR_OPA1CAL_H);
+		/* Select the OPAMP input */
+		tmpreg |= OPAMP_Input;
 
-    if(OPAMP_Input == OPAMP_Input_PMOS)
-    {
-      /* Reset the trimming value corresponding to OPAMP1 PMOS input */
-      tmpreg &= (0xFFFFFFE0);
-      /* Set the new trimming value corresponding to OPAMP1 PMOS input */
-      tmpreg |= (OPAMP_TrimValue);
-    }
-    else
-    {
-      /* Reset the trimming value corresponding to OPAMP1 NMOS input */
-      tmpreg &= (0xFFFFFC1F);
-      /* Set the new trimming value corresponding to OPAMP1 NMOS input */
-      tmpreg |= (OPAMP_TrimValue<<5);
-    }
-  }
-  else if (OPAMP_Selection == OPAMP_Selection_OPAMP2)
-  {
-    /* Reset the OPAMP inputs selection */
-    tmpreg &= (uint32_t)~(OPAMP_CSR_OPA2CAL_L | OPAMP_CSR_OPA2CAL_H);
-    /* Select the OPAMP input */
-    tmpreg |= (uint32_t)(OPAMP_Input<<8);
+		if (OPAMP_Input == OPAMP_Input_PMOS) {
+			/* Reset the trimming value corresponding to OPAMP1 PMOS input */
+			tmpreg &= (0xFFFFFFE0);
+			/* Set the new trimming value corresponding to OPAMP1 PMOS input */
+			tmpreg |= (OPAMP_TrimValue);
+		} else {
+			/* Reset the trimming value corresponding to OPAMP1 NMOS input */
+			tmpreg &= (0xFFFFFC1F);
+			/* Set the new trimming value corresponding to OPAMP1 NMOS input */
+			tmpreg |= (OPAMP_TrimValue << 5);
+		}
+	} else if (OPAMP_Selection == OPAMP_Selection_OPAMP2) {
+		/* Reset the OPAMP inputs selection */
+		tmpreg &=
+		    (uint32_t) ~ (OPAMP_CSR_OPA2CAL_L | OPAMP_CSR_OPA2CAL_H);
+		/* Select the OPAMP input */
+		tmpreg |= (uint32_t) (OPAMP_Input << 8);
 
-    if(OPAMP_Input == OPAMP_Input_PMOS)
-    {
-      /* Reset the trimming value corresponding to OPAMP2 PMOS input */
-      tmpreg &= (0xFFFF83FF);
-      /* Set the new trimming value corresponding to OPAMP2 PMOS input */
-      tmpreg |= (OPAMP_TrimValue<<10);
-    }
-    else
-    {
-      /* Reset the trimming value corresponding to OPAMP2 NMOS input */
-      tmpreg &= (0xFFF07FFF);
-      /* Set the new trimming value corresponding to OPAMP2 NMOS input */
-      tmpreg |= (OPAMP_TrimValue<<15);
-    }
-  }
-  else
-  {
-    /* Reset the OPAMP inputs selection */
-    tmpreg &= (uint32_t)~(OPAMP_CSR_OPA3CAL_L | OPAMP_CSR_OPA3CAL_H);
-    /* Select the OPAMP input */
-    tmpreg |= (uint32_t)(OPAMP_Input<<16);
+		if (OPAMP_Input == OPAMP_Input_PMOS) {
+			/* Reset the trimming value corresponding to OPAMP2 PMOS input */
+			tmpreg &= (0xFFFF83FF);
+			/* Set the new trimming value corresponding to OPAMP2 PMOS input */
+			tmpreg |= (OPAMP_TrimValue << 10);
+		} else {
+			/* Reset the trimming value corresponding to OPAMP2 NMOS input */
+			tmpreg &= (0xFFF07FFF);
+			/* Set the new trimming value corresponding to OPAMP2 NMOS input */
+			tmpreg |= (OPAMP_TrimValue << 15);
+		}
+	} else {
+		/* Reset the OPAMP inputs selection */
+		tmpreg &=
+		    (uint32_t) ~ (OPAMP_CSR_OPA3CAL_L | OPAMP_CSR_OPA3CAL_H);
+		/* Select the OPAMP input */
+		tmpreg |= (uint32_t) (OPAMP_Input << 16);
 
-    if(OPAMP_Input == OPAMP_Input_PMOS)
-    {
-      /* Reset the trimming value corresponding to OPAMP3 PMOS input */
-      tmpreg &= (0xFE0FFFFF);
-      /* Set the new trimming value corresponding to OPAMP3 PMOS input */
-      tmpreg |= (OPAMP_TrimValue<<20);
-    }
-    else
-    {
-      /* Reset the trimming value corresponding to OPAMP3 NMOS input */
-      tmpreg &= (0xC1FFFFFF);
-      /* Set the new trimming value corresponding to OPAMP3 NMOS input */
-      tmpreg |= (OPAMP_TrimValue<<25);
-    }
-  }
+		if (OPAMP_Input == OPAMP_Input_PMOS) {
+			/* Reset the trimming value corresponding to OPAMP3 PMOS input */
+			tmpreg &= (0xFE0FFFFF);
+			/* Set the new trimming value corresponding to OPAMP3 PMOS input */
+			tmpreg |= (OPAMP_TrimValue << 20);
+		} else {
+			/* Reset the trimming value corresponding to OPAMP3 NMOS input */
+			tmpreg &= (0xC1FFFFFF);
+			/* Set the new trimming value corresponding to OPAMP3 NMOS input */
+			tmpreg |= (OPAMP_TrimValue << 25);
+		}
+	}
 
-  /* Set the OPAMP_LPOTR register */
-  OPAMP->LPOTR = tmpreg;
+	/* Set the OPAMP_LPOTR register */
+	OPAMP->LPOTR = tmpreg;
 }
 
 /**
@@ -492,54 +463,41 @@ void OPAMP_OffsetTrimLowPowerConfig(uint32_t OPAMP_Selection, uint32_t OPAMP_Inp
   */
 FlagStatus OPAMP_GetFlagStatus(uint32_t OPAMP_Selection)
 {
-  FlagStatus bitstatus = RESET;
-  uint32_t tmpreg = 0;
+	FlagStatus bitstatus = RESET;
+	uint32_t tmpreg = 0;
 
-  /* Check the parameter */
-  assert_param(IS_OPAMP_ALL_PERIPH(OPAMP_Selection));
-  
-  /* Get the CSR register value */
-  tmpreg = OPAMP->CSR;
+	/* Check the parameter */
+	assert_param(IS_OPAMP_ALL_PERIPH(OPAMP_Selection));
 
-  /* Check if OPAMP1 is selected */
-  if(OPAMP_Selection == OPAMP_Selection_OPAMP1)
-  {
-    /* Check OPAMP1 CAL bit status */
-    if ((tmpreg & OPAMP_CSR_OPA1CALOUT) != (uint32_t)RESET)
-    {
-      bitstatus = SET;
-    }
-    else
-    {
-      bitstatus = RESET;
-    }
-  }
-  /* Check if OPAMP2 is selected */
-  else if(OPAMP_Selection == OPAMP_Selection_OPAMP2)
-  {
-    /* Check OPAMP2 CAL bit status */
-    if ((tmpreg & OPAMP_CSR_OPA2CALOUT) != (uint32_t)RESET)
-    {
-      bitstatus = SET;
-    } 
-    else
-    {
-      bitstatus = RESET;
-    }
-  }
-  else
-  {
-    /* Check OPAMP3 CAL bit status */
-    if ((tmpreg & OPAMP_CSR_OPA3CALOUT) != (uint32_t)RESET)
-    {
-      bitstatus = SET;
-    }
-    else
-    {
-      bitstatus = RESET;
-    }
-  }
-  return bitstatus;
+	/* Get the CSR register value */
+	tmpreg = OPAMP->CSR;
+
+	/* Check if OPAMP1 is selected */
+	if (OPAMP_Selection == OPAMP_Selection_OPAMP1) {
+		/* Check OPAMP1 CAL bit status */
+		if ((tmpreg & OPAMP_CSR_OPA1CALOUT) != (uint32_t) RESET) {
+			bitstatus = SET;
+		} else {
+			bitstatus = RESET;
+		}
+	}
+	/* Check if OPAMP2 is selected */
+	else if (OPAMP_Selection == OPAMP_Selection_OPAMP2) {
+		/* Check OPAMP2 CAL bit status */
+		if ((tmpreg & OPAMP_CSR_OPA2CALOUT) != (uint32_t) RESET) {
+			bitstatus = SET;
+		} else {
+			bitstatus = RESET;
+		}
+	} else {
+		/* Check OPAMP3 CAL bit status */
+		if ((tmpreg & OPAMP_CSR_OPA3CALOUT) != (uint32_t) RESET) {
+			bitstatus = SET;
+		} else {
+			bitstatus = RESET;
+		}
+	}
+	return bitstatus;
 }
 
 /**

@@ -83,7 +83,7 @@
 /** @defgroup COMP 
   * @brief COMP driver modules.
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -107,7 +107,7 @@
 @endverbatim
   * @{
   */
-   
+
 /**
   * @brief  Deinitializes COMP peripheral registers to their default reset values.
   * @param  None
@@ -115,7 +115,7 @@
   */
 void COMP_DeInit(void)
 {
-  COMP->CSR = ((uint32_t)0x00000000);    /*!< Set COMP->CSR to reset value */
+	COMP->CSR = ((uint32_t) 0x00000000);	/*!< Set COMP->CSR to reset value */
 }
 
 /**
@@ -128,32 +128,37 @@ void COMP_DeInit(void)
   *         the configuration information for the specified COMP peripheral.  
   * @retval None
   */
-void COMP_Init(COMP_InitTypeDef* COMP_InitStruct)
+void COMP_Init(COMP_InitTypeDef * COMP_InitStruct)
 {
-  uint32_t tmpreg = 0;
-  
-  /* Check the parameters */
-  assert_param(IS_COMP_INVERTING_INPUT(COMP_InitStruct->COMP_InvertingInput));
-  assert_param(IS_COMP_OUTPUT(COMP_InitStruct->COMP_OutputSelect));
-  assert_param(IS_COMP_SPEED(COMP_InitStruct->COMP_Speed));
+	uint32_t tmpreg = 0;
 
-  /*!< Get the COMP CSR value */
-  tmpreg = COMP->CSR;
+	/* Check the parameters */
+	assert_param(IS_COMP_INVERTING_INPUT
+		     (COMP_InitStruct->COMP_InvertingInput));
+	assert_param(IS_COMP_OUTPUT(COMP_InitStruct->COMP_OutputSelect));
+	assert_param(IS_COMP_SPEED(COMP_InitStruct->COMP_Speed));
 
-  /*!< Clear the  INSEL[2:0], OUTSEL[1:0] and SPEED bits */ 
-  tmpreg &= (uint32_t) (~(uint32_t) (COMP_CSR_OUTSEL | COMP_CSR_INSEL | COMP_CSR_SPEED));
-  
-  /*!< Configure COMP: speed, inversion input selection and output redirection */
-  /*!< Set SPEED bit according to COMP_InitStruct->COMP_Speed value */
-  /*!< Set INSEL bits according to COMP_InitStruct->COMP_InvertingInput value */ 
-  /*!< Set OUTSEL bits according to COMP_InitStruct->COMP_OutputSelect value */  
-  tmpreg |= (uint32_t)((COMP_InitStruct->COMP_Speed | COMP_InitStruct->COMP_InvertingInput 
-                        | COMP_InitStruct->COMP_OutputSelect));
+	/*!< Get the COMP CSR value */
+	tmpreg = COMP->CSR;
 
-  /*!< The COMP2 comparator is enabled as soon as the INSEL[2:0] bits value are 
-     different from "000" */
-  /*!< Write to COMP_CSR register */
-  COMP->CSR = tmpreg;  
+	/*!< Clear the  INSEL[2:0], OUTSEL[1:0] and SPEED bits */
+	tmpreg &=
+	    (uint32_t) (~(uint32_t)
+			(COMP_CSR_OUTSEL | COMP_CSR_INSEL | COMP_CSR_SPEED));
+
+	/*!< Configure COMP: speed, inversion input selection and output redirection */
+	/*!< Set SPEED bit according to COMP_InitStruct->COMP_Speed value */
+	/*!< Set INSEL bits according to COMP_InitStruct->COMP_InvertingInput value */
+	/*!< Set OUTSEL bits according to COMP_InitStruct->COMP_OutputSelect value */
+	tmpreg |=
+	    (uint32_t) ((COMP_InitStruct->COMP_Speed | COMP_InitStruct->
+			 COMP_InvertingInput | COMP_InitStruct->
+			 COMP_OutputSelect));
+
+	/*!< The COMP2 comparator is enabled as soon as the INSEL[2:0] bits value are 
+	   different from "000" */
+	/*!< Write to COMP_CSR register */
+	COMP->CSR = tmpreg;
 }
 
 /**
@@ -171,19 +176,16 @@ void COMP_Init(COMP_InitTypeDef* COMP_InitStruct)
   */
 void COMP_Cmd(FunctionalState NewState)
 {
-  /* Check the parameter */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameter */
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the COMP1 */
-    COMP->CSR |= (uint32_t) COMP_CSR_CMP1EN;
-  }
-  else
-  {
-    /* Disable the COMP1  */
-    COMP->CSR &= (uint32_t)(~COMP_CSR_CMP1EN);
-  }
+	if (NewState != DISABLE) {
+		/* Enable the COMP1 */
+		COMP->CSR |= (uint32_t) COMP_CSR_CMP1EN;
+	} else {
+		/* Disable the COMP1  */
+		COMP->CSR &= (uint32_t) (~COMP_CSR_CMP1EN);
+	}
 }
 
 /**
@@ -203,45 +205,39 @@ void COMP_Cmd(FunctionalState NewState)
   */
 uint8_t COMP_GetOutputLevel(uint32_t COMP_Selection)
 {
-  uint8_t compout = 0x0;
+	uint8_t compout = 0x0;
 
-  /* Check the parameters */
-  assert_param(IS_COMP_ALL_PERIPH(COMP_Selection));
+	/* Check the parameters */
+	assert_param(IS_COMP_ALL_PERIPH(COMP_Selection));
 
-  /* Check if Comparator 1 is selected */
-  if(COMP_Selection == COMP_Selection_COMP1)
-  {
-    /* Check if comparator 1 output level is high */
-    if((COMP->CSR & COMP_CSR_CMP1OUT) != (uint8_t) RESET)
-    {
-      /* Get Comparator 1 output level */
-      compout = (uint8_t) COMP_OutputLevel_High;
-    }
-    /* comparator 1 output level is low */
-    else
-    {
-      /* Get Comparator 1 output level */
-      compout = (uint8_t) COMP_OutputLevel_Low;
-    }
-  }
-  /* Comparator 2 is selected */
-  else
-  {
-    /* Check if comparator 2 output level is high */
-    if((COMP->CSR & COMP_CSR_CMP2OUT) != (uint8_t) RESET)
-    {
-      /* Get Comparator output level */
-      compout = (uint8_t) COMP_OutputLevel_High;
-    }
-    /* comparator 2 output level is low */
-    else
-    {
-      /* Get Comparator 2 output level */
-      compout = (uint8_t) COMP_OutputLevel_Low;
-    }
-  }
-  /* Return the comparator output level */
-  return (uint8_t)(compout);
+	/* Check if Comparator 1 is selected */
+	if (COMP_Selection == COMP_Selection_COMP1) {
+		/* Check if comparator 1 output level is high */
+		if ((COMP->CSR & COMP_CSR_CMP1OUT) != (uint8_t) RESET) {
+			/* Get Comparator 1 output level */
+			compout = (uint8_t) COMP_OutputLevel_High;
+		}
+		/* comparator 1 output level is low */
+		else {
+			/* Get Comparator 1 output level */
+			compout = (uint8_t) COMP_OutputLevel_Low;
+		}
+	}
+	/* Comparator 2 is selected */
+	else {
+		/* Check if comparator 2 output level is high */
+		if ((COMP->CSR & COMP_CSR_CMP2OUT) != (uint8_t) RESET) {
+			/* Get Comparator output level */
+			compout = (uint8_t) COMP_OutputLevel_High;
+		}
+		/* comparator 2 output level is low */
+		else {
+			/* Get Comparator 2 output level */
+			compout = (uint8_t) COMP_OutputLevel_Low;
+		}
+	}
+	/* Return the comparator output level */
+	return (uint8_t) (compout);
 }
 
 /**
@@ -254,19 +250,16 @@ uint8_t COMP_GetOutputLevel(uint32_t COMP_Selection)
   */
 void COMP_SW1SwitchConfig(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Close SW1 switch */
-    COMP->CSR |= (uint32_t) COMP_CSR_SW1;
-  }
-  else
-  {
-    /* Open SW1 switch */
-    COMP->CSR &= (uint32_t)(~COMP_CSR_SW1);
-  }
+	if (NewState != DISABLE) {
+		/* Close SW1 switch */
+		COMP->CSR |= (uint32_t) COMP_CSR_SW1;
+	} else {
+		/* Open SW1 switch */
+		COMP->CSR &= (uint32_t) (~COMP_CSR_SW1);
+	}
 }
 
 /**
@@ -301,19 +294,16 @@ void COMP_SW1SwitchConfig(FunctionalState NewState)
   */
 void COMP_WindowCmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Enable the window mode */
-    COMP->CSR |= (uint32_t) COMP_CSR_WNDWE;
-  }
-  else
-  {
-    /* Disable the window mode */
-    COMP->CSR &= (uint32_t)(~COMP_CSR_WNDWE);
-  }
+	/* Check the parameters */
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+	if (NewState != DISABLE) {
+		/* Enable the window mode */
+		COMP->CSR |= (uint32_t) COMP_CSR_WNDWE;
+	} else {
+		/* Disable the window mode */
+		COMP->CSR &= (uint32_t) (~COMP_CSR_WNDWE);
+	}
 }
 
 /**
@@ -344,19 +334,16 @@ void COMP_WindowCmd(FunctionalState NewState)
   */
 void COMP_VrefintOutputCmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the output of internal reference voltage */
-    COMP->CSR |= (uint32_t) COMP_CSR_VREFOUTEN;
-  }
-  else
-  {
-    /* Disable the output of internal reference voltage */
-    COMP->CSR &= (uint32_t) (~COMP_CSR_VREFOUTEN);
-  }
+	if (NewState != DISABLE) {
+		/* Enable the output of internal reference voltage */
+		COMP->CSR |= (uint32_t) COMP_CSR_VREFOUTEN;
+	} else {
+		/* Disable the output of internal reference voltage */
+		COMP->CSR &= (uint32_t) (~COMP_CSR_VREFOUTEN);
+	}
 }
 
 /**

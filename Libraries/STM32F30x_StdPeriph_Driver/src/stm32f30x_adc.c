@@ -348,7 +348,8 @@ ADC_CommonInit(ADC_TypeDef * ADCx, ADC_CommonInitTypeDef * ADC_CommonInitStruct)
 			       ADC_CommonInitStruct->ADC_DMAAccessMode |
 			       (uint32_t) (ADC_CommonInitStruct->ADC_DMAMode <<
 					   12) | (uint32_t) ((uint32_t)
-							     ADC_CommonInitStruct->ADC_TwoSamplingDelay
+							     ADC_CommonInitStruct->
+							     ADC_TwoSamplingDelay
 							     << 8));
 
 	if ((ADCx == ADC1) || (ADCx == ADC2)) {

@@ -35,22 +35,21 @@
 #define  __LCD_LOG_CONF_H__
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32xxx_eval_lcd.h" /* replace 'stm32xxx' with your EVAL board name, ex: stm3210c_eval_lcd.h */
+#include "stm32xxx_eval_lcd.h"	/* replace 'stm32xxx' with your EVAL board name, ex: stm3210c_eval_lcd.h */
 #include <stdio.h>
 
 /** @addtogroup LCD_LOG
   * @{
   */
-  
+
 /** @defgroup LCD_LOG
   * @brief This file is the 
   * @{
-  */ 
-
+  */
 
 /** @defgroup LCD_LOG_CONF_Exported_Defines
   * @{
-  */ 
+  */
 /* Comment the line below to disable the scroll back and forward features */
 #define LCD_SCROLL_ENABLED
 
@@ -67,47 +66,44 @@
 
 /** @defgroup LCD_LOG_CONF_Exported_TypesDefinitions
   * @{
-  */ 
+  */
 
 /**
   * @}
-  */ 
-
+  */
 
 /** @defgroup LCD_LOG_Exported_Macros
   * @{
-  */ 
-
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup LCD_LOG_CONF_Exported_Variables
   * @{
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup LCD_LOG_CONF_Exported_FunctionsPrototype
   * @{
-  */ 
+  */
 
 /**
   * @}
-  */ 
-
+  */
 
 #endif /* __LCD_LOG_H__ */
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

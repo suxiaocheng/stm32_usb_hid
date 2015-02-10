@@ -48,7 +48,7 @@
   * limitations under the License.
   *
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32303c_eval_spi_ee.h"
@@ -59,62 +59,57 @@
 
 /** @addtogroup STM32_EVAL
   * @{
-  */ 
+  */
 
 /** @addtogroup STM32303C_EVAL
   * @{
   */
-  
+
 /** @addtogroup STM32303C_EVAL_SPI_EE
   * @brief      This file includes the M95xxx SPI EEPROM driver of STM32303C-EVAL boards.
   * @{
   */
-  
 
 /** @defgroup STM32303C_EVAL_SPI_EEPROM_Private_Types
   * @{
-  */ 
+  */
 
-uint16_t   sEE_DataNum;
+uint16_t sEE_DataNum;
 /**
   * @}
-  */ 
-
+  */
 
 /** @defgroup STM32303C_EVAL_SPI_EEPROM_Private_Defines
   * @{
-  */  
+  */
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup STM32303C_EVAL_SPI_EEPROM_Private_Macros
   * @{
   */
 /**
   * @}
-  */ 
-  
+  */
 
 /** @defgroup STM32303C_EVAL_SPI_EEPROM_Private_Variables
   * @{
-  */ 
+  */
 /**
   * @}
-  */ 
-
+  */
 
 /** @defgroup STM32303C_EVAL_SPI_EEPROM_Private_Function_Prototypes
   * @{
-  */ 
+  */
 /**
   * @}
-  */ 
-
+  */
 
 /** @defgroup STM32303C_EVAL_SPI_EEPROM_Private_Functions
   * @{
-  */ 
+  */
 
 /**
   * @brief  DeInitializes the peripherals used by the SPI EEPROM driver.
@@ -123,7 +118,7 @@ uint16_t   sEE_DataNum;
   */
 void sEE_DeInit(void)
 {
-  sEE_SPI_LowLevel_DeInit();
+	sEE_SPI_LowLevel_DeInit();
 }
 
 /**
@@ -133,10 +128,10 @@ void sEE_DeInit(void)
   */
 void sEE_Init(void)
 {
-  sEE_SPI_LowLevel_Init();
-    
-  /*!< Deselect the EEPROM: Chip Select high */
-  sEE_CS_HIGH();
+	sEE_SPI_LowLevel_Init();
+
+	/*!< Deselect the EEPROM: Chip Select high */
+	sEE_CS_HIGH();
 }
 
 /**
@@ -150,45 +145,45 @@ void sEE_Init(void)
   *         or less than "sEE_PAGESIZE" value.
   * @retval None
   */
-uint32_t sEE_WritePage(uint8_t* pBuffer, uint16_t WriteAddr, uint16_t* NumByteToWrite)
+uint32_t sEE_WritePage(uint8_t * pBuffer, uint16_t WriteAddr,
+		       uint16_t * NumByteToWrite)
 {
-  /*!< Enable the write access to the EEPROM */
-  sEE_WriteEnable();
-  
-  /*!< Select the EEPROM: Chip Select low */
-  sEE_CS_LOW();
+	/*!< Enable the write access to the EEPROM */
+	sEE_WriteEnable();
 
-  /*!< Send "Write to Memory " instruction */
-  sEE_SendByte(sEE_CMD_WRITE);
-  
-  /*!< Send WriteAddr high nibble address byte to write to */
-  sEE_SendByte((WriteAddr & 0xFF0000) >> 16);
-  
-  /*!< Send WriteAddr medium nibble address byte to write to */
-  sEE_SendByte((WriteAddr & 0xFF00) >> 8);
-  
-  /*!< Send WriteAddr low nibble address byte to write to */
-  sEE_SendByte(WriteAddr & 0xFF);
-  
-  /*!< while there is data to be written on the EEPROM */
-  while ((*NumByteToWrite)--)
-  {
-    /*!< Send the current byte */
-    sEE_SendByte(*pBuffer);
-    /*!< Point on the next byte to be written */
-    pBuffer++;
-  }
-  
-  /*!< Deselect the EEPROM: Chip Select high */
-  sEE_CS_HIGH();
-  
-  /*!< Wait the end of EEPROM writing */
-  sEE_WaitEepromStandbyState();
-  
-  /*!< Disable the write access to the EEROM */
-  sEE_WriteDisable();
-  
-  return 0;
+	/*!< Select the EEPROM: Chip Select low */
+	sEE_CS_LOW();
+
+	/*!< Send "Write to Memory " instruction */
+	sEE_SendByte(sEE_CMD_WRITE);
+
+	/*!< Send WriteAddr high nibble address byte to write to */
+	sEE_SendByte((WriteAddr & 0xFF0000) >> 16);
+
+	/*!< Send WriteAddr medium nibble address byte to write to */
+	sEE_SendByte((WriteAddr & 0xFF00) >> 8);
+
+	/*!< Send WriteAddr low nibble address byte to write to */
+	sEE_SendByte(WriteAddr & 0xFF);
+
+	/*!< while there is data to be written on the EEPROM */
+	while ((*NumByteToWrite)--) {
+		/*!< Send the current byte */
+		sEE_SendByte(*pBuffer);
+		/*!< Point on the next byte to be written */
+		pBuffer++;
+	}
+
+	/*!< Deselect the EEPROM: Chip Select high */
+	sEE_CS_HIGH();
+
+	/*!< Wait the end of EEPROM writing */
+	sEE_WaitEepromStandbyState();
+
+	/*!< Disable the write access to the EEROM */
+	sEE_WriteDisable();
+
+	return 0;
 }
 
 /**
@@ -200,86 +195,75 @@ uint32_t sEE_WritePage(uint8_t* pBuffer, uint16_t WriteAddr, uint16_t* NumByteTo
   * @param  NumByteToWrite: number of bytes to write to the EEPROM.
   * @retval None
   */
-void sEE_WriteBuffer(uint8_t* pBuffer, uint16_t WriteAddr, uint16_t NumByteToWrite)
+void sEE_WriteBuffer(uint8_t * pBuffer, uint16_t WriteAddr,
+		     uint16_t NumByteToWrite)
 {
-  uint16_t NumOfPage = 0, NumOfSingle = 0, Addr = 0, count = 0, temp = 0;
-  
-  Addr = WriteAddr % sEE_PAGESIZE;
-  count = sEE_PAGESIZE - Addr;
-  NumOfPage =  NumByteToWrite / sEE_PAGESIZE;
-  NumOfSingle = NumByteToWrite % sEE_PAGESIZE;
+	uint16_t NumOfPage = 0, NumOfSingle = 0, Addr = 0, count = 0, temp = 0;
 
-  if (Addr == 0) /*!< WriteAddr is sEE_PAGESIZE aligned  */
-  {
-    if (NumOfPage == 0) /*!< NumByteToWrite < sEE_PAGESIZE */
-    {
-      sEE_DataNum = NumByteToWrite;      
-      sEE_WritePage(pBuffer, WriteAddr, &sEE_DataNum);
-    }
-    else /*!< NumByteToWrite > sEE_PAGESIZE */
-    {
-      while (NumOfPage--)
-      {
-        sEE_DataNum = sEE_PAGESIZE;
-        sEE_WritePage(pBuffer, WriteAddr, &sEE_DataNum);
-        WriteAddr +=  sEE_PAGESIZE;
-        pBuffer += sEE_PAGESIZE;
-      }
-      
-      sEE_DataNum = NumOfSingle;
-      sEE_WritePage(pBuffer, WriteAddr, &sEE_DataNum);
-    }
-  }
-  else /*!< WriteAddr is not sEE_PAGESIZE aligned  */
-  {
-    if (NumOfPage == 0) /*!< NumByteToWrite < sEE_PAGESIZE */
-    {
-      if (NumOfSingle > count) /*!< (NumByteToWrite + WriteAddr) > sEE_PAGESIZE */
-      {
-        temp = NumOfSingle - count;
-        sEE_DataNum = count;
-        sEE_WritePage(pBuffer, WriteAddr, &sEE_DataNum);
-        WriteAddr +=  count;
-        pBuffer += count;
-        
-        sEE_DataNum = temp;
-        sEE_WritePage(pBuffer, WriteAddr, &sEE_DataNum);
-      }
-      else
-      {
-        sEE_DataNum = NumByteToWrite; 
-        sEE_WritePage(pBuffer, WriteAddr, &sEE_DataNum);
-      }
-    }
-    else /*!< NumByteToWrite > sEE_PAGESIZE */
-    {
-      NumByteToWrite -= count;
-      NumOfPage =  NumByteToWrite / sEE_PAGESIZE;
-      NumOfSingle = NumByteToWrite % sEE_PAGESIZE;
+	Addr = WriteAddr % sEE_PAGESIZE;
+	count = sEE_PAGESIZE - Addr;
+	NumOfPage = NumByteToWrite / sEE_PAGESIZE;
+	NumOfSingle = NumByteToWrite % sEE_PAGESIZE;
 
-      sEE_DataNum = count;
-        
-      sEE_WritePage(pBuffer, WriteAddr, &sEE_DataNum);
-      WriteAddr +=  count;
-      pBuffer += count;
+	if (Addr == 0) {	/*!< WriteAddr is sEE_PAGESIZE aligned  */
+		if (NumOfPage == 0) {	/*!< NumByteToWrite < sEE_PAGESIZE */
+			sEE_DataNum = NumByteToWrite;
+			sEE_WritePage(pBuffer, WriteAddr, &sEE_DataNum);
+		} else {	/*!< NumByteToWrite > sEE_PAGESIZE */
 
-      while (NumOfPage--)
-      {
-        sEE_DataNum = sEE_PAGESIZE;
-        
-        sEE_WritePage(pBuffer, WriteAddr, &sEE_DataNum);
-        WriteAddr +=  sEE_PAGESIZE;
-        pBuffer += sEE_PAGESIZE;
-      }
+			while (NumOfPage--) {
+				sEE_DataNum = sEE_PAGESIZE;
+				sEE_WritePage(pBuffer, WriteAddr, &sEE_DataNum);
+				WriteAddr += sEE_PAGESIZE;
+				pBuffer += sEE_PAGESIZE;
+			}
 
-      if (NumOfSingle != 0)
-      {
-        sEE_DataNum = NumOfSingle;
-        
-        sEE_WritePage(pBuffer, WriteAddr, &sEE_DataNum);
-      }
-    }
-  }
+			sEE_DataNum = NumOfSingle;
+			sEE_WritePage(pBuffer, WriteAddr, &sEE_DataNum);
+		}
+	} else {		/*!< WriteAddr is not sEE_PAGESIZE aligned  */
+
+		if (NumOfPage == 0) {	/*!< NumByteToWrite < sEE_PAGESIZE */
+			if (NumOfSingle > count) {	/*!< (NumByteToWrite + WriteAddr) > sEE_PAGESIZE */
+				temp = NumOfSingle - count;
+				sEE_DataNum = count;
+				sEE_WritePage(pBuffer, WriteAddr, &sEE_DataNum);
+				WriteAddr += count;
+				pBuffer += count;
+
+				sEE_DataNum = temp;
+				sEE_WritePage(pBuffer, WriteAddr, &sEE_DataNum);
+			} else {
+				sEE_DataNum = NumByteToWrite;
+				sEE_WritePage(pBuffer, WriteAddr, &sEE_DataNum);
+			}
+		} else {	/*!< NumByteToWrite > sEE_PAGESIZE */
+
+			NumByteToWrite -= count;
+			NumOfPage = NumByteToWrite / sEE_PAGESIZE;
+			NumOfSingle = NumByteToWrite % sEE_PAGESIZE;
+
+			sEE_DataNum = count;
+
+			sEE_WritePage(pBuffer, WriteAddr, &sEE_DataNum);
+			WriteAddr += count;
+			pBuffer += count;
+
+			while (NumOfPage--) {
+				sEE_DataNum = sEE_PAGESIZE;
+
+				sEE_WritePage(pBuffer, WriteAddr, &sEE_DataNum);
+				WriteAddr += sEE_PAGESIZE;
+				pBuffer += sEE_PAGESIZE;
+			}
+
+			if (NumOfSingle != 0) {
+				sEE_DataNum = NumOfSingle;
+
+				sEE_WritePage(pBuffer, WriteAddr, &sEE_DataNum);
+			}
+		}
+	}
 }
 
 /**
@@ -289,37 +273,36 @@ void sEE_WriteBuffer(uint8_t* pBuffer, uint16_t WriteAddr, uint16_t NumByteToWri
   * @param  NumByteToRead: number of bytes to read from the EEPROM.
   * @retval None
   */
-uint32_t sEE_ReadBuffer(uint8_t* pBuffer, uint16_t ReadAddr, uint16_t* NumByteToRead)
+uint32_t sEE_ReadBuffer(uint8_t * pBuffer, uint16_t ReadAddr,
+			uint16_t * NumByteToRead)
 {
-  /*!< Select the EEPROM: Chip Select low */
-  sEE_CS_LOW();
- 
-  /*!< Send "Write to Memory " instruction */
-  sEE_SendByte(sEE_CMD_READ);
-  
-  /*!< Send WriteAddr high nibble address byte to write to */
-  sEE_SendByte((ReadAddr & 0xFF0000) >> 16);
-  
-  /*!< Send WriteAddr medium nibble address byte to write to */
-  sEE_SendByte((ReadAddr & 0xFF00) >> 8);
-  
-  /*!< Send WriteAddr low nibble address byte to write to */
-  sEE_SendByte(ReadAddr & 0xFF);
-  
-  while ((*NumByteToRead)--) /*!< while there is data to be read */
-  {
-    /*!< Read a byte from the EEPROM */
-    *pBuffer = sEE_SendByte(sEE_DUMMY_BYTE);
-    /*!< Point to the next location where the byte read will be saved */
-    pBuffer++;
-  }
-  
-  /*!< Deselect the EEPROM: Chip Select high */
-  sEE_CS_HIGH();
-  
-  return 0;
-}
+	/*!< Select the EEPROM: Chip Select low */
+	sEE_CS_LOW();
 
+	/*!< Send "Write to Memory " instruction */
+	sEE_SendByte(sEE_CMD_READ);
+
+	/*!< Send WriteAddr high nibble address byte to write to */
+	sEE_SendByte((ReadAddr & 0xFF0000) >> 16);
+
+	/*!< Send WriteAddr medium nibble address byte to write to */
+	sEE_SendByte((ReadAddr & 0xFF00) >> 8);
+
+	/*!< Send WriteAddr low nibble address byte to write to */
+	sEE_SendByte(ReadAddr & 0xFF);
+
+	while ((*NumByteToRead)--) {	/*!< while there is data to be read */
+		/*!< Read a byte from the EEPROM */
+		*pBuffer = sEE_SendByte(sEE_DUMMY_BYTE);
+		/*!< Point to the next location where the byte read will be saved */
+		pBuffer++;
+	}
+
+	/*!< Deselect the EEPROM: Chip Select high */
+	sEE_CS_HIGH();
+
+	return 0;
+}
 
 /**
   * @brief  Reads a byte from the SPI EEPROM.
@@ -330,7 +313,7 @@ uint32_t sEE_ReadBuffer(uint8_t* pBuffer, uint16_t ReadAddr, uint16_t* NumByteTo
   */
 uint8_t sEE_ReadByte(void)
 {
-  return (sEE_SendByte(sEE_DUMMY_BYTE));
+	return (sEE_SendByte(sEE_DUMMY_BYTE));
 }
 
 /**
@@ -341,18 +324,19 @@ uint8_t sEE_ReadByte(void)
   */
 uint8_t sEE_SendByte(uint8_t byte)
 {
-  /*!< Loop while DR register in not empty */
-  while (SPI_I2S_GetFlagStatus(sEE_SPI, SPI_I2S_FLAG_TXE) == RESET);
+	/*!< Loop while DR register in not empty */
+	while (SPI_I2S_GetFlagStatus(sEE_SPI, SPI_I2S_FLAG_TXE) == RESET) ;
 
-  /*!< Send byte through the SPI peripheral */
-  SPI_SendData8(sEE_SPI, byte);
+	/*!< Send byte through the SPI peripheral */
+	SPI_SendData8(sEE_SPI, byte);
 
-  /*!< Wait to receive a byte */
-  while (SPI_I2S_GetFlagStatus(sEE_SPI, SPI_I2S_FLAG_RXNE) == RESET);
+	/*!< Wait to receive a byte */
+	while (SPI_I2S_GetFlagStatus(sEE_SPI, SPI_I2S_FLAG_RXNE) == RESET) ;
 
-  /*!< Return the byte read from the SPI bus */
-  return SPI_ReceiveData8(sEE_SPI);
+	/*!< Return the byte read from the SPI bus */
+	return SPI_ReceiveData8(sEE_SPI);
 }
+
 /**
   * @brief  Enables the write access to the EEPROM.
   * @param  None
@@ -360,14 +344,14 @@ uint8_t sEE_SendByte(uint8_t byte)
   */
 void sEE_WriteEnable(void)
 {
-  /*!< Select the EEPROM: Chip Select low */
-  sEE_CS_LOW();
+	/*!< Select the EEPROM: Chip Select low */
+	sEE_CS_LOW();
 
-  /*!< Send "Write Enable" instruction */
-  sEE_SendByte(sEE_CMD_WREN);
+	/*!< Send "Write Enable" instruction */
+	sEE_SendByte(sEE_CMD_WREN);
 
-  /*!< Deselect the EEPROM: Chip Select high */
-  sEE_CS_HIGH();
+	/*!< Deselect the EEPROM: Chip Select high */
+	sEE_CS_HIGH();
 }
 
 /**
@@ -377,14 +361,14 @@ void sEE_WriteEnable(void)
   */
 void sEE_WriteDisable(void)
 {
-  /*!< Select the EEPROM: Chip Select low */
-  sEE_CS_LOW();
+	/*!< Select the EEPROM: Chip Select low */
+	sEE_CS_LOW();
 
-  /*!< Send "Write Disable" instruction */
-  sEE_SendByte(sEE_CMD_WRDI);
+	/*!< Send "Write Disable" instruction */
+	sEE_SendByte(sEE_CMD_WRDI);
 
-  /*!< Deselect the EEPROM: Chip Select high */
-  sEE_CS_HIGH();
+	/*!< Deselect the EEPROM: Chip Select high */
+	sEE_CS_HIGH();
 }
 
 /**
@@ -394,20 +378,20 @@ void sEE_WriteDisable(void)
   */
 void sEE_WriteStatusRegister(uint8_t regval)
 {
-  /*!< Select the EEPROM: Chip Select low */
-  sEE_CS_LOW();
-  
-  /*!< Enable the write access to the EEPROM */
-  sEE_WriteEnable();
-  
-  /*!< Send "Write Status Register" instruction */
-  sEE_SendByte(sEE_CMD_WRSR);
-  
-  /*!< Write regval in status register */
-  sEE_SendByte(regval);  
+	/*!< Select the EEPROM: Chip Select low */
+	sEE_CS_LOW();
 
-  /*!< Deselect the EEPROM: Chip Select high */
-  sEE_CS_HIGH();
+	/*!< Enable the write access to the EEPROM */
+	sEE_WriteEnable();
+
+	/*!< Send "Write Status Register" instruction */
+	sEE_SendByte(sEE_CMD_WRSR);
+
+	/*!< Write regval in status register */
+	sEE_SendByte(regval);
+
+	/*!< Deselect the EEPROM: Chip Select high */
+	sEE_CS_HIGH();
 }
 
 /**
@@ -417,22 +401,22 @@ void sEE_WriteStatusRegister(uint8_t regval)
   */
 uint8_t sEE_ReadStatusRegister(void)
 {
-  uint8_t sEEstatus = 0;
-  
-  /*!< Select the EEPROM: Chip Select low */
-  sEE_CS_LOW();
-  
-  /*!< Send "Read Status Register" instruction */
-  sEE_SendByte(sEE_CMD_RDSR);
-  
-  /*!< Send a dummy byte to generate the clock needed by the EEPROM
-  and put the value of the status register in EEPROM Status variable */
-  sEEstatus = sEE_SendByte(sEE_DUMMY_BYTE);
-  
-  /*!< Deselect the EEPROM: Chip Select high */
-  sEE_CS_HIGH();
-  
-  return sEEstatus;
+	uint8_t sEEstatus = 0;
+
+	/*!< Select the EEPROM: Chip Select low */
+	sEE_CS_LOW();
+
+	/*!< Send "Read Status Register" instruction */
+	sEE_SendByte(sEE_CMD_RDSR);
+
+	/*!< Send a dummy byte to generate the clock needed by the EEPROM
+	   and put the value of the status register in EEPROM Status variable */
+	sEEstatus = sEE_SendByte(sEE_DUMMY_BYTE);
+
+	/*!< Deselect the EEPROM: Chip Select high */
+	sEE_CS_HIGH();
+
+	return sEEstatus;
 }
 
 /**
@@ -441,30 +425,29 @@ uint8_t sEE_ReadStatusRegister(void)
   * @param  None
   * @retval None
   */
-uint32_t sEE_WaitEepromStandbyState(void)      
+uint32_t sEE_WaitEepromStandbyState(void)
 {
-  uint8_t sEEstatus = 0;
+	uint8_t sEEstatus = 0;
 
-  /*!< Select the EEPROM: Chip Select low */
-  sEE_CS_LOW();
+	/*!< Select the EEPROM: Chip Select low */
+	sEE_CS_LOW();
 
-  /*!< Send "Read Status Register" instruction */
-  sEE_SendByte(sEE_CMD_RDSR);
+	/*!< Send "Read Status Register" instruction */
+	sEE_SendByte(sEE_CMD_RDSR);
 
-  /*!< Loop as long as the memory is busy with a write cycle */
-  do
-  {
-    /*!< Send a dummy byte to generate the clock needed by the EEPROM
-    and put the value of the status register in EEPROM Status variable */
-    sEEstatus = sEE_SendByte(sEE_DUMMY_BYTE);
+	/*!< Loop as long as the memory is busy with a write cycle */
+	do {
+		/*!< Send a dummy byte to generate the clock needed by the EEPROM
+		   and put the value of the status register in EEPROM Status variable */
+		sEEstatus = sEE_SendByte(sEE_DUMMY_BYTE);
 
-  }
-  while ((sEEstatus & sEE_WIP_FLAG) == SET); /* Write in progress */
+	}
+	while ((sEEstatus & sEE_WIP_FLAG) == SET);	/* Write in progress */
 
-  /*!< Deselect the EEPROM: Chip Select high */
-  sEE_CS_HIGH();
-  
-  return 0;
+	/*!< Deselect the EEPROM: Chip Select high */
+	sEE_CS_HIGH();
+
+	return 0;
 }
 
 /**
@@ -485,6 +468,6 @@ uint32_t sEE_WaitEepromStandbyState(void)
 
 /**
   * @}
-  */  
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

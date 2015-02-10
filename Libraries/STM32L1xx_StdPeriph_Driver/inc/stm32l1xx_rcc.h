@@ -31,7 +31,7 @@
 #define __STM32L1xx_RCC_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -47,13 +47,12 @@
 
 /* Exported types ------------------------------------------------------------*/
 
-typedef struct
-{
-  uint32_t SYSCLK_Frequency;
-  uint32_t HCLK_Frequency;
-  uint32_t PCLK1_Frequency;
-  uint32_t PCLK2_Frequency;
-}RCC_ClocksTypeDef;
+	typedef struct {
+		uint32_t SYSCLK_Frequency;
+		uint32_t HCLK_Frequency;
+		uint32_t PCLK1_Frequency;
+		uint32_t PCLK2_Frequency;
+	} RCC_ClocksTypeDef;
 
 /* Exported constants --------------------------------------------------------*/
 
@@ -73,19 +72,19 @@ typedef struct
 
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup RCC_MSI_Clock_Range 
   * @{
   */
 
-#define RCC_MSIRange_0                   RCC_ICSCR_MSIRANGE_0 /*!< MSI = 65.536 KHz  */
-#define RCC_MSIRange_1                   RCC_ICSCR_MSIRANGE_1 /*!< MSI = 131.072 KHz */
-#define RCC_MSIRange_2                   RCC_ICSCR_MSIRANGE_2 /*!< MSI = 262.144 KHz */
-#define RCC_MSIRange_3                   RCC_ICSCR_MSIRANGE_3 /*!< MSI = 524.288 KHz */
-#define RCC_MSIRange_4                   RCC_ICSCR_MSIRANGE_4 /*!< MSI = 1.048 MHz   */
-#define RCC_MSIRange_5                   RCC_ICSCR_MSIRANGE_5 /*!< MSI = 2.097 MHz   */
-#define RCC_MSIRange_6                   RCC_ICSCR_MSIRANGE_6 /*!< MSI = 4.194 MHz   */
+#define RCC_MSIRange_0                   RCC_ICSCR_MSIRANGE_0	/*!< MSI = 65.536 KHz  */
+#define RCC_MSIRange_1                   RCC_ICSCR_MSIRANGE_1	/*!< MSI = 131.072 KHz */
+#define RCC_MSIRange_2                   RCC_ICSCR_MSIRANGE_2	/*!< MSI = 262.144 KHz */
+#define RCC_MSIRange_3                   RCC_ICSCR_MSIRANGE_3	/*!< MSI = 524.288 KHz */
+#define RCC_MSIRange_4                   RCC_ICSCR_MSIRANGE_4	/*!< MSI = 1.048 MHz   */
+#define RCC_MSIRange_5                   RCC_ICSCR_MSIRANGE_5	/*!< MSI = 2.097 MHz   */
+#define RCC_MSIRange_6                   RCC_ICSCR_MSIRANGE_6	/*!< MSI = 4.194 MHz   */
 
 #define IS_RCC_MSI_CLOCK_RANGE(RANGE) (((RANGE) == RCC_MSIRange_0) || \
                                        ((RANGE) == RCC_MSIRange_1) || \
@@ -97,8 +96,8 @@ typedef struct
 
 /**
   * @}
-  */ 
-  
+  */
+
 /** @defgroup RCC_PLL_Clock_Source 
   * @{
   */
@@ -110,7 +109,7 @@ typedef struct
                                    ((SOURCE) == RCC_PLLSource_HSE))
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup RCC_PLL_Multiplication_Factor 
   * @{
@@ -125,7 +124,6 @@ typedef struct
 #define RCC_PLLMul_24                    ((uint8_t)0x18)
 #define RCC_PLLMul_32                    ((uint8_t)0x1C)
 #define RCC_PLLMul_48                    ((uint8_t)0x20)
-
 
 #define IS_RCC_PLL_MUL(MUL) (((MUL) == RCC_PLLMul_3) || ((MUL) == RCC_PLLMul_4) || \
                              ((MUL) == RCC_PLLMul_6) || ((MUL) == RCC_PLLMul_8) || \
@@ -144,13 +142,12 @@ typedef struct
 #define RCC_PLLDiv_3                     ((uint8_t)0x80)
 #define RCC_PLLDiv_4                     ((uint8_t)0xC0)
 
-
 #define IS_RCC_PLL_DIV(DIV) (((DIV) == RCC_PLLDiv_2) || ((DIV) == RCC_PLLDiv_3) || \
                              ((DIV) == RCC_PLLDiv_4))
 /**
   * @}
   */
-  
+
 /** @defgroup RCC_System_Clock_Source 
   * @{
   */
@@ -187,7 +184,7 @@ typedef struct
                            ((HCLK) == RCC_SYSCLK_Div512))
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup RCC_APB1_APB2_Clock_Source
   * @{
@@ -204,7 +201,6 @@ typedef struct
 /**
   * @}
   */
-  
 
 /** @defgroup RCC_Interrupt_Source 
   * @{
@@ -231,7 +227,7 @@ typedef struct
 /**
   * @}
   */
-  
+
 /** @defgroup RCC_LSE_Configuration 
   * @{
   */
@@ -308,7 +304,7 @@ typedef struct
 #define IS_RCC_APB2_PERIPH(PERIPH) ((((PERIPH) & 0xFFFFA5E2) == 0x00) && ((PERIPH) != 0x00))
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup RCC_APB1_Peripherals 
   * @{
@@ -334,7 +330,6 @@ typedef struct
 #define RCC_APB1Periph_PWR               RCC_APB1ENR_PWREN
 #define RCC_APB1Periph_DAC               RCC_APB1ENR_DACEN
 #define RCC_APB1Periph_COMP              RCC_APB1ENR_COMPEN
-
 
 #define IS_RCC_APB1_PERIPH(PERIPH) ((((PERIPH) & 0x4F0135C0) == 0x00) && ((PERIPH) != 0x00))
 /**
@@ -377,7 +372,7 @@ typedef struct
                              ((DIV) == RCC_MCODiv_16))
 /**
   * @}
-  */  
+  */
 
 /** @defgroup RCC_Flag 
   * @{
@@ -421,68 +416,72 @@ typedef struct
 /* Exported functions ------------------------------------------------------- */
 
 /* Function used to set the RCC clock configuration to the default reset state */
-void RCC_DeInit(void);
+	void RCC_DeInit(void);
 
 /* Internal/external clocks, PLL, CSS and MCO configuration functions *********/
-void RCC_HSEConfig(uint8_t RCC_HSE);
-ErrorStatus RCC_WaitForHSEStartUp(void);
-void RCC_MSIRangeConfig(uint32_t RCC_MSIRange);
-void RCC_AdjustMSICalibrationValue(uint8_t MSICalibrationValue);
-void RCC_MSICmd(FunctionalState NewState);
-void RCC_AdjustHSICalibrationValue(uint8_t HSICalibrationValue);
-void RCC_HSICmd(FunctionalState NewState);
-void RCC_LSEConfig(uint8_t RCC_LSE);
-void RCC_LSICmd(FunctionalState NewState);
-void RCC_PLLConfig(uint8_t RCC_PLLSource, uint8_t RCC_PLLMul, uint8_t RCC_PLLDiv);
-void RCC_PLLCmd(FunctionalState NewState);
-void RCC_ClockSecuritySystemCmd(FunctionalState NewState);
-void RCC_LSEClockSecuritySystemCmd(FunctionalState NewState);
-void RCC_MCOConfig(uint8_t RCC_MCOSource, uint8_t RCC_MCODiv);
+	void RCC_HSEConfig(uint8_t RCC_HSE);
+	ErrorStatus RCC_WaitForHSEStartUp(void);
+	void RCC_MSIRangeConfig(uint32_t RCC_MSIRange);
+	void RCC_AdjustMSICalibrationValue(uint8_t MSICalibrationValue);
+	void RCC_MSICmd(FunctionalState NewState);
+	void RCC_AdjustHSICalibrationValue(uint8_t HSICalibrationValue);
+	void RCC_HSICmd(FunctionalState NewState);
+	void RCC_LSEConfig(uint8_t RCC_LSE);
+	void RCC_LSICmd(FunctionalState NewState);
+	void RCC_PLLConfig(uint8_t RCC_PLLSource, uint8_t RCC_PLLMul,
+			   uint8_t RCC_PLLDiv);
+	void RCC_PLLCmd(FunctionalState NewState);
+	void RCC_ClockSecuritySystemCmd(FunctionalState NewState);
+	void RCC_LSEClockSecuritySystemCmd(FunctionalState NewState);
+	void RCC_MCOConfig(uint8_t RCC_MCOSource, uint8_t RCC_MCODiv);
 
 /* System, AHB and APB busses clocks configuration functions ******************/
-void RCC_SYSCLKConfig(uint32_t RCC_SYSCLKSource);
-uint8_t RCC_GetSYSCLKSource(void);
-void RCC_HCLKConfig(uint32_t RCC_SYSCLK);
-void RCC_PCLK1Config(uint32_t RCC_HCLK);
-void RCC_PCLK2Config(uint32_t RCC_HCLK);
-void RCC_GetClocksFreq(RCC_ClocksTypeDef* RCC_Clocks);
+	void RCC_SYSCLKConfig(uint32_t RCC_SYSCLKSource);
+	uint8_t RCC_GetSYSCLKSource(void);
+	void RCC_HCLKConfig(uint32_t RCC_SYSCLK);
+	void RCC_PCLK1Config(uint32_t RCC_HCLK);
+	void RCC_PCLK2Config(uint32_t RCC_HCLK);
+	void RCC_GetClocksFreq(RCC_ClocksTypeDef * RCC_Clocks);
 
 /* Peripheral clocks configuration functions **********************************/
-void RCC_RTCCLKConfig(uint32_t RCC_RTCCLKSource);
-void RCC_RTCCLKCmd(FunctionalState NewState);
-void RCC_RTCResetCmd(FunctionalState NewState);
+	void RCC_RTCCLKConfig(uint32_t RCC_RTCCLKSource);
+	void RCC_RTCCLKCmd(FunctionalState NewState);
+	void RCC_RTCResetCmd(FunctionalState NewState);
 
-void RCC_AHBPeriphClockCmd(uint32_t RCC_AHBPeriph, FunctionalState NewState);
-void RCC_APB2PeriphClockCmd(uint32_t RCC_APB2Periph, FunctionalState NewState);
-void RCC_APB1PeriphClockCmd(uint32_t RCC_APB1Periph, FunctionalState NewState);
+	void RCC_AHBPeriphClockCmd(uint32_t RCC_AHBPeriph,
+				   FunctionalState NewState);
+	void RCC_APB2PeriphClockCmd(uint32_t RCC_APB2Periph,
+				    FunctionalState NewState);
+	void RCC_APB1PeriphClockCmd(uint32_t RCC_APB1Periph,
+				    FunctionalState NewState);
 
-void RCC_AHBPeriphResetCmd(uint32_t RCC_AHBPeriph, FunctionalState NewState);
-void RCC_APB2PeriphResetCmd(uint32_t RCC_APB2Periph, FunctionalState NewState);
-void RCC_APB1PeriphResetCmd(uint32_t RCC_APB1Periph, FunctionalState NewState);
+	void RCC_AHBPeriphResetCmd(uint32_t RCC_AHBPeriph,
+				   FunctionalState NewState);
+	void RCC_APB2PeriphResetCmd(uint32_t RCC_APB2Periph,
+				    FunctionalState NewState);
+	void RCC_APB1PeriphResetCmd(uint32_t RCC_APB1Periph,
+				    FunctionalState NewState);
 
-void RCC_AHBPeriphClockLPModeCmd(uint32_t RCC_AHBPeriph, FunctionalState NewState);
-void RCC_APB2PeriphClockLPModeCmd(uint32_t RCC_APB2Periph, FunctionalState NewState);
-void RCC_APB1PeriphClockLPModeCmd(uint32_t RCC_APB1Periph, FunctionalState NewState);
+	void RCC_AHBPeriphClockLPModeCmd(uint32_t RCC_AHBPeriph,
+					 FunctionalState NewState);
+	void RCC_APB2PeriphClockLPModeCmd(uint32_t RCC_APB2Periph,
+					  FunctionalState NewState);
+	void RCC_APB1PeriphClockLPModeCmd(uint32_t RCC_APB1Periph,
+					  FunctionalState NewState);
 
 /* Interrupts and flags management functions **********************************/
-void RCC_ITConfig(uint8_t RCC_IT, FunctionalState NewState);
-FlagStatus RCC_GetFlagStatus(uint8_t RCC_FLAG);
-void RCC_ClearFlag(void);
-ITStatus RCC_GetITStatus(uint8_t RCC_IT);
-void RCC_ClearITPendingBit(uint8_t RCC_IT);
+	void RCC_ITConfig(uint8_t RCC_IT, FunctionalState NewState);
+	FlagStatus RCC_GetFlagStatus(uint8_t RCC_FLAG);
+	void RCC_ClearFlag(void);
+	ITStatus RCC_GetITStatus(uint8_t RCC_IT);
+	void RCC_ClearITPendingBit(uint8_t RCC_IT);
 
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __STM32L1xx_RCC_H */
-
+#endif				/* __STM32L1xx_RCC_H */
 /**
   * @}
-  */
-
-/**
+  *//**
   * @}
-  */ 
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+  *//************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

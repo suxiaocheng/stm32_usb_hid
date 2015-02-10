@@ -25,7 +25,6 @@
   ******************************************************************************
   */
 
-
 /* Includes ------------------------------------------------------------------*/
 #include "hw_config.h"
 #include "usb_lib.h"
@@ -51,17 +50,16 @@ void Delay(__IO uint32_t nCount);
 *******************************************************************************/
 int main(void)
 {
-  Set_System();
+	Set_System();
 
-  USB_Interrupts_Config();
+	USB_Interrupts_Config();
 
-  Set_USBClock();
+	Set_USBClock();
 
-  USB_Init();
+	USB_Init();
 
-  while (1)
-  {
-  }
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -73,8 +71,8 @@ int main(void)
 *******************************************************************************/
 void Delay(__IO uint32_t nCount)
 {
-  TimingDelay = nCount;
-  for(; nCount!= 0;nCount--);
+	TimingDelay = nCount;
+	for (; nCount != 0; nCount--) ;
 }
 
 #ifdef  USE_FULL_ASSERT
@@ -87,15 +85,14 @@ void Delay(__IO uint32_t nCount)
 * Output         : None
 * Return         : None
 *******************************************************************************/
-void assert_failed(uint8_t* file, uint32_t line)
-{ 
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+void assert_failed(uint8_t * file, uint32_t line)
+{
+	/* User can add his own implementation to report the file name and line number,
+	   ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while(1)
-  {
-  }
+	/* Infinite loop */
+	while (1) {
+	}
 }
 #endif
 

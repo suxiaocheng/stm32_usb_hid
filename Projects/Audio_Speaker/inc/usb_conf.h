@@ -25,7 +25,6 @@
   ******************************************************************************
   */
 
-
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USB_CONF_H
 #define __USB_CONF_H
@@ -72,8 +71,6 @@
 #define SOF_CALLBACK
 /*#define ESOF_CALLBACK*/
 
-
-
 /* CTR service routines */
 /* associated to defined endpoints */
 #define  EP1_IN_Callback   NOP_Process
@@ -91,7 +88,6 @@
 #define  EP5_OUT_Callback   NOP_Process
 #define  EP6_OUT_Callback   NOP_Process
 #define  EP7_OUT_Callback   NOP_Process
-
 
 #endif /* __USB_CONF_H */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

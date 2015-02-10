@@ -25,7 +25,6 @@
   ******************************************************************************
   */
 
-
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __HW_CONFIG_H
 #define __HW_CONFIG_H
@@ -51,14 +50,14 @@ void Led_RW_ON(void);
 void Led_RW_OFF(void);
 void USB_Configured_LED(void);
 void USB_NotConfigured_LED(void);
-void USB_Cable_Config (FunctionalState NewState);
+void USB_Cable_Config(FunctionalState NewState);
 void Get_SerialNum(void);
 void MAL_Config(void);
-#if !defined (USE_STM32L152_EVAL) 
+#if !defined (USE_STM32L152_EVAL)
 void USB_Disconnect_Config(void);
 #endif /* (USE_STM32L152_EVAL) */
 /* External variables --------------------------------------------------------*/
 
-#endif  /*__HW_CONFIG_H*/
+#endif	/*__HW_CONFIG_H*/
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

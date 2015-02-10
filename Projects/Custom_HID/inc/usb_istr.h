@@ -37,7 +37,7 @@
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 
- void USB_Istr(void);
+void USB_Istr(void);
 
 /* function prototypes Automatically built defining related macros */
 
@@ -56,7 +56,6 @@ void EP4_OUT_Callback(void);
 void EP5_OUT_Callback(void);
 void EP6_OUT_Callback(void);
 void EP7_OUT_Callback(void);
-
 
 #ifdef CTR_CALLBACK
 void CTR_Callback(void);

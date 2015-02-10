@@ -110,7 +110,7 @@
   * limitations under the License.
   *
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f37x_dac.h"
@@ -123,7 +123,7 @@
 /** @defgroup DAC 
   * @brief DAC driver modules
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -149,7 +149,7 @@
 
 /** @defgroup DAC_Private_Functions
   * @{
-  */ 
+  */
 
 /** @defgroup DAC_Group1 DAC channels configuration
  *  @brief   DAC channels configuration: trigger, output buffer, data format 
@@ -168,25 +168,22 @@
   * @param  None
   * @retval None
   */
-void DAC_DeInit(DAC_TypeDef* DACx)
+void DAC_DeInit(DAC_TypeDef * DACx)
 {
-  /* Check the parameters */
-  assert_param(IS_DAC_ALL_PERIPH(DACx));
+	/* Check the parameters */
+	assert_param(IS_DAC_ALL_PERIPH(DACx));
 
-  if (DACx == DAC1)
-  {
-    /* Enable DAC1 reset state */
-    RCC_APB1PeriphResetCmd(RCC_APB1Periph_DAC1, ENABLE);
-    /* Release DAC1 from reset state */
-    RCC_APB1PeriphResetCmd(RCC_APB1Periph_DAC1, DISABLE);
-  }
-  else
-  {
-    /* Enable DAC2 reset state */
-    RCC_APB1PeriphResetCmd(RCC_APB1Periph_DAC2, ENABLE);
-    /* Release DAC2 from reset state */
-    RCC_APB1PeriphResetCmd(RCC_APB1Periph_DAC2, DISABLE);
-  }
+	if (DACx == DAC1) {
+		/* Enable DAC1 reset state */
+		RCC_APB1PeriphResetCmd(RCC_APB1Periph_DAC1, ENABLE);
+		/* Release DAC1 from reset state */
+		RCC_APB1PeriphResetCmd(RCC_APB1Periph_DAC1, DISABLE);
+	} else {
+		/* Enable DAC2 reset state */
+		RCC_APB1PeriphResetCmd(RCC_APB1Periph_DAC2, ENABLE);
+		/* Release DAC2 from reset state */
+		RCC_APB1PeriphResetCmd(RCC_APB1Periph_DAC2, DISABLE);
+	}
 }
 
 /**
@@ -201,34 +198,40 @@ void DAC_DeInit(DAC_TypeDef* DACx)
   *         contains the configuration information for the specified DAC channel.
   * @retval None
   */
-void DAC_Init(DAC_TypeDef* DACx, uint32_t DAC_Channel, DAC_InitTypeDef* DAC_InitStruct)
+void DAC_Init(DAC_TypeDef * DACx, uint32_t DAC_Channel,
+	      DAC_InitTypeDef * DAC_InitStruct)
 {
-  uint32_t tmpreg1 = 0, tmpreg2 = 0;
+	uint32_t tmpreg1 = 0, tmpreg2 = 0;
 
-  /* Check the DAC parameters */
-  assert_param(IS_DAC_ALL_PERIPH(DACx));
-  assert_param(IS_DAC_TRIGGER(DAC_InitStruct->DAC_Trigger));
-  assert_param(IS_DAC_GENERATE_WAVE(DAC_InitStruct->DAC_WaveGeneration));
-  assert_param(IS_DAC_LFSR_UNMASK_TRIANGLE_AMPLITUDE(DAC_InitStruct->DAC_LFSRUnmask_TriangleAmplitude));
-  assert_param(IS_DAC_OUTPUT_BUFFER_STATE(DAC_InitStruct->DAC_OutputBuffer));
+	/* Check the DAC parameters */
+	assert_param(IS_DAC_ALL_PERIPH(DACx));
+	assert_param(IS_DAC_TRIGGER(DAC_InitStruct->DAC_Trigger));
+	assert_param(IS_DAC_GENERATE_WAVE(DAC_InitStruct->DAC_WaveGeneration));
+	assert_param(IS_DAC_LFSR_UNMASK_TRIANGLE_AMPLITUDE
+		     (DAC_InitStruct->DAC_LFSRUnmask_TriangleAmplitude));
+	assert_param(IS_DAC_OUTPUT_BUFFER_STATE
+		     (DAC_InitStruct->DAC_OutputBuffer));
 
 /*---------------------------- DAC CR Configuration --------------------------*/
-  /* Get the DAC CR value */
-  tmpreg1 = DACx->CR;
-  /* Clear BOFFx, TENx, TSELx, WAVEx and MAMPx bits */
-  tmpreg1 &= ~(CR_CLEAR_MASK << DAC_Channel);
-  /* Configure for the selected DAC channel: buffer output, trigger, wave generation,
-     mask/amplitude for wave generation */
-  /* Set TSELx and TENx bits according to DAC_Trigger value */
-  /* Set WAVEx bits according to DAC_WaveGeneration value */
-  /* Set MAMPx bits according to DAC_LFSRUnmask_TriangleAmplitude value */ 
-  /* Set BOFFx bit according to DAC_OutputBuffer value */   
-  tmpreg2 = (DAC_InitStruct->DAC_Trigger | DAC_InitStruct->DAC_WaveGeneration |
-             DAC_InitStruct->DAC_LFSRUnmask_TriangleAmplitude | DAC_InitStruct->DAC_OutputBuffer);
-  /* Calculate CR register value depending on DAC_Channel */
-  tmpreg1 |= tmpreg2 << DAC_Channel;
-  /* Write to DAC CR */
-  DACx->CR = tmpreg1;
+	/* Get the DAC CR value */
+	tmpreg1 = DACx->CR;
+	/* Clear BOFFx, TENx, TSELx, WAVEx and MAMPx bits */
+	tmpreg1 &= ~(CR_CLEAR_MASK << DAC_Channel);
+	/* Configure for the selected DAC channel: buffer output, trigger, wave generation,
+	   mask/amplitude for wave generation */
+	/* Set TSELx and TENx bits according to DAC_Trigger value */
+	/* Set WAVEx bits according to DAC_WaveGeneration value */
+	/* Set MAMPx bits according to DAC_LFSRUnmask_TriangleAmplitude value */
+	/* Set BOFFx bit according to DAC_OutputBuffer value */
+	tmpreg2 =
+	    (DAC_InitStruct->DAC_Trigger | DAC_InitStruct->
+	     DAC_WaveGeneration | DAC_InitStruct->
+	     DAC_LFSRUnmask_TriangleAmplitude | DAC_InitStruct->
+	     DAC_OutputBuffer);
+	/* Calculate CR register value depending on DAC_Channel */
+	tmpreg1 |= tmpreg2 << DAC_Channel;
+	/* Write to DAC CR */
+	DACx->CR = tmpreg1;
 }
 
 /**
@@ -237,17 +240,17 @@ void DAC_Init(DAC_TypeDef* DACx, uint32_t DAC_Channel, DAC_InitTypeDef* DAC_Init
   *         be initialized.
   * @retval None
   */
-void DAC_StructInit(DAC_InitTypeDef* DAC_InitStruct)
+void DAC_StructInit(DAC_InitTypeDef * DAC_InitStruct)
 {
 /*--------------- Reset DAC init structure parameters values -----------------*/
-  /* Initialize the DAC_Trigger member */
-  DAC_InitStruct->DAC_Trigger = DAC_Trigger_None;
-  /* Initialize the DAC_WaveGeneration member */
-  DAC_InitStruct->DAC_WaveGeneration = DAC_WaveGeneration_None;
-  /* Initialize the DAC_LFSRUnmask_TriangleAmplitude member */
-  DAC_InitStruct->DAC_LFSRUnmask_TriangleAmplitude = DAC_LFSRUnmask_Bit0;
-  /* Initialize the DAC_OutputBuffer member */
-  DAC_InitStruct->DAC_OutputBuffer = DAC_OutputBuffer_Enable;
+	/* Initialize the DAC_Trigger member */
+	DAC_InitStruct->DAC_Trigger = DAC_Trigger_None;
+	/* Initialize the DAC_WaveGeneration member */
+	DAC_InitStruct->DAC_WaveGeneration = DAC_WaveGeneration_None;
+	/* Initialize the DAC_LFSRUnmask_TriangleAmplitude member */
+	DAC_InitStruct->DAC_LFSRUnmask_TriangleAmplitude = DAC_LFSRUnmask_Bit0;
+	/* Initialize the DAC_OutputBuffer member */
+	DAC_InitStruct->DAC_OutputBuffer = DAC_OutputBuffer_Enable;
 }
 
 /**
@@ -263,23 +266,20 @@ void DAC_StructInit(DAC_InitTypeDef* DAC_InitStruct)
   *         be modified.
   * @retval None
   */
-void DAC_Cmd(DAC_TypeDef* DACx, uint32_t DAC_Channel, FunctionalState NewState)
+void DAC_Cmd(DAC_TypeDef * DACx, uint32_t DAC_Channel, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_DAC_ALL_PERIPH(DACx));
-  assert_param(IS_DAC_CHANNEL(DAC_Channel));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_DAC_ALL_PERIPH(DACx));
+	assert_param(IS_DAC_CHANNEL(DAC_Channel));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the selected DAC channel */
-    DACx->CR |= (DAC_CR_EN1 << DAC_Channel);
-  }
-  else
-  {
-    /* Disable the selected DAC channel */
-    DACx->CR &= (~(DAC_CR_EN1 << DAC_Channel));
-  }
+	if (NewState != DISABLE) {
+		/* Enable the selected DAC channel */
+		DACx->CR |= (DAC_CR_EN1 << DAC_Channel);
+	} else {
+		/* Disable the selected DAC channel */
+		DACx->CR &= (~(DAC_CR_EN1 << DAC_Channel));
+	}
 }
 
 /**
@@ -293,23 +293,23 @@ void DAC_Cmd(DAC_TypeDef* DACx, uint32_t DAC_Channel, FunctionalState NewState)
   *          This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void DAC_SoftwareTriggerCmd(DAC_TypeDef* DACx, uint32_t DAC_Channel, FunctionalState NewState)
+void DAC_SoftwareTriggerCmd(DAC_TypeDef * DACx, uint32_t DAC_Channel,
+			    FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_DAC_ALL_PERIPH(DACx));
-  assert_param(IS_DAC_CHANNEL(DAC_Channel));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_DAC_ALL_PERIPH(DACx));
+	assert_param(IS_DAC_CHANNEL(DAC_Channel));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable software trigger for the selected DAC channel */
-    DACx->SWTRIGR |= (uint32_t)DAC_SWTRIGR_SWTRIG1 << (DAC_Channel >> 4);
-  }
-  else
-  {
-    /* Disable software trigger for the selected DAC channel */
-    DACx->SWTRIGR &= ~((uint32_t)DAC_SWTRIGR_SWTRIG1 << (DAC_Channel >> 4));
-  }
+	if (NewState != DISABLE) {
+		/* Enable software trigger for the selected DAC channel */
+		DACx->SWTRIGR |=
+		    (uint32_t) DAC_SWTRIGR_SWTRIG1 << (DAC_Channel >> 4);
+	} else {
+		/* Disable software trigger for the selected DAC channel */
+		DACx->SWTRIGR &=
+		    ~((uint32_t) DAC_SWTRIGR_SWTRIG1 << (DAC_Channel >> 4));
+	}
 }
 
 /**
@@ -321,22 +321,19 @@ void DAC_SoftwareTriggerCmd(DAC_TypeDef* DACx, uint32_t DAC_Channel, FunctionalS
   *          This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void DAC_DualSoftwareTriggerCmd(DAC_TypeDef* DACx, FunctionalState NewState)
+void DAC_DualSoftwareTriggerCmd(DAC_TypeDef * DACx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_DAC_LIST1_PERIPH(DACx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_DAC_LIST1_PERIPH(DACx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable software trigger for both DAC channels */
-    DACx->SWTRIGR |= DUAL_SWTRIG_SET;
-  }
-  else
-  {
-    /* Disable software trigger for both DAC channels */
-    DACx->SWTRIGR &= DUAL_SWTRIG_RESET;
-  }
+	if (NewState != DISABLE) {
+		/* Enable software trigger for both DAC channels */
+		DACx->SWTRIGR |= DUAL_SWTRIG_SET;
+	} else {
+		/* Disable software trigger for both DAC channels */
+		DACx->SWTRIGR &= DUAL_SWTRIG_RESET;
+	}
 }
 
 /**
@@ -356,24 +353,22 @@ void DAC_DualSoftwareTriggerCmd(DAC_TypeDef* DACx, FunctionalState NewState)
   * @note   
   * @retval None
   */
-void DAC_WaveGenerationCmd(DAC_TypeDef* DACx, uint32_t DAC_Channel, uint32_t DAC_Wave, FunctionalState NewState)
+void DAC_WaveGenerationCmd(DAC_TypeDef * DACx, uint32_t DAC_Channel,
+			   uint32_t DAC_Wave, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_DAC_LIST1_PERIPH(DACx));
-  assert_param(IS_DAC_CHANNEL(DAC_Channel));
-  assert_param(IS_DAC_WAVE(DAC_Wave)); 
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_DAC_LIST1_PERIPH(DACx));
+	assert_param(IS_DAC_CHANNEL(DAC_Channel));
+	assert_param(IS_DAC_WAVE(DAC_Wave));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the selected wave generation for the selected DAC channel */
-    DACx->CR |= DAC_Wave << DAC_Channel;
-  }
-  else
-  {
-    /* Disable the selected wave generation for the selected DAC channel */
-    DACx->CR &= ~(DAC_Wave << DAC_Channel);
-  }
+	if (NewState != DISABLE) {
+		/* Enable the selected wave generation for the selected DAC channel */
+		DACx->CR |= DAC_Wave << DAC_Channel;
+	} else {
+		/* Disable the selected wave generation for the selected DAC channel */
+		DACx->CR &= ~(DAC_Wave << DAC_Channel);
+	}
 }
 
 /**
@@ -387,20 +382,20 @@ void DAC_WaveGenerationCmd(DAC_TypeDef* DACx, uint32_t DAC_Channel, uint32_t DAC
   * @param  Data: Data to be loaded in the selected data holding register.
   * @retval None
   */
-void DAC_SetChannel1Data(DAC_TypeDef* DACx, uint32_t DAC_Align, uint16_t Data)
-{  
-  __IO uint32_t tmp = 0;
-  
-  /* Check the parameters */
-  assert_param(IS_DAC_ALL_PERIPH(DACx));
-  assert_param(IS_DAC_ALIGN(DAC_Align));
-  assert_param(IS_DAC_DATA(Data));
-  
-  tmp = (uint32_t)DACx; 
-  tmp += DHR12R1_OFFSET + DAC_Align;
+void DAC_SetChannel1Data(DAC_TypeDef * DACx, uint32_t DAC_Align, uint16_t Data)
+{
+	__IO uint32_t tmp = 0;
 
-  /* Set the DAC channel1 selected data holding register */
-  *(__IO uint32_t *) tmp = Data;
+	/* Check the parameters */
+	assert_param(IS_DAC_ALL_PERIPH(DACx));
+	assert_param(IS_DAC_ALIGN(DAC_Align));
+	assert_param(IS_DAC_DATA(Data));
+
+	tmp = (uint32_t) DACx;
+	tmp += DHR12R1_OFFSET + DAC_Align;
+
+	/* Set the DAC channel1 selected data holding register */
+	*(__IO uint32_t *) tmp = Data;
 }
 
 /**
@@ -415,20 +410,20 @@ void DAC_SetChannel1Data(DAC_TypeDef* DACx, uint32_t DAC_Align, uint16_t Data)
   * @param  Data : Data to be loaded in the selected data holding register.
   * @retval None
   */
-void DAC_SetChannel2Data(DAC_TypeDef* DACx, uint32_t DAC_Align, uint16_t Data)
+void DAC_SetChannel2Data(DAC_TypeDef * DACx, uint32_t DAC_Align, uint16_t Data)
 {
-  __IO uint32_t tmp = 0;
+	__IO uint32_t tmp = 0;
 
-  /* Check the parameters */
-  assert_param(IS_DAC_LIST1_PERIPH(DACx));
-  assert_param(IS_DAC_ALIGN(DAC_Align));
-  assert_param(IS_DAC_DATA(Data));
-  
-  tmp = (uint32_t)DACx;
-  tmp += DHR12R2_OFFSET + DAC_Align;
+	/* Check the parameters */
+	assert_param(IS_DAC_LIST1_PERIPH(DACx));
+	assert_param(IS_DAC_ALIGN(DAC_Align));
+	assert_param(IS_DAC_DATA(Data));
 
-  /* Set the DAC channel2 selected data holding register */
-  *(__IO uint32_t *)tmp = Data;
+	tmp = (uint32_t) DACx;
+	tmp += DHR12R2_OFFSET + DAC_Align;
+
+	/* Set the DAC channel2 selected data holding register */
+	*(__IO uint32_t *) tmp = Data;
 }
 
 /**
@@ -448,31 +443,29 @@ void DAC_SetChannel2Data(DAC_TypeDef* DACx, uint32_t DAC_Align, uint16_t Data)
   *       DAC channels at the same time.
   * @retval None
   */
-void DAC_SetDualChannelData(DAC_TypeDef* DACx, uint32_t DAC_Align, uint16_t Data2, uint16_t Data1)
+void DAC_SetDualChannelData(DAC_TypeDef * DACx, uint32_t DAC_Align,
+			    uint16_t Data2, uint16_t Data1)
 {
-  uint32_t data = 0, tmp = 0;
-  
-  /* Check the parameters */
-  assert_param(IS_DAC_LIST1_PERIPH(DACx));
-  assert_param(IS_DAC_ALIGN(DAC_Align));
-  assert_param(IS_DAC_DATA(Data1));
-  assert_param(IS_DAC_DATA(Data2));
-  
-  /* Calculate and set dual DAC data holding register value */
-  if (DAC_Align == DAC_Align_8b_R)
-  {
-    data = ((uint32_t)Data2 << 8) | Data1; 
-  }
-  else
-  {
-    data = ((uint32_t)Data2 << 16) | Data1;
-  }
-  
-  tmp = (uint32_t)DACx;
-  tmp += DHR12RD_OFFSET + DAC_Align;
+	uint32_t data = 0, tmp = 0;
 
-  /* Set the dual DAC selected data holding register */
-  *(__IO uint32_t *)tmp = data;
+	/* Check the parameters */
+	assert_param(IS_DAC_LIST1_PERIPH(DACx));
+	assert_param(IS_DAC_ALIGN(DAC_Align));
+	assert_param(IS_DAC_DATA(Data1));
+	assert_param(IS_DAC_DATA(Data2));
+
+	/* Calculate and set dual DAC data holding register value */
+	if (DAC_Align == DAC_Align_8b_R) {
+		data = ((uint32_t) Data2 << 8) | Data1;
+	} else {
+		data = ((uint32_t) Data2 << 16) | Data1;
+	}
+
+	tmp = (uint32_t) DACx;
+	tmp += DHR12RD_OFFSET + DAC_Align;
+
+	/* Set the dual DAC selected data holding register */
+	*(__IO uint32_t *) tmp = data;
 }
 
 /**
@@ -484,19 +477,19 @@ void DAC_SetDualChannelData(DAC_TypeDef* DACx, uint32_t DAC_Align, uint16_t Data
   *            @arg DAC_Channel_2: DAC Channel2 selected
   * @retval The selected DAC channel data output value.
   */
-uint16_t DAC_GetDataOutputValue(DAC_TypeDef* DACx, uint32_t DAC_Channel)
+uint16_t DAC_GetDataOutputValue(DAC_TypeDef * DACx, uint32_t DAC_Channel)
 {
-  __IO uint32_t tmp = 0;
-  
-  /* Check the parameters */
-  assert_param(IS_DAC_ALL_PERIPH(DACx));
-  assert_param(IS_DAC_CHANNEL(DAC_Channel));
-  
-  tmp = (uint32_t) DACx;
-  tmp += DOR_OFFSET + ((uint32_t)DAC_Channel >> 2);
-  
-  /* Returns the DAC channel data output register value */
-  return (uint16_t) (*(__IO uint32_t*) tmp);
+	__IO uint32_t tmp = 0;
+
+	/* Check the parameters */
+	assert_param(IS_DAC_ALL_PERIPH(DACx));
+	assert_param(IS_DAC_CHANNEL(DAC_Channel));
+
+	tmp = (uint32_t) DACx;
+	tmp += DOR_OFFSET + ((uint32_t) DAC_Channel >> 2);
+
+	/* Returns the DAC channel data output register value */
+	return (uint16_t) (*(__IO uint32_t *) tmp);
 }
 
 /**
@@ -530,23 +523,21 @@ uint16_t DAC_GetDataOutputValue(DAC_TypeDef* DACx, uint32_t DAC_Channel)
   *       must be already configured. 
   * @retval None
   */
-void DAC_DMACmd(DAC_TypeDef* DACx, uint32_t DAC_Channel, FunctionalState NewState)
+void DAC_DMACmd(DAC_TypeDef * DACx, uint32_t DAC_Channel,
+		FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_DAC_ALL_PERIPH(DACx));
-  assert_param(IS_DAC_CHANNEL(DAC_Channel));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_DAC_ALL_PERIPH(DACx));
+	assert_param(IS_DAC_CHANNEL(DAC_Channel));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the selected DAC channel DMA request */
-    DACx->CR |= (DAC_CR_DMAEN1 << DAC_Channel);
-  }
-  else
-  {
-    /* Disable the selected DAC channel DMA request */
-    DACx->CR &= (~(DAC_CR_DMAEN1 << DAC_Channel));
-  }
+	if (NewState != DISABLE) {
+		/* Enable the selected DAC channel DMA request */
+		DACx->CR |= (DAC_CR_DMAEN1 << DAC_Channel);
+	} else {
+		/* Disable the selected DAC channel DMA request */
+		DACx->CR &= (~(DAC_CR_DMAEN1 << DAC_Channel));
+	}
 }
 
 /**
@@ -580,25 +571,23 @@ void DAC_DMACmd(DAC_TypeDef* DACx, uint32_t DAC_Channel, FunctionalState NewStat
   * @param  NewState: new state of the specified DAC interrupts.
   *          This parameter can be: ENABLE or DISABLE.
   * @retval None
-  */ 
-void DAC_ITConfig(DAC_TypeDef* DACx, uint32_t DAC_Channel, uint32_t DAC_IT, FunctionalState NewState)  
+  */
+void DAC_ITConfig(DAC_TypeDef * DACx, uint32_t DAC_Channel, uint32_t DAC_IT,
+		  FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_DAC_ALL_PERIPH(DACx));
-  assert_param(IS_DAC_CHANNEL(DAC_Channel));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  assert_param(IS_DAC_IT(DAC_IT)); 
+	/* Check the parameters */
+	assert_param(IS_DAC_ALL_PERIPH(DACx));
+	assert_param(IS_DAC_CHANNEL(DAC_Channel));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
+	assert_param(IS_DAC_IT(DAC_IT));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the selected DAC interrupts */
-    DACx->CR |=  (DAC_IT << DAC_Channel);
-  }
-  else
-  {
-    /* Disable the selected DAC interrupts */
-    DACx->CR &= (~(uint32_t)(DAC_IT << DAC_Channel));
-  }
+	if (NewState != DISABLE) {
+		/* Enable the selected DAC interrupts */
+		DACx->CR |= (DAC_IT << DAC_Channel);
+	} else {
+		/* Disable the selected DAC interrupts */
+		DACx->CR &= (~(uint32_t) (DAC_IT << DAC_Channel));
+	}
 }
 
 /**
@@ -615,28 +604,26 @@ void DAC_ITConfig(DAC_TypeDef* DACx, uint32_t DAC_Channel, uint32_t DAC_IT, Func
   *         the acknowledgement for the first external trigger is received (first request).
   * @retval The new state of DAC_FLAG (SET or RESET).
   */
-FlagStatus DAC_GetFlagStatus(DAC_TypeDef* DACx, uint32_t DAC_Channel, uint32_t DAC_FLAG)
+FlagStatus DAC_GetFlagStatus(DAC_TypeDef * DACx, uint32_t DAC_Channel,
+			     uint32_t DAC_FLAG)
 {
-  FlagStatus bitstatus = RESET;
+	FlagStatus bitstatus = RESET;
 
-  /* Check the parameters */
-  assert_param(IS_DAC_ALL_PERIPH(DACx));
-  assert_param(IS_DAC_CHANNEL(DAC_Channel));
-  assert_param(IS_DAC_FLAG(DAC_FLAG));
+	/* Check the parameters */
+	assert_param(IS_DAC_ALL_PERIPH(DACx));
+	assert_param(IS_DAC_CHANNEL(DAC_Channel));
+	assert_param(IS_DAC_FLAG(DAC_FLAG));
 
-  /* Check the status of the specified DAC flag */
-  if ((DACx->SR & (DAC_FLAG << DAC_Channel)) != (uint8_t)RESET)
-  {
-    /* DAC_FLAG is set */
-    bitstatus = SET;
-  }
-  else
-  {
-    /* DAC_FLAG is reset */
-    bitstatus = RESET;
-  }
-  /* Return the DAC_FLAG status */
-  return  bitstatus;
+	/* Check the status of the specified DAC flag */
+	if ((DACx->SR & (DAC_FLAG << DAC_Channel)) != (uint8_t) RESET) {
+		/* DAC_FLAG is set */
+		bitstatus = SET;
+	} else {
+		/* DAC_FLAG is reset */
+		bitstatus = RESET;
+	}
+	/* Return the DAC_FLAG status */
+	return bitstatus;
 }
 
 /**
@@ -651,15 +638,15 @@ FlagStatus DAC_GetFlagStatus(DAC_TypeDef* DACx, uint32_t DAC_Channel, uint32_t D
   *            @arg DAC_FLAG_DMAUDR: DMA underrun flag                          
   * @retval None
   */
-void DAC_ClearFlag(DAC_TypeDef* DACx, uint32_t DAC_Channel, uint32_t DAC_FLAG)
+void DAC_ClearFlag(DAC_TypeDef * DACx, uint32_t DAC_Channel, uint32_t DAC_FLAG)
 {
-  /* Check the parameters */
-  assert_param(IS_DAC_ALL_PERIPH(DACx));
-  assert_param(IS_DAC_CHANNEL(DAC_Channel));
-  assert_param(IS_DAC_FLAG(DAC_FLAG));
+	/* Check the parameters */
+	assert_param(IS_DAC_ALL_PERIPH(DACx));
+	assert_param(IS_DAC_CHANNEL(DAC_Channel));
+	assert_param(IS_DAC_FLAG(DAC_FLAG));
 
-  /* Clear the selected DAC flags */
-  DACx->SR = (DAC_FLAG << DAC_Channel);
+	/* Clear the selected DAC flags */
+	DACx->SR = (DAC_FLAG << DAC_Channel);
 }
 
 /**
@@ -676,32 +663,31 @@ void DAC_ClearFlag(DAC_TypeDef* DACx, uint32_t DAC_Channel, uint32_t DAC_FLAG)
   *         the acknowledgement for the first external trigger is received (first request).
   * @retval The new state of DAC_IT (SET or RESET).
   */
-ITStatus DAC_GetITStatus(DAC_TypeDef* DACx, uint32_t DAC_Channel, uint32_t DAC_IT)
+ITStatus DAC_GetITStatus(DAC_TypeDef * DACx, uint32_t DAC_Channel,
+			 uint32_t DAC_IT)
 {
-  ITStatus bitstatus = RESET;
-  uint32_t enablestatus = 0;
-  
-  /* Check the parameters */
-  assert_param(IS_DAC_ALL_PERIPH(DACx));
-  assert_param(IS_DAC_CHANNEL(DAC_Channel));
-  assert_param(IS_DAC_IT(DAC_IT));
+	ITStatus bitstatus = RESET;
+	uint32_t enablestatus = 0;
 
-  /* Get the DAC_IT enable bit status */
-  enablestatus = (DACx->CR & (DAC_IT << DAC_Channel)) ;
-  
-  /* Check the status of the specified DAC interrupt */
-  if (((DACx->SR & (DAC_IT << DAC_Channel)) != (uint32_t)RESET) && enablestatus)
-  {
-    /* DAC_IT is set */
-    bitstatus = SET;
-  }
-  else
-  {
-    /* DAC_IT is reset */
-    bitstatus = RESET;
-  }
-  /* Return the DAC_IT status */
-  return  bitstatus;
+	/* Check the parameters */
+	assert_param(IS_DAC_ALL_PERIPH(DACx));
+	assert_param(IS_DAC_CHANNEL(DAC_Channel));
+	assert_param(IS_DAC_IT(DAC_IT));
+
+	/* Get the DAC_IT enable bit status */
+	enablestatus = (DACx->CR & (DAC_IT << DAC_Channel));
+
+	/* Check the status of the specified DAC interrupt */
+	if (((DACx->SR & (DAC_IT << DAC_Channel)) != (uint32_t) RESET)
+	    && enablestatus) {
+		/* DAC_IT is set */
+		bitstatus = SET;
+	} else {
+		/* DAC_IT is reset */
+		bitstatus = RESET;
+	}
+	/* Return the DAC_IT status */
+	return bitstatus;
 }
 
 /**
@@ -716,15 +702,16 @@ ITStatus DAC_GetITStatus(DAC_TypeDef* DACx, uint32_t DAC_Channel, uint32_t DAC_I
   *            @arg DAC_IT_DMAUDR: DMA underrun interrupt mask
   * @retval None
   */
-void DAC_ClearITPendingBit(DAC_TypeDef* DACx, uint32_t DAC_Channel, uint32_t DAC_IT)
+void DAC_ClearITPendingBit(DAC_TypeDef * DACx, uint32_t DAC_Channel,
+			   uint32_t DAC_IT)
 {
-  /* Check the parameters */
-  assert_param(IS_DAC_ALL_PERIPH(DACx));
-  assert_param(IS_DAC_CHANNEL(DAC_Channel));
-  assert_param(IS_DAC_IT(DAC_IT)); 
+	/* Check the parameters */
+	assert_param(IS_DAC_ALL_PERIPH(DACx));
+	assert_param(IS_DAC_CHANNEL(DAC_Channel));
+	assert_param(IS_DAC_IT(DAC_IT));
 
-  /* Clear the selected DAC interrupt pending bits */
-  DACx->SR = (DAC_IT << DAC_Channel);
+	/* Clear the selected DAC interrupt pending bits */
+	DACx->SR = (DAC_IT << DAC_Channel);
 }
 
 /**
@@ -733,14 +720,14 @@ void DAC_ClearITPendingBit(DAC_TypeDef* DACx, uint32_t DAC_Channel, uint32_t DAC
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

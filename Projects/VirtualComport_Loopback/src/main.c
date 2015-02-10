@@ -25,13 +25,11 @@
   ******************************************************************************
   */
 
-
 /* Includes ------------------------------------------------------------------*/
 #include "hw_config.h"
 #include "usb_lib.h"
 #include "usb_desc.h"
 #include "usb_pwr.h"
-
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -39,11 +37,11 @@
 /* Private variables ---------------------------------------------------------*/
 /* Extern variables ----------------------------------------------------------*/
 extern __IO uint8_t Receive_Buffer[64];
-extern __IO  uint32_t Receive_length ;
-extern __IO  uint32_t length ;
+extern __IO uint32_t Receive_length;
+extern __IO uint32_t length;
 uint8_t Send_Buffer[64];
-uint32_t packet_sent=1;
-uint32_t packet_receive=1;
+uint32_t packet_sent = 1;
+uint32_t packet_receive = 1;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 /*******************************************************************************
@@ -55,26 +53,25 @@ uint32_t packet_receive=1;
 *******************************************************************************/
 int main(void)
 {
-  Set_System();
-  Set_USBClock();
-  USB_Interrupts_Config();
-  USB_Init();
-  
-  while (1)
-  {
-    if (bDeviceState == CONFIGURED)
-    {
-      CDC_Receive_DATA();
-      /*Check to see if we have data yet */
-      if (Receive_length  != 0)
-      {
-        if (packet_sent == 1)
-          CDC_Send_DATA ((unsigned char*)Receive_Buffer,Receive_length);
-        Receive_length = 0;
-      }
-    }
-  }
-} 
+	Set_System();
+	Set_USBClock();
+	USB_Interrupts_Config();
+	USB_Init();
+
+	while (1) {
+		if (bDeviceState == CONFIGURED) {
+			CDC_Receive_DATA();
+			/*Check to see if we have data yet */
+			if (Receive_length != 0) {
+				if (packet_sent == 1)
+					CDC_Send_DATA((unsigned char *)
+						      Receive_Buffer,
+						      Receive_length);
+				Receive_length = 0;
+			}
+		}
+	}
+}
 
 #ifdef USE_FULL_ASSERT
 /*******************************************************************************
@@ -86,14 +83,14 @@ int main(void)
 * Output         : None
 * Return         : None
 *******************************************************************************/
-void assert_failed(uint8_t* file, uint32_t line)
+void assert_failed(uint8_t * file, uint32_t line)
 {
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+	/* User can add his own implementation to report the file name and line number,
+	   ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while (1)
-  {}
+	/* Infinite loop */
+	while (1) {
+	}
 }
 #endif
 

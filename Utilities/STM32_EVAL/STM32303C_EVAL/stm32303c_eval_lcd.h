@@ -31,7 +31,7 @@
 #define __STM32303C_EVAL_LCD_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -41,35 +41,33 @@
 /** @addtogroup Utilities
   * @{
   */
-  
+
 /** @addtogroup STM32_EVAL
   * @{
-  */ 
+  */
 
 /** @addtogroup STM32303C_EVAL
   * @{
   */
-  
+
 /** @addtogroup STM32303C_EVAL_LCD
   * @{
-  */ 
-
+  */
 
 /** @defgroup STM32303C_EVAL_LCD_Exported_Types
   * @{
-  */ 
-typedef struct 
-{
-  int16_t X;
-  int16_t Y;
-} Point, * pPoint;
+  */
+	typedef struct {
+		int16_t X;
+		int16_t Y;
+	} Point, *pPoint;
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup STM32303C_EVAL_LCD_Exported_Constants
   * @{
-  */ 
+  */
 
 /**
  * @brief Uncomment the line below if you want to use LCD_DrawBMP function to
@@ -88,45 +86,45 @@ typedef struct
 
 #ifdef USE_Delay
 #include "main.h"
- 
-  #define _delay_     Delay  /* !< User can provide more timing precise _delay_ function
-                                   (with 10ms time base), using SysTick for example */
+
+#define _delay_     Delay	/* !< User can provide more timing precise _delay_ function
+				   (with 10ms time base), using SysTick for example */
 #else
-  #define _delay_     delay      /* !< Default _delay_ function with less precise timing */
-#endif                                     
+#define _delay_     delay	/* !< Default _delay_ function with less precise timing */
+#endif
 
 /** 
   * @brief  LCD Control Id  
-  */ 
+  */
 #define LCD_ILI9320        0x9320
 #define LCD_SPFD5408       0x5408
 #define LCD_HX8347D        0x0047
 
 /** 
   * @brief  LCD Control pins  
-  */ 
-#define LCD_NCS_PIN             GPIO_Pin_0                  
-#define LCD_NCS_GPIO_PORT       GPIOE                     
-#define LCD_NCS_GPIO_CLK        RCC_AHBPeriph_GPIOE 
+  */
+#define LCD_NCS_PIN             GPIO_Pin_0
+#define LCD_NCS_GPIO_PORT       GPIOE
+#define LCD_NCS_GPIO_CLK        RCC_AHBPeriph_GPIOE
 
 /** 
   * @brief  LCD SPI Interface pins 
-  */ 
-#define LCD_SPI_SCK_PIN               GPIO_Pin_9                     /* PA.05 */
-#define LCD_SPI_SCK_GPIO_PORT         GPIOF                          /* GPIOA */
-#define LCD_SPI_SCK_GPIO_CLK          RCC_AHBPeriph_GPIOF  
+  */
+#define LCD_SPI_SCK_PIN               GPIO_Pin_9	/* PA.05 */
+#define LCD_SPI_SCK_GPIO_PORT         GPIOF	/* GPIOA */
+#define LCD_SPI_SCK_GPIO_CLK          RCC_AHBPeriph_GPIOF
 #define LCD_SPI_SCK_SOURCE            GPIO_PinSource9
 #define LCD_SPI_SCK_AF                GPIO_AF_5
 
-#define LCD_SPI_MISO_PIN              GPIO_Pin_14                     /* PB.04 */
-#define LCD_SPI_MISO_GPIO_PORT        GPIOB                          /* GPIOB */
-#define LCD_SPI_MISO_GPIO_CLK         RCC_AHBPeriph_GPIOB  
+#define LCD_SPI_MISO_PIN              GPIO_Pin_14	/* PB.04 */
+#define LCD_SPI_MISO_GPIO_PORT        GPIOB	/* GPIOB */
+#define LCD_SPI_MISO_GPIO_CLK         RCC_AHBPeriph_GPIOB
 #define LCD_SPI_MISO_SOURCE           GPIO_PinSource14
 #define LCD_SPI_MISO_AF               GPIO_AF_5
 
-#define LCD_SPI_MOSI_PIN              GPIO_Pin_15                     /* PA.07 */
-#define LCD_SPI_MOSI_GPIO_PORT        GPIOB                          /* GPIOA */
-#define LCD_SPI_MOSI_GPIO_CLK         RCC_AHBPeriph_GPIOB  
+#define LCD_SPI_MOSI_PIN              GPIO_Pin_15	/* PA.07 */
+#define LCD_SPI_MOSI_GPIO_PORT        GPIOB	/* GPIOA */
+#define LCD_SPI_MOSI_GPIO_CLK         RCC_AHBPeriph_GPIOB
 #define LCD_SPI_MOSI_SOURCE           GPIO_PinSource15
 #define LCD_SPI_MOSI_AF               GPIO_AF_5
 
@@ -135,7 +133,7 @@ typedef struct
 
 /** 
   * @brief  LCD Registers  
-  */ 
+  */
 #define LCD_REG_0             0x00
 #define LCD_REG_1             0x01
 #define LCD_REG_2             0x02
@@ -268,10 +266,9 @@ typedef struct
 #define LCD_REG_241           0xF1
 #define LCD_REG_242           0xF2
 
-
 /** 
   * @brief  LCD color  
-  */ 
+  */
 #define LCD_COLOR_WHITE          0xFFFF
 #define LCD_COLOR_BLACK          0x0000
 #define LCD_COLOR_GREY           0xF7DE
@@ -317,112 +314,106 @@ typedef struct
 #define LCD_LINE_28              LINE(28)
 #define LCD_LINE_29              LINE(29)
 
-
 /** 
   * @brief LCD default font 
-  */ 
+  */
 #define LCD_DEFAULT_FONT         Font16x24
 
 /** 
   * @brief  LCD Direction  
-  */ 
+  */
 #define LCD_DIR_HORIZONTAL       0x0000
 #define LCD_DIR_VERTICAL         0x0001
 
 /** 
   * @brief  LCD Size (Width and Height)  
-  */ 
+  */
 #define LCD_PIXEL_WIDTH          0x0140
 #define LCD_PIXEL_HEIGHT         0x00F0
 
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup STM32303C_EVAL_LCD_Exported_Macros
   * @{
-  */ 
-#define ASSEMBLE_RGB(R, G, B)    ((((R)& 0xF8) << 8) | (((G) & 0xFC) << 3) | (((B) & 0xF8) >> 3)) 
+  */
+#define ASSEMBLE_RGB(R, G, B)    ((((R)& 0xF8) << 8) | (((G) & 0xFC) << 3) | (((B) & 0xF8) >> 3))
 
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup STM32303C_EVAL_LCD_Exported_Functions
   * @{
-  */ 
-void LCD_DeInit(void);
-void LCD_Setup(void);
-void LCD_SwapDirection(FunctionalState NewState);
-void STM32303C_LCD_Init(void);
-void LCD_SetColors(__IO uint16_t _TextColor, __IO uint16_t _BackColor); 
-void LCD_GetColors(__IO uint16_t *_TextColor, __IO uint16_t *_BackColor); 
-void LCD_SetTextColor(__IO uint16_t Color);
-void LCD_SetBackColor(__IO uint16_t Color);
-void LCD_ClearLine(uint8_t Line);
-void LCD_Clear(uint16_t Color);
-void LCD_SetCursor(uint8_t Xpos, uint16_t Ypos);
-void LCD_DrawChar(uint8_t Xpos, uint16_t Ypos, const uint16_t *c);
-void LCD_DisplayChar(uint8_t Line, uint16_t Column, uint8_t Ascii);
-void LCD_SetFont(sFONT *fonts);
-sFONT *LCD_GetFont(void);
-void LCD_DisplayStringLine(uint8_t Line, uint8_t *ptr);
-void LCD_SetDisplayWindow(uint8_t Xpos, uint16_t Ypos, uint8_t Height, uint16_t Width);
-void LCD_WindowModeDisable(void);
-void LCD_DrawLine(uint8_t Xpos, uint16_t Ypos, uint16_t Length, uint8_t Direction);
-void LCD_DrawRect(uint8_t Xpos, uint16_t Ypos, uint8_t Height, uint16_t Width);
-void LCD_DrawCircle(uint8_t Xpos, uint16_t Ypos, uint16_t Radius);
-void LCD_DrawMonoPict(const uint32_t *Pict);
-void LCD_DrawBMP(uint32_t BmpAddress);
-void LCD_DrawUniLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2);
-void LCD_DrawFullRect(uint16_t Xpos, uint16_t Ypos, uint16_t Width, uint16_t Height);
-void LCD_DrawFullCircle(uint16_t Xpos, uint16_t Ypos, uint16_t Radius);
-void LCD_PolyLine(pPoint Points, uint16_t PointCount);
-void LCD_PolyLineRelative(pPoint Points, uint16_t PointCount);
-void LCD_ClosedPolyLine(pPoint Points, uint16_t PointCount);
-void LCD_ClosedPolyLineRelative(pPoint Points, uint16_t PointCount);
-void LCD_FillPolyLine(pPoint Points, uint16_t PointCount);
-void LCD_nCS_StartByte(uint8_t Start_Byte);
-void LCD_WriteRegIndex(uint8_t LCD_Reg);
-void LCD_WriteReg(uint8_t LCD_Reg, uint16_t LCD_RegValue);
-void LCD_WriteRAM_Prepare(void);
-void LCD_WriteRAMWord(uint16_t RGB_Code);
-uint16_t LCD_ReadReg(uint8_t LCD_Reg);
-void LCD_WriteRAM(uint16_t RGB_Code);
-void LCD_PowerOn(void);
-void LCD_DisplayOn(void);
-void LCD_DisplayOff(void);
+  */
+	void LCD_DeInit(void);
+	void LCD_Setup(void);
+	void LCD_SwapDirection(FunctionalState NewState);
+	void STM32303C_LCD_Init(void);
+	void LCD_SetColors(__IO uint16_t _TextColor, __IO uint16_t _BackColor);
+	void LCD_GetColors(__IO uint16_t * _TextColor,
+			   __IO uint16_t * _BackColor);
+	void LCD_SetTextColor(__IO uint16_t Color);
+	void LCD_SetBackColor(__IO uint16_t Color);
+	void LCD_ClearLine(uint8_t Line);
+	void LCD_Clear(uint16_t Color);
+	void LCD_SetCursor(uint8_t Xpos, uint16_t Ypos);
+	void LCD_DrawChar(uint8_t Xpos, uint16_t Ypos, const uint16_t * c);
+	void LCD_DisplayChar(uint8_t Line, uint16_t Column, uint8_t Ascii);
+	void LCD_SetFont(sFONT * fonts);
+	sFONT *LCD_GetFont(void);
+	void LCD_DisplayStringLine(uint8_t Line, uint8_t * ptr);
+	void LCD_SetDisplayWindow(uint8_t Xpos, uint16_t Ypos, uint8_t Height,
+				  uint16_t Width);
+	void LCD_WindowModeDisable(void);
+	void LCD_DrawLine(uint8_t Xpos, uint16_t Ypos, uint16_t Length,
+			  uint8_t Direction);
+	void LCD_DrawRect(uint8_t Xpos, uint16_t Ypos, uint8_t Height,
+			  uint16_t Width);
+	void LCD_DrawCircle(uint8_t Xpos, uint16_t Ypos, uint16_t Radius);
+	void LCD_DrawMonoPict(const uint32_t * Pict);
+	void LCD_DrawBMP(uint32_t BmpAddress);
+	void LCD_DrawUniLine(uint16_t x1, uint16_t y1, uint16_t x2,
+			     uint16_t y2);
+	void LCD_DrawFullRect(uint16_t Xpos, uint16_t Ypos, uint16_t Width,
+			      uint16_t Height);
+	void LCD_DrawFullCircle(uint16_t Xpos, uint16_t Ypos, uint16_t Radius);
+	void LCD_PolyLine(pPoint Points, uint16_t PointCount);
+	void LCD_PolyLineRelative(pPoint Points, uint16_t PointCount);
+	void LCD_ClosedPolyLine(pPoint Points, uint16_t PointCount);
+	void LCD_ClosedPolyLineRelative(pPoint Points, uint16_t PointCount);
+	void LCD_FillPolyLine(pPoint Points, uint16_t PointCount);
+	void LCD_nCS_StartByte(uint8_t Start_Byte);
+	void LCD_WriteRegIndex(uint8_t LCD_Reg);
+	void LCD_WriteReg(uint8_t LCD_Reg, uint16_t LCD_RegValue);
+	void LCD_WriteRAM_Prepare(void);
+	void LCD_WriteRAMWord(uint16_t RGB_Code);
+	uint16_t LCD_ReadReg(uint8_t LCD_Reg);
+	void LCD_WriteRAM(uint16_t RGB_Code);
+	void LCD_PowerOn(void);
+	void LCD_DisplayOn(void);
+	void LCD_DisplayOff(void);
 
-
-void LCD_CtrlLinesConfig(void);
-void LCD_CtrlLinesWrite(GPIO_TypeDef* GPIOx, uint16_t CtrlPins, BitAction BitVal);
-void LCD_SPIConfig(void);
+	void LCD_CtrlLinesConfig(void);
+	void LCD_CtrlLinesWrite(GPIO_TypeDef * GPIOx, uint16_t CtrlPins,
+				BitAction BitVal);
+	void LCD_SPIConfig(void);
 
 /**
   * @}
-  */ 
-  
+  */
+
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __STM32303C_EVAL_LCD_H */
-
-
+#endif				/* __STM32303C_EVAL_LCD_H */
 /**
   * @}
-  */ 
-
-/**
+  *//**
   * @}
-  */ 
-
-/**
+  *//**
   * @}
-  */ 
-
-/**
+  *//**
   * @}
-  */   
-  
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+  *//************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

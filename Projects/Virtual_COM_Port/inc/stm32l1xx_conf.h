@@ -23,7 +23,7 @@
   * limitations under the License.
   *
   ******************************************************************************
-  */ 
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32L1xx_CONF_H
@@ -34,7 +34,7 @@
 #include "stm32l1xx_adc.h"
 #include "stm32l1xx_crc.h"
 #include "stm32l1xx_comp.h"
-#include "stm32l1xx_dac.h" 
+#include "stm32l1xx_dac.h"
 #include "stm32l1xx_dbgmcu.h"
 #include "stm32l1xx_dma.h"
 #include "stm32l1xx_exti.h"
@@ -48,10 +48,10 @@
 #include "stm32l1xx_rcc.h"
 #include "stm32l1xx_rtc.h"
 #include "stm32l1xx_spi.h"
-#include "stm32l1xx_tim.h" 
+#include "stm32l1xx_tim.h"
 #include "stm32l1xx_usart.h"
 #include "stm32l1xx_wwdg.h"
-#include "misc.h"  /* High level functions for NVIC and SysTick (add-on to CMSIS functions) */
+#include "misc.h"		/* High level functions for NVIC and SysTick (add-on to CMSIS functions) */
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
@@ -70,11 +70,11 @@
   *   If expr is true, it returns no value.
   * @retval : None
   */
-  #define assert_param(expr) ((expr) ? (void)0 : assert_failed((uint8_t *)__FILE__, __LINE__))
+#define assert_param(expr) ((expr) ? (void)0 : assert_failed((uint8_t *)__FILE__, __LINE__))
 /* Exported functions ------------------------------------------------------- */
-  void assert_failed(uint8_t* file, uint32_t line);
+void assert_failed(uint8_t * file, uint32_t line);
 #else
-  #define assert_param(expr) ((void)0)
+#define assert_param(expr) ((void)0)
 #endif /* USE_FULL_ASSERT */
 
 #endif /* __STM32L1xx_CONF_H */

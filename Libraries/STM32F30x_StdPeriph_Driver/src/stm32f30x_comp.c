@@ -271,14 +271,13 @@ void COMP_Init(uint32_t COMP_Selection, COMP_InitTypeDef * COMP_InitStruct)
 	/*!< Set COMPxHYST bits according to COMP_InitStruct->COMP_Hysteresis value */
 	/*!< Set COMPxMODE bits according to COMP_InitStruct->COMP_Mode value */
 	tmpreg |=
-	    (uint32_t) (COMP_InitStruct->
-			COMP_InvertingInput |
+	    (uint32_t) (COMP_InitStruct->COMP_InvertingInput |
 			COMP_InitStruct->COMP_NonInvertingInput |
 			COMP_InitStruct->COMP_Output |
 			COMP_InitStruct->COMP_OutputPol |
 			COMP_InitStruct->COMP_BlankingSrce |
-			COMP_InitStruct->COMP_Hysteresis | COMP_InitStruct->
-			COMP_Mode);
+			COMP_InitStruct->
+			COMP_Hysteresis | COMP_InitStruct->COMP_Mode);
 
 	/*!< Write to COMPx_CSR register */
 	*(__IO uint32_t *) (COMP_BASE + COMP_Selection) = tmpreg;

@@ -80,7 +80,7 @@
 /** @defgroup AES 
   * @brief AES driver modules
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -105,7 +105,7 @@
 
 @endverbatim
   * @{
-  */  
+  */
 
   /**
   * @brief  Deinitializes AES peripheral registers to their default reset values.
@@ -114,10 +114,10 @@
   */
 void AES_DeInit(void)
 {
-  /* Enable AES reset state */
-  RCC_AHBPeriphResetCmd(RCC_AHBPeriph_AES, ENABLE);
-  /* Release AES from reset state */
-  RCC_AHBPeriphResetCmd(RCC_AHBPeriph_AES, DISABLE);
+	/* Enable AES reset state */
+	RCC_AHBPeriphResetCmd(RCC_AHBPeriph_AES, ENABLE);
+	/* Release AES from reset state */
+	RCC_AHBPeriphResetCmd(RCC_AHBPeriph_AES, DISABLE);
 }
 
 /**
@@ -132,24 +132,26 @@ void AES_DeInit(void)
   *         the configuration information for AES peripheral.
   * @retval None
   */
-void AES_Init(AES_InitTypeDef* AES_InitStruct)
+void AES_Init(AES_InitTypeDef * AES_InitStruct)
 {
-  uint32_t tmpreg = 0;
-  
-  /* Check the parameters */
-  assert_param(IS_AES_MODE(AES_InitStruct->AES_Operation));
-  assert_param(IS_AES_CHAINING(AES_InitStruct->AES_Chaining));
-  assert_param(IS_AES_DATATYPE(AES_InitStruct->AES_DataType));
+	uint32_t tmpreg = 0;
 
-  /* Get AES CR register value */
-  tmpreg = AES->CR;
-  
-  /* Clear DATATYPE[1:0], MODE[1:0] and CHMOD[1:0] bits */
-  tmpreg &= (uint32_t)CR_CLEAR_MASK;
-  
-  tmpreg |= (AES_InitStruct->AES_Operation | AES_InitStruct->AES_Chaining | AES_InitStruct->AES_DataType);
+	/* Check the parameters */
+	assert_param(IS_AES_MODE(AES_InitStruct->AES_Operation));
+	assert_param(IS_AES_CHAINING(AES_InitStruct->AES_Chaining));
+	assert_param(IS_AES_DATATYPE(AES_InitStruct->AES_DataType));
 
-  AES->CR = (uint32_t) tmpreg;
+	/* Get AES CR register value */
+	tmpreg = AES->CR;
+
+	/* Clear DATATYPE[1:0], MODE[1:0] and CHMOD[1:0] bits */
+	tmpreg &= (uint32_t) CR_CLEAR_MASK;
+
+	tmpreg |=
+	    (AES_InitStruct->AES_Operation | AES_InitStruct->
+	     AES_Chaining | AES_InitStruct->AES_DataType);
+
+	AES->CR = (uint32_t) tmpreg;
 }
 
 /**
@@ -162,12 +164,12 @@ void AES_Init(AES_InitTypeDef* AES_InitStruct)
   *         In decryption mode, AES_KeyInitStruct must contain the decryption key.
   * @retval None
   */
-void AES_KeyInit(AES_KeyInitTypeDef* AES_KeyInitStruct)
+void AES_KeyInit(AES_KeyInitTypeDef * AES_KeyInitStruct)
 {
-  AES->KEYR0 = AES_KeyInitStruct->AES_Key0;
-  AES->KEYR1 = AES_KeyInitStruct->AES_Key1;
-  AES->KEYR2 = AES_KeyInitStruct->AES_Key2;
-  AES->KEYR3 = AES_KeyInitStruct->AES_Key3;
+	AES->KEYR0 = AES_KeyInitStruct->AES_Key0;
+	AES->KEYR1 = AES_KeyInitStruct->AES_Key1;
+	AES->KEYR2 = AES_KeyInitStruct->AES_Key2;
+	AES->KEYR3 = AES_KeyInitStruct->AES_Key3;
 }
 
 /**
@@ -181,12 +183,12 @@ void AES_KeyInit(AES_KeyInitTypeDef* AES_KeyInitStruct)
   *         AES_IV1, AES_IV2 and AES_IV3 contains nonce value.
   * @retval None
   */
-void AES_IVInit(AES_IVInitTypeDef* AES_IVInitStruct)
+void AES_IVInit(AES_IVInitTypeDef * AES_IVInitStruct)
 {
-  AES->IVR0 = AES_IVInitStruct->AES_IV0;
-  AES->IVR1 = AES_IVInitStruct->AES_IV1;
-  AES->IVR2 = AES_IVInitStruct->AES_IV2;
-  AES->IVR3 = AES_IVInitStruct->AES_IV3;
+	AES->IVR0 = AES_IVInitStruct->AES_IV0;
+	AES->IVR1 = AES_IVInitStruct->AES_IV1;
+	AES->IVR2 = AES_IVInitStruct->AES_IV2;
+	AES->IVR3 = AES_IVInitStruct->AES_IV3;
 }
 
 /**
@@ -198,19 +200,18 @@ void AES_IVInit(AES_IVInitTypeDef* AES_IVInitStruct)
   */
 void AES_Cmd(FunctionalState NewState)
 {
-  /* Check the parameter */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameter */
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the AES peripheral */
-    AES->CR |= (uint32_t) AES_CR_EN;   /**< AES Enable */
-  }
-  else
-  {
-    /* Disable the AES peripheral */
-    AES->CR &= (uint32_t)(~AES_CR_EN);  /**< AES Disable */
-  }
+	if (NewState != DISABLE) {
+		/* Enable the AES peripheral */
+		AES->CR |= (uint32_t) AES_CR_EN;
+				       /**< AES Enable */
+	} else {
+		/* Disable the AES peripheral */
+		AES->CR &= (uint32_t) (~AES_CR_EN);
+					/**< AES Disable */
+	}
 }
 
 /**
@@ -235,11 +236,11 @@ void AES_Cmd(FunctionalState NewState)
   *         be initialized.
   * @retval None
   */
-void AES_StructInit(AES_InitTypeDef* AES_InitStruct)
+void AES_StructInit(AES_InitTypeDef * AES_InitStruct)
 {
-  AES_InitStruct->AES_Operation = AES_Operation_Encryp;
-  AES_InitStruct->AES_Chaining = AES_Chaining_ECB;
-  AES_InitStruct->AES_DataType = AES_DataType_32b;
+	AES_InitStruct->AES_Operation = AES_Operation_Encryp;
+	AES_InitStruct->AES_Chaining = AES_Chaining_ECB;
+	AES_InitStruct->AES_DataType = AES_DataType_32b;
 }
 
 /**
@@ -248,12 +249,12 @@ void AES_StructInit(AES_InitTypeDef* AES_InitStruct)
   *         will be initialized.
   * @retval None
   */
-void AES_KeyStructInit(AES_KeyInitTypeDef* AES_KeyInitStruct)
+void AES_KeyStructInit(AES_KeyInitTypeDef * AES_KeyInitStruct)
 {
-  AES_KeyInitStruct->AES_Key0 = 0x00000000;
-  AES_KeyInitStruct->AES_Key1 = 0x00000000;
-  AES_KeyInitStruct->AES_Key2 = 0x00000000;
-  AES_KeyInitStruct->AES_Key3 = 0x00000000;
+	AES_KeyInitStruct->AES_Key0 = 0x00000000;
+	AES_KeyInitStruct->AES_Key1 = 0x00000000;
+	AES_KeyInitStruct->AES_Key2 = 0x00000000;
+	AES_KeyInitStruct->AES_Key3 = 0x00000000;
 }
 
 /**
@@ -262,12 +263,12 @@ void AES_KeyStructInit(AES_KeyInitTypeDef* AES_KeyInitStruct)
   *         will be initialized.
   * @retval None
   */
-void AES_IVStructInit(AES_IVInitTypeDef* AES_IVInitStruct)
+void AES_IVStructInit(AES_IVInitTypeDef * AES_IVInitStruct)
 {
-  AES_IVInitStruct->AES_IV0 = 0x00000000;
-  AES_IVInitStruct->AES_IV1 = 0x00000000;
-  AES_IVInitStruct->AES_IV2 = 0x00000000;
-  AES_IVInitStruct->AES_IV3 = 0x00000000;
+	AES_IVInitStruct->AES_IV0 = 0x00000000;
+	AES_IVInitStruct->AES_IV1 = 0x00000000;
+	AES_IVInitStruct->AES_IV2 = 0x00000000;
+	AES_IVInitStruct->AES_IV3 = 0x00000000;
 }
 
 /**
@@ -297,8 +298,8 @@ void AES_IVStructInit(AES_IVInitTypeDef* AES_IVInitStruct)
   */
 void AES_WriteSubData(uint32_t Data)
 {
-  /* Write Data */
-  AES->DINR = Data;
+	/* Write Data */
+	AES->DINR = Data;
 }
 
 /**
@@ -310,8 +311,8 @@ void AES_WriteSubData(uint32_t Data)
   */
 uint32_t AES_ReadSubData(void)
 {
-  /* Read Data */
-  return AES->DOUTR;
+	/* Read Data */
+	return AES->DOUTR;
 }
 
 /**
@@ -324,12 +325,12 @@ uint32_t AES_ReadSubData(void)
   *         value.
   * @retval None
   */
-void AES_ReadKey(AES_KeyInitTypeDef* AES_KeyInitStruct)
+void AES_ReadKey(AES_KeyInitTypeDef * AES_KeyInitStruct)
 {
-  AES_KeyInitStruct->AES_Key0 = AES->KEYR0;
-  AES_KeyInitStruct->AES_Key1 = AES->KEYR1;
-  AES_KeyInitStruct->AES_Key2 = AES->KEYR2;
-  AES_KeyInitStruct->AES_Key3 = AES->KEYR3;
+	AES_KeyInitStruct->AES_Key0 = AES->KEYR0;
+	AES_KeyInitStruct->AES_Key1 = AES->KEYR1;
+	AES_KeyInitStruct->AES_Key2 = AES->KEYR2;
+	AES_KeyInitStruct->AES_Key3 = AES->KEYR3;
 }
 
 /**
@@ -345,12 +346,12 @@ void AES_ReadKey(AES_KeyInitTypeDef* AES_KeyInitStruct)
   *         AES_IV1, AES_IV2 and AES_IV3 contains nonce value.
   * @retval None
   */
-void AES_ReadIV(AES_IVInitTypeDef* AES_IVInitStruct)
+void AES_ReadIV(AES_IVInitTypeDef * AES_IVInitStruct)
 {
-  AES_IVInitStruct->AES_IV0 = AES->IVR0;
-  AES_IVInitStruct->AES_IV1 = AES->IVR1;
-  AES_IVInitStruct->AES_IV2 = AES->IVR2;
-  AES_IVInitStruct->AES_IV3 = AES->IVR3;
+	AES_IVInitStruct->AES_IV0 = AES->IVR0;
+	AES_IVInitStruct->AES_IV1 = AES->IVR1;
+	AES_IVInitStruct->AES_IV2 = AES->IVR2;
+	AES_IVInitStruct->AES_IV3 = AES->IVR3;
 }
 
 /**
@@ -383,19 +384,16 @@ void AES_ReadIV(AES_IVInitTypeDef* AES_IVInitStruct)
   */
 void AES_DMAConfig(uint32_t AES_DMATransfer, FunctionalState NewState)
 {
-  /* Check the parameter */
-  assert_param(IS_AES_DMA_TRANSFER(AES_DMATransfer));
+	/* Check the parameter */
+	assert_param(IS_AES_DMA_TRANSFER(AES_DMATransfer));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the DMA transfer */
-    AES->CR |= (uint32_t) AES_DMATransfer;
-  }
-  else
-  {
-    /* Disable the DMA transfer */
-    AES->CR &= (uint32_t)(~AES_DMATransfer);
-  }
+	if (NewState != DISABLE) {
+		/* Enable the DMA transfer */
+		AES->CR |= (uint32_t) AES_DMATransfer;
+	} else {
+		/* Disable the DMA transfer */
+		AES->CR &= (uint32_t) (~AES_DMATransfer);
+	}
 }
 
 /**
@@ -429,18 +427,17 @@ void AES_DMAConfig(uint32_t AES_DMATransfer, FunctionalState NewState)
   */
 void AES_ITConfig(uint32_t AES_IT, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  assert_param(IS_AES_IT(AES_IT));
+	/* Check the parameters */
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
+	assert_param(IS_AES_IT(AES_IT));
 
-  if (NewState != DISABLE)
-  {
-    AES->CR |= (uint32_t) AES_IT;    /**< AES_IT Enable */
-  }
-  else
-  {
-    AES->CR &= (uint32_t)(~AES_IT);  /**< AES_IT Disable */
-  }
+	if (NewState != DISABLE) {
+		AES->CR |= (uint32_t) AES_IT;
+				     /**< AES_IT Enable */
+	} else {
+		AES->CR &= (uint32_t) (~AES_IT);
+				     /**< AES_IT Disable */
+	}
 }
 
 /**
@@ -457,22 +454,19 @@ void AES_ITConfig(uint32_t AES_IT, FunctionalState NewState)
   */
 FlagStatus AES_GetFlagStatus(uint32_t AES_FLAG)
 {
-  FlagStatus bitstatus = RESET;
+	FlagStatus bitstatus = RESET;
 
-  /* Check parameters */
-  assert_param(IS_AES_FLAG(AES_FLAG));
+	/* Check parameters */
+	assert_param(IS_AES_FLAG(AES_FLAG));
 
-  if ((AES->SR & AES_FLAG) != (uint32_t)RESET)
-  {
-    bitstatus = SET;
-  }
-  else
-  {
-    bitstatus = RESET;
-  }
-    
-  /* Return the AES_FLAG status */
-  return  bitstatus;
+	if ((AES->SR & AES_FLAG) != (uint32_t) RESET) {
+		bitstatus = SET;
+	} else {
+		bitstatus = RESET;
+	}
+
+	/* Return the AES_FLAG status */
+	return bitstatus;
 }
 
 /**
@@ -489,20 +483,18 @@ FlagStatus AES_GetFlagStatus(uint32_t AES_FLAG)
   */
 void AES_ClearFlag(uint32_t AES_FLAG)
 {
-  /* Check the parameters */
-  assert_param(IS_AES_FLAG(AES_FLAG));
+	/* Check the parameters */
+	assert_param(IS_AES_FLAG(AES_FLAG));
 
-  /* Check if AES_FLAG is AES_FLAG_CCF */
-  if (AES_FLAG == AES_FLAG_CCF)
-  {
-    /* Clear CCF flag by setting CCFC bit */
-    AES->CR |= (uint32_t) AES_CR_CCFC;
-  }
-  else /* AES_FLAG is AES_FLAG_RDERR or AES_FLAG_WRERR */
-  {
-    /* Clear RDERR and WRERR flags by setting ERRC bit */
-    AES->CR |= (uint32_t) AES_CR_ERRC;
-  }
+	/* Check if AES_FLAG is AES_FLAG_CCF */
+	if (AES_FLAG == AES_FLAG_CCF) {
+		/* Clear CCF flag by setting CCFC bit */
+		AES->CR |= (uint32_t) AES_CR_CCFC;
+	} else {		/* AES_FLAG is AES_FLAG_RDERR or AES_FLAG_WRERR */
+
+		/* Clear RDERR and WRERR flags by setting ERRC bit */
+		AES->CR |= (uint32_t) AES_CR_ERRC;
+	}
 }
 
 /**
@@ -515,56 +507,48 @@ void AES_ClearFlag(uint32_t AES_FLAG)
   */
 ITStatus AES_GetITStatus(uint32_t AES_IT)
 {
-  ITStatus itstatus = RESET;
-  uint32_t cciebitstatus = RESET, ccfbitstatus = RESET;
+	ITStatus itstatus = RESET;
+	uint32_t cciebitstatus = RESET, ccfbitstatus = RESET;
 
-  /* Check parameters */
-  assert_param(IS_AES_GET_IT(AES_IT));
+	/* Check parameters */
+	assert_param(IS_AES_GET_IT(AES_IT));
 
-  cciebitstatus = AES->CR & AES_CR_CCIE;
-  ccfbitstatus =  AES->SR & AES_SR_CCF;
+	cciebitstatus = AES->CR & AES_CR_CCIE;
+	ccfbitstatus = AES->SR & AES_SR_CCF;
 
-  /* Check if AES_IT is AES_IT_CC */
-  if (AES_IT == AES_IT_CC)
-  {
-    /* Check the status of the specified AES interrupt */
-    if (((cciebitstatus) != (uint32_t)RESET) && ((ccfbitstatus) != (uint32_t)RESET))
-    {
-      /* Interrupt occurred */
-      itstatus = SET;
-    }
-    else
-    {
-      /* Interrupt didn't occur */
-      itstatus = RESET;
-    }
-  }
-  else /* AES_IT is AES_IT_ERR */
-  {
-    /* Check the status of the specified AES interrupt */
-    if ((AES->CR & AES_CR_ERRIE) != RESET)
-    {
-      /* Check if WRERR or RDERR flags are set */
-      if ((AES->SR & (uint32_t)(AES_SR_WRERR | AES_SR_RDERR)) != (uint16_t)RESET)
-      {
-        /* Interrupt occurred */
-        itstatus = SET;
-      }
-      else
-      {
-        /* Interrupt didn't occur */
-        itstatus = RESET;
-      }
-    }
-    else
-    {
-      /* Interrupt didn't occur */
-      itstatus = (ITStatus) RESET;
-    }
-  }
+	/* Check if AES_IT is AES_IT_CC */
+	if (AES_IT == AES_IT_CC) {
+		/* Check the status of the specified AES interrupt */
+		if (((cciebitstatus) != (uint32_t) RESET)
+		    && ((ccfbitstatus) != (uint32_t) RESET)) {
+			/* Interrupt occurred */
+			itstatus = SET;
+		} else {
+			/* Interrupt didn't occur */
+			itstatus = RESET;
+		}
+	} else {		/* AES_IT is AES_IT_ERR */
 
-  /* Return the AES_IT status */
-  return itstatus;
+		/* Check the status of the specified AES interrupt */
+		if ((AES->CR & AES_CR_ERRIE) != RESET) {
+			/* Check if WRERR or RDERR flags are set */
+			if ((AES->
+			     SR & (uint32_t) (AES_SR_WRERR | AES_SR_RDERR)) !=
+			    (uint16_t) RESET) {
+				/* Interrupt occurred */
+				itstatus = SET;
+			} else {
+				/* Interrupt didn't occur */
+				itstatus = RESET;
+			}
+		} else {
+			/* Interrupt didn't occur */
+			itstatus = (ITStatus) RESET;
+		}
+	}
+
+	/* Return the AES_IT status */
+	return itstatus;
 }
 
 /**
@@ -577,11 +561,11 @@ ITStatus AES_GetITStatus(uint32_t AES_IT)
   */
 void AES_ClearITPendingBit(uint32_t AES_IT)
 {
-  /* Check the parameters */
-  assert_param(IS_AES_IT(AES_IT));
+	/* Check the parameters */
+	assert_param(IS_AES_IT(AES_IT));
 
-  /* Clear the interrupt pending bit */
-  AES->CR |= (uint32_t) (AES_IT >> (uint32_t) 0x00000002);
+	/* Clear the interrupt pending bit */
+	AES->CR |= (uint32_t) (AES_IT >> (uint32_t) 0x00000002);
 }
 
 /**

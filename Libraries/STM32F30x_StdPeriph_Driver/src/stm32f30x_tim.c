@@ -775,26 +775,26 @@ void TIM_OC2Init(TIM_TypeDef * TIMx, TIM_OCInitTypeDef * TIM_OCInitStruct)
 		tmpccer &= (uint32_t) ~ TIM_CCER_CC2NP;
 		/* Set the Output N Polarity */
 		tmpccer |=
-		    (uint32_t) ((uint32_t) TIM_OCInitStruct->
-				TIM_OCNPolarity << 4);
+		    (uint32_t) ((uint32_t) TIM_OCInitStruct->TIM_OCNPolarity <<
+				4);
 		/* Reset the Output N State */
 		tmpccer &= (uint32_t) ~ TIM_CCER_CC2NE;
 
 		/* Set the Output N State */
 		tmpccer |=
-		    (uint32_t) ((uint32_t) TIM_OCInitStruct->
-				TIM_OutputNState << 4);
+		    (uint32_t) ((uint32_t) TIM_OCInitStruct->TIM_OutputNState <<
+				4);
 		/* Reset the Output Compare and Output Compare N IDLE State */
 		tmpcr2 &= (uint32_t) ~ TIM_CR2_OIS2;
 		tmpcr2 &= (uint32_t) ~ TIM_CR2_OIS2N;
 		/* Set the Output Idle state */
 		tmpcr2 |=
-		    (uint32_t) ((uint32_t) TIM_OCInitStruct->
-				TIM_OCIdleState << 2);
+		    (uint32_t) ((uint32_t) TIM_OCInitStruct->TIM_OCIdleState <<
+				2);
 		/* Set the Output N Idle state */
 		tmpcr2 |=
-		    (uint32_t) ((uint32_t) TIM_OCInitStruct->
-				TIM_OCNIdleState << 2);
+		    (uint32_t) ((uint32_t) TIM_OCInitStruct->TIM_OCNIdleState <<
+				2);
 	}
 	/* Write to TIMx CR2 */
 	TIMx->CR2 = tmpcr2;
@@ -868,26 +868,26 @@ void TIM_OC3Init(TIM_TypeDef * TIMx, TIM_OCInitTypeDef * TIM_OCInitStruct)
 		tmpccer &= (uint32_t) ~ TIM_CCER_CC3NP;
 		/* Set the Output N Polarity */
 		tmpccer |=
-		    (uint32_t) ((uint32_t) TIM_OCInitStruct->
-				TIM_OCNPolarity << 8);
+		    (uint32_t) ((uint32_t) TIM_OCInitStruct->TIM_OCNPolarity <<
+				8);
 		/* Reset the Output N State */
 		tmpccer &= (uint32_t) ~ TIM_CCER_CC3NE;
 
 		/* Set the Output N State */
 		tmpccer |=
-		    (uint32_t) ((uint32_t) TIM_OCInitStruct->
-				TIM_OutputNState << 8);
+		    (uint32_t) ((uint32_t) TIM_OCInitStruct->TIM_OutputNState <<
+				8);
 		/* Reset the Output Compare and Output Compare N IDLE State */
 		tmpcr2 &= (uint32_t) ~ TIM_CR2_OIS3;
 		tmpcr2 &= (uint32_t) ~ TIM_CR2_OIS3N;
 		/* Set the Output Idle state */
 		tmpcr2 |=
-		    (uint32_t) ((uint32_t) TIM_OCInitStruct->
-				TIM_OCIdleState << 4);
+		    (uint32_t) ((uint32_t) TIM_OCInitStruct->TIM_OCIdleState <<
+				4);
 		/* Set the Output N Idle state */
 		tmpcr2 |=
-		    (uint32_t) ((uint32_t) TIM_OCInitStruct->
-				TIM_OCNIdleState << 4);
+		    (uint32_t) ((uint32_t) TIM_OCInitStruct->TIM_OCNIdleState <<
+				4);
 	}
 	/* Write to TIMx CR2 */
 	TIMx->CR2 = tmpcr2;
@@ -955,8 +955,8 @@ void TIM_OC4Init(TIM_TypeDef * TIMx, TIM_OCInitTypeDef * TIM_OCInitStruct)
 		tmpcr2 &= (uint32_t) ~ TIM_CR2_OIS4;
 		/* Set the Output Idle state */
 		tmpcr2 |=
-		    (uint32_t) ((uint32_t) TIM_OCInitStruct->
-				TIM_OCIdleState << 6);
+		    (uint32_t) ((uint32_t) TIM_OCInitStruct->TIM_OCIdleState <<
+				6);
 	}
 	/* Write to TIMx CR2 */
 	TIMx->CR2 = tmpcr2;
@@ -1023,8 +1023,8 @@ void TIM_OC5Init(TIM_TypeDef * TIMx, TIM_OCInitTypeDef * TIM_OCInitStruct)
 		tmpcr2 &= (uint32_t) ~ TIM_CR2_OIS5;
 		/* Set the Output Idle state */
 		tmpcr2 |=
-		    (uint32_t) ((uint32_t) TIM_OCInitStruct->
-				TIM_OCIdleState << 16);
+		    (uint32_t) ((uint32_t) TIM_OCInitStruct->TIM_OCIdleState <<
+				16);
 	}
 	/* Write to TIMx CR2 */
 	TIMx->CR2 = tmpcr2;
@@ -1155,3 +1155,4 @@ void TIM_SelectGC5C2(TIM_TypeDef * TIMx, FunctionalState NewState)
   * @brief  Selects the TIM Group Channel 5 and Channel 3, 
             OC3REFC is the logical AND of OC3REFC and OC5REF.
   * @param  TIMx: 
+ 

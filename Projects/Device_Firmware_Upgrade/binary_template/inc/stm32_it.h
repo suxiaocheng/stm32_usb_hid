@@ -25,7 +25,6 @@
   ******************************************************************************
   */
 
-
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32_IT_H
 #define __STM32_IT_H
@@ -48,8 +47,6 @@ void DebugMon_Handler(void);
 void PendSV_Handler(void);
 void SysTick_Handler(void);
 
-
 #endif /* __STM32_IT_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-

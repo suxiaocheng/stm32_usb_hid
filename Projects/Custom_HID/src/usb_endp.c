@@ -25,7 +25,6 @@
   ******************************************************************************
   */
 
-
 /* Includes ------------------------------------------------------------------*/
 
 #include "hw_config.h"
@@ -49,73 +48,56 @@ extern __IO uint8_t PrevXferComplete;
 *******************************************************************************/
 void EP1_OUT_Callback(void)
 {
-  BitAction Led_State;
+	BitAction Led_State;
 
-  /* Read received data (2 bytes) */  
-  USB_SIL_Read(EP1_OUT, Receive_Buffer);
-  
-  if (Receive_Buffer[1] == 0)
-  {
-    Led_State = Bit_RESET;
-  }
-  else 
-  {
-    Led_State = Bit_SET;
-  }
- 
- 
-  switch (Receive_Buffer[0])
-  {
-    case 1: /* Led 1 */
-     if (Led_State != Bit_RESET)
-     {
-       STM_EVAL_LEDOn(LED1);
-     }
-     else
-     {
-       STM_EVAL_LEDOff(LED1);
-     }
-     break;
-    case 2: /* Led 2 */
-     if (Led_State != Bit_RESET)
-     {
-       STM_EVAL_LEDOn(LED2);
-     }
-     else
-     {
-       STM_EVAL_LEDOff(LED2);
-     }
-      break;
-    case 3: /* Led 3 */
-     if (Led_State != Bit_RESET)
-     {
-       STM_EVAL_LEDOn(LED3);
-     }
-     else
-     {
-       STM_EVAL_LEDOff(LED3);
-     }
-      break;
-    case 4: /* Led 4 */
-     if (Led_State != Bit_RESET)
-     {
-       STM_EVAL_LEDOn(LED4);
-     }
-     else
-     {
-       STM_EVAL_LEDOff(LED4);
-     }
-      break;
-  default:
-    STM_EVAL_LEDOff(LED1);
-    STM_EVAL_LEDOff(LED2);
-    STM_EVAL_LEDOff(LED3);
-    STM_EVAL_LEDOff(LED4); 
-    break;
-  }
- 
-  SetEPRxStatus(ENDP1, EP_RX_VALID);
- 
+	/* Read received data (2 bytes) */
+	USB_SIL_Read(EP1_OUT, Receive_Buffer);
+
+	if (Receive_Buffer[1] == 0) {
+		Led_State = Bit_RESET;
+	} else {
+		Led_State = Bit_SET;
+	}
+
+	switch (Receive_Buffer[0]) {
+	case 1:		/* Led 1 */
+		if (Led_State != Bit_RESET) {
+			STM_EVAL_LEDOn(LED1);
+		} else {
+			STM_EVAL_LEDOff(LED1);
+		}
+		break;
+	case 2:		/* Led 2 */
+		if (Led_State != Bit_RESET) {
+			STM_EVAL_LEDOn(LED2);
+		} else {
+			STM_EVAL_LEDOff(LED2);
+		}
+		break;
+	case 3:		/* Led 3 */
+		if (Led_State != Bit_RESET) {
+			STM_EVAL_LEDOn(LED3);
+		} else {
+			STM_EVAL_LEDOff(LED3);
+		}
+		break;
+	case 4:		/* Led 4 */
+		if (Led_State != Bit_RESET) {
+			STM_EVAL_LEDOn(LED4);
+		} else {
+			STM_EVAL_LEDOff(LED4);
+		}
+		break;
+	default:
+		STM_EVAL_LEDOff(LED1);
+		STM_EVAL_LEDOff(LED2);
+		STM_EVAL_LEDOff(LED3);
+		STM_EVAL_LEDOff(LED4);
+		break;
+	}
+
+	SetEPRxStatus(ENDP1, EP_RX_VALID);
+
 }
 
 /*******************************************************************************
@@ -127,7 +109,7 @@ void EP1_OUT_Callback(void)
 *******************************************************************************/
 void EP1_IN_Callback(void)
 {
-  PrevXferComplete = 1;
+	PrevXferComplete = 1;
 }
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
 
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

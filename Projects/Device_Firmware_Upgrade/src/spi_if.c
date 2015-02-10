@@ -25,7 +25,6 @@
   ******************************************************************************
   */
 
-
 /* Includes ------------------------------------------------------------------*/
 #include "hw_config.h"
 #include "spi_if.h"
@@ -47,8 +46,8 @@
 *******************************************************************************/
 uint16_t SPI_If_Init(void)
 {
-  sFLASH_Init();
-  return MAL_OK;
+	sFLASH_Init();
+	return MAL_OK;
 }
 
 /*******************************************************************************
@@ -60,8 +59,8 @@ uint16_t SPI_If_Init(void)
 *******************************************************************************/
 uint16_t SPI_If_Erase(uint32_t SectorAddress)
 {
-  sFLASH_EraseSector(SectorAddress);
-  return MAL_OK;
+	sFLASH_EraseSector(SectorAddress);
+	return MAL_OK;
 }
 
 /*******************************************************************************
@@ -73,25 +72,23 @@ uint16_t SPI_If_Erase(uint32_t SectorAddress)
 *******************************************************************************/
 uint16_t SPI_If_Write(uint32_t SectorAddress, uint32_t DataLength)
 {
-  uint32_t idx, pages;
+	uint32_t idx, pages;
 
-  pages = (((DataLength & 0xFF00)) >> 8);
+	pages = (((DataLength & 0xFF00)) >> 8);
 
-  if  (DataLength & 0xFF) /* Not a 256 aligned data */
-  {
-    for ( idx = DataLength; idx < ((DataLength & 0xFF00) + 0x100) ; idx++)
-    {
-      MAL_Buffer[idx] = 0xFF;
-    }
-    pages = (((DataLength & 0xFF00)) >> 8 ) + 1;
-  }
+	if (DataLength & 0xFF) {	/* Not a 256 aligned data */
+		for (idx = DataLength; idx < ((DataLength & 0xFF00) + 0x100);
+		     idx++) {
+			MAL_Buffer[idx] = 0xFF;
+		}
+		pages = (((DataLength & 0xFF00)) >> 8) + 1;
+	}
 
-  for (idx = 0; idx < pages; idx++)
-  {
-    sFLASH_WritePage(&MAL_Buffer[idx*256], SectorAddress, 256);
-    SectorAddress += 0x100;
-  }
-  return MAL_OK;
+	for (idx = 0; idx < pages; idx++) {
+		sFLASH_WritePage(&MAL_Buffer[idx * 256], SectorAddress, 256);
+		SectorAddress += 0x100;
+	}
+	return MAL_OK;
 }
 
 /*******************************************************************************
@@ -103,8 +100,8 @@ uint16_t SPI_If_Write(uint32_t SectorAddress, uint32_t DataLength)
 *******************************************************************************/
 uint8_t *SPI_If_Read(uint32_t SectorAddress, uint32_t DataLength)
 {
-  sFLASH_ReadBuffer(MAL_Buffer, SectorAddress, (uint16_t)DataLength);
-  return MAL_Buffer;
+	sFLASH_ReadBuffer(MAL_Buffer, SectorAddress, (uint16_t) DataLength);
+	return MAL_Buffer;
 }
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

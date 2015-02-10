@@ -25,7 +25,6 @@
   ******************************************************************************
   */
 
-
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USB_DESC_H
 #define __USB_DESC_H
@@ -65,7 +64,6 @@
 #define AUDIO_INTERFACE_DESCRIPTOR_TYPE               0x24
 #define AUDIO_ENDPOINT_DESCRIPTOR_TYPE                0x25
 
-
 /* Audio Control Interface Descriptor Subtypes */
 #define AUDIO_CONTROL_HEADER                          0x01
 #define AUDIO_CONTROL_INPUT_TERMINAL                  0x02
@@ -93,5 +91,3 @@ extern uint8_t Speaker_StringSerial[SPEAKER_SIZ_STRING_SERIAL];
 
 #endif /* __USB_DESC_H */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-
-

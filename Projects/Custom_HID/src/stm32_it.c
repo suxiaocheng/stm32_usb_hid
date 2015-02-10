@@ -62,9 +62,9 @@ extern __IO uint32_t TimingDelay;
 *******************************************************************************/
 void NMI_Handler(void)
 {
-    stm_printf("NMI_Handler\n");
-    while (1) {
-    }
+	stm_printf("NMI_Handler\n");
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -76,10 +76,10 @@ void NMI_Handler(void)
 *******************************************************************************/
 void HardFault_Handler(void)
 {
-    stm_printf("HardFault_Handler\n");
-    /* Go to infinite loop when Hard Fault exception occurs */
-    while (1) {
-    }
+	stm_printf("HardFault_Handler\n");
+	/* Go to infinite loop when Hard Fault exception occurs */
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -91,10 +91,10 @@ void HardFault_Handler(void)
 *******************************************************************************/
 void MemManage_Handler(void)
 {
-    stm_printf("MemManage_Handler\n");
-    /* Go to infinite loop when Memory Manage exception occurs */
-    while (1) {
-    }
+	stm_printf("MemManage_Handler\n");
+	/* Go to infinite loop when Memory Manage exception occurs */
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -106,10 +106,10 @@ void MemManage_Handler(void)
 *******************************************************************************/
 void BusFault_Handler(void)
 {
-    stm_printf("BusFault_Handler\n");
-    /* Go to infinite loop when Bus Fault exception occurs */
-    while (1) {
-    }
+	stm_printf("BusFault_Handler\n");
+	/* Go to infinite loop when Bus Fault exception occurs */
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -121,10 +121,10 @@ void BusFault_Handler(void)
 *******************************************************************************/
 void UsageFault_Handler(void)
 {
-    stm_printf("UsageFault_Handler\n");
-    /* Go to infinite loop when Usage Fault exception occurs */
-    while (1) {
-    }
+	stm_printf("UsageFault_Handler\n");
+	/* Go to infinite loop when Usage Fault exception occurs */
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -136,9 +136,9 @@ void UsageFault_Handler(void)
 *******************************************************************************/
 void SVC_Handler(void)
 {
-    stm_printf("SVC_Handler\n");
-    while (1) {
-    }
+	stm_printf("SVC_Handler\n");
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -150,9 +150,9 @@ void SVC_Handler(void)
 *******************************************************************************/
 void DebugMon_Handler(void)
 {
-    stm_printf("DebugMon_Handler\n");
-    while (1) {
-    }
+	stm_printf("DebugMon_Handler\n");
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -164,9 +164,9 @@ void DebugMon_Handler(void)
 *******************************************************************************/
 void PendSV_Handler(void)
 {
-    stm_printf("PendSV_Handler\n");
-    while (1) {
-    }
+	stm_printf("PendSV_Handler\n");
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -201,8 +201,8 @@ void USB_LP_IRQHandler(void)
 void USB_LP_CAN1_RX0_IRQHandler(void)
 #endif
 {
-    //stm_printf("USB_LP_IRQHandler\n");
-    USB_Istr();
+	//stm_printf("USB_LP_IRQHandler\n");
+	USB_Istr();
 }
 
 #if defined(STM32L1XX_MD)
@@ -215,50 +215,50 @@ void USB_LP_CAN1_RX0_IRQHandler(void)
 *******************************************************************************/
 void EXTI15_10_IRQHandler(void)
 {
-    stm_printf("EXTI15_10_IRQHandler\n");
-    /* Check on the RIGHT button */
-    if (EXTI_GetITStatus(RIGHT_BUTTON_EXTI_LINE) != RESET) {
-	if ((PrevXferComplete) && (bDeviceState == CONFIGURED)) {
-	    Send_Buffer[0] = 0x05;
+	stm_printf("EXTI15_10_IRQHandler\n");
+	/* Check on the RIGHT button */
+	if (EXTI_GetITStatus(RIGHT_BUTTON_EXTI_LINE) != RESET) {
+		if ((PrevXferComplete) && (bDeviceState == CONFIGURED)) {
+			Send_Buffer[0] = 0x05;
 
-	    if (STM_EVAL_PBGetState(Button_RIGHT) == Bit_RESET) {
-		Send_Buffer[1] = 0x01;
-	    } else {
-		Send_Buffer[1] = 0x00;
-	    }
+			if (STM_EVAL_PBGetState(Button_RIGHT) == Bit_RESET) {
+				Send_Buffer[1] = 0x01;
+			} else {
+				Send_Buffer[1] = 0x00;
+			}
 
-	    /* Write the descriptor through the endpoint */
-	    USB_SIL_Write(EP1_IN, (uint8_t *) Send_Buffer, 2);
+			/* Write the descriptor through the endpoint */
+			USB_SIL_Write(EP1_IN, (uint8_t *) Send_Buffer, 2);
 
-	    SetEPTxValid(ENDP1);
+			SetEPTxValid(ENDP1);
 
-	    PrevXferComplete = 0;
+			PrevXferComplete = 0;
+		}
+		/* Clear the EXTI line  pending bit */
+		EXTI_ClearITPendingBit(RIGHT_BUTTON_EXTI_LINE);
 	}
-	/* Clear the EXTI line  pending bit */
-	EXTI_ClearITPendingBit(RIGHT_BUTTON_EXTI_LINE);
-    }
 
-    /* Check on the LEFT button */
-    if (EXTI_GetITStatus(LEFT_BUTTON_EXTI_LINE) != RESET) {
-	if ((PrevXferComplete) && (bDeviceState == CONFIGURED)) {
-	    Send_Buffer[0] = 0x06;
+	/* Check on the LEFT button */
+	if (EXTI_GetITStatus(LEFT_BUTTON_EXTI_LINE) != RESET) {
+		if ((PrevXferComplete) && (bDeviceState == CONFIGURED)) {
+			Send_Buffer[0] = 0x06;
 
-	    if (STM_EVAL_PBGetState(Button_LEFT) == Bit_RESET) {
-		Send_Buffer[1] = 0x01;
-	    } else {
-		Send_Buffer[1] = 0x00;
-	    }
+			if (STM_EVAL_PBGetState(Button_LEFT) == Bit_RESET) {
+				Send_Buffer[1] = 0x01;
+			} else {
+				Send_Buffer[1] = 0x00;
+			}
 
-	    /* Write the descriptor through the endpoint */
-	    USB_SIL_Write(EP1_IN, (uint8_t *) Send_Buffer, 2);
+			/* Write the descriptor through the endpoint */
+			USB_SIL_Write(EP1_IN, (uint8_t *) Send_Buffer, 2);
 
-	    SetEPTxValid(ENDP1);
+			SetEPTxValid(ENDP1);
 
-	    PrevXferComplete = 0;
+			PrevXferComplete = 0;
+		}
+		/* Clear the EXTI line  pending bit */
+		EXTI_ClearITPendingBit(LEFT_BUTTON_EXTI_LINE);
 	}
-	/* Clear the EXTI line  pending bit */
-	EXTI_ClearITPendingBit(LEFT_BUTTON_EXTI_LINE);
-    }
 }
 #endif
 /*******************************************************************************
@@ -270,22 +270,22 @@ void EXTI15_10_IRQHandler(void)
 *******************************************************************************/
 void DMA1_Channel1_IRQHandler(void)
 {
-    stm_printf("DMA1_Channel1_IRQHandler\n");
-    Send_Buffer[0] = 0x07;
+	stm_printf("DMA1_Channel1_IRQHandler\n");
+	Send_Buffer[0] = 0x07;
 
-    if ((ADC_ConvertedValueX >> 4) - (ADC_ConvertedValueX_1 >> 4) > 4) {
-	if ((PrevXferComplete) && (bDeviceState == CONFIGURED)) {
-	    Send_Buffer[1] = (uint8_t) (ADC_ConvertedValueX >> 4);
+	if ((ADC_ConvertedValueX >> 4) - (ADC_ConvertedValueX_1 >> 4) > 4) {
+		if ((PrevXferComplete) && (bDeviceState == CONFIGURED)) {
+			Send_Buffer[1] = (uint8_t) (ADC_ConvertedValueX >> 4);
 
-	    /* Write the descriptor through the endpoint */
-	    USB_SIL_Write(EP1_IN, (uint8_t *) Send_Buffer, 2);
-	    SetEPTxValid(ENDP1);
-	    ADC_ConvertedValueX_1 = ADC_ConvertedValueX;
-	    PrevXferComplete = 0;
+			/* Write the descriptor through the endpoint */
+			USB_SIL_Write(EP1_IN, (uint8_t *) Send_Buffer, 2);
+			SetEPTxValid(ENDP1);
+			ADC_ConvertedValueX_1 = ADC_ConvertedValueX;
+			PrevXferComplete = 0;
+		}
 	}
-    }
 
-    DMA_ClearFlag(DMA1_FLAG_TC1);
+	DMA_ClearFlag(DMA1_FLAG_TC1);
 }
 
 /*******************************************************************************
@@ -303,29 +303,29 @@ void EXTI2_TS_IRQHandler(void)
 void EXTI9_5_IRQHandler(void)
 #endif
 {
-    stm_printf("EXTI9_5_IRQHandler\n");
-    if (EXTI_GetITStatus(KEY_BUTTON_EXTI_LINE) != RESET) {
-	if ((PrevXferComplete) && (bDeviceState == CONFIGURED)) {
-	    Send_Buffer[0] = 0x05;
+	stm_printf("EXTI9_5_IRQHandler\n");
+	if (EXTI_GetITStatus(KEY_BUTTON_EXTI_LINE) != RESET) {
+		if ((PrevXferComplete) && (bDeviceState == CONFIGURED)) {
+			Send_Buffer[0] = 0x05;
 #if defined(STM32L1XX_HD)|| defined(STM32L1XX_MD_PLUS)
-	    if (!STM_EVAL_PBGetState(Button_KEY) == Bit_RESET)
+			if (!STM_EVAL_PBGetState(Button_KEY) == Bit_RESET)
 #else
-	    if (STM_EVAL_PBGetState(Button_KEY) == Bit_RESET)
+			if (STM_EVAL_PBGetState(Button_KEY) == Bit_RESET)
 #endif
-	    {
-		Send_Buffer[1] = 0x01;
-	    } else {
-		Send_Buffer[1] = 0x00;
-	    }
+			{
+				Send_Buffer[1] = 0x01;
+			} else {
+				Send_Buffer[1] = 0x00;
+			}
 
-	    /* Write the descriptor through the endpoint */
-	    USB_SIL_Write(EP1_IN, (uint8_t *) Send_Buffer, 2);
-	    SetEPTxValid(ENDP1);
-	    PrevXferComplete = 0;
+			/* Write the descriptor through the endpoint */
+			USB_SIL_Write(EP1_IN, (uint8_t *) Send_Buffer, 2);
+			SetEPTxValid(ENDP1);
+			PrevXferComplete = 0;
+		}
+		/* Clear the EXTI line  pending bit */
+		EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
 	}
-	/* Clear the EXTI line  pending bit */
-	EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
-    }
 }
 
 #if !defined(STM32L1XX_MD) &&  !defined(STM32L1XX_HD) && !defined(STM32L1XX_MD_PLUS)&& ! defined (STM32F37X) && ! defined (STM32F30X)
@@ -338,30 +338,30 @@ void EXTI9_5_IRQHandler(void)
 *******************************************************************************/
 void EXTI15_10_IRQHandler(void)
 {
-    stm_printf("EXTI15_10_IRQHandler\n");
-    if (EXTI_GetITStatus(TAMPER_BUTTON_EXTI_LINE) != RESET) {
-	if ((PrevXferComplete) && (bDeviceState == CONFIGURED)) {
-	    Send_Buffer[0] = 0x06;
+	stm_printf("EXTI15_10_IRQHandler\n");
+	if (EXTI_GetITStatus(TAMPER_BUTTON_EXTI_LINE) != RESET) {
+		if ((PrevXferComplete) && (bDeviceState == CONFIGURED)) {
+			Send_Buffer[0] = 0x06;
 
-	    if (STM_EVAL_PBGetState(Button_TAMPER) == Bit_RESET) {
-		Send_Buffer[1] = 0x01;
-	    } else {
-		Send_Buffer[1] = 0x00;
-	    }
+			if (STM_EVAL_PBGetState(Button_TAMPER) == Bit_RESET) {
+				Send_Buffer[1] = 0x01;
+			} else {
+				Send_Buffer[1] = 0x00;
+			}
 
-	    /* Write the descriptor through the endpoint */
-	    USB_SIL_Write(EP1_IN, (uint8_t *) Send_Buffer, 2);
+			/* Write the descriptor through the endpoint */
+			USB_SIL_Write(EP1_IN, (uint8_t *) Send_Buffer, 2);
 
-	    SetEPTxValid(ENDP1);
+			SetEPTxValid(ENDP1);
 
-	    PrevXferComplete = 0;
+			PrevXferComplete = 0;
+		}
+		/* Clear the EXTI line 13 pending bit */
+		EXTI_ClearITPendingBit(TAMPER_BUTTON_EXTI_LINE);
 	}
-	/* Clear the EXTI line 13 pending bit */
-	EXTI_ClearITPendingBit(TAMPER_BUTTON_EXTI_LINE);
-    }
 }
 
-#endif				/*STM32L1XX_HD */
+#endif /*STM32L1XX_HD */
 
 /*******************************************************************************
 * Function Name  : USB_FS_WKUP_IRQHandler
@@ -377,8 +377,8 @@ void USB_FS_WKUP_IRQHandler(void)
 void USBWakeUp_IRQHandler(void)
 #endif
 {
-    stm_printf("USB_FS_WKUP_IRQHandler\n");
-    EXTI_ClearITPendingBit(EXTI_Line18);
+	stm_printf("USB_FS_WKUP_IRQHandler\n");
+	EXTI_ClearITPendingBit(EXTI_Line18);
 }
 
 /******************************************************************************/

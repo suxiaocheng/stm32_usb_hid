@@ -11,6 +11,8 @@
 *.dep
 *.__i
 *.htm
+*.bak
+*~
 
 # Other type of project
 EWARM/

@@ -151,8 +151,8 @@ void CEC_Init(CEC_InitTypeDef * CEC_InitStruct)
 
 	/* Configure CEC: Bit Timing Error and Bit Period Error */
 	tmpreg |=
-	    (uint16_t) (CEC_InitStruct->
-			CEC_BitTimingMode | CEC_InitStruct->CEC_BitPeriodMode);
+	    (uint16_t) (CEC_InitStruct->CEC_BitTimingMode | CEC_InitStruct->
+			CEC_BitPeriodMode);
 
 	/* Write to CEC CFGR  register */
 	CEC->CFGR = tmpreg;

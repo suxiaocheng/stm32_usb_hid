@@ -25,7 +25,6 @@
   ******************************************************************************
   */
 
-
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __usb_prop_H
 #define __usb_prop_H
@@ -38,13 +37,14 @@
 void Speaker_init(void);
 void Speaker_Reset(void);
 void Speaker_SetConfiguration(void);
-void Speaker_SetDeviceAddress (void);
-void Speaker_Status_In (void);
-void Speaker_Status_Out (void);
+void Speaker_SetDeviceAddress(void);
+void Speaker_Status_In(void);
+void Speaker_Status_Out(void);
 RESULT Speaker_Data_Setup(uint8_t);
 RESULT Speaker_NoData_Setup(uint8_t);
-RESULT Speaker_Get_Interface_Setting(uint8_t Interface, uint8_t AlternateSetting);
-uint8_t *Speaker_GetDeviceDescriptor(uint16_t );
+RESULT Speaker_Get_Interface_Setting(uint8_t Interface,
+				     uint8_t AlternateSetting);
+uint8_t *Speaker_GetDeviceDescriptor(uint16_t);
 uint8_t *Speaker_GetConfigDescriptor(uint16_t);
 uint8_t *Speaker_GetStringDescriptor(uint16_t);
 uint8_t *Mute_Command(uint16_t Length);
@@ -64,4 +64,3 @@ uint8_t *Mute_Command(uint16_t Length);
 
 #endif /* __usb_prop_H */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-

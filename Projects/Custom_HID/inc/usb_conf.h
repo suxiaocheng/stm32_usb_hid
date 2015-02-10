@@ -25,7 +25,6 @@
   ******************************************************************************
   */
 
-
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USB_CONF_H
 #define __USB_CONF_H
@@ -72,7 +71,6 @@
 #define IMR_MSK (CNTR_CTRM  | CNTR_WKUPM | CNTR_SUSPM | CNTR_ERRM  | CNTR_SOFM \
                  | CNTR_RESETM )
 
-
 /* CTR service routines */
 /* associated to defined endpoints */
 /* #define  EP1_IN_Callback   NOP_Process */
@@ -97,4 +95,3 @@
 #endif /*__USB_CONF_H*/
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-

@@ -259,15 +259,13 @@ uint8_t CAN_Init(CAN_TypeDef * CANx, CAN_InitTypeDef * CAN_InitStruct)
 
 		/* Set the bit timing register */
 		CANx->BTR =
-		    (uint32_t) ((uint32_t) CAN_InitStruct->
-				CAN_Mode << 30) | ((uint32_t) CAN_InitStruct->
-						   CAN_SJW << 24) | ((uint32_t)
-								     CAN_InitStruct->
-								     CAN_BS1 <<
-								     16) |
-		    ((uint32_t) CAN_InitStruct->
-		     CAN_BS2 << 20) | ((uint32_t) CAN_InitStruct->
-				       CAN_Prescaler - 1);
+		    (uint32_t) ((uint32_t) CAN_InitStruct->CAN_Mode << 30) |
+		    ((uint32_t) CAN_InitStruct->CAN_SJW << 24) | ((uint32_t)
+								  CAN_InitStruct->CAN_BS1
+								  << 16) |
+		    ((uint32_t) CAN_InitStruct->CAN_BS2 << 20) | ((uint32_t)
+								  CAN_InitStruct->CAN_Prescaler
+								  - 1);
 
 		/* Request leave initialisation */
 		CANx->MCR &= ~(uint32_t) CAN_MCR_INRQ;
@@ -329,40 +327,40 @@ void CAN_FilterInit(CAN_FilterInitTypeDef * CAN_FilterInitStruct)
 
 		/* First 16-bit identifier and First 16-bit mask */
 		/* Or First 16-bit identifier and Second 16-bit identifier */
-		CAN1->sFilterRegister[CAN_FilterInitStruct->CAN_FilterNumber].
-		    FR1 =
-		    ((0x0000FFFF & (uint32_t) CAN_FilterInitStruct->
-		      CAN_FilterMaskIdLow) << 16) | (0x0000FFFF & (uint32_t)
-						     CAN_FilterInitStruct->
-						     CAN_FilterIdLow);
+		CAN1->sFilterRegister[CAN_FilterInitStruct->
+				      CAN_FilterNumber].FR1 =
+		    ((0x0000FFFF & (uint32_t)
+		      CAN_FilterInitStruct->CAN_FilterMaskIdLow) << 16) |
+		    (0x0000FFFF & (uint32_t)
+		     CAN_FilterInitStruct->CAN_FilterIdLow);
 
 		/* Second 16-bit identifier and Second 16-bit mask */
 		/* Or Third 16-bit identifier and Fourth 16-bit identifier */
-		CAN1->sFilterRegister[CAN_FilterInitStruct->CAN_FilterNumber].
-		    FR2 =
-		    ((0x0000FFFF & (uint32_t) CAN_FilterInitStruct->
-		      CAN_FilterMaskIdHigh) << 16) | (0x0000FFFF & (uint32_t)
-						      CAN_FilterInitStruct->
-						      CAN_FilterIdHigh);
+		CAN1->sFilterRegister[CAN_FilterInitStruct->
+				      CAN_FilterNumber].FR2 =
+		    ((0x0000FFFF & (uint32_t)
+		      CAN_FilterInitStruct->CAN_FilterMaskIdHigh) << 16) |
+		    (0x0000FFFF & (uint32_t)
+		     CAN_FilterInitStruct->CAN_FilterIdHigh);
 	}
 
 	if (CAN_FilterInitStruct->CAN_FilterScale == CAN_FilterScale_32bit) {
 		/* 32-bit scale for the filter */
 		CAN1->FS1R |= filter_number_bit_pos;
 		/* 32-bit identifier or First 32-bit identifier */
-		CAN1->sFilterRegister[CAN_FilterInitStruct->CAN_FilterNumber].
-		    FR1 =
-		    ((0x0000FFFF & (uint32_t) CAN_FilterInitStruct->
-		      CAN_FilterIdHigh) << 16) | (0x0000FFFF & (uint32_t)
-						  CAN_FilterInitStruct->
-						  CAN_FilterIdLow);
+		CAN1->sFilterRegister[CAN_FilterInitStruct->
+				      CAN_FilterNumber].FR1 =
+		    ((0x0000FFFF & (uint32_t)
+		      CAN_FilterInitStruct->CAN_FilterIdHigh) << 16) |
+		    (0x0000FFFF & (uint32_t)
+		     CAN_FilterInitStruct->CAN_FilterIdLow);
 		/* 32-bit mask or Second 32-bit identifier */
-		CAN1->sFilterRegister[CAN_FilterInitStruct->CAN_FilterNumber].
-		    FR2 =
-		    ((0x0000FFFF & (uint32_t) CAN_FilterInitStruct->
-		      CAN_FilterMaskIdHigh) << 16) | (0x0000FFFF & (uint32_t)
-						      CAN_FilterInitStruct->
-						      CAN_FilterMaskIdLow);
+		CAN1->sFilterRegister[CAN_FilterInitStruct->
+				      CAN_FilterNumber].FR2 =
+		    ((0x0000FFFF & (uint32_t)
+		      CAN_FilterInitStruct->CAN_FilterMaskIdHigh) << 16) |
+		    (0x0000FFFF & (uint32_t)
+		     CAN_FilterInitStruct->CAN_FilterMaskIdLow);
 	}
 
 	/* Filter Mode */

@@ -27,7 +27,6 @@
   ******************************************************************************
   */
 
-
 /* Includes ------------------------------------------------------------------*/
 #include "hw_config.h"
 #include "stm32_it.h"
@@ -66,10 +65,9 @@ void NMI_Handler(void)
 *******************************************************************************/
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+	/* Go to infinite loop when Hard Fault exception occurs */
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -81,10 +79,9 @@ void HardFault_Handler(void)
 *******************************************************************************/
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+	/* Go to infinite loop when Memory Manage exception occurs */
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -96,10 +93,9 @@ void MemManage_Handler(void)
 *******************************************************************************/
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+	/* Go to infinite loop when Bus Fault exception occurs */
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -111,10 +107,9 @@ void BusFault_Handler(void)
 *******************************************************************************/
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+	/* Go to infinite loop when Usage Fault exception occurs */
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -175,7 +170,7 @@ void SysTick_Handler(void)
 *******************************************************************************/
 void USB_HP_CAN1_TX_IRQHandler(void)
 {
-  CTR_HP();
+	CTR_HP();
 }
 
 /*******************************************************************************
@@ -192,7 +187,7 @@ void USB_LP_IRQHandler(void)
 void USB_LP_CAN1_RX0_IRQHandler(void)
 #endif
 {
-  USB_Istr();
+	USB_Istr();
 }
 
 #if defined(STM32F10X_HD) || defined(STM32F10X_XL) || defined(STM32L1XX_HD)|| defined(STM32L1XX_MD_PLUS)
@@ -205,19 +200,19 @@ void USB_LP_CAN1_RX0_IRQHandler(void)
 * Return         : None
 *******************************************************************************/
 void SDIO_IRQHandler(void)
-{ 
-  /* Process All SDIO Interrupt Sources */
-  SD_ProcessIRQSrc();
-  
+{
+	/* Process All SDIO Interrupt Sources */
+	SD_ProcessIRQSrc();
+
 }
 
 void SD_SDIO_DMA_IRQHANDLER(void)
 {
-  /* Process DMA2 Stream3 or DMA2 Stream6 Interrupt Sources */
-  SD_ProcessDMAIRQ();
+	/* Process DMA2 Stream3 or DMA2 Stream6 Interrupt Sources */
+	SD_ProcessDMAIRQ();
 }
 
-#endif /* STM32F10X_HD | STM32F10X_XL*/
+#endif /* STM32F10X_HD | STM32F10X_XL */
 /*******************************************************************************
 * Function Name  : USB_FS_WKUP_IRQHandler
 * Description    : This function handles USB WakeUp interrupt request.
@@ -232,7 +227,7 @@ void USB_FS_WKUP_IRQHandler(void)
 void USBWakeUp_IRQHandler(void)
 #endif
 {
-  EXTI_ClearITPendingBit(EXTI_Line18);
+	EXTI_ClearITPendingBit(EXTI_Line18);
 }
 
 /******************************************************************************/

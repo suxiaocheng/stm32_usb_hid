@@ -72,10 +72,9 @@ void NMI_Handler(void)
 *******************************************************************************/
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+	/* Go to infinite loop when Hard Fault exception occurs */
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -87,10 +86,9 @@ void HardFault_Handler(void)
 *******************************************************************************/
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+	/* Go to infinite loop when Memory Manage exception occurs */
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -102,10 +100,9 @@ void MemManage_Handler(void)
 *******************************************************************************/
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+	/* Go to infinite loop when Bus Fault exception occurs */
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -117,10 +114,9 @@ void BusFault_Handler(void)
 *******************************************************************************/
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+	/* Go to infinite loop when Usage Fault exception occurs */
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -181,7 +177,7 @@ void SysTick_Handler(void)
 *******************************************************************************/
 void USB_HP_CAN1_TX_IRQHandler(void)
 {
-  CTR_HP();
+	CTR_HP();
 }
 
 /*******************************************************************************
@@ -198,7 +194,7 @@ void USB_LP_IRQHandler(void)
 void USB_LP_CAN1_RX0_IRQHandler(void)
 #endif
 {
-  USB_Istr();
+	USB_Istr();
 }
 
 #ifdef USE_STM3210B_EVAL
@@ -211,17 +207,16 @@ void USB_LP_CAN1_RX0_IRQHandler(void)
 *******************************************************************************/
 void TIM2_IRQHandler(void)
 {
-  if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
-  {
-    /* Clear TIM2 update interrupt */
-    TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
+	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) {
+		/* Clear TIM2 update interrupt */
+		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
 
-    if ((Out_Data_Offset < In_Data_Offset) && ((uint8_t)(MUTE_DATA) == 0))
-    {
-      TIM_SetCompare3(TIM4, Stream_Buff[Out_Data_Offset]);
-      Out_Data_Offset++;
-    }
-  }
+		if ((Out_Data_Offset < In_Data_Offset)
+		    && ((uint8_t) (MUTE_DATA) == 0)) {
+			TIM_SetCompare3(TIM4, Stream_Buff[Out_Data_Offset]);
+			Out_Data_Offset++;
+		}
+	}
 }
 #endif /* USE_STM3210B_EVAL */
 
@@ -235,29 +230,29 @@ void TIM2_IRQHandler(void)
 *******************************************************************************/
 void SPI2_IRQHandler(void)
 {
-  static uint8_t channel = 0;
+	static uint8_t channel = 0;
 
-  if ((SPI_I2S_GetITStatus(SPI2, SPI_I2S_IT_TXE) == SET))
-  {
-    /* Audio codec configuration section */
-    if (GetVar_SendDummyData() == 1)
-    {
-      /* Send a dummy data just to generate the I2S clock */
-      SPI_I2S_SendData(SPI2, DUMMYDATA);
-    }
-    
-   else if ((Out_Data_Offset < In_Data_Offset) && ((uint8_t)(MUTE_DATA) == 0))
-    {
-      if ((channel++) & 1)
-      {
-        SPI_I2S_SendData(SPI2, (uint16_t)Stream_Buff[Out_Data_Offset++]);
-      }
-      else
-      {
-        SPI_I2S_SendData(SPI2, (uint16_t)Stream_Buff[Out_Data_Offset]);
-      }
-    }
-  }
+	if ((SPI_I2S_GetITStatus(SPI2, SPI_I2S_IT_TXE) == SET)) {
+		/* Audio codec configuration section */
+		if (GetVar_SendDummyData() == 1) {
+			/* Send a dummy data just to generate the I2S clock */
+			SPI_I2S_SendData(SPI2, DUMMYDATA);
+		}
+
+		else if ((Out_Data_Offset < In_Data_Offset)
+			 && ((uint8_t) (MUTE_DATA) == 0)) {
+			if ((channel++) & 1) {
+				SPI_I2S_SendData(SPI2,
+						 (uint16_t)
+						 Stream_Buff
+						 [Out_Data_Offset++]);
+			} else {
+				SPI_I2S_SendData(SPI2,
+						 (uint16_t)
+						 Stream_Buff[Out_Data_Offset]);
+			}
+		}
+	}
 }
 
 #endif /* USE_STM3210E_EVAL */
@@ -271,18 +266,18 @@ void SPI2_IRQHandler(void)
   */
 void TIM6_IRQHandler(void)
 {
-  if (TIM_GetITStatus(TIM6, TIM_IT_Update) != RESET)
-  {
-    /* Clear TIM6 update interrupt */
-    TIM_ClearITPendingBit(TIM6, TIM_IT_Update);
+	if (TIM_GetITStatus(TIM6, TIM_IT_Update) != RESET) {
+		/* Clear TIM6 update interrupt */
+		TIM_ClearITPendingBit(TIM6, TIM_IT_Update);
 
-    if ((Out_Data_Offset < In_Data_Offset) && ((uint8_t)(MUTE_DATA) == 0))
-    {
-      /* Set DAC Channel1 DHR register */
-      DAC_SetChannel1Data(DAC_Align_8b_R, Stream_Buff[Out_Data_Offset]);      
-      Out_Data_Offset++;
-    }
-  }
+		if ((Out_Data_Offset < In_Data_Offset)
+		    && ((uint8_t) (MUTE_DATA) == 0)) {
+			/* Set DAC Channel1 DHR register */
+			DAC_SetChannel1Data(DAC_Align_8b_R,
+					    Stream_Buff[Out_Data_Offset]);
+			Out_Data_Offset++;
+		}
+	}
 }
 
 #endif /* STM32L1XX_XD */
@@ -296,7 +291,7 @@ void TIM6_IRQHandler(void)
 *******************************************************************************/
 void USB_HP_IRQHandler(void)
 {
-  CTR_HP();
+	CTR_HP();
 }
 
 /*******************************************************************************
@@ -312,7 +307,7 @@ void USB_FS_WKUP_IRQHandler(void)
 void USBWakeUp_IRQHandler(void)
 #endif
 {
-  EXTI_ClearITPendingBit(EXTI_Line18);
+	EXTI_ClearITPendingBit(EXTI_Line18);
 }
 
 /******************************************************************************/

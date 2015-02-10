@@ -43,21 +43,21 @@ void Set_System(void);
 void Set_USBClock(void);
 void Enter_LowPowerMode(void);
 void Leave_LowPowerMode(void);
-void USB_Cable_Config (FunctionalState NewState);
+void USB_Cable_Config(FunctionalState NewState);
 void USB_Interrupts_Config(void);
 
 void DFU_Button_Config(void);
-uint8_t  DFU_Button_Read(void);
+uint8_t DFU_Button_Read(void);
 
 void Reset_Device(void);
 void SMI_FLASH_Init(void);
 void SMI_FLASH_SectorErase(uint32_t Address);
 void SMI_FLASH_WordWrite(uint32_t Address, uint32_t Data);
-void SMI_FLASH_PageWrite(uint32_t Address, uint32_t* wBuffer);
+void SMI_FLASH_PageWrite(uint32_t Address, uint32_t * wBuffer);
 void Get_SerialNum(void);
 
 /* External variables --------------------------------------------------------*/
 
-#endif  /*__HW_CONFIG_H*/
+#endif	/*__HW_CONFIG_H*/
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

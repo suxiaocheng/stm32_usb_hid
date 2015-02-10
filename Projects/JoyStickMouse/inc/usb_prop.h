@@ -25,22 +25,20 @@
   ******************************************************************************
   */
 
-
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USB_PROP_H
 #define __USB_PROP_H
 
 /* Includes ------------------------------------------------------------------*/
 /* Exported types ------------------------------------------------------------*/
-typedef enum _HID_REQUESTS
-{
-  GET_REPORT = 1,
-  GET_IDLE,
-  GET_PROTOCOL,
+typedef enum _HID_REQUESTS {
+	GET_REPORT = 1,
+	GET_IDLE,
+	GET_PROTOCOL,
 
-  SET_REPORT = 9,
-  SET_IDLE,
-  SET_PROTOCOL
+	SET_REPORT = 9,
+	SET_IDLE,
+	SET_PROTOCOL
 } HID_REQUESTS;
 
 /* Exported constants --------------------------------------------------------*/
@@ -49,13 +47,14 @@ typedef enum _HID_REQUESTS
 void Joystick_init(void);
 void Joystick_Reset(void);
 void Joystick_SetConfiguration(void);
-void Joystick_SetDeviceAddress (void);
-void Joystick_Status_In (void);
-void Joystick_Status_Out (void);
+void Joystick_SetDeviceAddress(void);
+void Joystick_Status_In(void);
+void Joystick_Status_Out(void);
 RESULT Joystick_Data_Setup(uint8_t);
 RESULT Joystick_NoData_Setup(uint8_t);
-RESULT Joystick_Get_Interface_Setting(uint8_t Interface, uint8_t AlternateSetting);
-uint8_t *Joystick_GetDeviceDescriptor(uint16_t );
+RESULT Joystick_Get_Interface_Setting(uint8_t Interface,
+				      uint8_t AlternateSetting);
+uint8_t *Joystick_GetDeviceDescriptor(uint16_t);
 uint8_t *Joystick_GetConfigDescriptor(uint16_t);
 uint8_t *Joystick_GetStringDescriptor(uint16_t);
 RESULT Joystick_SetProtocol(void);

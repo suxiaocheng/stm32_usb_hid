@@ -181,9 +181,8 @@ void OPAMP_Init(uint32_t OPAMP_Selection, OPAMP_InitTypeDef * OPAMP_InitStruct)
 
 	/*!< Configure OPAMP: inverting and non inverting inputs */
 	tmpreg |=
-	    (uint32_t) (OPAMP_InitStruct->
-			OPAMP_InvertingInput | OPAMP_InitStruct->
-			OPAMP_NonInvertingInput);
+	    (uint32_t) (OPAMP_InitStruct->OPAMP_InvertingInput |
+			OPAMP_InitStruct->OPAMP_NonInvertingInput);
 
 	/*!< Write to OPAMPx_CSR register */
 	*(__IO uint32_t *) (OPAMP_BASE + OPAMP_Selection) = tmpreg;
@@ -357,8 +356,8 @@ void OPAMP_TimerControlledMuxConfig(uint32_t OPAMP_Selection,
 	/*!< Configure OPAMP: secondary inverting and non inverting inputs */
 	tmpreg |=
 	    (uint32_t) ((uint32_t) (OPAMP_InitStruct->OPAMP_InvertingInput << 3)
-			| (uint32_t) (OPAMP_InitStruct->
-				      OPAMP_NonInvertingInput << 7));
+			| (uint32_t) (OPAMP_InitStruct->OPAMP_NonInvertingInput
+				      << 7));
 
 	/*!< Write to OPAMPx_CSR register */
 	*(__IO uint32_t *) (OPAMP_BASE + OPAMP_Selection) = tmpreg;

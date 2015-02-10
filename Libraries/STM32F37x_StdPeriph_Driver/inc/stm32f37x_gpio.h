@@ -31,7 +31,7 @@
 #define __STM32F37X_GPIO_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -46,13 +46,13 @@
   */
 
 /* Exported types ------------------------------------------------------------*/
- 
+
 #define IS_GPIO_ALL_PERIPH(PERIPH) (((PERIPH) == GPIOA) || \
                                     ((PERIPH) == GPIOB) || \
                                     ((PERIPH) == GPIOC) || \
                                     ((PERIPH) == GPIOD) || \
                                     ((PERIPH) == GPIOE) || \
-                                    ((PERIPH) == GPIOF))  
+                                    ((PERIPH) == GPIOF))
 
 #define IS_GPIO_LIST_PERIPH(PERIPH) (((PERIPH) == GPIOA) || \
                                      ((PERIPH) == GPIOB) || \
@@ -60,13 +60,12 @@
 /** @defgroup Configuration_Mode_enumeration 
   * @{
   */
-typedef enum
-{
-  GPIO_Mode_IN   = 0x00, /*!< GPIO Input Mode */
-  GPIO_Mode_OUT  = 0x01, /*!< GPIO Output Mode */
-  GPIO_Mode_AF   = 0x02, /*!< GPIO Alternate function Mode */
-  GPIO_Mode_AN   = 0x03  /*!< GPIO Analog In/Out Mode      */
-}GPIOMode_TypeDef;
+	typedef enum {
+		GPIO_Mode_IN = 0x00,	/*!< GPIO Input Mode */
+		GPIO_Mode_OUT = 0x01,	/*!< GPIO Output Mode */
+		GPIO_Mode_AF = 0x02,	/*!< GPIO Alternate function Mode */
+		GPIO_Mode_AN = 0x03	/*!< GPIO Analog In/Out Mode      */
+	} GPIOMode_TypeDef;
 
 #define IS_GPIO_MODE(MODE) (((MODE) == GPIO_Mode_IN)|| ((MODE) == GPIO_Mode_OUT) || \
                             ((MODE) == GPIO_Mode_AF)|| ((MODE) == GPIO_Mode_AN))
@@ -77,11 +76,10 @@ typedef enum
 /** @defgroup Output_type_enumeration
   * @{
   */
-typedef enum
-{
-  GPIO_OType_PP = 0x00,
-  GPIO_OType_OD = 0x01
-}GPIOOType_TypeDef;
+	typedef enum {
+		GPIO_OType_PP = 0x00,
+		GPIO_OType_OD = 0x01
+	} GPIOOType_TypeDef;
 
 #define IS_GPIO_OTYPE(OTYPE) (((OTYPE) == GPIO_OType_PP) || ((OTYPE) == GPIO_OType_OD))
 
@@ -92,12 +90,11 @@ typedef enum
 /** @defgroup Output_Maximum_frequency_enumeration 
   * @{
   */
-typedef enum
-{
-  GPIO_Speed_Level_1  = 0x01, /*!< Medium Speed */
-  GPIO_Speed_Level_2  = 0x02, /*!< Fast Speed   */
-  GPIO_Speed_Level_3  = 0x03  /*!< High Speed   */
-}GPIOSpeed_TypeDef;
+	typedef enum {
+		GPIO_Speed_Level_1 = 0x01,	/*!< Medium Speed */
+		GPIO_Speed_Level_2 = 0x02,	/*!< Fast Speed   */
+		GPIO_Speed_Level_3 = 0x03	/*!< High Speed   */
+	} GPIOSpeed_TypeDef;
 
 #define IS_GPIO_SPEED(SPEED) (((SPEED) == GPIO_Speed_Level_1) || ((SPEED) == GPIO_Speed_Level_2) || \
                               ((SPEED) == GPIO_Speed_Level_3))
@@ -108,12 +105,11 @@ typedef enum
 /** @defgroup Configuration_Pull-Up_Pull-Down_enumeration 
   * @{
   */
-typedef enum
-{
-  GPIO_PuPd_NOPULL = 0x00,
-  GPIO_PuPd_UP     = 0x01,
-  GPIO_PuPd_DOWN   = 0x02
-}GPIOPuPd_TypeDef;
+	typedef enum {
+		GPIO_PuPd_NOPULL = 0x00,
+		GPIO_PuPd_UP = 0x01,
+		GPIO_PuPd_DOWN = 0x02
+	} GPIOPuPd_TypeDef;
 
 #define IS_GPIO_PUPD(PUPD) (((PUPD) == GPIO_PuPd_NOPULL) || ((PUPD) == GPIO_PuPd_UP) || \
                             ((PUPD) == GPIO_PuPd_DOWN))
@@ -124,11 +120,10 @@ typedef enum
 /** @defgroup Bit_SET_and_Bit_RESET_enumeration
   * @{
   */
-typedef enum
-{
-  Bit_RESET = 0,
-  Bit_SET
-}BitAction;
+	typedef enum {
+		Bit_RESET = 0,
+		Bit_SET
+	} BitAction;
 
 #define IS_GPIO_BIT_ACTION(ACTION) (((ACTION) == Bit_RESET) || ((ACTION) == Bit_SET))
 /**
@@ -138,23 +133,22 @@ typedef enum
 /**
   * @brief  GPIO Init structure definition
   */
-typedef struct
-{
-  uint32_t GPIO_Pin;              /*!< Specifies the GPIO pins to be configured.
-                                       This parameter can be any value of @ref GPIO_pins_define */
+	typedef struct {
+		uint32_t GPIO_Pin;	/*!< Specifies the GPIO pins to be configured.
+					   This parameter can be any value of @ref GPIO_pins_define */
 
-  GPIOMode_TypeDef GPIO_Mode;     /*!< Specifies the operating mode for the selected pins.
-                                       This parameter can be a value of @ref GPIOMode_TypeDef   */
+		GPIOMode_TypeDef GPIO_Mode;	/*!< Specifies the operating mode for the selected pins.
+						   This parameter can be a value of @ref GPIOMode_TypeDef   */
 
-  GPIOSpeed_TypeDef GPIO_Speed;   /*!< Specifies the speed for the selected pins.
-                                       This parameter can be a value of @ref GPIOSpeed_TypeDef  */
+		GPIOSpeed_TypeDef GPIO_Speed;	/*!< Specifies the speed for the selected pins.
+						   This parameter can be a value of @ref GPIOSpeed_TypeDef  */
 
-  GPIOOType_TypeDef GPIO_OType;   /*!< Specifies the operating output type for the selected pins.
-                                       This parameter can be a value of @ref GPIOOType_TypeDef  */
+		GPIOOType_TypeDef GPIO_OType;	/*!< Specifies the operating output type for the selected pins.
+						   This parameter can be a value of @ref GPIOOType_TypeDef  */
 
-  GPIOPuPd_TypeDef GPIO_PuPd;     /*!< Specifies the operating Pull-up/Pull down for the selected pins.
-                                       This parameter can be a value of @ref GPIOPuPd_TypeDef   */
-}GPIO_InitTypeDef;
+		GPIOPuPd_TypeDef GPIO_PuPd;	/*!< Specifies the operating Pull-up/Pull down for the selected pins.
+						   This parameter can be a value of @ref GPIOPuPd_TypeDef   */
+	} GPIO_InitTypeDef;
 
 /* Exported constants --------------------------------------------------------*/
 
@@ -165,23 +159,23 @@ typedef struct
 /** @defgroup GPIO_pins_define 
   * @{
   */
-#define GPIO_Pin_0                 ((uint16_t)0x0001)  /*!< Pin 0 selected    */
-#define GPIO_Pin_1                 ((uint16_t)0x0002)  /*!< Pin 1 selected    */
-#define GPIO_Pin_2                 ((uint16_t)0x0004)  /*!< Pin 2 selected    */
-#define GPIO_Pin_3                 ((uint16_t)0x0008)  /*!< Pin 3 selected    */
-#define GPIO_Pin_4                 ((uint16_t)0x0010)  /*!< Pin 4 selected    */
-#define GPIO_Pin_5                 ((uint16_t)0x0020)  /*!< Pin 5 selected    */
-#define GPIO_Pin_6                 ((uint16_t)0x0040)  /*!< Pin 6 selected    */
-#define GPIO_Pin_7                 ((uint16_t)0x0080)  /*!< Pin 7 selected    */
-#define GPIO_Pin_8                 ((uint16_t)0x0100)  /*!< Pin 8 selected    */
-#define GPIO_Pin_9                 ((uint16_t)0x0200)  /*!< Pin 9 selected    */
-#define GPIO_Pin_10                ((uint16_t)0x0400)  /*!< Pin 10 selected   */
-#define GPIO_Pin_11                ((uint16_t)0x0800)  /*!< Pin 11 selected   */
-#define GPIO_Pin_12                ((uint16_t)0x1000)  /*!< Pin 12 selected   */
-#define GPIO_Pin_13                ((uint16_t)0x2000)  /*!< Pin 13 selected   */
-#define GPIO_Pin_14                ((uint16_t)0x4000)  /*!< Pin 14 selected   */
-#define GPIO_Pin_15                ((uint16_t)0x8000)  /*!< Pin 15 selected   */
-#define GPIO_Pin_All               ((uint16_t)0xFFFF)  /*!< All pins selected */
+#define GPIO_Pin_0                 ((uint16_t)0x0001)	/*!< Pin 0 selected    */
+#define GPIO_Pin_1                 ((uint16_t)0x0002)	/*!< Pin 1 selected    */
+#define GPIO_Pin_2                 ((uint16_t)0x0004)	/*!< Pin 2 selected    */
+#define GPIO_Pin_3                 ((uint16_t)0x0008)	/*!< Pin 3 selected    */
+#define GPIO_Pin_4                 ((uint16_t)0x0010)	/*!< Pin 4 selected    */
+#define GPIO_Pin_5                 ((uint16_t)0x0020)	/*!< Pin 5 selected    */
+#define GPIO_Pin_6                 ((uint16_t)0x0040)	/*!< Pin 6 selected    */
+#define GPIO_Pin_7                 ((uint16_t)0x0080)	/*!< Pin 7 selected    */
+#define GPIO_Pin_8                 ((uint16_t)0x0100)	/*!< Pin 8 selected    */
+#define GPIO_Pin_9                 ((uint16_t)0x0200)	/*!< Pin 9 selected    */
+#define GPIO_Pin_10                ((uint16_t)0x0400)	/*!< Pin 10 selected   */
+#define GPIO_Pin_11                ((uint16_t)0x0800)	/*!< Pin 11 selected   */
+#define GPIO_Pin_12                ((uint16_t)0x1000)	/*!< Pin 12 selected   */
+#define GPIO_Pin_13                ((uint16_t)0x2000)	/*!< Pin 13 selected   */
+#define GPIO_Pin_14                ((uint16_t)0x4000)	/*!< Pin 14 selected   */
+#define GPIO_Pin_15                ((uint16_t)0x8000)	/*!< Pin 15 selected   */
+#define GPIO_Pin_All               ((uint16_t)0xFFFF)	/*!< All pins selected */
 
 #define IS_GPIO_PIN(PIN) ((PIN) != (uint16_t)0x00)
 
@@ -253,72 +247,72 @@ typedef struct
 /** 
   * @brief  AF 0 selection
   */
-#define GPIO_AF_0            ((uint8_t)0x00) /* MCO, JTMS-SWDAT, JTCK-SWCLK, JTDI,
-                                               JTDO, JTRST, TRACECLK, TRACED, TRACEWO */
+#define GPIO_AF_0            ((uint8_t)0x00)	/* MCO, JTMS-SWDAT, JTCK-SWCLK, JTDI,
+						   JTDO, JTRST, TRACECLK, TRACED, TRACEWO */
 /**
   * @brief  AF 1 selection
   */
-#define GPIO_AF_1            ((uint8_t)0x01) /* TIM2, TIM15, TIM16, TIM17, OUT */
+#define GPIO_AF_1            ((uint8_t)0x01)	/* TIM2, TIM15, TIM16, TIM17, OUT */
 
 /**
   * @brief  AF 2 selection
   */
-#define GPIO_AF_2            ((uint8_t)0x02) /* TIM3, TIM4, TIM5, TIM13, TIM14, TIM19 */
+#define GPIO_AF_2            ((uint8_t)0x02)	/* TIM3, TIM4, TIM5, TIM13, TIM14, TIM19 */
 
 /**
   * @brief  AF 3 selection
   */
-#define GPIO_AF_3            ((uint8_t)0x03) /* Touch */
+#define GPIO_AF_3            ((uint8_t)0x03)	/* Touch */
 
 /**
   * @brief  AF 4 selection
   */
-#define GPIO_AF_4            ((uint8_t)0x04) /* I2C1, I2C2 */
+#define GPIO_AF_4            ((uint8_t)0x04)	/* I2C1, I2C2 */
 
 /**
   * @brief  AF 5 selection
   */
-#define GPIO_AF_5            ((uint8_t)0x05) /* SPI1, SPI2, IR_OUT */
+#define GPIO_AF_5            ((uint8_t)0x05)	/* SPI1, SPI2, IR_OUT */
 
 /** 
   * @brief  AF 6 selection
   */
-#define GPIO_AF_6            ((uint8_t)0x06) /* SPI1, SPI3, CEC, IR_OUT */
+#define GPIO_AF_6            ((uint8_t)0x06)	/* SPI1, SPI3, CEC, IR_OUT */
 
 /** 
   * @brief  AF 7 selection
   */
-#define GPIO_AF_7            ((uint8_t)0x07) /* USART1, USART2, USART3, CAN, CEC*/
+#define GPIO_AF_7            ((uint8_t)0x07)	/* USART1, USART2, USART3, CAN, CEC */
 
 /**
   * @brief  AF 8 selection
   */
-#define GPIO_AF_8            ((uint8_t)0x08) /* COMP1_OUT, COMP2_OUT */
+#define GPIO_AF_8            ((uint8_t)0x08)	/* COMP1_OUT, COMP2_OUT */
 
 /**
   * @brief  AF 9 selection
   */
-#define GPIO_AF_9            ((uint8_t)0x09) /* CAN, TIM12, TIM13, TIM14, TIM15 */
+#define GPIO_AF_9            ((uint8_t)0x09)	/* CAN, TIM12, TIM13, TIM14, TIM15 */
 
 /**
   * @brief  AF 10 selection
   */
-#define GPIO_AF_10            ((uint8_t)0x0A) /* TIM2, TIM3, TIM4, TIM12, TIM17 */
+#define GPIO_AF_10            ((uint8_t)0x0A)	/* TIM2, TIM3, TIM4, TIM12, TIM17 */
 
 /**
   * @brief  AF 11 selection
   */
-#define GPIO_AF_11            ((uint8_t)0x0B) /* TIM19 */
+#define GPIO_AF_11            ((uint8_t)0x0B)	/* TIM19 */
 
 /**
   * @brief  AF 14 selection
   */
-#define GPIO_AF_14            ((uint8_t)0x0E) /* USBDM, USBDP */
+#define GPIO_AF_14            ((uint8_t)0x0E)	/* USBDM, USBDP */
 
 /**
   * @brief  AF 15 selection
   */
-#define GPIO_AF_15            ((uint8_t)0x0F) /* OUT */
+#define GPIO_AF_15            ((uint8_t)0x0F)	/* OUT */
 
 #define IS_GPIO_AF(AF)   (((AF) == GPIO_AF_0)||((AF) == GPIO_AF_1)||\
                           ((AF) == GPIO_AF_2)||((AF) == GPIO_AF_3)||\
@@ -336,9 +330,9 @@ typedef struct
   * @{
   */
 
-#define GPIO_Speed_10MHz GPIO_Speed_Level_1   /*!< Fast Speed:10MHz   */
-#define GPIO_Speed_2MHz  GPIO_Speed_Level_2   /*!< Medium Speed:2MHz  */
-#define GPIO_Speed_50MHz GPIO_Speed_Level_3   /*!< High Speed:50MHz   */
+#define GPIO_Speed_10MHz GPIO_Speed_Level_1	/*!< Fast Speed:10MHz   */
+#define GPIO_Speed_2MHz  GPIO_Speed_Level_2	/*!< Medium Speed:2MHz  */
+#define GPIO_Speed_50MHz GPIO_Speed_Level_3	/*!< High Speed:50MHz   */
 
 /**
   * @}
@@ -351,37 +345,35 @@ typedef struct
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 /* Function used to set the GPIO configuration to the default reset state *****/
-void GPIO_DeInit(GPIO_TypeDef* GPIOx);
+	void GPIO_DeInit(GPIO_TypeDef * GPIOx);
 
 /* Initialization and Configuration functions *********************************/
-void GPIO_Init(GPIO_TypeDef* GPIOx, GPIO_InitTypeDef* GPIO_InitStruct);
-void GPIO_StructInit(GPIO_InitTypeDef* GPIO_InitStruct);
-void GPIO_PinLockConfig(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
+	void GPIO_Init(GPIO_TypeDef * GPIOx,
+		       GPIO_InitTypeDef * GPIO_InitStruct);
+	void GPIO_StructInit(GPIO_InitTypeDef * GPIO_InitStruct);
+	void GPIO_PinLockConfig(GPIO_TypeDef * GPIOx, uint16_t GPIO_Pin);
 
 /* GPIO Read and Write functions **********************************************/
-uint8_t GPIO_ReadInputDataBit(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
-uint16_t GPIO_ReadInputData(GPIO_TypeDef* GPIOx);
-uint8_t GPIO_ReadOutputDataBit(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
-uint16_t GPIO_ReadOutputData(GPIO_TypeDef* GPIOx);
-void GPIO_SetBits(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
-void GPIO_ResetBits(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
-void GPIO_WriteBit(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, BitAction BitVal);
-void GPIO_Write(GPIO_TypeDef* GPIOx, uint16_t PortVal);
+	uint8_t GPIO_ReadInputDataBit(GPIO_TypeDef * GPIOx, uint16_t GPIO_Pin);
+	uint16_t GPIO_ReadInputData(GPIO_TypeDef * GPIOx);
+	uint8_t GPIO_ReadOutputDataBit(GPIO_TypeDef * GPIOx, uint16_t GPIO_Pin);
+	uint16_t GPIO_ReadOutputData(GPIO_TypeDef * GPIOx);
+	void GPIO_SetBits(GPIO_TypeDef * GPIOx, uint16_t GPIO_Pin);
+	void GPIO_ResetBits(GPIO_TypeDef * GPIOx, uint16_t GPIO_Pin);
+	void GPIO_WriteBit(GPIO_TypeDef * GPIOx, uint16_t GPIO_Pin,
+			   BitAction BitVal);
+	void GPIO_Write(GPIO_TypeDef * GPIOx, uint16_t PortVal);
 
 /* GPIO Alternate functions configuration functions ***************************/
-void GPIO_PinAFConfig(GPIO_TypeDef* GPIOx, uint16_t GPIO_PinSource, uint8_t GPIO_AF);
+	void GPIO_PinAFConfig(GPIO_TypeDef * GPIOx, uint16_t GPIO_PinSource,
+			      uint8_t GPIO_AF);
 
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __STM32F37X_GPIO_H */
+#endif				/* __STM32F37X_GPIO_H */
 /**
   * @}
-  */
-
-/**
+  *//**
   * @}
-  */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+  *//************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

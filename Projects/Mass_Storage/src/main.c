@@ -25,13 +25,12 @@
   ******************************************************************************
   */
 
-
 /* Includes ------------------------------------------------------------------*/
-#include "hw_config.h" 
+#include "hw_config.h"
 #include "usb_lib.h"
 #include "usb_pwr.h"
 
-extern uint16_t MAL_Init (uint8_t lun);
+extern uint16_t MAL_Init(uint8_t lun);
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -49,17 +48,17 @@ extern uint16_t MAL_Init (uint8_t lun);
 *******************************************************************************/
 int main(void)
 {
-  Set_System();
-  Set_USBClock();
-  Led_Config();
-  USB_Interrupts_Config();
-  USB_Init();
-  while (bDeviceState != CONFIGURED);
+	Set_System();
+	Set_USBClock();
+	Led_Config();
+	USB_Interrupts_Config();
+	USB_Init();
+	while (bDeviceState != CONFIGURED) ;
 
-  USB_Configured_LED();
+	USB_Configured_LED();
 
-  while (1)
-  {}
+	while (1) {
+	}
 }
 
 #ifdef USE_FULL_ASSERT
@@ -72,14 +71,14 @@ int main(void)
 * Output         : None
 * Return         : None
 *******************************************************************************/
-void assert_failed(uint8_t* file, uint32_t line)
+void assert_failed(uint8_t * file, uint32_t line)
 {
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+	/* User can add his own implementation to report the file name and line number,
+	   ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while (1)
-  {}
+	/* Infinite loop */
+	while (1) {
+	}
 }
 #endif
 

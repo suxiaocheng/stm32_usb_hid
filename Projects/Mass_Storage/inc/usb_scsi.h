@@ -25,7 +25,6 @@
   ******************************************************************************
   */
 
-
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USB_SCSI_H
 #define __USB_SCSI_H
@@ -83,7 +82,6 @@
 #define VOLUME_OVERFLOW		                    13
 #define MISCOMPARE		                    14
 
-
 #define INVALID_COMMAND                             0x20
 #define INVALID_FIELED_IN_COMMAND                   0x24
 #define PARAMETER_LIST_LENGTH_ERROR                 0x1A
@@ -100,35 +98,36 @@
 #define STANDARD_INQUIRY_DATA_LEN                   0x24
 #define BLKVFY                                      0x04
 
-extern  uint8_t Page00_Inquiry_Data[];
-extern  uint8_t Standard_Inquiry_Data[];
-extern  uint8_t Standard_Inquiry_Data2[];
-extern  uint8_t Mode_Sense6_data[];
-extern  uint8_t Mode_Sense10_data[];
-extern  uint8_t Scsi_Sense_Data[];
-extern  uint8_t ReadCapacity10_Data[];
-extern  uint8_t ReadFormatCapacity_Data [];
+extern uint8_t Page00_Inquiry_Data[];
+extern uint8_t Standard_Inquiry_Data[];
+extern uint8_t Standard_Inquiry_Data2[];
+extern uint8_t Mode_Sense6_data[];
+extern uint8_t Mode_Sense10_data[];
+extern uint8_t Scsi_Sense_Data[];
+extern uint8_t ReadCapacity10_Data[];
+extern uint8_t ReadFormatCapacity_Data[];
 
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 void SCSI_Inquiry_Cmd(uint8_t lun);
 void SCSI_ReadFormatCapacity_Cmd(uint8_t lun);
 void SCSI_ReadCapacity10_Cmd(uint8_t lun);
-void SCSI_RequestSense_Cmd (uint8_t lun);
+void SCSI_RequestSense_Cmd(uint8_t lun);
 void SCSI_Start_Stop_Unit_Cmd(uint8_t lun);
-void SCSI_ModeSense6_Cmd (uint8_t lun);
-void SCSI_ModeSense10_Cmd (uint8_t lun);
-void SCSI_Write10_Cmd(uint8_t lun , uint32_t LBA , uint32_t BlockNbr);
-void SCSI_Read10_Cmd(uint8_t lun , uint32_t LBA , uint32_t BlockNbr);
+void SCSI_ModeSense6_Cmd(uint8_t lun);
+void SCSI_ModeSense10_Cmd(uint8_t lun);
+void SCSI_Write10_Cmd(uint8_t lun, uint32_t LBA, uint32_t BlockNbr);
+void SCSI_Read10_Cmd(uint8_t lun, uint32_t LBA, uint32_t BlockNbr);
 void SCSI_Verify10_Cmd(uint8_t lun);
 
 void SCSI_Invalid_Cmd(uint8_t lun);
 void SCSI_Valid_Cmd(uint8_t lun);
-bool SCSI_Address_Management(uint8_t lun , uint8_t Cmd , uint32_t LBA , uint32_t BlockNbr);
+bool SCSI_Address_Management(uint8_t lun, uint8_t Cmd, uint32_t LBA,
+			     uint32_t BlockNbr);
 
-void Set_Scsi_Sense_Data(uint8_t lun , uint8_t Sens_Key, uint8_t Asc);
-void SCSI_TestUnitReady_Cmd (uint8_t lun);
-void SCSI_Format_Cmd (uint8_t lun);
+void Set_Scsi_Sense_Data(uint8_t lun, uint8_t Sens_Key, uint8_t Asc);
+void SCSI_TestUnitReady_Cmd(uint8_t lun);
+void SCSI_Format_Cmd(uint8_t lun);
 
 //#define SCSI_TestUnitReady_Cmd           SCSI_Valid_Cmd
 #define SCSI_Prevent_Removal_Cmd         SCSI_Valid_Cmd
@@ -151,4 +150,3 @@ void SCSI_Format_Cmd (uint8_t lun);
 #endif /* __USB_SCSI_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-

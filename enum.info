@@ -1,0 +1,59 @@
+P:0x80-0x6-0x1-0x0-0x40
+P:0x0-0x5-0xf00-0x0-0x0
+P:0x80-0x6-0x1-0x0-0x12
+P:0x80-0x6-0x2-0x0-0xff
+P:0x80-0x6-0x3-0x0-0xff
+P:0x80-0x6-0x203-0x904-0xff
+P:0x80-0x6-0x303-0x904-0xff
+P:0x80-0x6-0x6-0x0-0xa
+P:0x80-0x6-0x1-0x0-0x12
+P:0x80-0x6-0x2-0x0-0x9
+P:0x80-0x6-0x2-0x0-0x29
+P:0x0-0x9-0x100-0x0-0x0
+P:0x21-0xa-0x0-0x0-0x0
+P:0x81-0x6-0x22-0x0-0xe3
+
+
+Bus Hound 6.01 capture on Windows Vista Service Pack 1 (x64). Complements of www.perisoft.net
+
+  Device - Device ID (followed by the endpoint for USB devices)
+            (43) Unknown Device
+            (44) USB и║?ии?ижииб└?
+            (45) HID-compliant device
+  Address - FireWire async address or channel number
+  Length - Total transfer length
+  Phase  - Phase Type
+            CTL   USB control transfer       
+            IN    Data in transfer           
+            USTS  USB status                 
+  Data   - Hex dump of the data transferred
+  Descr  - Description of the phase
+  Cmd... - Position in the captured data
+
+
+Device  Address              Length    Phase  Data                                                Description       Cmd.Phase.Ofs(rep)
+------  -------------------  --------  -----  --------------------------------------------------  ----------------  ------------------
+  44.0                                 CTL    80 06 00 01  00 00 12 00                            GET DESCRIPTOR           1.1.0        
+  44.0                             18  IN     12 01 00 02  00 00 00 40  83 04 50 57  00 02 01 02  .......@..PW....         1.2.0        
+                                              03 01                                               ..                       1.2.16       
+  44.0                                 CTL    80 06 00 02  00 00 09 00                            GET DESCRIPTOR           2.1.0        
+  44.0                              9  IN     09 02 29 00  01 01 00 c0  32                        ..).....2                2.2.0        
+  44.0                                 CTL    80 06 00 02  00 00 29 00                            GET DESCRIPTOR           3.1.0        
+  44.0                             41  IN     09 02 29 00  01 01 00 c0  32 09 04 00  00 02 03 00  ..).....2.......         3.2.0        
+                                              00 00 09 21  10 01 00 01  22 a3 00 07  05 81 03 02  ...!....".......         3.2.16       
+                                              00 20 07 05  01 03 02 00  20                        . ......                 3.2.32       
+  44.0                                 CTL    00 09 01 00  00 00 00 00                            SET CONFIG               4.1.0        
+  44.0                                 CTL    21 0a 00 00  00 00 00 00                            SET IDLE                 5.1.0        
+  44.0                                 USTS   c0000004                                            stall pid                5.2.0        
+  44.0                                 CTL    81 06 00 22  00 00 e3 00                            GET DESCRIPTOR           6.1.0        
+  44.0                            163  IN     06 ff 00 09  01 a1 01 85  01 09 01 15  00 25 01 75  .............%.u         6.2.0        
+                                              08 95 01 b1  82 85 01 09  01 91 82 85  02 09 02 15  ................         6.2.16       
+                                              00 25 01 75  08 95 01 b1  82 85 02 09  02 91 82 85  .%.u............         6.2.32       
+                                              03 09 03 15  00 25 01 75  08 95 01 b1  82 85 03 09  .....%.u........         6.2.48       
+                                              03 91 82 85  04 09 04 15  00 25 01 75  08 95 01 b1  .........%.u....         6.2.64       
+                                              82 85 04 09  04 91 82 85  05 09 05 15  00 25 01 75  .............%.u         6.2.80       
+                                              01 81 82 09  05 75 01 b1  82 75 07 81  83 85 05 75  .....u...u.....u         6.2.96       
+                                              07 b1 83 85  06 09 06 15  00 25 01 75  01 81 82 09  .........%.u....         6.2.112      
+                                              06 75 01 b1  82 75 07 81  83 85 06 75  07 b1 83 85  .u...u.....u....         6.2.128      
+                                              07 09 07 15  00 26 ff 00  75 08 81 82  85 07 09 07  .....&..u.......         6.2.144      
+                                              b1 82 c0                                            ...                      6.2.160      

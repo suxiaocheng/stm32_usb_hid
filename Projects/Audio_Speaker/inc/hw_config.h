@@ -25,7 +25,6 @@
   ******************************************************************************
   */
 
-
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __HW_CONFIG_H
 #define __HW_CONFIG_H
@@ -40,7 +39,7 @@
 #define PLLoff            0
 
 #define VerifData         1
-#define NoVerifData       0 
+#define NoVerifData       0
 
 #define Codec_PDN_GPIO    GPIOG
 #define Codec_PDN_Pin     GPIO_Pin_11
@@ -59,17 +58,20 @@ void Enter_LowPowerMode(void);
 void Leave_LowPowerMode(void);
 void USB_Config(void);
 void Audio_Config(void);
-void USB_Cable_Config (FunctionalState NewState);
+void USB_Cable_Config(FunctionalState NewState);
 void Speaker_Config(void);
 void NVIC_Config(void);
 void GPIO_Config(void);
-uint32_t Sound_release(uint16_t Standard, uint16_t MCLKOutput, uint16_t AudioFreq, uint8_t AudioRepetitions);
+uint32_t Sound_release(uint16_t Standard, uint16_t MCLKOutput,
+		       uint16_t AudioFreq, uint8_t AudioRepetitions);
 void I2S_Config(uint16_t Standard, uint16_t MCLKOutput, uint16_t AudioFreq);
 void Codec_PowerDown(void);
-uint32_t I2SCodec_WriteRegister(uint32_t RegisterAddr, uint32_t RegisterValue, uint32_t Verify);
-uint32_t Codec_SpeakerConfig(uint16_t I2S_Standard, uint8_t volume, uint32_t verif, uint8_t pll);
+uint32_t I2SCodec_WriteRegister(uint32_t RegisterAddr, uint32_t RegisterValue,
+				uint32_t Verify);
+uint32_t Codec_SpeakerConfig(uint16_t I2S_Standard, uint8_t volume,
+			     uint32_t verif, uint8_t pll);
 void Get_SerialNum(void);
 
-#endif  /*__HW_CONFIG_H*/
+#endif	/*__HW_CONFIG_H*/
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

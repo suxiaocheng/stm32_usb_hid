@@ -25,7 +25,6 @@
   ******************************************************************************
   */
 
-
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __PLATFORM_CONFIG_H
 #define __PLATFORM_CONFIG_H
@@ -33,29 +32,29 @@
 /* Includes ------------------------------------------------------------------*/
 
 #if defined(STM32L1XX_MD) || defined(STM32L1XX_HD)|| defined(STM32L1XX_MD_PLUS)
- #include "stm32l1xx.h"
- #if defined (USE_STM32L152_EVAL)
-  #include "stm32l152_eval.h"
- #elif defined (USE_STM32L152D_EVAL)
-  #include "stm32l152d_eval.h"
- #else
-  #error "Missing define: USE_STM32L152_EVAL or USE_STM32L152D_EVAL"
- #endif /* USE_STM32L152_EVAL */
+#include "stm32l1xx.h"
+#if defined (USE_STM32L152_EVAL)
+#include "stm32l152_eval.h"
+#elif defined (USE_STM32L152D_EVAL)
+#include "stm32l152d_eval.h"
+#else
+#error "Missing define: USE_STM32L152_EVAL or USE_STM32L152D_EVAL"
+#endif /* USE_STM32L152_EVAL */
 #elif defined (STM32F10X_MD) || defined (STM32F10X_HD) || defined (STM32F10X_XL)
- #include "stm32f10x.h"
- #if defined (USE_STM3210B_EVAL)
-  #include "stm3210b_eval.h"
- #elif defined (USE_STM3210E_EVAL)
-  #include "stm3210e_eval.h"
- #else
-  #error "Missing define: USE_STM3210B_EVAL or USE_STM3210E_EVAL"
+#include "stm32f10x.h"
+#if defined (USE_STM3210B_EVAL)
+#include "stm3210b_eval.h"
+#elif defined (USE_STM3210E_EVAL)
+#include "stm3210e_eval.h"
+#else
+#error "Missing define: USE_STM3210B_EVAL or USE_STM3210E_EVAL"
 #endif /* USE_STM3210B_EVAL */
 #elif defined (USE_STM32373C_EVAL)
- #include "stm32f37x.h"
- #include "stm32373c_eval.h"
+#include "stm32f37x.h"
+#include "stm32373c_eval.h"
 #elif defined (USE_STM32303C_EVAL)
- #include "stm32f30x.h"
- #include "stm32303c_eval.h"
+#include "stm32f30x.h"
+#include "stm32303c_eval.h"
 #endif
 
 /* Exported types ------------------------------------------------------------*/
@@ -70,7 +69,6 @@
 //#define USE_STM32373C_EVAL
 #define USE_STM32303C_EVAL
 #endif
-
 
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */

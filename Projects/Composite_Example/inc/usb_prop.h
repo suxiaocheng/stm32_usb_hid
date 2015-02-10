@@ -25,22 +25,20 @@
   ******************************************************************************
   */
 
-
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USB_PROP_H
 #define __USB_PROP_H
 
 /* Includes ------------------------------------------------------------------*/
 /* Exported types ------------------------------------------------------------*/
-typedef enum _HID_REQUESTS
-{
-  GET_REPORT = 1,
-  GET_IDLE,
-  GET_PROTOCOL,
+typedef enum _HID_REQUESTS {
+	GET_REPORT = 1,
+	GET_IDLE,
+	GET_PROTOCOL,
 
-  SET_REPORT = 9,
-  SET_IDLE,
-  SET_PROTOCOL
+	SET_REPORT = 9,
+	SET_IDLE,
+	SET_PROTOCOL
 } HID_REQUESTS;
 
 /* Exported constants --------------------------------------------------------*/
@@ -49,13 +47,14 @@ typedef enum _HID_REQUESTS
 void CustomHID_init(void);
 void CustomHID_Reset(void);
 void CustomHID_SetConfiguration(void);
-void CustomHID_SetDeviceAddress (void);
-void CustomHID_Status_In (void);
-void CustomHID_Status_Out (void);
+void CustomHID_SetDeviceAddress(void);
+void CustomHID_Status_In(void);
+void CustomHID_Status_Out(void);
 RESULT CustomHID_Data_Setup(uint8_t);
 RESULT CustomHID_NoData_Setup(uint8_t);
-RESULT CustomHID_Get_Interface_Setting(uint8_t Interface, uint8_t AlternateSetting);
-uint8_t *CustomHID_GetDeviceDescriptor(uint16_t );
+RESULT CustomHID_Get_Interface_Setting(uint8_t Interface,
+				       uint8_t AlternateSetting);
+uint8_t *CustomHID_GetDeviceDescriptor(uint16_t);
 uint8_t *CustomHID_GetConfigDescriptor(uint16_t);
 uint8_t *CustomHID_GetStringDescriptor(uint16_t);
 RESULT CustomHID_SetProtocol(void);
@@ -69,7 +68,6 @@ void CustomHID_ClearFeature(void);
 #define GET_MAX_LUN                0xFE
 #define MASS_STORAGE_RESET         0xFF
 #define LUN_DATA_LENGTH            1
-
 
 /* Exported define -----------------------------------------------------------*/
 #define CustomHID_GetConfiguration          NOP_Process

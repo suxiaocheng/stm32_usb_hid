@@ -31,7 +31,7 @@
 #define __STM32F30x_PWR_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -43,18 +43,18 @@
 
 /** @addtogroup PWR
   * @{
-  */ 
+  */
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 
 /** @defgroup PWR_Exported_Constants
   * @{
-  */ 
+  */
 
 /** @defgroup PWR_PVD_detection_level 
   * @{
-  */ 
+  */
 
 #define PWR_PVDLevel_0                  PWR_CR_PLS_LEV0
 #define PWR_PVDLevel_1                  PWR_CR_PLS_LEV1
@@ -87,7 +87,6 @@
   * @}
   */
 
- 
 /** @defgroup PWR_Regulator_state_is_Sleep_STOP_mode 
   * @{
   */
@@ -99,7 +98,7 @@
 /**
   * @}
   */
-  
+
 /** @defgroup PWR_SLEEP_mode_entry 
   * @{
   */
@@ -107,7 +106,7 @@
 #define PWR_SLEEPEntry_WFI              ((uint8_t)0x01)
 #define PWR_SLEEPEntry_WFE              ((uint8_t)0x02)
 #define IS_PWR_SLEEP_ENTRY(ENTRY) (((ENTRY) == PWR_SLEEPEntry_WFI) || ((ENTRY) == PWR_SLEEPEntry_WFE))
- 
+
 /**
   * @}
   */
@@ -119,7 +118,7 @@
 #define PWR_STOPEntry_WFI               ((uint8_t)0x01)
 #define PWR_STOPEntry_WFE               ((uint8_t)0x02)
 #define IS_PWR_STOP_ENTRY(ENTRY) (((ENTRY) == PWR_STOPEntry_WFI) || ((ENTRY) == PWR_STOPEntry_WFE))
- 
+
 /**
   * @}
   */
@@ -148,40 +147,34 @@
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 
-/* Function used to set the PWR configuration to the default reset state ******/ 
-void PWR_DeInit(void);
+/* Function used to set the PWR configuration to the default reset state ******/
+	void PWR_DeInit(void);
 
-/* Backup Domain Access function **********************************************/ 
-void PWR_BackupAccessCmd(FunctionalState NewState);
+/* Backup Domain Access function **********************************************/
+	void PWR_BackupAccessCmd(FunctionalState NewState);
 
-/* PVD configuration functions ************************************************/ 
-void PWR_PVDLevelConfig(uint32_t PWR_PVDLevel);
-void PWR_PVDCmd(FunctionalState NewState);
+/* PVD configuration functions ************************************************/
+	void PWR_PVDLevelConfig(uint32_t PWR_PVDLevel);
+	void PWR_PVDCmd(FunctionalState NewState);
 
-/* WakeUp pins configuration functions ****************************************/ 
-void PWR_WakeUpPinCmd(uint32_t PWR_WakeUpPin, FunctionalState NewState);
+/* WakeUp pins configuration functions ****************************************/
+	void PWR_WakeUpPinCmd(uint32_t PWR_WakeUpPin, FunctionalState NewState);
 
-/* Low Power modes configuration functions ************************************/ 
-void PWR_EnterSleepMode(uint8_t PWR_SLEEPEntry);
-void PWR_EnterSTOPMode(uint32_t PWR_Regulator, uint8_t PWR_STOPEntry);
-void PWR_EnterSTANDBYMode(void);
+/* Low Power modes configuration functions ************************************/
+	void PWR_EnterSleepMode(uint8_t PWR_SLEEPEntry);
+	void PWR_EnterSTOPMode(uint32_t PWR_Regulator, uint8_t PWR_STOPEntry);
+	void PWR_EnterSTANDBYMode(void);
 
-/* Flags management functions *************************************************/ 
-FlagStatus PWR_GetFlagStatus(uint32_t PWR_FLAG);
-void PWR_ClearFlag(uint32_t PWR_FLAG);
+/* Flags management functions *************************************************/
+	FlagStatus PWR_GetFlagStatus(uint32_t PWR_FLAG);
+	void PWR_ClearFlag(uint32_t PWR_FLAG);
 
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __STM32F30x_PWR_H */
-
+#endif				/* __STM32F30x_PWR_H */
 /**
   * @}
-  */
-
-/**
+  *//**
   * @}
-  */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+  *//************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -142,10 +142,10 @@ void DAC_Init(uint32_t DAC_Channel, DAC_InitTypeDef * DAC_InitStruct)
 	/* Set MAMPx bits according to DAC_LFSRUnmask_TriangleAmplitude value */
 	/* Set BOFFx bit according to DAC_OutputBuffer value */
 	tmpreg2 =
-	    (DAC_InitStruct->
-	     DAC_Trigger | DAC_InitStruct->DAC_WaveGeneration |
-	     DAC_InitStruct->DAC_LFSRUnmask_TriangleAmplitude | DAC_InitStruct->
-	     DAC_OutputBuffer);
+	    (DAC_InitStruct->DAC_Trigger | DAC_InitStruct->DAC_WaveGeneration |
+	     DAC_InitStruct->
+	     DAC_LFSRUnmask_TriangleAmplitude |
+	     DAC_InitStruct->DAC_OutputBuffer);
 	/* Calculate CR register value depending on DAC_Channel */
 	tmpreg1 |= tmpreg2 << DAC_Channel;
 	/* Write to DAC CR */

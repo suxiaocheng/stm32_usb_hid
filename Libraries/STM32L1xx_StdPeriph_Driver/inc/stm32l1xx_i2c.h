@@ -31,7 +31,7 @@
 #define __STM32L1xx_I2C_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -51,29 +51,27 @@
   * @brief  I2C Init structure definition  
   */
 
-typedef struct
-{
-  uint32_t I2C_ClockSpeed;          /*!< Specifies the clock frequency.
-                                         This parameter must be set to a value lower than 400kHz */
+	typedef struct {
+		uint32_t I2C_ClockSpeed;	/*!< Specifies the clock frequency.
+						   This parameter must be set to a value lower than 400kHz */
 
-  uint16_t I2C_Mode;                /*!< Specifies the I2C mode.
-                                         This parameter can be a value of @ref I2C_mode */
+		uint16_t I2C_Mode;	/*!< Specifies the I2C mode.
+					   This parameter can be a value of @ref I2C_mode */
 
-  uint16_t I2C_DutyCycle;           /*!< Specifies the I2C fast mode duty cycle.
-                                         This parameter can be a value of @ref I2C_duty_cycle_in_fast_mode */
+		uint16_t I2C_DutyCycle;	/*!< Specifies the I2C fast mode duty cycle.
+					   This parameter can be a value of @ref I2C_duty_cycle_in_fast_mode */
 
-  uint16_t I2C_OwnAddress1;         /*!< Specifies the first device own address.
-                                         This parameter can be a 7-bit or 10-bit address. */
+		uint16_t I2C_OwnAddress1;	/*!< Specifies the first device own address.
+						   This parameter can be a 7-bit or 10-bit address. */
 
-  uint16_t I2C_Ack;                 /*!< Enables or disables the acknowledgement.
-                                         This parameter can be a value of @ref I2C_acknowledgement */
+		uint16_t I2C_Ack;	/*!< Enables or disables the acknowledgement.
+					   This parameter can be a value of @ref I2C_acknowledgement */
 
-  uint16_t I2C_AcknowledgedAddress; /*!< Specifies if 7-bit or 10-bit address is acknowledged.
-                                         This parameter can be a value of @ref I2C_acknowledged_address */
-}I2C_InitTypeDef;
+		uint16_t I2C_AcknowledgedAddress;	/*!< Specifies if 7-bit or 10-bit address is acknowledged.
+							   This parameter can be a value of @ref I2C_acknowledged_address */
+	} I2C_InitTypeDef;
 
 /* Exported constants --------------------------------------------------------*/
-
 
 /** @defgroup I2C_Exported_Constants
   * @{
@@ -86,7 +84,7 @@ typedef struct
   */
 
 #define I2C_Mode_I2C                    ((uint16_t)0x0000)
-#define I2C_Mode_SMBusDevice            ((uint16_t)0x0002)  
+#define I2C_Mode_SMBusDevice            ((uint16_t)0x0002)
 #define I2C_Mode_SMBusHost              ((uint16_t)0x000A)
 #define IS_I2C_MODE(MODE) (((MODE) == I2C_Mode_I2C) || \
                            ((MODE) == I2C_Mode_SMBusDevice) || \
@@ -99,13 +97,13 @@ typedef struct
   * @{
   */
 
-#define I2C_DutyCycle_16_9              ((uint16_t)0x4000) /*!< I2C fast mode Tlow/Thigh = 16/9 */
-#define I2C_DutyCycle_2                 ((uint16_t)0xBFFF) /*!< I2C fast mode Tlow/Thigh = 2 */
+#define I2C_DutyCycle_16_9              ((uint16_t)0x4000)	/*!< I2C fast mode Tlow/Thigh = 16/9 */
+#define I2C_DutyCycle_2                 ((uint16_t)0xBFFF)	/*!< I2C fast mode Tlow/Thigh = 2 */
 #define IS_I2C_DUTY_CYCLE(CYCLE) (((CYCLE) == I2C_DutyCycle_16_9) || \
                                   ((CYCLE) == I2C_DutyCycle_2))
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup I2C_acknowledgement
   * @{
@@ -141,7 +139,7 @@ typedef struct
                                              ((ADDRESS) == I2C_AcknowledgedAddress_10bit))
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup I2C_registers 
   * @{
@@ -191,7 +189,7 @@ typedef struct
                                        ((POSITION) == I2C_PECPosition_Current))
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup I2C_NACK_position 
   * @{
@@ -203,7 +201,7 @@ typedef struct
                                          ((POSITION) == I2C_NACKPosition_Current))
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup I2C_interrupts_definition 
   * @{
@@ -215,7 +213,7 @@ typedef struct
 #define IS_I2C_CONFIG_IT(IT) ((((IT) & (uint16_t)0xF8FF) == 0x00) && ((IT) != 0x00))
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup I2C_interrupts_definition 
   * @{
@@ -320,7 +318,7 @@ typedef struct
   * 
   */
 /* --EV5 */
-#define  I2C_EVENT_MASTER_MODE_SELECT                      ((uint32_t)0x00030001)  /* BUSY, MSL and SB flag */
+#define  I2C_EVENT_MASTER_MODE_SELECT                      ((uint32_t)0x00030001)	/* BUSY, MSL and SB flag */
 
 /** 
   * @brief  Address Acknowledge
@@ -348,10 +346,10 @@ typedef struct
   */
 
 /* --EV6 */
-#define  I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED        ((uint32_t)0x00070082)  /* BUSY, MSL, ADDR, TXE and TRA flags */
-#define  I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED           ((uint32_t)0x00030002)  /* BUSY, MSL and ADDR flags */
+#define  I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED        ((uint32_t)0x00070082)	/* BUSY, MSL, ADDR, TXE and TRA flags */
+#define  I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED           ((uint32_t)0x00030002)	/* BUSY, MSL and ADDR flags */
 /* --EV9 */
-#define  I2C_EVENT_MASTER_MODE_ADDRESS10                   ((uint32_t)0x00030008)  /* BUSY, MSL and ADD10 flags */
+#define  I2C_EVENT_MASTER_MODE_ADDRESS10                   ((uint32_t)0x00030008)	/* BUSY, MSL and ADD10 flags */
 
 /** 
   * @brief Communication events
@@ -382,23 +380,21 @@ typedef struct
   * 
   */
 
-/* Master RECEIVER mode -----------------------------*/ 
+/* Master RECEIVER mode -----------------------------*/
 /* --EV7 */
-#define  I2C_EVENT_MASTER_BYTE_RECEIVED                    ((uint32_t)0x00030040)  /* BUSY, MSL and RXNE flags */
+#define  I2C_EVENT_MASTER_BYTE_RECEIVED                    ((uint32_t)0x00030040)	/* BUSY, MSL and RXNE flags */
 
 /* Master TRANSMITTER mode --------------------------*/
 /* --EV8 */
-#define I2C_EVENT_MASTER_BYTE_TRANSMITTING                 ((uint32_t)0x00070080) /* TRA, BUSY, MSL, TXE flags */
+#define I2C_EVENT_MASTER_BYTE_TRANSMITTING                 ((uint32_t)0x00070080)	/* TRA, BUSY, MSL, TXE flags */
 /* --EV8_2 */
-#define  I2C_EVENT_MASTER_BYTE_TRANSMITTED                 ((uint32_t)0x00070084)  /* TRA, BUSY, MSL, TXE and BTF flags */
-
+#define  I2C_EVENT_MASTER_BYTE_TRANSMITTED                 ((uint32_t)0x00070084)	/* TRA, BUSY, MSL, TXE and BTF flags */
 
 /**
  ===============================================================================
                I2C Slave Events (Events grouped in order of communication)
  ===============================================================================
  */
-
 
 /** 
   * @brief  Communication start events
@@ -425,17 +421,17 @@ typedef struct
   * 
   */
 
-/* --EV1  (all the events below are variants of EV1) */   
+/* --EV1  (all the events below are variants of EV1) */
 /* 1) Case of One Single Address managed by the slave */
-#define  I2C_EVENT_SLAVE_RECEIVER_ADDRESS_MATCHED          ((uint32_t)0x00020002) /* BUSY and ADDR flags */
-#define  I2C_EVENT_SLAVE_TRANSMITTER_ADDRESS_MATCHED       ((uint32_t)0x00060082) /* TRA, BUSY, TXE and ADDR flags */
+#define  I2C_EVENT_SLAVE_RECEIVER_ADDRESS_MATCHED          ((uint32_t)0x00020002)	/* BUSY and ADDR flags */
+#define  I2C_EVENT_SLAVE_TRANSMITTER_ADDRESS_MATCHED       ((uint32_t)0x00060082)	/* TRA, BUSY, TXE and ADDR flags */
 
 /* 2) Case of Dual address managed by the slave */
-#define  I2C_EVENT_SLAVE_RECEIVER_SECONDADDRESS_MATCHED    ((uint32_t)0x00820000)  /* DUALF and BUSY flags */
-#define  I2C_EVENT_SLAVE_TRANSMITTER_SECONDADDRESS_MATCHED ((uint32_t)0x00860080)  /* DUALF, TRA, BUSY and TXE flags */
+#define  I2C_EVENT_SLAVE_RECEIVER_SECONDADDRESS_MATCHED    ((uint32_t)0x00820000)	/* DUALF and BUSY flags */
+#define  I2C_EVENT_SLAVE_TRANSMITTER_SECONDADDRESS_MATCHED ((uint32_t)0x00860080)	/* DUALF, TRA, BUSY and TXE flags */
 
 /* 3) Case of General Call enabled for the slave */
-#define  I2C_EVENT_SLAVE_GENERALCALLADDRESS_MATCHED        ((uint32_t)0x00120000)  /* GENCALL and BUSY flags */
+#define  I2C_EVENT_SLAVE_GENERALCALLADDRESS_MATCHED        ((uint32_t)0x00120000)	/* GENCALL and BUSY flags */
 
 /** 
   * @brief  Communication events
@@ -464,18 +460,18 @@ typedef struct
   *
   */
 
-/* Slave RECEIVER mode --------------------------*/ 
+/* Slave RECEIVER mode --------------------------*/
 /* --EV2 */
-#define  I2C_EVENT_SLAVE_BYTE_RECEIVED                     ((uint32_t)0x00020040)  /* BUSY and RXNE flags */
+#define  I2C_EVENT_SLAVE_BYTE_RECEIVED                     ((uint32_t)0x00020040)	/* BUSY and RXNE flags */
 /* --EV4  */
-#define  I2C_EVENT_SLAVE_STOP_DETECTED                     ((uint32_t)0x00000010)  /* STOPF flag */
+#define  I2C_EVENT_SLAVE_STOP_DETECTED                     ((uint32_t)0x00000010)	/* STOPF flag */
 
 /* Slave TRANSMITTER mode -----------------------*/
 /* --EV3 */
-#define  I2C_EVENT_SLAVE_BYTE_TRANSMITTED                  ((uint32_t)0x00060084)  /* TRA, BUSY, TXE and BTF flags */
-#define  I2C_EVENT_SLAVE_BYTE_TRANSMITTING                 ((uint32_t)0x00060080)  /* TRA, BUSY and TXE flags */
+#define  I2C_EVENT_SLAVE_BYTE_TRANSMITTED                  ((uint32_t)0x00060084)	/* TRA, BUSY, TXE and BTF flags */
+#define  I2C_EVENT_SLAVE_BYTE_TRANSMITTING                 ((uint32_t)0x00060080)	/* TRA, BUSY and TXE flags */
 /* --EV3_2 */
-#define  I2C_EVENT_SLAVE_ACK_FAILURE                       ((uint32_t)0x00000400)  /* AF flag */
+#define  I2C_EVENT_SLAVE_ACK_FAILURE                       ((uint32_t)0x00000400)	/* AF flag */
 
 /*
  ===============================================================================
@@ -533,44 +529,50 @@ typedef struct
 /* Exported functions ------------------------------------------------------- */
 
 /*  Function used to set the I2C configuration to the default reset state *****/
-void I2C_DeInit(I2C_TypeDef* I2Cx);
+	void I2C_DeInit(I2C_TypeDef * I2Cx);
 
 /* Initialization and Configuration functions *********************************/
-void I2C_Init(I2C_TypeDef* I2Cx, I2C_InitTypeDef* I2C_InitStruct);
-void I2C_StructInit(I2C_InitTypeDef* I2C_InitStruct);
-void I2C_Cmd(I2C_TypeDef* I2Cx, FunctionalState NewState);
-void I2C_GenerateSTART(I2C_TypeDef* I2Cx, FunctionalState NewState);
-void I2C_GenerateSTOP(I2C_TypeDef* I2Cx, FunctionalState NewState);
-void I2C_AcknowledgeConfig(I2C_TypeDef* I2Cx, FunctionalState NewState);
-void I2C_OwnAddress2Config(I2C_TypeDef* I2Cx, uint8_t Address);
-void I2C_DualAddressCmd(I2C_TypeDef* I2Cx, FunctionalState NewState);
-void I2C_GeneralCallCmd(I2C_TypeDef* I2Cx, FunctionalState NewState);
-void I2C_SoftwareResetCmd(I2C_TypeDef* I2Cx, FunctionalState NewState);
-void I2C_SMBusAlertConfig(I2C_TypeDef* I2Cx, uint16_t I2C_SMBusAlert);
-void I2C_ARPCmd(I2C_TypeDef* I2Cx, FunctionalState NewState);
-void I2C_StretchClockCmd(I2C_TypeDef* I2Cx, FunctionalState NewState);
-void I2C_FastModeDutyCycleConfig(I2C_TypeDef* I2Cx, uint16_t I2C_DutyCycle);
-void I2C_Send7bitAddress(I2C_TypeDef* I2Cx, uint8_t Address, uint8_t I2C_Direction);
+	void I2C_Init(I2C_TypeDef * I2Cx, I2C_InitTypeDef * I2C_InitStruct);
+	void I2C_StructInit(I2C_InitTypeDef * I2C_InitStruct);
+	void I2C_Cmd(I2C_TypeDef * I2Cx, FunctionalState NewState);
+	void I2C_GenerateSTART(I2C_TypeDef * I2Cx, FunctionalState NewState);
+	void I2C_GenerateSTOP(I2C_TypeDef * I2Cx, FunctionalState NewState);
+	void I2C_AcknowledgeConfig(I2C_TypeDef * I2Cx,
+				   FunctionalState NewState);
+	void I2C_OwnAddress2Config(I2C_TypeDef * I2Cx, uint8_t Address);
+	void I2C_DualAddressCmd(I2C_TypeDef * I2Cx, FunctionalState NewState);
+	void I2C_GeneralCallCmd(I2C_TypeDef * I2Cx, FunctionalState NewState);
+	void I2C_SoftwareResetCmd(I2C_TypeDef * I2Cx, FunctionalState NewState);
+	void I2C_SMBusAlertConfig(I2C_TypeDef * I2Cx, uint16_t I2C_SMBusAlert);
+	void I2C_ARPCmd(I2C_TypeDef * I2Cx, FunctionalState NewState);
+	void I2C_StretchClockCmd(I2C_TypeDef * I2Cx, FunctionalState NewState);
+	void I2C_FastModeDutyCycleConfig(I2C_TypeDef * I2Cx,
+					 uint16_t I2C_DutyCycle);
+	void I2C_Send7bitAddress(I2C_TypeDef * I2Cx, uint8_t Address,
+				 uint8_t I2C_Direction);
 
-/* Data transfers functions ***************************************************/ 
-void I2C_SendData(I2C_TypeDef* I2Cx, uint8_t Data);
-uint8_t I2C_ReceiveData(I2C_TypeDef* I2Cx);
-void I2C_NACKPositionConfig(I2C_TypeDef* I2Cx, uint16_t I2C_NACKPosition);
+/* Data transfers functions ***************************************************/
+	void I2C_SendData(I2C_TypeDef * I2Cx, uint8_t Data);
+	uint8_t I2C_ReceiveData(I2C_TypeDef * I2Cx);
+	void I2C_NACKPositionConfig(I2C_TypeDef * I2Cx,
+				    uint16_t I2C_NACKPosition);
 
-/* PEC management functions ***************************************************/ 
-void I2C_TransmitPEC(I2C_TypeDef* I2Cx, FunctionalState NewState);
-void I2C_PECPositionConfig(I2C_TypeDef* I2Cx, uint16_t I2C_PECPosition);
-void I2C_CalculatePEC(I2C_TypeDef* I2Cx, FunctionalState NewState);
-uint8_t I2C_GetPEC(I2C_TypeDef* I2Cx);
+/* PEC management functions ***************************************************/
+	void I2C_TransmitPEC(I2C_TypeDef * I2Cx, FunctionalState NewState);
+	void I2C_PECPositionConfig(I2C_TypeDef * I2Cx,
+				   uint16_t I2C_PECPosition);
+	void I2C_CalculatePEC(I2C_TypeDef * I2Cx, FunctionalState NewState);
+	uint8_t I2C_GetPEC(I2C_TypeDef * I2Cx);
 
 /* DMA transfers management functions *****************************************/
-void I2C_DMACmd(I2C_TypeDef* I2Cx, FunctionalState NewState);
-void I2C_DMALastTransferCmd(I2C_TypeDef* I2Cx, FunctionalState NewState);
-
+	void I2C_DMACmd(I2C_TypeDef * I2Cx, FunctionalState NewState);
+	void I2C_DMALastTransferCmd(I2C_TypeDef * I2Cx,
+				    FunctionalState NewState);
 
 /* Interrupts, events and flags management functions **************************/
-uint16_t I2C_ReadRegister(I2C_TypeDef* I2Cx, uint8_t I2C_Register);
-void I2C_ITConfig(I2C_TypeDef* I2Cx, uint16_t I2C_IT, FunctionalState NewState);
+	uint16_t I2C_ReadRegister(I2C_TypeDef * I2Cx, uint8_t I2C_Register);
+	void I2C_ITConfig(I2C_TypeDef * I2Cx, uint16_t I2C_IT,
+			  FunctionalState NewState);
 
 /*
 
@@ -667,37 +669,30 @@ void I2C_ITConfig(I2C_TypeDef* I2Cx, uint16_t I2C_IT, FunctionalState NewState);
                           1. Basic state monitoring
  ===============================================================================
  */
-ErrorStatus I2C_CheckEvent(I2C_TypeDef* I2Cx, uint32_t I2C_EVENT);
+	ErrorStatus I2C_CheckEvent(I2C_TypeDef * I2Cx, uint32_t I2C_EVENT);
 /*
  ===============================================================================
                           2. Advanced state monitoring
  ===============================================================================
  */
-uint32_t I2C_GetLastEvent(I2C_TypeDef* I2Cx);
+	uint32_t I2C_GetLastEvent(I2C_TypeDef * I2Cx);
 /*
  ===============================================================================
                           3. Flag-based state monitoring
  ===============================================================================
  */
-FlagStatus I2C_GetFlagStatus(I2C_TypeDef* I2Cx, uint32_t I2C_FLAG);
+	FlagStatus I2C_GetFlagStatus(I2C_TypeDef * I2Cx, uint32_t I2C_FLAG);
 
-
-void I2C_ClearFlag(I2C_TypeDef* I2Cx, uint32_t I2C_FLAG);
-ITStatus I2C_GetITStatus(I2C_TypeDef* I2Cx, uint32_t I2C_IT);
-void I2C_ClearITPendingBit(I2C_TypeDef* I2Cx, uint32_t I2C_IT);
+	void I2C_ClearFlag(I2C_TypeDef * I2Cx, uint32_t I2C_FLAG);
+	ITStatus I2C_GetITStatus(I2C_TypeDef * I2Cx, uint32_t I2C_IT);
+	void I2C_ClearITPendingBit(I2C_TypeDef * I2Cx, uint32_t I2C_IT);
 
 #ifdef __cplusplus
 }
 #endif
-
 #endif /*__STM32L1xx_I2C_H */
-
 /**
   * @}
-  */ 
-
-/**
+  *//**
   * @}
-  */ 
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+  *//************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

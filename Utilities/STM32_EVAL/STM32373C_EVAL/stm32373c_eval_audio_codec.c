@@ -129,17 +129,16 @@
   5- Supports only 16-bit audio data size.
 ===============================================================================================================================*/
 
-
 /* Includes ------------------------------------------------------------------*/
 #include "stm32373c_eval_audio_codec.h"
 
 /** @addtogroup Utilities
   * @{
   */
-  
+
 /** @addtogroup STM32_EVAL
   * @{
-  */ 
+  */
 
 /** @addtogroup STM32373C_EVAL
   * @{
@@ -149,18 +148,18 @@
   * @brief       This file includes the low layer driver for CS43L22 Audio Codec
   *              available on STM32373C_EVAL evaluation board(MB988).
   * @{
-  */ 
+  */
 
 /** @defgroup STM32373C_EVAL_AUDIO_CODEC_Private_Types
   * @{
-  */ 
+  */
 /**
   * @}
-  */ 
-  
+  */
+
 /** @defgroup STM32373C_EVAL_AUDIO_CODEC_Private_Defines
   * @{
-  */ 
+  */
 
 /* Mask for the bit EN of the I2S CFGR register */
 #define I2S_ENABLE_MASK                 0x0400
@@ -170,65 +169,66 @@
 
 /* Codec audio Standards */
 #ifdef I2S_STANDARD_PHILLIPS
- #define  CODEC_STANDARD                0x04
- #define I2S_STANDARD                   I2S_Standard_Phillips         
+#define  CODEC_STANDARD                0x04
+#define I2S_STANDARD                   I2S_Standard_Phillips
 #elif defined(I2S_STANDARD_MSB)
- #define  CODEC_STANDARD                0x00
- #define I2S_STANDARD                   I2S_Standard_MSB    
+#define  CODEC_STANDARD                0x00
+#define I2S_STANDARD                   I2S_Standard_MSB
 #elif defined(I2S_STANDARD_LSB)
- #define  CODEC_STANDARD                0x08
- #define I2S_STANDARD                   I2S_Standard_LSB    
-#else 
- #error "Error: No audio communication standard selected !"
+#define  CODEC_STANDARD                0x08
+#define I2S_STANDARD                   I2S_Standard_LSB
+#else
+#error "Error: No audio communication standard selected !"
 #endif /* I2S_STANDARD */
 
 /* The 7 bits Codec address (sent through I2C interface) */
-#define CODEC_ADDRESS                   0x94  /* b00100111 */
+#define CODEC_ADDRESS                   0x94	/* b00100111 */
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup STM32373C_EVAL_AUDIO_CODEC_Private_Macros
   * @{
   */
 /**
   * @}
-  */ 
-  
+  */
+
 /** @defgroup STM32373C_EVAL_AUDIO_CODEC_Private_Variables
   * @{
   */
 /* This structure is declared global because it is handled by two different functions */
-DMA_InitTypeDef DMA_InitStructure; 
+DMA_InitTypeDef DMA_InitStructure;
 DMA_InitTypeDef AUDIO_MAL_DMA_InitStructure;
 
-uint32_t AudioTotalSize = 0xFFFF; /* This variable holds the total size of the audio file */
-uint32_t AudioRemSize   = 0xFFFF; /* This variable holds the remaining data in audio file */
-uint16_t *CurrentPos;             /* This variable holds the current position of audio pointer */
+uint32_t AudioTotalSize = 0xFFFF;	/* This variable holds the total size of the audio file */
+uint32_t AudioRemSize = 0xFFFF;	/* This variable holds the remaining data in audio file */
+uint16_t *CurrentPos;		/* This variable holds the current position of audio pointer */
 
-__IO uint32_t  CODECTimeout = CODEC_LONG_TIMEOUT;   
+__IO uint32_t CODECTimeout = CODEC_LONG_TIMEOUT;
 __IO uint8_t OutputDev = 0;
 
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup STM32373C_EVAL_AUDIO_CODEC_Private_Function_Prototypes
   * @{
-  */ 
+  */
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup STM32373C_EVAL_AUDIO_CODEC_Private_Functions
   * @{
-  */ 
+  */
 
 /*----------------------------------------------------------------------------
                            Audio Codec functions 
   ----------------------------------------------------------------------------*/
 /* High Layer codec functions */
-static uint32_t Codec_Init(uint16_t OutputDevice, uint8_t Volume, uint32_t AudioFreq);
+static uint32_t Codec_Init(uint16_t OutputDevice, uint8_t Volume,
+			   uint32_t AudioFreq);
 static uint32_t Codec_DeInit(void);
 static uint32_t Codec_Play(void);
 static uint32_t Codec_PauseResume(uint32_t Cmd);
@@ -236,26 +236,27 @@ static uint32_t Codec_Stop(uint32_t Cmd);
 static uint32_t Codec_VolumeCtrl(uint8_t Volume);
 static uint32_t Codec_Mute(uint32_t Cmd);
 /* Low layer codec functions */
-static void     Codec_CtrlInterface_Init(void);
-static void     Codec_CtrlInterface_DeInit(void);
-static void     Codec_AudioInterface_Init(uint32_t AudioFreq);
-static void     Codec_AudioInterface_DeInit(void);
-static void     Codec_Reset(void);
-static uint32_t Codec_WriteRegister(uint8_t RegisterAddr, uint8_t RegisterValue);
+static void Codec_CtrlInterface_Init(void);
+static void Codec_CtrlInterface_DeInit(void);
+static void Codec_AudioInterface_Init(uint32_t AudioFreq);
+static void Codec_AudioInterface_DeInit(void);
+static void Codec_Reset(void);
+static uint32_t Codec_WriteRegister(uint8_t RegisterAddr,
+				    uint8_t RegisterValue);
 static uint32_t Codec_ReadRegister(uint8_t RegisterAddr);
-static void     Codec_GPIO_Init(void);
-static void     Codec_GPIO_DeInit(void);
-static void     Delay(__IO uint32_t nCount);
+static void Codec_GPIO_Init(void);
+static void Codec_GPIO_DeInit(void);
+static void Delay(__IO uint32_t nCount);
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------
                    MAL (Media Access Layer) functions 
   ----------------------------------------------------------------------------*/
 /* Peripherals configuration functions */
-static void     Audio_MAL_Init(void);
-static void     Audio_MAL_DeInit(void);
-static void     Audio_MAL_PauseResume(uint32_t Cmd, uint32_t Addr);
-static void     Audio_MAL_Stop(void);
+static void Audio_MAL_Init(void);
+static void Audio_MAL_DeInit(void);
+static void Audio_MAL_PauseResume(uint32_t Cmd, uint32_t Addr);
+static void Audio_MAL_Stop(void);
 /*----------------------------------------------------------------------------*/
 
 /**
@@ -266,22 +267,20 @@ static void     Audio_MAL_Stop(void);
   * @param  AudioFreq: Audio frequency used to play the audio stream.
   * @retval 0 if correct communication, else wrong communication
   */
-uint32_t EVAL_AUDIO_Init(uint16_t OutputDevice, uint8_t Volume, uint32_t AudioFreq)
-{    
-  /* Perform low layer Codec initialization */
-  if (Codec_Init(OutputDevice, VOLUME_CONVERT(Volume), AudioFreq) != 0)
-  {
-    return 1;                
-  }
-  else
-  {    
-    /* I2S data transfer preparation:
-    Prepare the Media to be used for the audio transfer from memory to I2S peripheral */
-    Audio_MAL_Init();
-    
-    /* Return 0 when all operations are OK */
-    return 0;
-  }
+uint32_t EVAL_AUDIO_Init(uint16_t OutputDevice, uint8_t Volume,
+			 uint32_t AudioFreq)
+{
+	/* Perform low layer Codec initialization */
+	if (Codec_Init(OutputDevice, VOLUME_CONVERT(Volume), AudioFreq) != 0) {
+		return 1;
+	} else {
+		/* I2S data transfer preparation:
+		   Prepare the Media to be used for the audio transfer from memory to I2S peripheral */
+		Audio_MAL_Init();
+
+		/* Return 0 when all operations are OK */
+		return 0;
+	}
 }
 
 /**
@@ -292,14 +291,14 @@ uint32_t EVAL_AUDIO_Init(uint16_t OutputDevice, uint8_t Volume, uint32_t AudioFr
   * @retval 0 if correct communication, else wrong communication
   */
 uint32_t EVAL_AUDIO_DeInit(void)
-{ 
-  /* DeInitialize the Media layer */
-  Audio_MAL_DeInit();
-  
-  /* DeInitialize Codec */  
-  Codec_DeInit();  
-  
-  return 0;
+{
+	/* DeInitialize the Media layer */
+	Audio_MAL_DeInit();
+
+	/* DeInitialize Codec */
+	Codec_DeInit();
+
+	return 0;
 }
 
 /**
@@ -308,24 +307,25 @@ uint32_t EVAL_AUDIO_DeInit(void)
   * @param  Size: Number of audio data BYTES.
   * @retval 0 if correct communication, else wrong communication
   */
-uint32_t EVAL_AUDIO_Play(uint16_t* pBuffer, uint32_t Size)
+uint32_t EVAL_AUDIO_Play(uint16_t * pBuffer, uint32_t Size)
 {
-  /* Set the total number of data to be played (count in half-word) */
-  AudioTotalSize = Size/2;
+	/* Set the total number of data to be played (count in half-word) */
+	AudioTotalSize = Size / 2;
 
-  /* Call the audio Codec Play function */
-  Codec_Play();
-  
-  /* Update the Media layer and enable it for play */  
-  Audio_MAL_Play((uint32_t)pBuffer, (uint32_t)(DMA_MAX(AudioTotalSize / 2)));
-  
-  /* Update the remaining number of data to be played */
-  AudioRemSize = (Size/2) - DMA_MAX(AudioTotalSize);
-  
-  /* Update the current audio pointer position */
-  CurrentPos = pBuffer + DMA_MAX(AudioTotalSize);
-  
-  return 0;
+	/* Call the audio Codec Play function */
+	Codec_Play();
+
+	/* Update the Media layer and enable it for play */
+	Audio_MAL_Play((uint32_t) pBuffer,
+		       (uint32_t) (DMA_MAX(AudioTotalSize / 2)));
+
+	/* Update the remaining number of data to be played */
+	AudioRemSize = (Size / 2) - DMA_MAX(AudioTotalSize);
+
+	/* Update the current audio pointer position */
+	CurrentPos = pBuffer + DMA_MAX(AudioTotalSize);
+
+	return 0;
 }
 
 /**
@@ -342,20 +342,17 @@ uint32_t EVAL_AUDIO_Play(uint16_t* pBuffer, uint32_t Size)
   * @retval 0 if correct communication, else wrong communication
   */
 uint32_t EVAL_AUDIO_PauseResume(uint32_t Cmd)
-{    
-  /* Call the Audio Codec Pause/Resume function */
-  if (Codec_PauseResume(Cmd) != 0)
-  {
-    return 1;
-  }
-  else
-  {
-    /* Call the Media layer pause/resume function */
-    Audio_MAL_PauseResume(Cmd, 0);
-    
-    /* Return 0 if all operations are OK */
-    return 0;
-  }
+{
+	/* Call the Audio Codec Pause/Resume function */
+	if (Codec_PauseResume(Cmd) != 0) {
+		return 1;
+	} else {
+		/* Call the Media layer pause/resume function */
+		Audio_MAL_PauseResume(Cmd, 0);
+
+		/* Return 0 if all operations are OK */
+		return 0;
+	}
 }
 
 /**
@@ -369,22 +366,19 @@ uint32_t EVAL_AUDIO_PauseResume(uint32_t Cmd)
   */
 uint32_t EVAL_AUDIO_Stop(uint32_t Option)
 {
-  /* Call Audio Codec Stop function */
-  if (Codec_Stop(Option) != 0)
-  {
-    return 1;
-  }
-  else
-  {
-    /* Call Media layer Stop function */
-    Audio_MAL_Stop();
-    
-    /* Update the remaining data number */
-    AudioRemSize = AudioTotalSize;    
-    
-    /* Return 0 when all operations are correctly done */
-    return 0;
-  }
+	/* Call Audio Codec Stop function */
+	if (Codec_Stop(Option) != 0) {
+		return 1;
+	} else {
+		/* Call Media layer Stop function */
+		Audio_MAL_Stop();
+
+		/* Update the remaining data number */
+		AudioRemSize = AudioTotalSize;
+
+		/* Return 0 when all operations are correctly done */
+		return 0;
+	}
 }
 
 /**
@@ -395,8 +389,8 @@ uint32_t EVAL_AUDIO_Stop(uint32_t Option)
   */
 uint32_t EVAL_AUDIO_VolumeCtl(uint8_t Volume)
 {
-  /* Call the codec volume control function with converted volume value */
-  return (Codec_VolumeCtrl(VOLUME_CONVERT(Volume)));
+	/* Call the codec volume control function with converted volume value */
+	return (Codec_VolumeCtrl(VOLUME_CONVERT(Volume)));
 }
 
 /**
@@ -406,9 +400,9 @@ uint32_t EVAL_AUDIO_VolumeCtl(uint8_t Volume)
   * @retval 0 if correct communication, else wrong communication
   */
 uint32_t EVAL_AUDIO_Mute(uint32_t Cmd)
-{ 
-  /* Call the Codec Mute function */
-  return (Codec_Mute(Cmd));
+{
+	/* Call the Codec Mute function */
+	return (Codec_Mute(Cmd));
 }
 
 /**
@@ -417,95 +411,97 @@ uint32_t EVAL_AUDIO_Mute(uint32_t Cmd)
   * @retval 0 if correct communication, else wrong communication
   */
 void Audio_MAL_IRQHandler(void)
-{    
+{
 #ifndef AUDIO_MAL_MODE_NORMAL
-  uint16_t *pAddr = (uint16_t *)CurrentPos;
-  uint32_t Size = AudioRemSize;
+	uint16_t *pAddr = (uint16_t *) CurrentPos;
+	uint32_t Size = AudioRemSize;
 #endif /* AUDIO_MAL_MODE_NORMAL */
-  
+
 #ifdef AUDIO_MAL_DMA_IT_TC_EN
-  /* Transfer complete interrupt */
-  if (DMA_GetFlagStatus(AUDIO_MAL_DMA_FLAG_TC) != RESET)
-  {     
- #ifdef AUDIO_MAL_MODE_NORMAL
-    /* Check if the end of file has been reached */
-    if (AudioRemSize > 0)
-    {      
-      /* Wait the DMA Channel to be effectively disabled */
-      while (DMA_GetFlagStatus(AUDIO_MAL_DMA_FLAG_TC) != SET)
-      {}
-      
-      /* Clear the Interrupt flag */
-      DMA_ClearFlag(AUDIO_MAL_DMA_FLAG_TC);  
-      
-      /* Re-Configure the buffer address and size */
-      DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t) CurrentPos;
-      DMA_InitStructure.DMA_BufferSize = (uint32_t) (DMA_MAX(AudioRemSize));
-      
-      /* Configure the DMA Channel with the new parameters */
-      DMA_Init(AUDIO_MAL_DMA_CHANNEL , &DMA_InitStructure);
-      
-      /* Enable the I2S DMA Channel */
-      DMA_Cmd(AUDIO_MAL_DMA_CHANNEL , ENABLE);    
-      
-      /* Update the current pointer position */
-      CurrentPos += DMA_MAX(AudioRemSize);        
-      
-      /* Update the remaining number of data to be played */
-      AudioRemSize -= DMA_MAX(AudioRemSize);    
-    }
-    else
-    {
-      /* Disable the I2S DMA Channel */
-      DMA_Cmd(AUDIO_MAL_DMA_CHANNEL , DISABLE);   
-      
-      /* Clear the Interrupt flag */
-      DMA_ClearFlag(AUDIO_MAL_DMA_FLAG_TC);       
-      
-      /* Manage the remaining file size and new address offset: This function 
-      should be coded by user (its prototype is already declared in stm32_eval_audio_codec.h) */  
-      EVAL_AUDIO_TransferComplete_CallBack((uint32_t)CurrentPos, 0);       
-    }
-    
- #elif defined(AUDIO_MAL_MODE_CIRCULAR)
-    /* Manage the remaining file size and new address offset: This function 
-       should be coded by user (its prototype is already declared in stm32_eval_audio_codec.h) */  
-    EVAL_AUDIO_TransferComplete_CallBack(pAddr, Size);    
-    
-    /* Clear the Interrupt flag */
-    DMA_ClearFlag(AUDIO_MAL_DMA_STREAM, AUDIO_MAL_DMA_FLAG_TC);
- #endif /* AUDIO_MAL_MODE_NORMAL */  
-  }
+	/* Transfer complete interrupt */
+	if (DMA_GetFlagStatus(AUDIO_MAL_DMA_FLAG_TC) != RESET) {
+#ifdef AUDIO_MAL_MODE_NORMAL
+		/* Check if the end of file has been reached */
+		if (AudioRemSize > 0) {
+			/* Wait the DMA Channel to be effectively disabled */
+			while (DMA_GetFlagStatus(AUDIO_MAL_DMA_FLAG_TC) != SET) {
+			}
+
+			/* Clear the Interrupt flag */
+			DMA_ClearFlag(AUDIO_MAL_DMA_FLAG_TC);
+
+			/* Re-Configure the buffer address and size */
+			DMA_InitStructure.DMA_MemoryBaseAddr =
+			    (uint32_t) CurrentPos;
+			DMA_InitStructure.DMA_BufferSize =
+			    (uint32_t) (DMA_MAX(AudioRemSize));
+
+			/* Configure the DMA Channel with the new parameters */
+			DMA_Init(AUDIO_MAL_DMA_CHANNEL, &DMA_InitStructure);
+
+			/* Enable the I2S DMA Channel */
+			DMA_Cmd(AUDIO_MAL_DMA_CHANNEL, ENABLE);
+
+			/* Update the current pointer position */
+			CurrentPos += DMA_MAX(AudioRemSize);
+
+			/* Update the remaining number of data to be played */
+			AudioRemSize -= DMA_MAX(AudioRemSize);
+		} else {
+			/* Disable the I2S DMA Channel */
+			DMA_Cmd(AUDIO_MAL_DMA_CHANNEL, DISABLE);
+
+			/* Clear the Interrupt flag */
+			DMA_ClearFlag(AUDIO_MAL_DMA_FLAG_TC);
+
+			/* Manage the remaining file size and new address offset: This function 
+			   should be coded by user (its prototype is already declared in stm32_eval_audio_codec.h) */
+			EVAL_AUDIO_TransferComplete_CallBack((uint32_t)
+							     CurrentPos, 0);
+		}
+
+#elif defined(AUDIO_MAL_MODE_CIRCULAR)
+		/* Manage the remaining file size and new address offset: This function 
+		   should be coded by user (its prototype is already declared in stm32_eval_audio_codec.h) */
+		EVAL_AUDIO_TransferComplete_CallBack(pAddr, Size);
+
+		/* Clear the Interrupt flag */
+		DMA_ClearFlag(AUDIO_MAL_DMA_STREAM, AUDIO_MAL_DMA_FLAG_TC);
+#endif /* AUDIO_MAL_MODE_NORMAL */
+	}
 #endif /* AUDIO_MAL_DMA_IT_TC_EN */
 
-#ifdef AUDIO_MAL_DMA_IT_HT_EN  
-  /* Half Transfer complete interrupt */
-  if (DMA_GetFlagStatus(AUDIO_MAL_DMA_CHANNEL, AUDIO_MAL_DMA_FLAG_HT) != RESET)
-  {
-    /* Manage the remaining file size and new address offset: This function 
-       should be coded by user (its prototype is already declared in stm32_eval_audio_codec.h) */  
-    EVAL_AUDIO_HalfTransfer_CallBack((uint32_t)pAddr, Size);    
-   
-    /* Clear the Interrupt flag */
-    DMA_ClearFlag(AUDIO_MAL_DMA_CHANNEL, AUDIO_MAL_DMA_FLAG_HT);    
-  }
+#ifdef AUDIO_MAL_DMA_IT_HT_EN
+	/* Half Transfer complete interrupt */
+	if (DMA_GetFlagStatus(AUDIO_MAL_DMA_CHANNEL, AUDIO_MAL_DMA_FLAG_HT) !=
+	    RESET) {
+		/* Manage the remaining file size and new address offset: This function 
+		   should be coded by user (its prototype is already declared in stm32_eval_audio_codec.h) */
+		EVAL_AUDIO_HalfTransfer_CallBack((uint32_t) pAddr, Size);
+
+		/* Clear the Interrupt flag */
+		DMA_ClearFlag(AUDIO_MAL_DMA_CHANNEL, AUDIO_MAL_DMA_FLAG_HT);
+	}
 #endif /* AUDIO_MAL_DMA_IT_HT_EN */
-  
-#ifdef AUDIO_MAL_DMA_IT_TE_EN  
-  /* FIFO Error interrupt */
-  if ((DMA_GetFlagStatus(AUDIO_MAL_DMA_CHANNEL, AUDIO_MAL_DMA_FLAG_TE) != RESET) || \
-     (DMA_GetFlagStatus(AUDIO_MAL_DMA_CHANNEL, AUDIO_MAL_DMA_FLAG_FE) != RESET) || \
-     (DMA_GetFlagStatus(AUDIO_MAL_DMA_CHANNEL, AUDIO_MAL_DMA_FLAG_DME) != RESET))
-    
-  {
-    /* Manage the error generated on DMA FIFO: This function 
-       should be coded by user (its prototype is already declared in stm32_eval_audio_codec.h) */  
-    EVAL_AUDIO_Error_CallBack((uint32_t*)&pAddr);    
-    
-    /* Clear the Interrupt flag */
-    DMA_ClearFlag(AUDIO_MAL_DMA_CHANNEL, AUDIO_MAL_DMA_FLAG_TE | AUDIO_MAL_DMA_FLAG_FE | \
-                                        AUDIO_MAL_DMA_FLAG_DME);
-  }  
+
+#ifdef AUDIO_MAL_DMA_IT_TE_EN
+	/* FIFO Error interrupt */
+	if ((DMA_GetFlagStatus(AUDIO_MAL_DMA_CHANNEL, AUDIO_MAL_DMA_FLAG_TE) !=
+	     RESET)
+	    || (DMA_GetFlagStatus(AUDIO_MAL_DMA_CHANNEL, AUDIO_MAL_DMA_FLAG_FE)
+		!= RESET)
+	    || (DMA_GetFlagStatus(AUDIO_MAL_DMA_CHANNEL, AUDIO_MAL_DMA_FLAG_DME)
+		!= RESET))
+	{
+		/* Manage the error generated on DMA FIFO: This function 
+		   should be coded by user (its prototype is already declared in stm32_eval_audio_codec.h) */
+		EVAL_AUDIO_Error_CallBack((uint32_t *) & pAddr);
+
+		/* Clear the Interrupt flag */
+		DMA_ClearFlag(AUDIO_MAL_DMA_CHANNEL,
+			      AUDIO_MAL_DMA_FLAG_TE | AUDIO_MAL_DMA_FLAG_FE |
+			      AUDIO_MAL_DMA_FLAG_DME);
+	}
 #endif /* AUDIO_MAL_DMA_IT_TE_EN */
 }
 
@@ -521,97 +517,96 @@ void Audio_MAL_IRQHandler(void)
   * @param  AudioFreq: Audio frequency used to play the audio stream.
   * @retval 0 if correct communication, else wrong communication
   */
-static uint32_t Codec_Init(uint16_t OutputDevice, uint8_t Volume, uint32_t AudioFreq)
+static uint32_t Codec_Init(uint16_t OutputDevice, uint8_t Volume,
+			   uint32_t AudioFreq)
 {
-  uint32_t counter = 0; 
+	uint32_t counter = 0;
 
-  /* Configure the Codec related IOs */
-  Codec_GPIO_Init();   
-  
-  /* Reset the Codec Registers */
-  Codec_Reset();
+	/* Configure the Codec related IOs */
+	Codec_GPIO_Init();
 
-  /* Initialize the Control interface of the Audio Codec */
-  Codec_CtrlInterface_Init();     
-  
-  /* Keep Codec powered OFF */
-  counter += Codec_WriteRegister(0x02, 0x01);  
+	/* Reset the Codec Registers */
+	Codec_Reset();
 
-  switch (OutputDevice)
-  {
-    case OUTPUT_DEVICE_SPEAKER:
-      counter += Codec_WriteRegister(0x04, 0xFA); /* SPK always ON & HP always OFF */
-      OutputDev = 0xFA;
-      break;
-      
-    case OUTPUT_DEVICE_HEADPHONE:
-      counter += Codec_WriteRegister(0x04, 0xAF); /* SPK always OFF & HP always ON */
-      OutputDev = 0xAF;
-      break;
-      
-    case OUTPUT_DEVICE_BOTH:
-      counter += Codec_WriteRegister(0x04, 0xAA); /* SPK always ON & HP always ON */
-      OutputDev = 0xAA;
-      break;
-      
-    case OUTPUT_DEVICE_AUTO:
-      counter += Codec_WriteRegister(0x04, 0x05); /* Detect the HP or the SPK automatically */
-      OutputDev = 0x05;
-      break;    
-      
-    default:
-      counter += Codec_WriteRegister(0x04, 0x05); /* Detect the HP or the SPK automatically */
-      OutputDev = 0x05;
-      break;    
-  }
-  
-  /* Clock configuration: Auto detection */  
-  counter += Codec_WriteRegister(0x05, 0x81);
-  
-  /* Set the Slave Mode and the audio Standard */  
-  counter += Codec_WriteRegister(0x06, CODEC_STANDARD);
-      
-  /* Set the Master volume */
-  Codec_VolumeCtrl(Volume);
+	/* Initialize the Control interface of the Audio Codec */
+	Codec_CtrlInterface_Init();
 
-  /* If the Speaker is enabled, set the Mono mode and volume attenuation level */
-  if (OutputDevice != OUTPUT_DEVICE_HEADPHONE)
-  {
-    /* Set the Speaker Mono mode */  
-    counter += Codec_WriteRegister(0x0F , 0x06);
-    
-    /* Set the Speaker attenuation level */  
-    counter += Codec_WriteRegister(0x24, 0x00);
-    counter += Codec_WriteRegister(0x25, 0x00);
-  }
-  
-  /* Power on the Codec */
-  counter += Codec_WriteRegister(0x02, 0x9E);  
-  
-  /* Additional configuration for the CODEC. These configurations are done to reduce
-      the time needed for the Codec to power off. If these configurations are removed, 
-      then a long delay should be added between powering off the Codec and switching 
-      off the I2S peripheral MCLK clock (which is the operating clock for Codec).
-      If this delay is not inserted, then the codec will not shut down properly and
-      it results in high noise after shut down. */
-  
-  /* Disable the analog soft ramp */
-  counter += Codec_WriteRegister(0x0A, 0x00);
-  /* Disable the digital soft ramp */
-  counter += Codec_WriteRegister(0x0E, 0x04);
-  /* Disable the limiter attack level */
-  counter += Codec_WriteRegister(0x27, 0x00);
-  /* Adjust Bass and Treble levels */
-  counter += Codec_WriteRegister(0x1F, 0x0F);
-  /* Adjust PCM volume level */
-  counter += Codec_WriteRegister(0x1A, 0x0A);
-  counter += Codec_WriteRegister(0x1B, 0x0A);
+	/* Keep Codec powered OFF */
+	counter += Codec_WriteRegister(0x02, 0x01);
 
-  /* Configure the I2S peripheral */
-  Codec_AudioInterface_Init(AudioFreq);  
-  
-  /* Return communication control value */
-  return counter;  
+	switch (OutputDevice) {
+	case OUTPUT_DEVICE_SPEAKER:
+		counter += Codec_WriteRegister(0x04, 0xFA);	/* SPK always ON & HP always OFF */
+		OutputDev = 0xFA;
+		break;
+
+	case OUTPUT_DEVICE_HEADPHONE:
+		counter += Codec_WriteRegister(0x04, 0xAF);	/* SPK always OFF & HP always ON */
+		OutputDev = 0xAF;
+		break;
+
+	case OUTPUT_DEVICE_BOTH:
+		counter += Codec_WriteRegister(0x04, 0xAA);	/* SPK always ON & HP always ON */
+		OutputDev = 0xAA;
+		break;
+
+	case OUTPUT_DEVICE_AUTO:
+		counter += Codec_WriteRegister(0x04, 0x05);	/* Detect the HP or the SPK automatically */
+		OutputDev = 0x05;
+		break;
+
+	default:
+		counter += Codec_WriteRegister(0x04, 0x05);	/* Detect the HP or the SPK automatically */
+		OutputDev = 0x05;
+		break;
+	}
+
+	/* Clock configuration: Auto detection */
+	counter += Codec_WriteRegister(0x05, 0x81);
+
+	/* Set the Slave Mode and the audio Standard */
+	counter += Codec_WriteRegister(0x06, CODEC_STANDARD);
+
+	/* Set the Master volume */
+	Codec_VolumeCtrl(Volume);
+
+	/* If the Speaker is enabled, set the Mono mode and volume attenuation level */
+	if (OutputDevice != OUTPUT_DEVICE_HEADPHONE) {
+		/* Set the Speaker Mono mode */
+		counter += Codec_WriteRegister(0x0F, 0x06);
+
+		/* Set the Speaker attenuation level */
+		counter += Codec_WriteRegister(0x24, 0x00);
+		counter += Codec_WriteRegister(0x25, 0x00);
+	}
+
+	/* Power on the Codec */
+	counter += Codec_WriteRegister(0x02, 0x9E);
+
+	/* Additional configuration for the CODEC. These configurations are done to reduce
+	   the time needed for the Codec to power off. If these configurations are removed, 
+	   then a long delay should be added between powering off the Codec and switching 
+	   off the I2S peripheral MCLK clock (which is the operating clock for Codec).
+	   If this delay is not inserted, then the codec will not shut down properly and
+	   it results in high noise after shut down. */
+
+	/* Disable the analog soft ramp */
+	counter += Codec_WriteRegister(0x0A, 0x00);
+	/* Disable the digital soft ramp */
+	counter += Codec_WriteRegister(0x0E, 0x04);
+	/* Disable the limiter attack level */
+	counter += Codec_WriteRegister(0x27, 0x00);
+	/* Adjust Bass and Treble levels */
+	counter += Codec_WriteRegister(0x1F, 0x0F);
+	/* Adjust PCM volume level */
+	counter += Codec_WriteRegister(0x1A, 0x0A);
+	counter += Codec_WriteRegister(0x1B, 0x0A);
+
+	/* Configure the I2S peripheral */
+	Codec_AudioInterface_Init(AudioFreq);
+
+	/* Return communication control value */
+	return counter;
 }
 
 /**
@@ -622,25 +617,25 @@ static uint32_t Codec_Init(uint16_t OutputDevice, uint8_t Volume, uint32_t Audio
   */
 static uint32_t Codec_DeInit(void)
 {
-  uint32_t counter = 0; 
+	uint32_t counter = 0;
 
-  /* Reset the Codec Registers */
-  Codec_Reset();  
-  
-  /* Keep Codec powered OFF */
-  counter += Codec_WriteRegister(0x02, 0x01);    
-  
-  /* Deinitialize all use GPIOs */
-  Codec_GPIO_DeInit();
+	/* Reset the Codec Registers */
+	Codec_Reset();
 
-  /* Disable the Codec control interface */
-  Codec_CtrlInterface_DeInit();
-  
-  /* Deinitialize the Codec audio interface (I2S) */
-  Codec_AudioInterface_DeInit(); 
-  
-  /* Return communication control value */
-  return counter;  
+	/* Keep Codec powered OFF */
+	counter += Codec_WriteRegister(0x02, 0x01);
+
+	/* Deinitialize all use GPIOs */
+	Codec_GPIO_DeInit();
+
+	/* Disable the Codec control interface */
+	Codec_CtrlInterface_DeInit();
+
+	/* Deinitialize the Codec audio interface (I2S) */
+	Codec_AudioInterface_DeInit();
+
+	/* Return communication control value */
+	return counter;
 }
 
 /**
@@ -651,12 +646,12 @@ static uint32_t Codec_DeInit(void)
   */
 static uint32_t Codec_Play(void)
 {
-  /* 
-     No actions required on Codec level for play command
-     */  
+	/* 
+	   No actions required on Codec level for play command
+	 */
 
-  /* Return communication control value */
-  return 0;  
+	/* Return communication control value */
+	return 0;
 }
 
 /**
@@ -667,29 +662,27 @@ static uint32_t Codec_Play(void)
   */
 static uint32_t Codec_PauseResume(uint32_t Cmd)
 {
-  uint32_t counter = 0;   
-  
-  /* Pause the audio file playing */
-  if (Cmd == AUDIO_PAUSE)
-  { 
-    /* Mute the output first */
-    counter += Codec_Mute(AUDIO_MUTE_ON);
+	uint32_t counter = 0;
 
-    /* Put the Codec in Power save mode */    
-    counter += Codec_WriteRegister(0x02, 0x01);    
-  }
-  else /* AUDIO_RESUME */
-  {
-    /* Unmute the output first */
-    counter += Codec_Mute(AUDIO_MUTE_OFF);
-    
-    counter += Codec_WriteRegister(0x04, OutputDev);
-    
-    /* Exit the Power save mode */
-    counter += Codec_WriteRegister(0x02, 0x9E); 
-  }
+	/* Pause the audio file playing */
+	if (Cmd == AUDIO_PAUSE) {
+		/* Mute the output first */
+		counter += Codec_Mute(AUDIO_MUTE_ON);
 
-  return counter;
+		/* Put the Codec in Power save mode */
+		counter += Codec_WriteRegister(0x02, 0x01);
+	} else {		/* AUDIO_RESUME */
+
+		/* Unmute the output first */
+		counter += Codec_Mute(AUDIO_MUTE_OFF);
+
+		counter += Codec_WriteRegister(0x04, OutputDev);
+
+		/* Exit the Power save mode */
+		counter += Codec_WriteRegister(0x02, 0x9E);
+	}
+
+	return counter;
 }
 
 /**
@@ -706,29 +699,27 @@ static uint32_t Codec_PauseResume(uint32_t Cmd)
   */
 static uint32_t Codec_Stop(uint32_t CodecPdwnMode)
 {
-  uint32_t counter = 0;   
+	uint32_t counter = 0;
 
-  /* Mute the output first */
-  Codec_Mute(AUDIO_MUTE_ON);
-  
-  if (CodecPdwnMode == CODEC_PDWN_SW)
-  {    
-    /* Power down the DAC and the speaker (PMDAC and PMSPK bits)*/
-    counter += Codec_WriteRegister(0x02, 0x9F);
-  }
-  else /* CODEC_PDWN_HW */
-  { 
-    /* Power down the components */
-    counter += Codec_WriteRegister(0x02, 0x9F);
+	/* Mute the output first */
+	Codec_Mute(AUDIO_MUTE_ON);
 
-    /* Wait at least 100us */
-    Delay(0xFFF);
+	if (CodecPdwnMode == CODEC_PDWN_SW) {
+		/* Power down the DAC and the speaker (PMDAC and PMSPK bits) */
+		counter += Codec_WriteRegister(0x02, 0x9F);
+	} else {		/* CODEC_PDWN_HW */
 
-    /* Reset The pin */
-    GPIO_WriteBit(AUDIO_RESET_GPIO, AUDIO_RESET_PIN, Bit_RESET);
-  }
-  
-  return counter;    
+		/* Power down the components */
+		counter += Codec_WriteRegister(0x02, 0x9F);
+
+		/* Wait at least 100us */
+		Delay(0xFFF);
+
+		/* Reset The pin */
+		GPIO_WriteBit(AUDIO_RESET_GPIO, AUDIO_RESET_PIN, Bit_RESET);
+	}
+
+	return counter;
 }
 
 /**
@@ -739,22 +730,19 @@ static uint32_t Codec_Stop(uint32_t CodecPdwnMode)
   */
 static uint32_t Codec_VolumeCtrl(uint8_t Volume)
 {
-  uint32_t counter = 0;
-  
-  if (Volume > 0xE6)
-  {
-    /* Set the Master volume */
-    counter += Codec_WriteRegister(0x20, Volume - 0xE7); 
-    counter += Codec_WriteRegister(0x21, Volume - 0xE7);     
-  }
-  else
-  {
-    /* Set the Master volume */
-    counter += Codec_WriteRegister(0x20, Volume + 0x19); 
-    counter += Codec_WriteRegister(0x21, Volume + 0x19); 
-  }
+	uint32_t counter = 0;
 
-  return counter;  
+	if (Volume > 0xE6) {
+		/* Set the Master volume */
+		counter += Codec_WriteRegister(0x20, Volume - 0xE7);
+		counter += Codec_WriteRegister(0x21, Volume - 0xE7);
+	} else {
+		/* Set the Master volume */
+		counter += Codec_WriteRegister(0x20, Volume + 0x19);
+		counter += Codec_WriteRegister(0x21, Volume + 0x19);
+	}
+
+	return counter;
 }
 
 /**
@@ -765,19 +753,17 @@ static uint32_t Codec_VolumeCtrl(uint8_t Volume)
   */
 static uint32_t Codec_Mute(uint32_t Cmd)
 {
-  uint32_t counter = 0;  
-  
-  /* Set the Mute mode */
-  if (Cmd == AUDIO_MUTE_ON)
-  {
-    counter += Codec_WriteRegister(0x04, 0xFF);
-  }
-  else /* AUDIO_MUTE_OFF Disable the Mute */
-  {
-    counter += Codec_WriteRegister(0x04, OutputDev);
-  }
-  
-  return counter; 
+	uint32_t counter = 0;
+
+	/* Set the Mute mode */
+	if (Cmd == AUDIO_MUTE_ON) {
+		counter += Codec_WriteRegister(0x04, 0xFF);
+	} else {		/* AUDIO_MUTE_OFF Disable the Mute */
+
+		counter += Codec_WriteRegister(0x04, OutputDev);
+	}
+
+	return counter;
 }
 
 /**
@@ -789,14 +775,14 @@ static uint32_t Codec_Mute(uint32_t Cmd)
   */
 static void Codec_Reset(void)
 {
-  /* Power Down the codec */
-  GPIO_WriteBit(AUDIO_RESET_GPIO, AUDIO_RESET_PIN, Bit_RESET);
+	/* Power Down the codec */
+	GPIO_WriteBit(AUDIO_RESET_GPIO, AUDIO_RESET_PIN, Bit_RESET);
 
-  /* wait for a delay to insure registers erasing */
-  Delay(CODEC_RESET_DELAY);
+	/* wait for a delay to insure registers erasing */
+	Delay(CODEC_RESET_DELAY);
 
-  /* Power on the codec */
-  GPIO_WriteBit(AUDIO_RESET_GPIO, AUDIO_RESET_PIN, Bit_SET);
+	/* Power on the codec */
+	GPIO_WriteBit(AUDIO_RESET_GPIO, AUDIO_RESET_PIN, Bit_SET);
 }
 
 /**
@@ -809,37 +795,36 @@ static void Codec_Reset(void)
   */
 uint32_t Codec_SwitchOutput(uint8_t Output)
 {
-  uint8_t counter = 0;
-  
-  switch (Output) 
-  {
-    case OUTPUT_DEVICE_SPEAKER:
-      counter += Codec_WriteRegister(0x04, 0xFA); /* SPK always ON & HP always OFF */
-      OutputDev = 0xFA;
-      break;
-      
-    case OUTPUT_DEVICE_HEADPHONE:
-      counter += Codec_WriteRegister(0x04, 0xAF); /* SPK always OFF & HP always ON */
-      OutputDev = 0xAF;
-      break;
-      
-    case OUTPUT_DEVICE_BOTH:
-      counter += Codec_WriteRegister(0x04, 0xAA); /* SPK always ON & HP always ON */
-      OutputDev = 0xAA;
-      break;
-      
-    case OUTPUT_DEVICE_AUTO:
-      counter += Codec_WriteRegister(0x04, 0x05); /* Detect the HP or the SPK automatically */
-      OutputDev = 0x05;
-      break;    
-      
-    default:
-      counter += Codec_WriteRegister(0x04, 0x05); /* Detect the HP or the SPK automatically */
-      OutputDev = 0x05;
-      break;
-  }
-  
-  return counter;
+	uint8_t counter = 0;
+
+	switch (Output) {
+	case OUTPUT_DEVICE_SPEAKER:
+		counter += Codec_WriteRegister(0x04, 0xFA);	/* SPK always ON & HP always OFF */
+		OutputDev = 0xFA;
+		break;
+
+	case OUTPUT_DEVICE_HEADPHONE:
+		counter += Codec_WriteRegister(0x04, 0xAF);	/* SPK always OFF & HP always ON */
+		OutputDev = 0xAF;
+		break;
+
+	case OUTPUT_DEVICE_BOTH:
+		counter += Codec_WriteRegister(0x04, 0xAA);	/* SPK always ON & HP always ON */
+		OutputDev = 0xAA;
+		break;
+
+	case OUTPUT_DEVICE_AUTO:
+		counter += Codec_WriteRegister(0x04, 0x05);	/* Detect the HP or the SPK automatically */
+		OutputDev = 0x05;
+		break;
+
+	default:
+		counter += Codec_WriteRegister(0x04, 0x05);	/* Detect the HP or the SPK automatically */
+		OutputDev = 0x05;
+		break;
+	}
+
+	return counter;
 }
 
 /**
@@ -851,55 +836,56 @@ uint32_t Codec_SwitchOutput(uint8_t Output)
   */
 static uint32_t Codec_WriteRegister(uint8_t RegisterAddr, uint8_t RegisterValue)
 {
-  uint32_t result = 0;
-  
-  /* Test on BUSY Flag */
-  CODECTimeout = CODEC_FLAG_TIMEOUT;
-  while(I2C_GetFlagStatus(CODEC_I2C, I2C_ISR_BUSY) != RESET) 
-  {
-    if((CODECTimeout--) == 0) return Codec_TIMEOUT_UserCallback();
-  }
-  
-  /* Configure slave address, nbytes, reload, end mode and start or stop generation */
-  I2C_TransferHandling(CODEC_I2C, CODEC_ADDRESS, 2, I2C_AutoEnd_Mode, I2C_Generate_Start_Write);
-  
-  /* Wait until TXIS flag is set */
-  CODECTimeout = CODEC_FLAG_TIMEOUT;  
-  while(I2C_GetFlagStatus(CODEC_I2C, I2C_ISR_TXIS) == RESET)
-  {
-    if((CODECTimeout--) == 0) return Codec_TIMEOUT_UserCallback();
-  }
-  
-  /* Send Register address */
-  I2C_SendData(CODEC_I2C, (uint8_t)RegisterAddr );
-    
-  /* Wait until TXIS flag is set */
-  CODECTimeout = CODEC_FLAG_TIMEOUT;
-  while(I2C_GetFlagStatus(CODEC_I2C, I2C_ISR_TXIS) == RESET)
-  {
-    if((CODECTimeout--) == 0) return Codec_TIMEOUT_UserCallback();
-  }  
-  
-  /* Write data to TXDR */
-  I2C_SendData(CODEC_I2C, (uint8_t)RegisterValue);
-  
-  /* Wait until STOPF flag is set */
-  CODECTimeout = CODEC_FLAG_TIMEOUT;
-  while(I2C_GetFlagStatus(CODEC_I2C, I2C_ISR_STOPF) == RESET)
-  {
-    if((CODECTimeout--) == 0) return Codec_TIMEOUT_UserCallback();
-  }   
-  
-  /* Clear STOPF flag */
-  I2C_ClearFlag(CODEC_I2C, I2C_ICR_STOPCF);
+	uint32_t result = 0;
+
+	/* Test on BUSY Flag */
+	CODECTimeout = CODEC_FLAG_TIMEOUT;
+	while (I2C_GetFlagStatus(CODEC_I2C, I2C_ISR_BUSY) != RESET) {
+		if ((CODECTimeout--) == 0)
+			return Codec_TIMEOUT_UserCallback();
+	}
+
+	/* Configure slave address, nbytes, reload, end mode and start or stop generation */
+	I2C_TransferHandling(CODEC_I2C, CODEC_ADDRESS, 2, I2C_AutoEnd_Mode,
+			     I2C_Generate_Start_Write);
+
+	/* Wait until TXIS flag is set */
+	CODECTimeout = CODEC_FLAG_TIMEOUT;
+	while (I2C_GetFlagStatus(CODEC_I2C, I2C_ISR_TXIS) == RESET) {
+		if ((CODECTimeout--) == 0)
+			return Codec_TIMEOUT_UserCallback();
+	}
+
+	/* Send Register address */
+	I2C_SendData(CODEC_I2C, (uint8_t) RegisterAddr);
+
+	/* Wait until TXIS flag is set */
+	CODECTimeout = CODEC_FLAG_TIMEOUT;
+	while (I2C_GetFlagStatus(CODEC_I2C, I2C_ISR_TXIS) == RESET) {
+		if ((CODECTimeout--) == 0)
+			return Codec_TIMEOUT_UserCallback();
+	}
+
+	/* Write data to TXDR */
+	I2C_SendData(CODEC_I2C, (uint8_t) RegisterValue);
+
+	/* Wait until STOPF flag is set */
+	CODECTimeout = CODEC_FLAG_TIMEOUT;
+	while (I2C_GetFlagStatus(CODEC_I2C, I2C_ISR_STOPF) == RESET) {
+		if ((CODECTimeout--) == 0)
+			return Codec_TIMEOUT_UserCallback();
+	}
+
+	/* Clear STOPF flag */
+	I2C_ClearFlag(CODEC_I2C, I2C_ICR_STOPCF);
 
 #ifdef VERIFY_WRITTENDATA
-  /* Verify that the data has been correctly written */  
-  result = (Codec_ReadRegister(RegisterAddr) == RegisterValue)? 0:1;
+	/* Verify that the data has been correctly written */
+	result = (Codec_ReadRegister(RegisterAddr) == RegisterValue) ? 0 : 1;
 #endif /* VERIFY_WRITTENDATA */
 
-  /* Return the verifying value: 0 (Passed) or 1 (Failed) */
-  return result;
+	/* Return the verifying value: 0 (Passed) or 1 (Failed) */
+	return result;
 }
 
 /**
@@ -911,60 +897,62 @@ static uint32_t Codec_WriteRegister(uint8_t RegisterAddr, uint8_t RegisterValue)
   */
 static uint32_t Codec_ReadRegister(uint8_t RegisterAddr)
 {
-   uint32_t result = 0;
-  
-  /* Test on BUSY Flag */
-  CODECTimeout = CODEC_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(CODEC_I2C, I2C_ISR_BUSY) != RESET)
-  {
-    if((CODECTimeout--) == 0) return Codec_TIMEOUT_UserCallback();
-  }
+	uint32_t result = 0;
 
-  /* Configure slave address, nbytes, reload, end mode and start or stop generation */
-  I2C_TransferHandling(CODEC_I2C, CODEC_ADDRESS, 1, I2C_SoftEnd_Mode, I2C_Generate_Start_Write);
-  
-  /* Wait until TXIS flag is set */
-  CODECTimeout = CODEC_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(CODEC_I2C, I2C_ISR_TXIS) == RESET)
-  {
-    if((CODECTimeout--) == 0) return Codec_TIMEOUT_UserCallback();
-  }
-  
-  /* Send Register address */
-  I2C_SendData(CODEC_I2C, (uint8_t)RegisterAddr);
-  
-  /* Wait until TC flag is set */
-  CODECTimeout = CODEC_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(CODEC_I2C, I2C_ISR_TC) == RESET)
-  {
-    if((CODECTimeout--) == 0) return Codec_TIMEOUT_UserCallback();
-  }  
-  
-  /* Configure slave address, nbytes, reload, end mode and start or stop generation */
-  I2C_TransferHandling(CODEC_I2C, CODEC_ADDRESS, 1, I2C_AutoEnd_Mode, I2C_Generate_Start_Read);
-  
-  /* Wait until RXNE flag is set */
-  CODECTimeout = CODEC_LONG_TIMEOUT;  
-  while(I2C_GetFlagStatus(CODEC_I2C, I2C_ISR_RXNE) == RESET)  
-  {
-    if((CODECTimeout--) == 0) return Codec_TIMEOUT_UserCallback();
-  }
-  
-  /* Read data from RXDR */
-  result = I2C_ReceiveData(CODEC_I2C);  
-  
-  /* Wait until STOPF flag is set */
-  CODECTimeout = CODEC_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(CODEC_I2C, I2C_ISR_STOPF) == RESET) 
-  {
-    if((CODECTimeout--) == 0) return Codec_TIMEOUT_UserCallback();
-  }
-  
-  /* Clear STOPF flag */
-  I2C_ClearFlag(CODEC_I2C, I2C_ICR_STOPCF);
+	/* Test on BUSY Flag */
+	CODECTimeout = CODEC_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(CODEC_I2C, I2C_ISR_BUSY) != RESET) {
+		if ((CODECTimeout--) == 0)
+			return Codec_TIMEOUT_UserCallback();
+	}
 
-  /* Return the byte read from Codec */
-  return result;
+	/* Configure slave address, nbytes, reload, end mode and start or stop generation */
+	I2C_TransferHandling(CODEC_I2C, CODEC_ADDRESS, 1, I2C_SoftEnd_Mode,
+			     I2C_Generate_Start_Write);
+
+	/* Wait until TXIS flag is set */
+	CODECTimeout = CODEC_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(CODEC_I2C, I2C_ISR_TXIS) == RESET) {
+		if ((CODECTimeout--) == 0)
+			return Codec_TIMEOUT_UserCallback();
+	}
+
+	/* Send Register address */
+	I2C_SendData(CODEC_I2C, (uint8_t) RegisterAddr);
+
+	/* Wait until TC flag is set */
+	CODECTimeout = CODEC_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(CODEC_I2C, I2C_ISR_TC) == RESET) {
+		if ((CODECTimeout--) == 0)
+			return Codec_TIMEOUT_UserCallback();
+	}
+
+	/* Configure slave address, nbytes, reload, end mode and start or stop generation */
+	I2C_TransferHandling(CODEC_I2C, CODEC_ADDRESS, 1, I2C_AutoEnd_Mode,
+			     I2C_Generate_Start_Read);
+
+	/* Wait until RXNE flag is set */
+	CODECTimeout = CODEC_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(CODEC_I2C, I2C_ISR_RXNE) == RESET) {
+		if ((CODECTimeout--) == 0)
+			return Codec_TIMEOUT_UserCallback();
+	}
+
+	/* Read data from RXDR */
+	result = I2C_ReceiveData(CODEC_I2C);
+
+	/* Wait until STOPF flag is set */
+	CODECTimeout = CODEC_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(CODEC_I2C, I2C_ISR_STOPF) == RESET) {
+		if ((CODECTimeout--) == 0)
+			return Codec_TIMEOUT_UserCallback();
+	}
+
+	/* Clear STOPF flag */
+	I2C_ClearFlag(CODEC_I2C, I2C_ICR_STOPCF);
+
+	/* Return the byte read from Codec */
+	return result;
 }
 
 /**
@@ -974,26 +962,27 @@ static uint32_t Codec_ReadRegister(uint8_t RegisterAddr)
   */
 static void Codec_CtrlInterface_Init(void)
 {
-  I2C_InitTypeDef I2C_InitStructure;
-  
-  /* Configure the I2C clock source. The clock is derived from the SYSCLK */
-  RCC_I2CCLKConfig(RCC_I2C2CLK_SYSCLK);
-  
-  /* Enable the CODEC_I2C peripheral clock */
-  RCC_APB1PeriphClockCmd(CODEC_I2C_CLK, ENABLE);
-  
-  /* CODEC_I2C configuration */
-  I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
-  I2C_InitStructure.I2C_AnalogFilter = I2C_AnalogFilter_Enable;
-  I2C_InitStructure.I2C_DigitalFilter = 0x00;
-  I2C_InitStructure.I2C_OwnAddress1 = 0x33;
-  I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
-  I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
-  I2C_InitStructure.I2C_Timing = CODEC_I2C_TIMING;
-  
-  /* Enable the I2C peripheral */  
-  I2C_Init(CODEC_I2C, &I2C_InitStructure);
-  I2C_Cmd(CODEC_I2C, ENABLE);
+	I2C_InitTypeDef I2C_InitStructure;
+
+	/* Configure the I2C clock source. The clock is derived from the SYSCLK */
+	RCC_I2CCLKConfig(RCC_I2C2CLK_SYSCLK);
+
+	/* Enable the CODEC_I2C peripheral clock */
+	RCC_APB1PeriphClockCmd(CODEC_I2C_CLK, ENABLE);
+
+	/* CODEC_I2C configuration */
+	I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
+	I2C_InitStructure.I2C_AnalogFilter = I2C_AnalogFilter_Enable;
+	I2C_InitStructure.I2C_DigitalFilter = 0x00;
+	I2C_InitStructure.I2C_OwnAddress1 = 0x33;
+	I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
+	I2C_InitStructure.I2C_AcknowledgedAddress =
+	    I2C_AcknowledgedAddress_7bit;
+	I2C_InitStructure.I2C_Timing = CODEC_I2C_TIMING;
+
+	/* Enable the I2C peripheral */
+	I2C_Init(CODEC_I2C, &I2C_InitStructure);
+	I2C_Cmd(CODEC_I2C, ENABLE);
 }
 
 /**
@@ -1005,9 +994,9 @@ static void Codec_CtrlInterface_Init(void)
   */
 static void Codec_CtrlInterface_DeInit(void)
 {
-  /* Disable the I2C peripheral */ /* This step is not done here because 
-     the I2C interface can be used by other modules */
-  /* I2C_DeInit(CODEC_I2C); */
+	/* Disable the I2C peripheral *//* This step is not done here because 
+	   the I2C interface can be used by other modules */
+	/* I2C_DeInit(CODEC_I2C); */
 }
 
 /**
@@ -1020,31 +1009,31 @@ static void Codec_CtrlInterface_DeInit(void)
   */
 static void Codec_AudioInterface_Init(uint32_t AudioFreq)
 {
-  I2S_InitTypeDef I2S_InitStructure;
+	I2S_InitTypeDef I2S_InitStructure;
 
-  /* Enable the CODEC_I2S peripheral clock */
-  RCC_APB2PeriphClockCmd(CODEC_I2S_CLK, ENABLE);
+	/* Enable the CODEC_I2S peripheral clock */
+	RCC_APB2PeriphClockCmd(CODEC_I2S_CLK, ENABLE);
 
-  /* CODEC_I2S peripheral configuration */
-  SPI_I2S_DeInit(CODEC_I2S);
-  I2S_InitStructure.I2S_AudioFreq = AudioFreq;
-  I2S_InitStructure.I2S_Standard = I2S_STANDARD;
-  I2S_InitStructure.I2S_DataFormat = I2S_DataFormat_16b;
-  I2S_InitStructure.I2S_CPOL = I2S_CPOL_Low;
-  I2S_InitStructure.I2S_Mode = I2S_Mode_MasterTx;
+	/* CODEC_I2S peripheral configuration */
+	SPI_I2S_DeInit(CODEC_I2S);
+	I2S_InitStructure.I2S_AudioFreq = AudioFreq;
+	I2S_InitStructure.I2S_Standard = I2S_STANDARD;
+	I2S_InitStructure.I2S_DataFormat = I2S_DataFormat_16b;
+	I2S_InitStructure.I2S_CPOL = I2S_CPOL_Low;
+	I2S_InitStructure.I2S_Mode = I2S_Mode_MasterTx;
 #ifdef CODEC_MCLK_ENABLED
-  I2S_InitStructure.I2S_MCLKOutput = I2S_MCLKOutput_Enable;
+	I2S_InitStructure.I2S_MCLKOutput = I2S_MCLKOutput_Enable;
 #elif defined(CODEC_MCLK_DISABLED)
-  I2S_InitStructure.I2S_MCLKOutput = I2S_MCLKOutput_Disable;
+	I2S_InitStructure.I2S_MCLKOutput = I2S_MCLKOutput_Disable;
 #else
- #error "No selection for the MCLK output has been defined !"
+#error "No selection for the MCLK output has been defined !"
 #endif /* CODEC_MCLK_ENABLED */
 
-  /* Initialize the I2S peripheral with the structure above */
-  I2S_Init(CODEC_I2S, &I2S_InitStructure);
+	/* Initialize the I2S peripheral with the structure above */
+	I2S_Init(CODEC_I2S, &I2S_InitStructure);
 
-  /* The I2S peripheral will be enabled only in the EVAL_AUDIO_Play() function 
-       or by user functions if DMA mode not enabled */  
+	/* The I2S peripheral will be enabled only in the EVAL_AUDIO_Play() function 
+	   or by user functions if DMA mode not enabled */
 }
 
 /**
@@ -1054,14 +1043,14 @@ static void Codec_AudioInterface_Init(uint32_t AudioFreq)
   */
 static void Codec_AudioInterface_DeInit(void)
 {
-  /* Disable the CODEC_I2S peripheral (in case it hasn't already been disabled) */
-  I2S_Cmd(CODEC_I2S, DISABLE);
-  
-  /* Deinitialize the CODEC_I2S peripheral */
-  SPI_I2S_DeInit(CODEC_I2S);
-  
-  /* Disable the CODEC_I2S peripheral clock */
-  RCC_APB2PeriphClockCmd(CODEC_I2S_CLK, DISABLE); 
+	/* Disable the CODEC_I2S peripheral (in case it hasn't already been disabled) */
+	I2S_Cmd(CODEC_I2S, DISABLE);
+
+	/* Deinitialize the CODEC_I2S peripheral */
+	SPI_I2S_DeInit(CODEC_I2S);
+
+	/* Disable the CODEC_I2S peripheral clock */
+	RCC_APB2PeriphClockCmd(CODEC_I2S_CLK, DISABLE);
 }
 
 /**
@@ -1072,59 +1061,66 @@ static void Codec_AudioInterface_DeInit(void)
   */
 static void Codec_GPIO_Init(void)
 {
-  GPIO_InitTypeDef GPIO_InitStructure;
-  
-  /* Enable Reset GPIO Clock */
-  RCC_AHBPeriphClockCmd(AUDIO_RESET_GPIO_CLK,ENABLE);
-  
-  /* Audio reset pin configuration ---------------------------------------------*/
-  GPIO_InitStructure.GPIO_Pin = AUDIO_RESET_PIN; 
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
-  GPIO_Init(AUDIO_RESET_GPIO, &GPIO_InitStructure);
-  
-  /* Enable I2S and I2C GPIO clocks */
-  RCC_AHBPeriphClockCmd(CODEC_I2C_GPIO_CLOCK | CODEC_I2S_GPIO_CLOCK, ENABLE);
-  
-  /* Connect pins to I2C peripheral */
-  GPIO_PinAFConfig(CODEC_I2C_GPIO, CODEC_I2S_SCL_PINSRC, CODEC_I2C_GPIO_AF);
-  GPIO_PinAFConfig(CODEC_I2C_GPIO, CODEC_I2S_SDA_PINSRC, CODEC_I2C_GPIO_AF);
-  
-  /* CODEC_I2C SCL and SDA pins configuration ----------------------------------*/
-  GPIO_InitStructure.GPIO_Pin = CODEC_I2C_SCL_PIN | CODEC_I2C_SDA_PIN;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
-  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
-  GPIO_Init(CODEC_I2C_GPIO, &GPIO_InitStructure);     
-  
-  
-  /* CODEC_I2S pins configuration: WS, SCK and SD pins -------------------------*/
-  GPIO_InitStructure.GPIO_Pin = CODEC_I2S_SCK_PIN | CODEC_I2S_SD_PIN | CODEC_I2S_WS_PIN;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  GPIO_Init(CODEC_I2S_GPIO, &GPIO_InitStructure);
-  
-  /* Connect pins to I2S peripheral  */
-  GPIO_PinAFConfig(CODEC_I2S_GPIO, CODEC_I2S_WS_PINSRC, CODEC_I2S_GPIO_AF);
-  GPIO_PinAFConfig(CODEC_I2S_GPIO, CODEC_I2S_SCK_PINSRC, CODEC_I2S_GPIO_AF);
-  GPIO_PinAFConfig(CODEC_I2S_GPIO, CODEC_I2S_SD_PINSRC, CODEC_I2S_GPIO_AF);
-  
- #ifdef CODEC_MCLK_ENABLED
-  /* CODEC_I2S pins configuration: MCK pin */
-  GPIO_InitStructure.GPIO_Pin = CODEC_I2S_MCK_PIN; 
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  GPIO_Init(CODEC_I2S_MCK_GPIO, &GPIO_InitStructure);   
-  /* Connect pins to I2S peripheral  */
-  GPIO_PinAFConfig(CODEC_I2S_MCK_GPIO, CODEC_I2S_MCK_PINSRC, CODEC_I2S_GPIO_AF); 
- #endif /* CODEC_MCLK_ENABLED */   
+	GPIO_InitTypeDef GPIO_InitStructure;
+
+	/* Enable Reset GPIO Clock */
+	RCC_AHBPeriphClockCmd(AUDIO_RESET_GPIO_CLK, ENABLE);
+
+	/* Audio reset pin configuration --------------------------------------------- */
+	GPIO_InitStructure.GPIO_Pin = AUDIO_RESET_PIN;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	GPIO_Init(AUDIO_RESET_GPIO, &GPIO_InitStructure);
+
+	/* Enable I2S and I2C GPIO clocks */
+	RCC_AHBPeriphClockCmd(CODEC_I2C_GPIO_CLOCK | CODEC_I2S_GPIO_CLOCK,
+			      ENABLE);
+
+	/* Connect pins to I2C peripheral */
+	GPIO_PinAFConfig(CODEC_I2C_GPIO, CODEC_I2S_SCL_PINSRC,
+			 CODEC_I2C_GPIO_AF);
+	GPIO_PinAFConfig(CODEC_I2C_GPIO, CODEC_I2S_SDA_PINSRC,
+			 CODEC_I2C_GPIO_AF);
+
+	/* CODEC_I2C SCL and SDA pins configuration ---------------------------------- */
+	GPIO_InitStructure.GPIO_Pin = CODEC_I2C_SCL_PIN | CODEC_I2C_SDA_PIN;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	GPIO_Init(CODEC_I2C_GPIO, &GPIO_InitStructure);
+
+	/* CODEC_I2S pins configuration: WS, SCK and SD pins ------------------------- */
+	GPIO_InitStructure.GPIO_Pin =
+	    CODEC_I2S_SCK_PIN | CODEC_I2S_SD_PIN | CODEC_I2S_WS_PIN;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	GPIO_Init(CODEC_I2S_GPIO, &GPIO_InitStructure);
+
+	/* Connect pins to I2S peripheral  */
+	GPIO_PinAFConfig(CODEC_I2S_GPIO, CODEC_I2S_WS_PINSRC,
+			 CODEC_I2S_GPIO_AF);
+	GPIO_PinAFConfig(CODEC_I2S_GPIO, CODEC_I2S_SCK_PINSRC,
+			 CODEC_I2S_GPIO_AF);
+	GPIO_PinAFConfig(CODEC_I2S_GPIO, CODEC_I2S_SD_PINSRC,
+			 CODEC_I2S_GPIO_AF);
+
+#ifdef CODEC_MCLK_ENABLED
+	/* CODEC_I2S pins configuration: MCK pin */
+	GPIO_InitStructure.GPIO_Pin = CODEC_I2S_MCK_PIN;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	GPIO_Init(CODEC_I2S_MCK_GPIO, &GPIO_InitStructure);
+	/* Connect pins to I2S peripheral  */
+	GPIO_PinAFConfig(CODEC_I2S_MCK_GPIO, CODEC_I2S_MCK_PINSRC,
+			 CODEC_I2S_GPIO_AF);
+#endif /* CODEC_MCLK_ENABLED */
 }
 
 /**
@@ -1134,24 +1130,26 @@ static void Codec_GPIO_Init(void)
   */
 static void Codec_GPIO_DeInit(void)
 {
-  GPIO_InitTypeDef GPIO_InitStructure;
-  
-  /* Deinitialize all the GPIOs used by the driver (EXCEPT the I2C IOs since 
-     they are used by the IOExpander as well) */
-  GPIO_InitStructure.GPIO_Pin = CODEC_I2S_WS_PIN | CODEC_I2S_SCK_PIN | CODEC_I2S_SD_PIN;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
-  GPIO_Init(CODEC_I2S_GPIO, &GPIO_InitStructure);     
-  
+	GPIO_InitTypeDef GPIO_InitStructure;
+
+	/* Deinitialize all the GPIOs used by the driver (EXCEPT the I2C IOs since 
+	   they are used by the IOExpander as well) */
+	GPIO_InitStructure.GPIO_Pin =
+	    CODEC_I2S_WS_PIN | CODEC_I2S_SCK_PIN | CODEC_I2S_SD_PIN;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	GPIO_Init(CODEC_I2S_GPIO, &GPIO_InitStructure);
+
 #ifdef CODEC_MCLK_ENABLED
-  /* CODEC_I2S pins deinitialization: MCK pin */
-  GPIO_InitStructure.GPIO_Pin = CODEC_I2S_MCK_PIN; 
-  GPIO_Init(CODEC_I2S_MCK_GPIO, &GPIO_InitStructure);   
-  /* Disconnect pins from I2S peripheral  */
-  GPIO_PinAFConfig(CODEC_I2S_MCK_GPIO, CODEC_I2S_MCK_PINSRC, CODEC_I2S_GPIO_AF); 
-#endif /* CODEC_MCLK_ENABLED */    
+	/* CODEC_I2S pins deinitialization: MCK pin */
+	GPIO_InitStructure.GPIO_Pin = CODEC_I2S_MCK_PIN;
+	GPIO_Init(CODEC_I2S_MCK_GPIO, &GPIO_InitStructure);
+	/* Disconnect pins from I2S peripheral  */
+	GPIO_PinAFConfig(CODEC_I2S_MCK_GPIO, CODEC_I2S_MCK_PINSRC,
+			 CODEC_I2S_GPIO_AF);
+#endif /* CODEC_MCLK_ENABLED */
 }
 
 /**
@@ -1159,9 +1157,9 @@ static void Codec_GPIO_DeInit(void)
   * @param  nCount: specifies the delay time length.
   * @retval None
   */
-static void Delay( __IO uint32_t nCount)
+static void Delay(__IO uint32_t nCount)
 {
-  for (; nCount != 0; nCount--);
+	for (; nCount != 0; nCount--) ;
 }
 
 #ifdef USE_DEFAULT_TIMEOUT_CALLBACK
@@ -1172,36 +1170,37 @@ static void Delay( __IO uint32_t nCount)
   */
 uint32_t Codec_TIMEOUT_UserCallback(void)
 {
-  /* The following code allows I2C error recovery and return to normal communication
-     if the error source doesn’t still exist (ie. hardware issue..) */
-  I2C_InitTypeDef I2C_InitStructure;
-  
-  /* LCD_ErrLog("> I2C Timeout error occurred\n"); */
+	/* The following code allows I2C error recovery and return to normal communication
+	   if the error source doesn’t still exist (ie. hardware issue..) */
+	I2C_InitTypeDef I2C_InitStructure;
 
-  I2C_GenerateSTOP(CODEC_I2C, ENABLE);
-  I2C_SoftwareResetCmd(CODEC_I2C, ENABLE);
-  I2C_SoftwareResetCmd(CODEC_I2C, DISABLE);
-    
-  /* CODEC_I2C peripheral configuration */
-  I2C_DeInit(CODEC_I2C);
-  I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
-  I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
-  I2C_InitStructure.I2C_OwnAddress1 = 0x33;
-  I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
-  I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
-  I2C_InitStructure.I2C_ClockSpeed = I2C_SPEED;
-  /* Enable the I2C peripheral */
-  I2C_Cmd(CODEC_I2C, ENABLE);  
-  I2C_Init(CODEC_I2C, &I2C_InitStructure);  
+	/* LCD_ErrLog("> I2C Timeout error occurred\n"); */
 
-  /* At this stage the I2C error should be recovered and device can communicate
-     again (except if the error source still exist).
-     User can implement mechanism (ex. test on max trial number) to manage situation
-     when the I2C can't recover from current error. */
+	I2C_GenerateSTOP(CODEC_I2C, ENABLE);
+	I2C_SoftwareResetCmd(CODEC_I2C, ENABLE);
+	I2C_SoftwareResetCmd(CODEC_I2C, DISABLE);
 
-  /* LCD_UsrLog("> I2C error recovered.\n"); */
+	/* CODEC_I2C peripheral configuration */
+	I2C_DeInit(CODEC_I2C);
+	I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
+	I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
+	I2C_InitStructure.I2C_OwnAddress1 = 0x33;
+	I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
+	I2C_InitStructure.I2C_AcknowledgedAddress =
+	    I2C_AcknowledgedAddress_7bit;
+	I2C_InitStructure.I2C_ClockSpeed = I2C_SPEED;
+	/* Enable the I2C peripheral */
+	I2C_Cmd(CODEC_I2C, ENABLE);
+	I2C_Init(CODEC_I2C, &I2C_InitStructure);
 
-  return 0;
+	/* At this stage the I2C error should be recovered and device can communicate
+	   again (except if the error source still exist).
+	   User can implement mechanism (ex. test on max trial number) to manage situation
+	   when the I2C can't recover from current error. */
+
+	/* LCD_UsrLog("> I2C error recovered.\n"); */
+
+	return 0;
 }
 #endif /* USE_DEFAULT_TIMEOUT_CALLBACK */
 
@@ -1215,59 +1214,62 @@ uint32_t Codec_TIMEOUT_UserCallback(void)
   * @param  None
   * @retval None
   */
-static void Audio_MAL_Init(void)  
-{   
+static void Audio_MAL_Init(void)
+{
 #if defined(AUDIO_MAL_DMA_IT_TC_EN) || defined(AUDIO_MAL_DMA_IT_HT_EN) || defined(AUDIO_MAL_DMA_IT_TE_EN)
-  NVIC_InitTypeDef NVIC_InitStructure;
+	NVIC_InitTypeDef NVIC_InitStructure;
 #endif
-  
-  /* Enable the DMA clock */
-  RCC_AHBPeriphClockCmd(AUDIO_MAL_DMA_CLOCK, ENABLE); 
-  
-  /* Configure the DMA Channel */
-  DMA_Cmd(AUDIO_MAL_DMA_CHANNEL, DISABLE);
-  DMA_DeInit(AUDIO_MAL_DMA_CHANNEL);
-  /* Set the parameters to be configured */
- 
-  DMA_InitStructure.DMA_PeripheralBaseAddr = CODEC_I2S_ADDRESS;
-  DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)0;      /* This field will be configured in play function */
-  DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralDST;
-  DMA_InitStructure.DMA_BufferSize = (uint32_t)0xFFFE;      /* This field will be configured in play function */
-  DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
-  DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
-  DMA_InitStructure.DMA_PeripheralDataSize = AUDIO_MAL_DMA_PERIPH_DATA_SIZE;
-  DMA_InitStructure.DMA_MemoryDataSize = AUDIO_MAL_DMA_MEM_DATA_SIZE; 
-#ifdef AUDIO_MAL_MODE_NORMAL
-  DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;
-#elif defined(AUDIO_MAL_MODE_CIRCULAR)
-  DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;
-#else
-  #error "AUDIO_MAL_MODE_NORMAL or AUDIO_MAL_MODE_CIRCULAR should be selected !!"
-#endif /* AUDIO_MAL_MODE_NORMAL */  
-  DMA_Init(AUDIO_MAL_DMA_CHANNEL, &DMA_InitStructure);  
 
-  /* Enable the selected DMA interrupts (selected in "stm32_eval_audio_codec.h" defines) */
+	/* Enable the DMA clock */
+	RCC_AHBPeriphClockCmd(AUDIO_MAL_DMA_CLOCK, ENABLE);
+
+	/* Configure the DMA Channel */
+	DMA_Cmd(AUDIO_MAL_DMA_CHANNEL, DISABLE);
+	DMA_DeInit(AUDIO_MAL_DMA_CHANNEL);
+	/* Set the parameters to be configured */
+
+	DMA_InitStructure.DMA_PeripheralBaseAddr = CODEC_I2S_ADDRESS;
+	DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t) 0;	/* This field will be configured in play function */
+	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralDST;
+	DMA_InitStructure.DMA_BufferSize = (uint32_t) 0xFFFE;	/* This field will be configured in play function */
+	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
+	DMA_InitStructure.DMA_PeripheralDataSize =
+	    AUDIO_MAL_DMA_PERIPH_DATA_SIZE;
+	DMA_InitStructure.DMA_MemoryDataSize = AUDIO_MAL_DMA_MEM_DATA_SIZE;
+#ifdef AUDIO_MAL_MODE_NORMAL
+	DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;
+#elif defined(AUDIO_MAL_MODE_CIRCULAR)
+	DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;
+#else
+#error "AUDIO_MAL_MODE_NORMAL or AUDIO_MAL_MODE_CIRCULAR should be selected !!"
+#endif /* AUDIO_MAL_MODE_NORMAL */
+	DMA_Init(AUDIO_MAL_DMA_CHANNEL, &DMA_InitStructure);
+
+	/* Enable the selected DMA interrupts (selected in "stm32_eval_audio_codec.h" defines) */
 #ifdef AUDIO_MAL_DMA_IT_TC_EN
-  DMA_ITConfig(AUDIO_MAL_DMA_CHANNEL, DMA_IT_TC, ENABLE);
+	DMA_ITConfig(AUDIO_MAL_DMA_CHANNEL, DMA_IT_TC, ENABLE);
 #endif /* AUDIO_MAL_DMA_IT_TC_EN */
 #ifdef AUDIO_MAL_DMA_IT_HT_EN
-  DMA_ITConfig(AUDIO_MAL_DMA_CHANNEL, DMA_IT_HT, ENABLE);
+	DMA_ITConfig(AUDIO_MAL_DMA_CHANNEL, DMA_IT_HT, ENABLE);
 #endif /* AUDIO_MAL_DMA_IT_HT_EN */
 #ifdef AUDIO_MAL_DMA_IT_TE_EN
-  DMA_ITConfig(AUDIO_MAL_DMA_CHANNEL, DMA_IT_TE | DMA_IT_FE | DMA_IT_DME, ENABLE);
+	DMA_ITConfig(AUDIO_MAL_DMA_CHANNEL, DMA_IT_TE | DMA_IT_FE | DMA_IT_DME,
+		     ENABLE);
 #endif /* AUDIO_MAL_DMA_IT_TE_EN */
-  
-  /* Enable the I2S DMA request */
-  SPI_I2S_DMACmd(CODEC_I2S, SPI_I2S_DMAReq_Tx, ENABLE);
-  
+
+	/* Enable the I2S DMA request */
+	SPI_I2S_DMACmd(CODEC_I2S, SPI_I2S_DMAReq_Tx, ENABLE);
+
 #if defined(AUDIO_MAL_DMA_IT_TC_EN) || defined(AUDIO_MAL_DMA_IT_HT_EN) || defined(AUDIO_MAL_DMA_IT_TE_EN)
-  /* I2S DMA IRQ Channel configuration */
-  NVIC_InitStructure.NVIC_IRQChannel = AUDIO_MAL_DMA_IRQ;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = EVAL_AUDIO_IRQ_PREPRIO;
-  NVIC_InitStructure.NVIC_IRQChannelSubPriority = EVAL_AUDIO_IRQ_SUBRIO;
-  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-  NVIC_Init(&NVIC_InitStructure);
-#endif 
+	/* I2S DMA IRQ Channel configuration */
+	NVIC_InitStructure.NVIC_IRQChannel = AUDIO_MAL_DMA_IRQ;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority =
+	    EVAL_AUDIO_IRQ_PREPRIO;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = EVAL_AUDIO_IRQ_SUBRIO;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
+#endif
 }
 
 /**
@@ -1275,26 +1277,27 @@ static void Audio_MAL_Init(void)
   * @param  None
   * @retval None
   */
-static void Audio_MAL_DeInit(void)  
-{   
+static void Audio_MAL_DeInit(void)
+{
 #if defined(AUDIO_MAL_DMA_IT_TC_EN) || defined(AUDIO_MAL_DMA_IT_HT_EN) || defined(AUDIO_MAL_DMA_IT_TE_EN)
-  NVIC_InitTypeDef NVIC_InitStructure;  
-  
-  /* Deinitialize the NVIC interrupt for the I2S DMA Channel */
-  NVIC_InitStructure.NVIC_IRQChannel = AUDIO_MAL_DMA_IRQ;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = EVAL_AUDIO_IRQ_PREPRIO;
-  NVIC_InitStructure.NVIC_IRQChannelSubPriority = EVAL_AUDIO_IRQ_SUBRIO;
-  NVIC_InitStructure.NVIC_IRQChannelCmd = DISABLE;
-  NVIC_Init(&NVIC_InitStructure);  
-#endif 
-  
-  /* Disable the DMA before the deinit */
-  DMA_Cmd(AUDIO_MAL_DMA_CHANNEL, DISABLE);
-  
-  /* Dinitialize the DMA Channel */
-  DMA_DeInit(AUDIO_MAL_DMA_CHANNEL);
-  
-  /* The DMA clock is not disabled  */ 
+	NVIC_InitTypeDef NVIC_InitStructure;
+
+	/* Deinitialize the NVIC interrupt for the I2S DMA Channel */
+	NVIC_InitStructure.NVIC_IRQChannel = AUDIO_MAL_DMA_IRQ;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority =
+	    EVAL_AUDIO_IRQ_PREPRIO;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = EVAL_AUDIO_IRQ_SUBRIO;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = DISABLE;
+	NVIC_Init(&NVIC_InitStructure);
+#endif
+
+	/* Disable the DMA before the deinit */
+	DMA_Cmd(AUDIO_MAL_DMA_CHANNEL, DISABLE);
+
+	/* Dinitialize the DMA Channel */
+	DMA_DeInit(AUDIO_MAL_DMA_CHANNEL);
+
+	/* The DMA clock is not disabled  */
 }
 
 /**
@@ -1303,22 +1306,21 @@ static void Audio_MAL_DeInit(void)
   * @retval None
   */
 void Audio_MAL_Play(uint32_t Addr, uint32_t Size)
-{   
-  /* Configure the buffer address and size */
-  DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)Addr;
-  DMA_InitStructure.DMA_BufferSize = (uint32_t)Size/2;
+{
+	/* Configure the buffer address and size */
+	DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t) Addr;
+	DMA_InitStructure.DMA_BufferSize = (uint32_t) Size / 2;
 
-  /* Configure the DMA Channel with the new parameters */
-  DMA_Init(AUDIO_MAL_DMA_CHANNEL, &DMA_InitStructure);
-  
-  /* Enable the I2S DMA Channel */
-  DMA_Cmd(AUDIO_MAL_DMA_CHANNEL, ENABLE);
+	/* Configure the DMA Channel with the new parameters */
+	DMA_Init(AUDIO_MAL_DMA_CHANNEL, &DMA_InitStructure);
 
-  /* If the I2S peripheral is still not enabled, enable it */
-  if ((CODEC_I2S->I2SCFGR & I2S_ENABLE_MASK) == 0)
-  {
-    I2S_Cmd(CODEC_I2S, ENABLE);
-  }   
+	/* Enable the I2S DMA Channel */
+	DMA_Cmd(AUDIO_MAL_DMA_CHANNEL, ENABLE);
+
+	/* If the I2S peripheral is still not enabled, enable it */
+	if ((CODEC_I2S->I2SCFGR & I2S_ENABLE_MASK) == 0) {
+		I2S_Cmd(CODEC_I2S, ENABLE);
+	}
 }
 
 /**
@@ -1330,35 +1332,32 @@ void Audio_MAL_Play(uint32_t Addr, uint32_t Size)
   */
 static void Audio_MAL_PauseResume(uint32_t Cmd, uint32_t Addr)
 {
-  /* Pause the audio file playing */
-  if (Cmd == AUDIO_PAUSE)
-  {   
-    /* Disable the I2S DMA request */
-    SPI_I2S_DMACmd(CODEC_I2S, SPI_I2S_DMAReq_Tx, DISABLE);
+	/* Pause the audio file playing */
+	if (Cmd == AUDIO_PAUSE) {
+		/* Disable the I2S DMA request */
+		SPI_I2S_DMACmd(CODEC_I2S, SPI_I2S_DMAReq_Tx, DISABLE);
 
-    /* Pause the I2S DMA Channel 
-        Note. For the STM32F37x devices, the DMA implements a pause feature, 
-              by disabling the channel, all configuration is preserved and data 
-              transfer is paused till the next enable of the channel.*/
-    DMA_Cmd(AUDIO_MAL_DMA_CHANNEL, DISABLE);
-  }
-  else /* AUDIO_RESUME */
-  {
-    /* Enable the I2S DMA request */
-    SPI_I2S_DMACmd(CODEC_I2S, SPI_I2S_DMAReq_Tx, ENABLE);
-  
-    /* Resume the I2S DMA Channel 
-        Note. For the STM32F37x devices, the DMA implements a pause feature, 
-              by disabling the channel, all configuration is preserved and data 
-              transfer is paused till the next enable of the channel.*/
-    DMA_Cmd(AUDIO_MAL_DMA_CHANNEL, ENABLE);
-    
-    /* If the I2S peripheral is still not enabled, enable it */
-    if ((CODEC_I2S->I2SCFGR & I2S_ENABLE_MASK) == 0)
-    {
-      I2S_Cmd(CODEC_I2S, ENABLE);
-    }    
-  }  
+		/* Pause the I2S DMA Channel 
+		   Note. For the STM32F37x devices, the DMA implements a pause feature, 
+		   by disabling the channel, all configuration is preserved and data 
+		   transfer is paused till the next enable of the channel. */
+		DMA_Cmd(AUDIO_MAL_DMA_CHANNEL, DISABLE);
+	} else {		/* AUDIO_RESUME */
+
+		/* Enable the I2S DMA request */
+		SPI_I2S_DMACmd(CODEC_I2S, SPI_I2S_DMAReq_Tx, ENABLE);
+
+		/* Resume the I2S DMA Channel 
+		   Note. For the STM32F37x devices, the DMA implements a pause feature, 
+		   by disabling the channel, all configuration is preserved and data 
+		   transfer is paused till the next enable of the channel. */
+		DMA_Cmd(AUDIO_MAL_DMA_CHANNEL, ENABLE);
+
+		/* If the I2S peripheral is still not enabled, enable it */
+		if ((CODEC_I2S->I2SCFGR & I2S_ENABLE_MASK) == 0) {
+			I2S_Cmd(CODEC_I2S, ENABLE);
+		}
+	}
 }
 
 /**
@@ -1367,19 +1366,20 @@ static void Audio_MAL_PauseResume(uint32_t Cmd, uint32_t Addr)
   * @retval None
   */
 static void Audio_MAL_Stop(void)
-{   
-  /* Stop the Transfer on the I2S side: Stop and disable the DMA channel */
-  DMA_Cmd(AUDIO_MAL_DMA_CHANNEL, DISABLE);
+{
+	/* Stop the Transfer on the I2S side: Stop and disable the DMA channel */
+	DMA_Cmd(AUDIO_MAL_DMA_CHANNEL, DISABLE);
 
-  /* Clear all the DMA flags for the next transfer */
-  DMA_ClearFlag(AUDIO_MAL_DMA_FLAG_TC|AUDIO_MAL_DMA_FLAG_HT|AUDIO_MAL_DMA_FLAG_TE);
-  
-  /*  
-           The I2S DMA requests are not disabled here.
-                                                            */
-  
-  /* In all modes, disable the I2S peripheral */
-  I2S_Cmd(CODEC_I2S, DISABLE);
+	/* Clear all the DMA flags for the next transfer */
+	DMA_ClearFlag(AUDIO_MAL_DMA_FLAG_TC | AUDIO_MAL_DMA_FLAG_HT |
+		      AUDIO_MAL_DMA_FLAG_TE);
+
+	/*  
+	   The I2S DMA requests are not disabled here.
+	 */
+
+	/* In all modes, disable the I2S peripheral */
+	I2S_Cmd(CODEC_I2S, DISABLE);
 }
 
 /**
@@ -1400,6 +1400,6 @@ static void Audio_MAL_Stop(void)
 
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

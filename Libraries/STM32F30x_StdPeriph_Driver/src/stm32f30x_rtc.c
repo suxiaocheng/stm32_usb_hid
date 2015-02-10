@@ -730,20 +730,16 @@ ErrorStatus RTC_SetTime(uint32_t RTC_Format, RTC_TimeTypeDef * RTC_TimeStruct)
 			  ((uint32_t) RTC_TimeStruct->RTC_Seconds) |
 			  ((uint32_t) (RTC_TimeStruct->RTC_H12) << 16));
 	} else {
-		tmpreg =
-		    (uint32_t) (((uint32_t)
-				 RTC_ByteToBcd2(RTC_TimeStruct->
-						RTC_Hours) << 16) | ((uint32_t)
-								     RTC_ByteToBcd2
-								     (RTC_TimeStruct->
-								      RTC_Minutes)
-								     << 8) |
-				((uint32_t)
-				 RTC_ByteToBcd2(RTC_TimeStruct->
-						RTC_Seconds)) | (((uint32_t)
-								  RTC_TimeStruct->
-								  RTC_H12) <<
-								 16));
+		tmpreg = (uint32_t) (((uint32_t)
+				      RTC_ByteToBcd2(RTC_TimeStruct->RTC_Hours)
+				      << 16) | ((uint32_t)
+						RTC_ByteToBcd2
+						(RTC_TimeStruct->RTC_Minutes)
+						<< 8) | ((uint32_t)
+							 RTC_ByteToBcd2
+							 (RTC_TimeStruct->RTC_Seconds))
+				     | (((uint32_t)
+					 RTC_TimeStruct->RTC_H12) << 16));
 	}
 
 	/* Disable the write protection for RTC registers */
@@ -904,11 +900,10 @@ ErrorStatus RTC_SetDate(uint32_t RTC_Format, RTC_DateTypeDef * RTC_DateStruct)
 		tmpreg =
 		    (((uint32_t) RTC_ByteToBcd2(RTC_DateStruct->RTC_Year) << 16)
 		     | ((uint32_t) RTC_ByteToBcd2(RTC_DateStruct->RTC_Month) <<
-			8) | ((uint32_t) RTC_ByteToBcd2(RTC_DateStruct->
-							RTC_Date)) | ((uint32_t)
-								      RTC_DateStruct->
-								      RTC_WeekDay
-								      << 13));
+			8) | ((uint32_t)
+			      RTC_ByteToBcd2(RTC_DateStruct->RTC_Date)) |
+		     ((uint32_t)
+		      RTC_DateStruct->RTC_WeekDay << 13));
 	}
 
 	/* Disable the write protection for RTC registers */
@@ -1048,15 +1043,15 @@ void RTC_SetAlarm(uint32_t RTC_Format, uint32_t RTC_Alarm,
 	if (RTC_Format == RTC_Format_BIN) {
 		if ((RTC->CR & RTC_CR_FMT) != (uint32_t) RESET) {
 			assert_param(IS_RTC_HOUR12
-				     (RTC_AlarmStruct->RTC_AlarmTime.
-				      RTC_Hours));
+				     (RTC_AlarmStruct->
+				      RTC_AlarmTime.RTC_Hours));
 			assert_param(IS_RTC_H12
 				     (RTC_AlarmStruct->RTC_AlarmTime.RTC_H12));
 		} else {
 			RTC_AlarmStruct->RTC_AlarmTime.RTC_H12 = 0x00;
 			assert_param(IS_RTC_HOUR24
-				     (RTC_AlarmStruct->RTC_AlarmTime.
-				      RTC_Hours));
+				     (RTC_AlarmStruct->
+				      RTC_AlarmTime.RTC_Hours));
 		}
 		assert_param(IS_RTC_MINUTES
 			     (RTC_AlarmStruct->RTC_AlarmTime.RTC_Minutes));
@@ -1074,8 +1069,8 @@ void RTC_SetAlarm(uint32_t RTC_Format, uint32_t RTC_Alarm,
 	} else {
 		if ((RTC->CR & RTC_CR_FMT) != (uint32_t) RESET) {
 			tmpreg =
-			    RTC_Bcd2ToByte(RTC_AlarmStruct->RTC_AlarmTime.
-					   RTC_Hours);
+			    RTC_Bcd2ToByte(RTC_AlarmStruct->
+					   RTC_AlarmTime.RTC_Hours);
 			assert_param(IS_RTC_HOUR12(tmpreg));
 			assert_param(IS_RTC_H12
 				     (RTC_AlarmStruct->RTC_AlarmTime.RTC_H12));
@@ -1083,8 +1078,8 @@ void RTC_SetAlarm(uint32_t RTC_Format, uint32_t RTC_Alarm,
 			RTC_AlarmStruct->RTC_AlarmTime.RTC_H12 = 0x00;
 			assert_param(IS_RTC_HOUR24
 				     (RTC_Bcd2ToByte
-				      (RTC_AlarmStruct->RTC_AlarmTime.
-				       RTC_Hours)));
+				      (RTC_AlarmStruct->
+				       RTC_AlarmTime.RTC_Hours)));
 		}
 
 		assert_param(IS_RTC_MINUTES
@@ -1097,13 +1092,13 @@ void RTC_SetAlarm(uint32_t RTC_Format, uint32_t RTC_Alarm,
 		if (RTC_AlarmStruct->RTC_AlarmDateWeekDaySel ==
 		    RTC_AlarmDateWeekDaySel_Date) {
 			tmpreg =
-			    RTC_Bcd2ToByte(RTC_AlarmStruct->
-					   RTC_AlarmDateWeekDay);
+			    RTC_Bcd2ToByte
+			    (RTC_AlarmStruct->RTC_AlarmDateWeekDay);
 			assert_param(IS_RTC_ALARM_DATE_WEEKDAY_DATE(tmpreg));
 		} else {
 			tmpreg =
-			    RTC_Bcd2ToByte(RTC_AlarmStruct->
-					   RTC_AlarmDateWeekDay);
+			    RTC_Bcd2ToByte
+			    (RTC_AlarmStruct->RTC_AlarmDateWeekDay);
 			assert_param(IS_RTC_ALARM_DATE_WEEKDAY_WEEKDAY(tmpreg));
 		}
 	}
@@ -1112,36 +1107,33 @@ void RTC_SetAlarm(uint32_t RTC_Format, uint32_t RTC_Alarm,
 	if (RTC_Format != RTC_Format_BIN) {
 		tmpreg =
 		    (((uint32_t) (RTC_AlarmStruct->RTC_AlarmTime.RTC_Hours) <<
-		      16) | ((uint32_t) (RTC_AlarmStruct->RTC_AlarmTime.
-					 RTC_Minutes) << 8) | ((uint32_t)
-							       RTC_AlarmStruct->
-							       RTC_AlarmTime.
-							       RTC_Seconds) |
+		      16) | ((uint32_t) (RTC_AlarmStruct->
+					 RTC_AlarmTime.RTC_Minutes) << 8) |
+		     ((uint32_t)
+		      RTC_AlarmStruct->RTC_AlarmTime.RTC_Seconds) |
 		     ((uint32_t) (RTC_AlarmStruct->RTC_AlarmTime.RTC_H12) << 16)
 		     | ((uint32_t) (RTC_AlarmStruct->RTC_AlarmDateWeekDay) <<
-			24) | ((uint32_t) RTC_AlarmStruct->
-			       RTC_AlarmDateWeekDaySel) | ((uint32_t)
-							   RTC_AlarmStruct->
-							   RTC_AlarmMask));
-	} else {
-		tmpreg =
-		    (((uint32_t)
-		      RTC_ByteToBcd2(RTC_AlarmStruct->RTC_AlarmTime.
-				     RTC_Hours) << 16) | ((uint32_t)
-							  RTC_ByteToBcd2
-							  (RTC_AlarmStruct->
-							   RTC_AlarmTime.
-							   RTC_Minutes) << 8) |
+			24) | ((uint32_t)
+			       RTC_AlarmStruct->RTC_AlarmDateWeekDaySel) |
 		     ((uint32_t)
-		      RTC_ByteToBcd2(RTC_AlarmStruct->RTC_AlarmTime.
-				     RTC_Seconds)) |
-		     ((uint32_t) (RTC_AlarmStruct->RTC_AlarmTime.RTC_H12) << 16)
-		     | ((uint32_t)
-			RTC_ByteToBcd2(RTC_AlarmStruct->
-				       RTC_AlarmDateWeekDay) << 24) |
-		     ((uint32_t) RTC_AlarmStruct->
-		      RTC_AlarmDateWeekDaySel) | ((uint32_t) RTC_AlarmStruct->
-						  RTC_AlarmMask));
+		      RTC_AlarmStruct->RTC_AlarmMask));
+	} else {
+		tmpreg = (((uint32_t)
+			   RTC_ByteToBcd2(RTC_AlarmStruct->
+					  RTC_AlarmTime.RTC_Hours) << 16) |
+			  ((uint32_t)
+			   RTC_ByteToBcd2
+			   (RTC_AlarmStruct->RTC_AlarmTime.RTC_Minutes) << 8) |
+			  ((uint32_t)
+			   RTC_ByteToBcd2(RTC_AlarmStruct->
+					  RTC_AlarmTime.RTC_Seconds)) |
+			  ((uint32_t) (RTC_AlarmStruct->RTC_AlarmTime.RTC_H12)
+			   << 16)
+			  | ((uint32_t)
+			     RTC_ByteToBcd2
+			     (RTC_AlarmStruct->RTC_AlarmDateWeekDay) << 24) |
+			  ((uint32_t) RTC_AlarmStruct->RTC_AlarmDateWeekDaySel)
+			  | ((uint32_t) RTC_AlarmStruct->RTC_AlarmMask));
 	}
 
 	/* Disable the write protection for RTC registers */
@@ -2432,10 +2424,9 @@ void RTC_ClearFlag(uint32_t RTC_FLAG)
 	assert_param(IS_RTC_CLEAR_FLAG(RTC_FLAG));
 
 	/* Clear the Flags in the RTC_ISR register */
-	RTC->ISR =
-	    (uint32_t) ((uint32_t)
-			(~((RTC_FLAG | RTC_ISR_INIT) & 0x0001FFFF) |
-			 (uint32_t) (RTC->ISR & RTC_ISR_INIT)));
+	RTC->ISR = (uint32_t) ((uint32_t)
+			       (~((RTC_FLAG | RTC_ISR_INIT) & 0x0001FFFF) |
+				(uint32_t) (RTC->ISR & RTC_ISR_INIT)));
 }
 
 /**
@@ -2464,9 +2455,8 @@ ITStatus RTC_GetITStatus(uint32_t RTC_IT)
 
 	/* Get the Interrupt enable Status */
 	enablestatus =
-	    (uint32_t) ((RTC->
-			 CR & RTC_IT) | (tmpreg & ((RTC_IT >> (RTC_IT >> 18)) >>
-						   15)));
+	    (uint32_t) ((RTC->CR & RTC_IT) |
+			(tmpreg & ((RTC_IT >> (RTC_IT >> 18)) >> 15)));
 
 	/* Get the Interrupt pending bit */
 	tmpreg = (uint32_t) ((RTC->ISR & (uint32_t) (RTC_IT >> 4)));
@@ -2505,10 +2495,9 @@ void RTC_ClearITPendingBit(uint32_t RTC_IT)
 	tmpreg = (uint32_t) (RTC_IT >> 4);
 
 	/* Clear the interrupt pending bits in the RTC_ISR register */
-	RTC->ISR =
-	    (uint32_t) ((uint32_t)
-			(~((tmpreg | RTC_ISR_INIT) & 0x0000FFFF) |
-			 (uint32_t) (RTC->ISR & RTC_ISR_INIT)));
+	RTC->ISR = (uint32_t) ((uint32_t)
+			       (~((tmpreg | RTC_ISR_INIT) & 0x0000FFFF) |
+				(uint32_t) (RTC->ISR & RTC_ISR_INIT)));
 }
 
 /**

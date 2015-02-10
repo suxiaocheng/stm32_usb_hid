@@ -25,7 +25,6 @@
   ******************************************************************************
   */
 
-
 /* Includes ------------------------------------------------------------------*/
 #include "hw_config.h"
 #include "usb_lib.h"
@@ -50,25 +49,22 @@ __IO uint8_t PrevXferComplete = 1;
 *******************************************************************************/
 int main(void)
 {
-  Set_System();
-  
-  USB_Interrupts_Config();
-  
-  Set_USBClock();
-  
-  USB_Init();
+	Set_System();
 
-  while (1)
-  {
-    
-    if (bDeviceState == CONFIGURED)
-    {
-      if ((JoyState() != 0) && (PrevXferComplete))
-      {
-        Joystick_Send(JoyState());
-      }
-    }    
-  }
+	USB_Interrupts_Config();
+
+	Set_USBClock();
+
+	USB_Init();
+
+	while (1) {
+
+		if (bDeviceState == CONFIGURED) {
+			if ((JoyState() != 0) && (PrevXferComplete)) {
+				Joystick_Send(JoyState());
+			}
+		}
+	}
 }
 
 #ifdef  USE_FULL_ASSERT
@@ -81,14 +77,14 @@ int main(void)
 * Output         : None
 * Return         : None
 *******************************************************************************/
-void assert_failed(uint8_t* file, uint32_t line)
+void assert_failed(uint8_t * file, uint32_t line)
 {
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+	/* User can add his own implementation to report the file name and line number,
+	   ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while (1)
-  {}
+	/* Infinite loop */
+	while (1) {
+	}
 }
 #endif
 

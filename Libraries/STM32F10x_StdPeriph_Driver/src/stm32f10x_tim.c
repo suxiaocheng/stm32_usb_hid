@@ -696,13 +696,11 @@ TIM_BDTRConfig(TIM_TypeDef * TIMx, TIM_BDTRInitTypeDef * TIM_BDTRInitStruct)
 	/* Set the Lock level, the Break enable Bit and the Ploarity, the OSSR State,
 	   the OSSI State, the dead time value and the Automatic Output Enable Bit */
 	TIMx->BDTR =
-	    (uint32_t) TIM_BDTRInitStruct->
-	    TIM_OSSRState | TIM_BDTRInitStruct->TIM_OSSIState |
+	    (uint32_t) TIM_BDTRInitStruct->TIM_OSSRState | TIM_BDTRInitStruct->
+	    TIM_OSSIState | TIM_BDTRInitStruct->TIM_LOCKLevel |
 	    TIM_BDTRInitStruct->
-	    TIM_LOCKLevel | TIM_BDTRInitStruct->TIM_DeadTime |
-	    TIM_BDTRInitStruct->
-	    TIM_Break | TIM_BDTRInitStruct->TIM_BreakPolarity |
-	    TIM_BDTRInitStruct->TIM_AutomaticOutput;
+	    TIM_DeadTime | TIM_BDTRInitStruct->TIM_Break | TIM_BDTRInitStruct->
+	    TIM_BreakPolarity | TIM_BDTRInitStruct->TIM_AutomaticOutput;
 }
 
 /**

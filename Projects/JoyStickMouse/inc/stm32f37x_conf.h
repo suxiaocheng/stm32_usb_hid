@@ -53,7 +53,7 @@
 #include "stm32f37x_tim.h"
 #include "stm32f37x_usart.h"
 #include "stm32f37x_wwdg.h"
-#include "stm32f37x_misc.h"  /* High level functions for NVIC and SysTick (add-on to CMSIS functions) */
+#include "stm32f37x_misc.h"	/* High level functions for NVIC and SysTick (add-on to CMSIS functions) */
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
@@ -71,11 +71,11 @@
   *         that failed. If expr is true, it returns no value.
   * @retval None
   */
-  #define assert_param(expr) ((expr) ? (void)0 : assert_failed((uint8_t *)__FILE__, __LINE__))
+#define assert_param(expr) ((expr) ? (void)0 : assert_failed((uint8_t *)__FILE__, __LINE__))
 /* Exported functions ------------------------------------------------------- */
-  void assert_failed(uint8_t* file, uint32_t line);
+void assert_failed(uint8_t * file, uint32_t line);
 #else
-  #define assert_param(expr) ((void)0)
+#define assert_param(expr) ((void)0)
 #endif /* USE_FULL_ASSERT */
 
 #endif /* __STM32F37X_CONF_H */

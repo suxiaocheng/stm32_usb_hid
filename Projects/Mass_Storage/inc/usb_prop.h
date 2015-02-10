@@ -25,7 +25,6 @@
   ******************************************************************************
   */
 
-
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USB_PROP_H
 #define __USB_PROP_H
@@ -55,17 +54,16 @@ void MASS_init(void);
 void MASS_Reset(void);
 void Mass_Storage_SetConfiguration(void);
 void Mass_Storage_ClearFeature(void);
-void Mass_Storage_SetDeviceAddress (void);
-void MASS_Status_In (void);
-void MASS_Status_Out (void);
+void Mass_Storage_SetDeviceAddress(void);
+void MASS_Status_In(void);
+void MASS_Status_Out(void);
 RESULT MASS_Data_Setup(uint8_t);
 RESULT MASS_NoData_Setup(uint8_t);
 RESULT MASS_Get_Interface_Setting(uint8_t Interface, uint8_t AlternateSetting);
-uint8_t *MASS_GetDeviceDescriptor(uint16_t );
+uint8_t *MASS_GetDeviceDescriptor(uint16_t);
 uint8_t *MASS_GetConfigDescriptor(uint16_t);
 uint8_t *MASS_GetStringDescriptor(uint16_t);
 uint8_t *Get_Max_Lun(uint16_t Length);
-
 
 #endif /* __USB_PROP_H */
 

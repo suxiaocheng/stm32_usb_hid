@@ -55,65 +55,64 @@
 /** @addtogroup Utilities
   * @{
   */
-  
+
 /** @addtogroup STM32373C_EVAL
   * @{
-  */ 
+  */
 
 /** @addtogroup Common
   * @{
   */
-  
+
 /** @addtogroup STM32373C_EVAL_I2C_TSENSOR
   * @brief      This file includes the LM75 Temperature Sensor driver of 
   *             STM32373C-EVAL boards.
   * @{
-  */ 
+  */
 
 /** @defgroup STM32373C_EVAL_I2C_TSENSOR_Private_Types
   * @{
-  */ 
+  */
 /**
   * @}
   */
 
 /** @defgroup STM32373C_EVAL_I2C_TSENSOR_Private_Defines
   * @{
-  */ 
-#define LM75_SD_SET                0x01 /*!< Set SD bit in the configuration register */
-#define LM75_SD_RESET              0xFE /*!< Reset SD bit in the configuration register */
+  */
+#define LM75_SD_SET                0x01	/*!< Set SD bit in the configuration register */
+#define LM75_SD_RESET              0xFE	/*!< Reset SD bit in the configuration register */
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup STM32373C_EVAL_I2C_TSENSOR_Private_Macros
   * @{
-  */ 
+  */
 /**
   * @}
-  */ 
-  
+  */
+
 /** @defgroup STM32373C_EVAL_I2C_TSENSOR_Private_Variables
   * @{
-  */ 
-  
-__IO uint32_t  LM75_Timeout = LM75_LONG_TIMEOUT; 
+  */
+
+__IO uint32_t LM75_Timeout = LM75_LONG_TIMEOUT;
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup STM32373C_EVAL_I2C_TSENSOR_Private_Function_Prototypes
   * @{
-  */ 
+  */
 
 /**
   * @}
-  */ 
-
+  */
 
 /** @defgroup STM32373C_EVAL_I2C_TSENSOR_Private_Functions
   * @{
-  */ 
+  */
 
 /**
   * @brief  DeInitializes the LM75_I2C.
@@ -122,7 +121,7 @@ __IO uint32_t  LM75_Timeout = LM75_LONG_TIMEOUT;
   */
 void LM75_DeInit(void)
 {
-  LM75_LowLevel_DeInit();
+	LM75_LowLevel_DeInit();
 }
 
 /**
@@ -131,25 +130,26 @@ void LM75_DeInit(void)
   * @retval None
   */
 void LM75_Init(void)
-{  
-  I2C_InitTypeDef  I2C_InitStructure;
-  
-  LM75_LowLevel_Init();
-  
-  /* LM75_I2C configuration */
-  I2C_InitStructure.I2C_Mode = I2C_Mode_SMBusHost;
-  I2C_InitStructure.I2C_AnalogFilter = I2C_AnalogFilter_Enable;
-  I2C_InitStructure.I2C_DigitalFilter = 0x00;
-  I2C_InitStructure.I2C_OwnAddress1 = 0x00;
-  I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
-  I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
-  I2C_InitStructure.I2C_Timing = LM75_I2C_TIMING;
-  
-  /* Apply LM75_I2C configuration after enabling it */
-  I2C_Init(LM75_I2C, &I2C_InitStructure);
-  
-  /* LM75_I2C Peripheral Enable */
-  I2C_Cmd(LM75_I2C, ENABLE);
+{
+	I2C_InitTypeDef I2C_InitStructure;
+
+	LM75_LowLevel_Init();
+
+	/* LM75_I2C configuration */
+	I2C_InitStructure.I2C_Mode = I2C_Mode_SMBusHost;
+	I2C_InitStructure.I2C_AnalogFilter = I2C_AnalogFilter_Enable;
+	I2C_InitStructure.I2C_DigitalFilter = 0x00;
+	I2C_InitStructure.I2C_OwnAddress1 = 0x00;
+	I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
+	I2C_InitStructure.I2C_AcknowledgedAddress =
+	    I2C_AcknowledgedAddress_7bit;
+	I2C_InitStructure.I2C_Timing = LM75_I2C_TIMING;
+
+	/* Apply LM75_I2C configuration after enabling it */
+	I2C_Init(LM75_I2C, &I2C_InitStructure);
+
+	/* LM75_I2C Peripheral Enable */
+	I2C_Cmd(LM75_I2C, ENABLE);
 }
 
 /**
@@ -159,36 +159,39 @@ void LM75_Init(void)
   */
 ErrorStatus LM75_GetStatus(void)
 {
-  uint32_t I2C_TimeOut = I2C_TIMEOUT;
-  
-  /* Configure slave address, nbytes, reload, end mode and start or stop generation */
-  I2C_TransferHandling(LM75_I2C, LM75_ADDR, 0, I2C_AutoEnd_Mode, I2C_No_StartStop);
-  
-  /* Clear NACKF and STOPF */
-  I2C_ClearFlag(LM75_I2C, I2C_ICR_NACKCF | I2C_ICR_STOPCF);
-  
-  /* Generate start */
-  I2C_GenerateSTART(LM75_I2C, ENABLE);  
-  
-  /* Wait until timeout elapsed */
-  while ((I2C_GetFlagStatus(LM75_I2C, I2C_ISR_STOPF) == RESET) && (I2C_TimeOut-- != 0)); 
-  
-  /* Check if Temp sensor is ready for use */
-  if ((I2C_GetFlagStatus(LM75_I2C, I2C_ISR_NACKF) != RESET) || (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_BUSY) != RESET) || 
-      (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_ARLO) != RESET) || (I2C_TimeOut == 0))
-  {
-    /* Clear NACKF, BUSY, ARLO and STOPF */
-    I2C_ClearFlag(LM75_I2C, I2C_ICR_NACKCF | I2C_ISR_BUSY | I2C_ISR_ARLO| I2C_ICR_STOPCF);
-    
-    return ERROR;
-  }
-  else
-  {
-    /* Clear STOPF */
-    I2C_ClearFlag(LM75_I2C, I2C_ICR_STOPCF);
-    
-    return SUCCESS;
-  }    
+	uint32_t I2C_TimeOut = I2C_TIMEOUT;
+
+	/* Configure slave address, nbytes, reload, end mode and start or stop generation */
+	I2C_TransferHandling(LM75_I2C, LM75_ADDR, 0, I2C_AutoEnd_Mode,
+			     I2C_No_StartStop);
+
+	/* Clear NACKF and STOPF */
+	I2C_ClearFlag(LM75_I2C, I2C_ICR_NACKCF | I2C_ICR_STOPCF);
+
+	/* Generate start */
+	I2C_GenerateSTART(LM75_I2C, ENABLE);
+
+	/* Wait until timeout elapsed */
+	while ((I2C_GetFlagStatus(LM75_I2C, I2C_ISR_STOPF) == RESET)
+	       && (I2C_TimeOut-- != 0)) ;
+
+	/* Check if Temp sensor is ready for use */
+	if ((I2C_GetFlagStatus(LM75_I2C, I2C_ISR_NACKF) != RESET)
+	    || (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_BUSY) != RESET)
+	    || (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_ARLO) != RESET)
+	    || (I2C_TimeOut == 0)) {
+		/* Clear NACKF, BUSY, ARLO and STOPF */
+		I2C_ClearFlag(LM75_I2C,
+			      I2C_ICR_NACKCF | I2C_ISR_BUSY | I2C_ISR_ARLO |
+			      I2C_ICR_STOPCF);
+
+		return ERROR;
+	} else {
+		/* Clear STOPF */
+		I2C_ClearFlag(LM75_I2C, I2C_ICR_STOPCF);
+
+		return SUCCESS;
+	}
 }
 
 /**
@@ -201,77 +204,78 @@ ErrorStatus LM75_GetStatus(void)
   * @retval LM75 register value.
   */
 uint16_t LM75_ReadReg(uint8_t RegName)
-{   
-  uint8_t LM75_BufferRX[2] ={0,0};
-  uint16_t tmp = 0;   
-  uint32_t DataNum = 0;
-  
-  /* Test on BUSY Flag */
-  LM75_Timeout = LM75_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_BUSY) != RESET)
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }
-  
-  /* Configure slave address, nbytes, reload, end mode and start or stop generation */
-  I2C_TransferHandling(LM75_I2C, LM75_ADDR, 1, I2C_SoftEnd_Mode, I2C_Generate_Start_Write);
-  
-  /* Wait until TXIS flag is set */
-  LM75_Timeout = LM75_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TXIS) == RESET)
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }
-  
-  /* Send Register address */
-  I2C_SendData(LM75_I2C, (uint8_t)RegName);
-  
-  /* Wait until TC flag is set */
-  LM75_Timeout = LM75_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TC) == RESET)
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }  
-  
-  /* Configure slave address, nbytes, reload, end mode and start or stop generation */
-  I2C_TransferHandling(LM75_I2C, LM75_ADDR, 2, I2C_AutoEnd_Mode, I2C_Generate_Start_Read);
-  
-  /* Reset local variable */
-  DataNum = 0;
-  
-  /* Wait until all data are received */
-  while (DataNum != 2)
-  {
-    /* Wait until RXNE flag is set */
-    LM75_Timeout = LM75_LONG_TIMEOUT;
-    while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_RXNE) == RESET)    
-    {
-      if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-    }
-    
-    /* Read data from RXDR */
-    LM75_BufferRX[DataNum]= I2C_ReceiveData(LM75_I2C);
-    
-    /* Update number of received data */
-    DataNum++;
-  }    
-  
-  /* Wait until STOPF flag is set */
-  LM75_Timeout = LM75_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_STOPF) == RESET)   
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }
-  
-  /* Clear STOPF flag */
-  I2C_ClearFlag(LM75_I2C, I2C_ICR_STOPCF);
-  
-  /*!< Store LM75_I2C received data */
-  tmp = (uint16_t)(LM75_BufferRX[0] << 8);
-  tmp |= LM75_BufferRX[1];
-  
-  /* return a Reg value */
-  return (uint16_t)tmp;  
+{
+	uint8_t LM75_BufferRX[2] = { 0, 0 };
+	uint16_t tmp = 0;
+	uint32_t DataNum = 0;
+
+	/* Test on BUSY Flag */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_BUSY) != RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Configure slave address, nbytes, reload, end mode and start or stop generation */
+	I2C_TransferHandling(LM75_I2C, LM75_ADDR, 1, I2C_SoftEnd_Mode,
+			     I2C_Generate_Start_Write);
+
+	/* Wait until TXIS flag is set */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TXIS) == RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Send Register address */
+	I2C_SendData(LM75_I2C, (uint8_t) RegName);
+
+	/* Wait until TC flag is set */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TC) == RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Configure slave address, nbytes, reload, end mode and start or stop generation */
+	I2C_TransferHandling(LM75_I2C, LM75_ADDR, 2, I2C_AutoEnd_Mode,
+			     I2C_Generate_Start_Read);
+
+	/* Reset local variable */
+	DataNum = 0;
+
+	/* Wait until all data are received */
+	while (DataNum != 2) {
+		/* Wait until RXNE flag is set */
+		LM75_Timeout = LM75_LONG_TIMEOUT;
+		while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_RXNE) == RESET) {
+			if ((LM75_Timeout--) == 0)
+				return LM75_TIMEOUT_UserCallback();
+		}
+
+		/* Read data from RXDR */
+		LM75_BufferRX[DataNum] = I2C_ReceiveData(LM75_I2C);
+
+		/* Update number of received data */
+		DataNum++;
+	}
+
+	/* Wait until STOPF flag is set */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_STOPF) == RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Clear STOPF flag */
+	I2C_ClearFlag(LM75_I2C, I2C_ICR_STOPCF);
+
+	/*!< Store LM75_I2C received data */
+	tmp = (uint16_t) (LM75_BufferRX[0] << 8);
+	tmp |= LM75_BufferRX[1];
+
+	/* return a Reg value */
+	return (uint16_t) tmp;
 }
 
 /**
@@ -284,70 +288,71 @@ uint16_t LM75_ReadReg(uint8_t RegName)
   * @retval None
   */
 uint8_t LM75_WriteReg(uint8_t RegName, uint16_t RegValue)
-{ 
-  uint32_t DataNum = 0;  
-  uint8_t LM75_BufferTX[2] ={0,0};
-  
-  LM75_BufferTX[0] = (uint8_t)(RegValue >> 8);
-  LM75_BufferTX[1] = (uint8_t)(RegValue);
-  
-  /* Test on BUSY Flag */
-  LM75_Timeout = LM75_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_BUSY) != RESET)
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }
-  
-  /* Configure slave address, nbytes, reload, end mode and start or stop generation */
-  I2C_TransferHandling(LM75_I2C, LM75_ADDR, 1, I2C_Reload_Mode, I2C_Generate_Start_Write);
-  
-  /* Wait until TXIS flag is set */
-  LM75_Timeout = LM75_LONG_TIMEOUT;  
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TXIS) == RESET)   
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }
-  
-  /* Send Register address */
-  I2C_SendData(LM75_I2C, (uint8_t)RegName);
-  
-  /* Wait until TCR flag is set */
-  LM75_Timeout = LM75_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TCR) == RESET)
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }
-  
-  /* Configure slave address, nbytes, reload, end mode and start or stop generation */
-  I2C_TransferHandling(LM75_I2C, LM75_ADDR, 2, I2C_AutoEnd_Mode, I2C_No_StartStop);
-  
-  while (DataNum != 2)
-  {      
-    /* Wait until TXIS flag is set */
-    LM75_Timeout = LM75_LONG_TIMEOUT;
-    while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TXIS) == RESET)
-    {
-      if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-    }  
-    
-    /* Write data to TXDR */
-    I2C_SendData(LM75_I2C, (uint8_t)(LM75_BufferTX[DataNum]));
-    
-    /* Update number of transmitted data */
-    DataNum++;   
-  }  
-  
-  /* Wait until STOPF flag is set */
-  LM75_Timeout = LM75_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_STOPF) == RESET)
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }   
-  
-  /* Clear STOPF flag */
-  I2C_ClearFlag(LM75_I2C, I2C_ICR_STOPCF);
-  
-  return LM75_OK;
+{
+	uint32_t DataNum = 0;
+	uint8_t LM75_BufferTX[2] = { 0, 0 };
+
+	LM75_BufferTX[0] = (uint8_t) (RegValue >> 8);
+	LM75_BufferTX[1] = (uint8_t) (RegValue);
+
+	/* Test on BUSY Flag */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_BUSY) != RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Configure slave address, nbytes, reload, end mode and start or stop generation */
+	I2C_TransferHandling(LM75_I2C, LM75_ADDR, 1, I2C_Reload_Mode,
+			     I2C_Generate_Start_Write);
+
+	/* Wait until TXIS flag is set */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TXIS) == RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Send Register address */
+	I2C_SendData(LM75_I2C, (uint8_t) RegName);
+
+	/* Wait until TCR flag is set */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TCR) == RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Configure slave address, nbytes, reload, end mode and start or stop generation */
+	I2C_TransferHandling(LM75_I2C, LM75_ADDR, 2, I2C_AutoEnd_Mode,
+			     I2C_No_StartStop);
+
+	while (DataNum != 2) {
+		/* Wait until TXIS flag is set */
+		LM75_Timeout = LM75_LONG_TIMEOUT;
+		while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TXIS) == RESET) {
+			if ((LM75_Timeout--) == 0)
+				return LM75_TIMEOUT_UserCallback();
+		}
+
+		/* Write data to TXDR */
+		I2C_SendData(LM75_I2C, (uint8_t) (LM75_BufferTX[DataNum]));
+
+		/* Update number of transmitted data */
+		DataNum++;
+	}
+
+	/* Wait until STOPF flag is set */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_STOPF) == RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Clear STOPF flag */
+	I2C_ClearFlag(LM75_I2C, I2C_ICR_STOPCF);
+
+	return LM75_OK;
 }
 
 /**
@@ -356,77 +361,78 @@ uint8_t LM75_WriteReg(uint8_t RegName, uint16_t RegValue)
   * @retval LM75 measured temperature value.
   */
 uint16_t LM75_ReadTemp(void)
-{   
-  uint8_t LM75_BufferRX[2] ={0,0};
-  uint16_t tmp = 0;
-  uint32_t DataNum = 0;  
-  
-  /* Test on BUSY Flag */
-  LM75_Timeout = LM75_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_BUSY) != RESET)
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }
-  
-  /* Configure slave address, nbytes, reload, end mode and start or stop generation */
-  I2C_TransferHandling(LM75_I2C, LM75_ADDR, 1, I2C_SoftEnd_Mode, I2C_Generate_Start_Write);
-  
-  /* Wait until TXIS flag is set */
-  LM75_Timeout = LM75_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TXIS) == RESET)
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }
-  
-  /* Send Register address */
-  I2C_SendData(LM75_I2C, (uint8_t)LM75_REG_TEMP);
-  
-  /* Wait until TC flag is set */
-  LM75_Timeout = LM75_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TC) == RESET)
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }  
-  
-  /* Configure slave address, nbytes, reload, end mode and start or stop generation */
-  I2C_TransferHandling(LM75_I2C, LM75_ADDR, 2, I2C_AutoEnd_Mode, I2C_Generate_Start_Read);
-  
-  /* Reset local variable */
-  DataNum = 0;
-  
-  /* Wait until all data are received */
-  while (DataNum != 2)
-  {
-    /* Wait until RXNE flag is set */
-    LM75_Timeout = LM75_LONG_TIMEOUT;    
-    while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_RXNE) == RESET)
-    {
-      if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-    }
-    
-    /* Read data from RXDR */
-    LM75_BufferRX[DataNum]= I2C_ReceiveData(LM75_I2C);
-    
-    /* Update number of received data */
-    DataNum++;
-  }    
-  
-  /* Wait until STOPF flag is set */
-  LM75_Timeout = LM75_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_STOPF) == RESET)
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }
-  
-  /* Clear STOPF flag */
-  I2C_ClearFlag(LM75_I2C, I2C_ICR_STOPCF);
-  
-  /*!< Store LM75_I2C received data */
-  tmp = (uint16_t)(LM75_BufferRX[0] << 8);
-  tmp |= LM75_BufferRX[1];    
-  
-  /*!< Return Temperature value */
-  return (uint16_t)(tmp >> 7);
+{
+	uint8_t LM75_BufferRX[2] = { 0, 0 };
+	uint16_t tmp = 0;
+	uint32_t DataNum = 0;
+
+	/* Test on BUSY Flag */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_BUSY) != RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Configure slave address, nbytes, reload, end mode and start or stop generation */
+	I2C_TransferHandling(LM75_I2C, LM75_ADDR, 1, I2C_SoftEnd_Mode,
+			     I2C_Generate_Start_Write);
+
+	/* Wait until TXIS flag is set */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TXIS) == RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Send Register address */
+	I2C_SendData(LM75_I2C, (uint8_t) LM75_REG_TEMP);
+
+	/* Wait until TC flag is set */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TC) == RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Configure slave address, nbytes, reload, end mode and start or stop generation */
+	I2C_TransferHandling(LM75_I2C, LM75_ADDR, 2, I2C_AutoEnd_Mode,
+			     I2C_Generate_Start_Read);
+
+	/* Reset local variable */
+	DataNum = 0;
+
+	/* Wait until all data are received */
+	while (DataNum != 2) {
+		/* Wait until RXNE flag is set */
+		LM75_Timeout = LM75_LONG_TIMEOUT;
+		while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_RXNE) == RESET) {
+			if ((LM75_Timeout--) == 0)
+				return LM75_TIMEOUT_UserCallback();
+		}
+
+		/* Read data from RXDR */
+		LM75_BufferRX[DataNum] = I2C_ReceiveData(LM75_I2C);
+
+		/* Update number of received data */
+		DataNum++;
+	}
+
+	/* Wait until STOPF flag is set */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_STOPF) == RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Clear STOPF flag */
+	I2C_ClearFlag(LM75_I2C, I2C_ICR_STOPCF);
+
+	/*!< Store LM75_I2C received data */
+	tmp = (uint16_t) (LM75_BufferRX[0] << 8);
+	tmp |= LM75_BufferRX[1];
+
+	/*!< Return Temperature value */
+	return (uint16_t) (tmp >> 7);
 }
 
 /**
@@ -435,61 +441,63 @@ uint16_t LM75_ReadTemp(void)
   * @retval LM75 configuration register value.
   */
 uint8_t LM75_ReadConfReg(void)
-{   
-  uint8_t LM75_BufferRX[2] ={0,0}; 
-  
-  /* Test on BUSY Flag */
-  LM75_Timeout = LM75_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_BUSY) != RESET)
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }
-  
-  /* Configure slave address, nbytes, reload, end mode and start or stop generation */
-  I2C_TransferHandling(LM75_I2C, LM75_ADDR, 1, I2C_SoftEnd_Mode, I2C_Generate_Start_Write);
-  
-  /* Wait until TXIS flag is set */
-  LM75_Timeout = LM75_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TXIS) == RESET)
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }
-  
-  /* Send Register address */
-  I2C_SendData(LM75_I2C, (uint8_t)LM75_REG_CONF);
-  
-  /* Wait until TC flag is set */
-  LM75_Timeout = LM75_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TC) == RESET)
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }  
-  
-  /* Configure slave address, nbytes, reload, end mode and start or stop generation */
-  I2C_TransferHandling(LM75_I2C, LM75_ADDR, 1, I2C_AutoEnd_Mode, I2C_Generate_Start_Read);
-  
-  /* Wait until RXNE flag is set */
-  LM75_Timeout = LM75_LONG_TIMEOUT;  
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_RXNE) == RESET)  
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }
-  
-  /* Read data from RXDR */
-  LM75_BufferRX[0]= I2C_ReceiveData(LM75_I2C);  
-  
-  /* Wait until STOPF flag is set */
-  LM75_Timeout = LM75_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_STOPF) == RESET) 
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }
-  
-  /* Clear STOPF flag */
-  I2C_ClearFlag(LM75_I2C, I2C_ICR_STOPCF);
-  
-  /*!< Return Register value */
-  return (uint8_t)LM75_BufferRX[0];
+{
+	uint8_t LM75_BufferRX[2] = { 0, 0 };
+
+	/* Test on BUSY Flag */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_BUSY) != RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Configure slave address, nbytes, reload, end mode and start or stop generation */
+	I2C_TransferHandling(LM75_I2C, LM75_ADDR, 1, I2C_SoftEnd_Mode,
+			     I2C_Generate_Start_Write);
+
+	/* Wait until TXIS flag is set */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TXIS) == RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Send Register address */
+	I2C_SendData(LM75_I2C, (uint8_t) LM75_REG_CONF);
+
+	/* Wait until TC flag is set */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TC) == RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Configure slave address, nbytes, reload, end mode and start or stop generation */
+	I2C_TransferHandling(LM75_I2C, LM75_ADDR, 1, I2C_AutoEnd_Mode,
+			     I2C_Generate_Start_Read);
+
+	/* Wait until RXNE flag is set */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_RXNE) == RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Read data from RXDR */
+	LM75_BufferRX[0] = I2C_ReceiveData(LM75_I2C);
+
+	/* Wait until STOPF flag is set */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_STOPF) == RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Clear STOPF flag */
+	I2C_ClearFlag(LM75_I2C, I2C_ICR_STOPCF);
+
+	/*!< Return Register value */
+	return (uint8_t) LM75_BufferRX[0];
 }
 
 /**
@@ -499,62 +507,64 @@ uint8_t LM75_ReadConfReg(void)
   * @retval None
   */
 uint8_t LM75_WriteConfReg(uint8_t RegValue)
-{   
-  uint8_t LM75_BufferTX = 0;  
-  
-  LM75_BufferTX = (uint8_t)(RegValue);
-  
-  /* Test on BUSY Flag */
-  LM75_Timeout = LM75_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_BUSY) != RESET) 
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }
-  
-  /* Configure slave address, nbytes, reload, end mode and start or stop generation */
-  I2C_TransferHandling(LM75_I2C, LM75_ADDR, 1, I2C_Reload_Mode, I2C_Generate_Start_Write);
-  
-  /* Wait until TXIS flag is set */
-  LM75_Timeout = LM75_LONG_TIMEOUT;  
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TXIS) == RESET)
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }
-  
-  /* Send Register address */
-  I2C_SendData(LM75_I2C, (uint8_t)LM75_REG_CONF);
-  
-  /* Wait until TCR flag is set */
-  LM75_Timeout = LM75_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TCR) == RESET)
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }
-  
-  /* Configure slave address, nbytes, reload, end mode and start or stop generation */
-  I2C_TransferHandling(LM75_I2C, LM75_ADDR, 1, I2C_AutoEnd_Mode, I2C_No_StartStop);
-  
-  /* Wait until TXIS flag is set */
-  LM75_Timeout = LM75_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TXIS) == RESET)
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }  
-  
-  /* Write data to TXDR */
-  I2C_SendData(LM75_I2C, (uint8_t)LM75_BufferTX);
-  
-  /* Wait until STOPF flag is set */
-  LM75_Timeout = LM75_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_STOPF) == RESET)
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }   
-  
-  /* Clear STOPF flag */
-  I2C_ClearFlag(LM75_I2C, I2C_ICR_STOPCF);
-    
-  return LM75_OK;  
+{
+	uint8_t LM75_BufferTX = 0;
+
+	LM75_BufferTX = (uint8_t) (RegValue);
+
+	/* Test on BUSY Flag */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_BUSY) != RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Configure slave address, nbytes, reload, end mode and start or stop generation */
+	I2C_TransferHandling(LM75_I2C, LM75_ADDR, 1, I2C_Reload_Mode,
+			     I2C_Generate_Start_Write);
+
+	/* Wait until TXIS flag is set */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TXIS) == RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Send Register address */
+	I2C_SendData(LM75_I2C, (uint8_t) LM75_REG_CONF);
+
+	/* Wait until TCR flag is set */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TCR) == RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Configure slave address, nbytes, reload, end mode and start or stop generation */
+	I2C_TransferHandling(LM75_I2C, LM75_ADDR, 1, I2C_AutoEnd_Mode,
+			     I2C_No_StartStop);
+
+	/* Wait until TXIS flag is set */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TXIS) == RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Write data to TXDR */
+	I2C_SendData(LM75_I2C, (uint8_t) LM75_BufferTX);
+
+	/* Wait until STOPF flag is set */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_STOPF) == RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Clear STOPF flag */
+	I2C_ClearFlag(LM75_I2C, I2C_ICR_STOPCF);
+
+	return LM75_OK;
 }
 
 /**
@@ -564,140 +574,139 @@ uint8_t LM75_WriteConfReg(uint8_t RegValue)
   * @retval None
   */
 uint8_t LM75_ShutDown(FunctionalState NewState)
-{   
-  uint8_t LM75_BufferRX[2] ={0,0};
-  uint8_t LM75_BufferTX = 0;
-  __IO uint8_t RegValue = 0;    
-  
-  /* Test on BUSY Flag */
-  LM75_Timeout = LM75_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_BUSY) != RESET)
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }
-  
-  /* Configure slave address, nbytes, reload, end mode and start or stop generation */
-  I2C_TransferHandling(LM75_I2C, LM75_ADDR, 1, I2C_SoftEnd_Mode, I2C_Generate_Start_Write);
-  
-  /* Wait until TXIS flag is set */
-  LM75_Timeout = LM75_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TXIS) == RESET)
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }
-  
-  /* Send Register address */
-  I2C_SendData(LM75_I2C, (uint8_t)LM75_REG_CONF);
-  
-  /* Wait until TC flag is set */
-  LM75_Timeout = LM75_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TC) == RESET)
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }  
-  
-  /* Configure slave address, nbytes, reload, end mode and start or stop generation */
-  I2C_TransferHandling(LM75_I2C, LM75_ADDR, 1, I2C_AutoEnd_Mode, I2C_Generate_Start_Read);
-  
-  /* Wait until RXNE flag is set */
-  LM75_Timeout = LM75_LONG_TIMEOUT;   
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_RXNE) == RESET)
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }
-  
-  /* Read data from RXDR */
-  LM75_BufferRX[0]= I2C_ReceiveData(LM75_I2C); 
-  
-  /* Wait until STOPF flag is set */
-  LM75_Timeout = LM75_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_STOPF) == RESET)
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }
-  
-  /* Clear STOPF flag */
-  I2C_ClearFlag(LM75_I2C, I2C_ICR_STOPCF);
-  
-  /*!< Get received data */
-  RegValue = (uint8_t)LM75_BufferRX[0];
-  
+{
+	uint8_t LM75_BufferRX[2] = { 0, 0 };
+	uint8_t LM75_BufferTX = 0;
+	__IO uint8_t RegValue = 0;
+
+	/* Test on BUSY Flag */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_BUSY) != RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Configure slave address, nbytes, reload, end mode and start or stop generation */
+	I2C_TransferHandling(LM75_I2C, LM75_ADDR, 1, I2C_SoftEnd_Mode,
+			     I2C_Generate_Start_Write);
+
+	/* Wait until TXIS flag is set */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TXIS) == RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Send Register address */
+	I2C_SendData(LM75_I2C, (uint8_t) LM75_REG_CONF);
+
+	/* Wait until TC flag is set */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TC) == RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Configure slave address, nbytes, reload, end mode and start or stop generation */
+	I2C_TransferHandling(LM75_I2C, LM75_ADDR, 1, I2C_AutoEnd_Mode,
+			     I2C_Generate_Start_Read);
+
+	/* Wait until RXNE flag is set */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_RXNE) == RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Read data from RXDR */
+	LM75_BufferRX[0] = I2C_ReceiveData(LM75_I2C);
+
+	/* Wait until STOPF flag is set */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_STOPF) == RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Clear STOPF flag */
+	I2C_ClearFlag(LM75_I2C, I2C_ICR_STOPCF);
+
+	/*!< Get received data */
+	RegValue = (uint8_t) LM75_BufferRX[0];
+
   /*---------------------------- Transmission Phase ---------------------------*/
-  
-  /*!< Enable or disable SD bit */
-  if (NewState != DISABLE)
-  {
-    /*!< Enable LM75 */
-    LM75_BufferTX = RegValue & LM75_SD_RESET;
-  }
-  else
-  {
-    /*!< Disable LM75 */
-    LM75_BufferTX = RegValue | LM75_SD_SET;
-  }  
-  
-  /* Test on BUSY Flag */
-  LM75_Timeout = LM75_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_BUSY) != RESET)
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }
-  
-  /* Configure slave address, nbytes, reload, end mode and start or stop generation */
-  I2C_TransferHandling(LM75_I2C, LM75_ADDR, 1, I2C_Reload_Mode, I2C_Generate_Start_Write);
-  
-  /* Wait until TXIS flag is set */
-  LM75_Timeout = LM75_LONG_TIMEOUT;  
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TXIS) == RESET)
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }
-  
-  /* Send Register address */
-  I2C_SendData(LM75_I2C, (uint8_t)LM75_REG_CONF);
-  
-  /* Wait until TCR flag is set */
-  LM75_Timeout = LM75_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TCR) == RESET)
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }
-  
-  /* Configure slave address, nbytes, reload, end mode and start or stop generation */
-  I2C_TransferHandling(LM75_I2C, LM75_ADDR, 1, I2C_AutoEnd_Mode, I2C_No_StartStop);
-  
-  /* Wait until TXIS flag is set */
-  LM75_Timeout = LM75_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TXIS) == RESET)
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }  
-  
-  /* Write data to TXDR */
-  I2C_SendData(LM75_I2C, (uint8_t)LM75_BufferTX);
-  
-  /* Wait until STOPF flag is set */
-  LM75_Timeout = LM75_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(LM75_I2C, I2C_ISR_STOPF) == RESET)
-  {
-    if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-  }   
-  
-  /* Clear STOPF flag */
-  I2C_ClearFlag(LM75_I2C, I2C_ICR_STOPCF);
-  
-  return LM75_OK;
+
+	/*!< Enable or disable SD bit */
+	if (NewState != DISABLE) {
+		/*!< Enable LM75 */
+		LM75_BufferTX = RegValue & LM75_SD_RESET;
+	} else {
+		/*!< Disable LM75 */
+		LM75_BufferTX = RegValue | LM75_SD_SET;
+	}
+
+	/* Test on BUSY Flag */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_BUSY) != RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Configure slave address, nbytes, reload, end mode and start or stop generation */
+	I2C_TransferHandling(LM75_I2C, LM75_ADDR, 1, I2C_Reload_Mode,
+			     I2C_Generate_Start_Write);
+
+	/* Wait until TXIS flag is set */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TXIS) == RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Send Register address */
+	I2C_SendData(LM75_I2C, (uint8_t) LM75_REG_CONF);
+
+	/* Wait until TCR flag is set */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TCR) == RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Configure slave address, nbytes, reload, end mode and start or stop generation */
+	I2C_TransferHandling(LM75_I2C, LM75_ADDR, 1, I2C_AutoEnd_Mode,
+			     I2C_No_StartStop);
+
+	/* Wait until TXIS flag is set */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_TXIS) == RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Write data to TXDR */
+	I2C_SendData(LM75_I2C, (uint8_t) LM75_BufferTX);
+
+	/* Wait until STOPF flag is set */
+	LM75_Timeout = LM75_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(LM75_I2C, I2C_ISR_STOPF) == RESET) {
+		if ((LM75_Timeout--) == 0)
+			return LM75_TIMEOUT_UserCallback();
+	}
+
+	/* Clear STOPF flag */
+	I2C_ClearFlag(LM75_I2C, I2C_ICR_STOPCF);
+
+	return LM75_OK;
 }
 
 /**
   * @}
   */
 
-
 /**
   * @}
   */
-
 
 /**
   * @}

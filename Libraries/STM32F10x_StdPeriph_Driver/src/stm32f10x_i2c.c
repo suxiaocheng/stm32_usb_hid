@@ -287,16 +287,16 @@ void I2C_Init(I2C_TypeDef * I2Cx, I2C_InitTypeDef * I2C_InitStruct)
 	/* Set SMBTYPE and SMBUS bits according to I2C_Mode value */
 	/* Set ACK bit according to I2C_Ack value */
 	tmpreg |=
-	    (uint16_t) ((uint32_t) I2C_InitStruct->
-			I2C_Mode | I2C_InitStruct->I2C_Ack);
+	    (uint16_t) ((uint32_t) I2C_InitStruct->I2C_Mode | I2C_InitStruct->
+			I2C_Ack);
 	/* Write to I2Cx CR1 */
 	I2Cx->CR1 = tmpreg;
 
 /*---------------------------- I2Cx OAR1 Configuration -----------------------*/
 	/* Set I2Cx Own Address1 and acknowledged address */
 	I2Cx->OAR1 =
-	    (I2C_InitStruct->
-	     I2C_AcknowledgedAddress | I2C_InitStruct->I2C_OwnAddress1);
+	    (I2C_InitStruct->I2C_AcknowledgedAddress | I2C_InitStruct->
+	     I2C_OwnAddress1);
 }
 
 /**

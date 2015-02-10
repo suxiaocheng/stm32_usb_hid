@@ -77,65 +77,60 @@
 
 /** @addtogroup STM32_EVAL
   * @{
-  */ 
+  */
 
 /** @addtogroup STM32L152_EVAL
   * @{
   */
-  
+
 /** @addtogroup STM32L152_EVAL_I2C_EE
   * @brief      This file includes the I2C EEPROM driver of STM32L152-EVAL board.
   * @{
-  */ 
+  */
 
 /** @defgroup STM32L152_EVAL_I2C_EE_Private_Types
   * @{
-  */ 
+  */
 /**
   * @}
-  */ 
-
+  */
 
 /** @defgroup STM32L152_EVAL_I2C_EE_Private_Defines
   * @{
-  */  
+  */
 /**
   * @}
-  */ 
-
+  */
 
 /** @defgroup STM32L152_EVAL_I2C_EE_Private_Macros
   * @{
   */
 /**
   * @}
-  */ 
-  
+  */
 
 /** @defgroup STM32L152_EVAL_I2C_EE_Private_Variables
   * @{
   */
-__IO uint16_t  sEEAddress = 0;   
-__IO uint32_t  sEETimeout = sEE_LONG_TIMEOUT;   
-__IO uint16_t* sEEDataReadPointer;   
-__IO uint8_t*  sEEDataWritePointer;  
-__IO uint8_t   sEEDataNum;
+__IO uint16_t sEEAddress = 0;
+__IO uint32_t sEETimeout = sEE_LONG_TIMEOUT;
+__IO uint16_t *sEEDataReadPointer;
+__IO uint8_t *sEEDataWritePointer;
+__IO uint8_t sEEDataNum;
 /**
   * @}
-  */ 
-
+  */
 
 /** @defgroup STM32L152_EVAL_I2C_EE_Private_Function_Prototypes
   * @{
-  */ 
+  */
 /**
   * @}
-  */ 
-
+  */
 
 /** @defgroup STM32L152_EVAL_I2C_EE_Private_Functions
   * @{
-  */ 
+  */
 
 /**
   * @brief  DeInitializes peripherals used by the I2C EEPROM driver.
@@ -144,7 +139,7 @@ __IO uint8_t   sEEDataNum;
   */
 void sEE_DeInit(void)
 {
-  sEE_LowLevel_DeInit(); 
+	sEE_LowLevel_DeInit();
 }
 
 /**
@@ -153,53 +148,54 @@ void sEE_DeInit(void)
   * @retval None
   */
 void sEE_Init(void)
-{ 
-  I2C_InitTypeDef  I2C_InitStructure;
-  
-  sEE_LowLevel_Init();
-  
-  /*!< I2C configuration */
-  /* sEE_I2C configuration */
-  I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
-  I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
-  I2C_InitStructure.I2C_OwnAddress1 = I2C_SLAVE_ADDRESS7;
-  I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
-  I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
-  I2C_InitStructure.I2C_ClockSpeed = I2C_SPEED;
-  
-  /* sEE_I2C Peripheral Enable */
-  I2C_Cmd(sEE_I2C, ENABLE);
-  /* Apply sEE_I2C configuration after enabling it */
-  I2C_Init(sEE_I2C, &I2C_InitStructure);
+{
+	I2C_InitTypeDef I2C_InitStructure;
 
-  /* Enable the sEE_I2C peripheral DMA requests */
-  I2C_DMACmd(sEE_I2C, ENABLE);
-  
+	sEE_LowLevel_Init();
+
+	/*!< I2C configuration */
+	/* sEE_I2C configuration */
+	I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
+	I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
+	I2C_InitStructure.I2C_OwnAddress1 = I2C_SLAVE_ADDRESS7;
+	I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
+	I2C_InitStructure.I2C_AcknowledgedAddress =
+	    I2C_AcknowledgedAddress_7bit;
+	I2C_InitStructure.I2C_ClockSpeed = I2C_SPEED;
+
+	/* sEE_I2C Peripheral Enable */
+	I2C_Cmd(sEE_I2C, ENABLE);
+	/* Apply sEE_I2C configuration after enabling it */
+	I2C_Init(sEE_I2C, &I2C_InitStructure);
+
+	/* Enable the sEE_I2C peripheral DMA requests */
+	I2C_DMACmd(sEE_I2C, ENABLE);
+
 #if defined (sEE_M24C64_32)
-  /*!< Select the EEPROM address according to the state of E0, E1, E2 pins */
-  sEEAddress = sEE_HW_ADDRESS;  
+	/*!< Select the EEPROM address according to the state of E0, E1, E2 pins */
+	sEEAddress = sEE_HW_ADDRESS;
 #elif defined (sEE_M24C08)
-  /*!< depending on the sEE Address selected in the i2c_ee.h file */
- #ifdef sEE_Block0_ADDRESS
-  /*!< Select the sEE Block0 to write on */
-  sEEAddress = sEE_Block0_ADDRESS;
- #endif
-  
- #ifdef sEE_Block1_ADDRESS
-  /*!< Select the sEE Block1 to write on */
-  sEEAddress = sEE_Block1_ADDRESS;
- #endif
+	/*!< depending on the sEE Address selected in the i2c_ee.h file */
+#ifdef sEE_Block0_ADDRESS
+	/*!< Select the sEE Block0 to write on */
+	sEEAddress = sEE_Block0_ADDRESS;
+#endif
 
- #ifdef sEE_Block2_ADDRESS
-  /*!< Select the sEE Block2 to write on */
-  sEEAddress = sEE_Block2_ADDRESS;
- #endif
-  
- #ifdef sEE_Block3_ADDRESS
-  /*!< Select the sEE Block3 to write on */
-  sEEAddress = sEE_Block3_ADDRESS;
- #endif 
-#endif /*!< sEE_M24C64_32 */    
+#ifdef sEE_Block1_ADDRESS
+	/*!< Select the sEE Block1 to write on */
+	sEEAddress = sEE_Block1_ADDRESS;
+#endif
+
+#ifdef sEE_Block2_ADDRESS
+	/*!< Select the sEE Block2 to write on */
+	sEEAddress = sEE_Block2_ADDRESS;
+#endif
+
+#ifdef sEE_Block3_ADDRESS
+	/*!< Select the sEE Block3 to write on */
+	sEEAddress = sEE_Block3_ADDRESS;
+#endif
+#endif /*!< sEE_M24C64_32 */
 }
 
 /**
@@ -223,147 +219,150 @@ void sEE_Init(void)
   * @retval sEE_OK (0) if operation is correctly performed, else return value 
   *         different from sEE_OK (0) or the timeout user callback.
   */
-uint32_t sEE_ReadBuffer(uint8_t* pBuffer, uint16_t ReadAddr, uint16_t* NumByteToRead)
-{  
-  /* Set the pointer to the Number of data to be read. This pointer will be used 
-      by the DMA Transfer Completer interrupt Handler in order to reset the 
-      variable to 0. User should check on this variable in order to know if the 
-      DMA transfer has been complete or not. */
-  sEEDataReadPointer = NumByteToRead;
-  
-  /*!< While the bus is busy */
-  sEETimeout = sEE_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(sEE_I2C, I2C_FLAG_BUSY))
-  {
-    if((sEETimeout--) == 0) return sEE_TIMEOUT_UserCallback();
-  }
-  
-  /*!< Send START condition */
-  I2C_GenerateSTART(sEE_I2C, ENABLE);
-  
-  /*!< Test on EV5 and clear it (cleared by reading SR1 then writing to DR) */
-  sEETimeout = sEE_FLAG_TIMEOUT;
-  while(!I2C_CheckEvent(sEE_I2C, I2C_EVENT_MASTER_MODE_SELECT))
-  {
-    if((sEETimeout--) == 0) return sEE_TIMEOUT_UserCallback();
-  }
-  
-  /*!< Send EEPROM address for write */
-  I2C_Send7bitAddress(sEE_I2C, sEEAddress, I2C_Direction_Transmitter);
+uint32_t sEE_ReadBuffer(uint8_t * pBuffer, uint16_t ReadAddr,
+			uint16_t * NumByteToRead)
+{
+	/* Set the pointer to the Number of data to be read. This pointer will be used 
+	   by the DMA Transfer Completer interrupt Handler in order to reset the 
+	   variable to 0. User should check on this variable in order to know if the 
+	   DMA transfer has been complete or not. */
+	sEEDataReadPointer = NumByteToRead;
 
-  /*!< Test on EV6 and clear it */
-  sEETimeout = sEE_FLAG_TIMEOUT;
-  while(!I2C_CheckEvent(sEE_I2C, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED))
-  {
-    if((sEETimeout--) == 0) return sEE_TIMEOUT_UserCallback();
-  } 
+	/*!< While the bus is busy */
+	sEETimeout = sEE_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(sEE_I2C, I2C_FLAG_BUSY)) {
+		if ((sEETimeout--) == 0)
+			return sEE_TIMEOUT_UserCallback();
+	}
 
-#ifdef sEE_M24C08  
-  
-  /*!< Send the EEPROM's internal address to read from: Only one byte address */
-  I2C_SendData(sEE_I2C, ReadAddr);  
+	/*!< Send START condition */
+	I2C_GenerateSTART(sEE_I2C, ENABLE);
+
+	/*!< Test on EV5 and clear it (cleared by reading SR1 then writing to DR) */
+	sEETimeout = sEE_FLAG_TIMEOUT;
+	while (!I2C_CheckEvent(sEE_I2C, I2C_EVENT_MASTER_MODE_SELECT)) {
+		if ((sEETimeout--) == 0)
+			return sEE_TIMEOUT_UserCallback();
+	}
+
+	/*!< Send EEPROM address for write */
+	I2C_Send7bitAddress(sEE_I2C, sEEAddress, I2C_Direction_Transmitter);
+
+	/*!< Test on EV6 and clear it */
+	sEETimeout = sEE_FLAG_TIMEOUT;
+	while (!I2C_CheckEvent
+	       (sEE_I2C, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED)) {
+		if ((sEETimeout--) == 0)
+			return sEE_TIMEOUT_UserCallback();
+	}
+
+#ifdef sEE_M24C08
+
+	/*!< Send the EEPROM's internal address to read from: Only one byte address */
+	I2C_SendData(sEE_I2C, ReadAddr);
 
 #elif defined (sEE_M24C64_32)
 
-  /*!< Send the EEPROM's internal address to read from: MSB of the address first */
-  I2C_SendData(sEE_I2C, (uint8_t)((ReadAddr & 0xFF00) >> 8));    
+	/*!< Send the EEPROM's internal address to read from: MSB of the address first */
+	I2C_SendData(sEE_I2C, (uint8_t) ((ReadAddr & 0xFF00) >> 8));
 
-  /*!< Test on EV8 and clear it */
-  sEETimeout = sEE_FLAG_TIMEOUT;
-  while(!I2C_CheckEvent(sEE_I2C, I2C_EVENT_MASTER_BYTE_TRANSMITTING))
-  {
-    if((sEETimeout--) == 0) return sEE_TIMEOUT_UserCallback();
-  }
+	/*!< Test on EV8 and clear it */
+	sEETimeout = sEE_FLAG_TIMEOUT;
+	while (!I2C_CheckEvent(sEE_I2C, I2C_EVENT_MASTER_BYTE_TRANSMITTING)) {
+		if ((sEETimeout--) == 0)
+			return sEE_TIMEOUT_UserCallback();
+	}
 
-  /*!< Send the EEPROM's internal address to read from: LSB of the address */
-  I2C_SendData(sEE_I2C, (uint8_t)(ReadAddr & 0x00FF));    
-  
+	/*!< Send the EEPROM's internal address to read from: LSB of the address */
+	I2C_SendData(sEE_I2C, (uint8_t) (ReadAddr & 0x00FF));
+
 #endif /*!< sEE_M24C08 */
 
-  /*!< Test on EV8 and clear it */
-  sEETimeout = sEE_FLAG_TIMEOUT;
-  while(I2C_GetFlagStatus(sEE_I2C, I2C_FLAG_BTF) == RESET)
-  {
-    if((sEETimeout--) == 0) return sEE_TIMEOUT_UserCallback();
-  }
-  
-  /*!< Send STRAT condition a second time */  
-  I2C_GenerateSTART(sEE_I2C, ENABLE);
-  
-  /*!< Test on EV5 and clear it (cleared by reading SR1 then writing to DR) */
-  sEETimeout = sEE_FLAG_TIMEOUT;
-  while(!I2C_CheckEvent(sEE_I2C, I2C_EVENT_MASTER_MODE_SELECT))
-  {
-    if((sEETimeout--) == 0) return sEE_TIMEOUT_UserCallback();
-  } 
-  
-  /*!< Send EEPROM address for read */
-  I2C_Send7bitAddress(sEE_I2C, sEEAddress, I2C_Direction_Receiver);  
-  
-  /* If number of data to be read is 1, then DMA couldn't be used */
-  /* One Byte Master Reception procedure (POLLING) ---------------------------*/
-  if ((uint16_t)(*NumByteToRead) < 2)
-  {
-    /* Wait on ADDR flag to be set (ADDR is still not cleared at this level */
-    sEETimeout = sEE_FLAG_TIMEOUT;
-    while(I2C_GetFlagStatus(sEE_I2C, I2C_FLAG_ADDR) == RESET)
-    {
-      if((sEETimeout--) == 0) return sEE_TIMEOUT_UserCallback();
-    }     
-    
-    /*!< Disable Acknowledgement */
-    I2C_AcknowledgeConfig(sEE_I2C, DISABLE);   
-    
-    /* Clear ADDR register by reading SR1 then SR2 register (SR1 has already been read) */
-    (void)sEE_I2C->SR2;
-    
-    /*!< Send STOP Condition */
-    I2C_GenerateSTOP(sEE_I2C, ENABLE);
-    
-    /* Wait for the byte to be received */
-    sEETimeout = sEE_FLAG_TIMEOUT;
-    while(I2C_GetFlagStatus(sEE_I2C, I2C_FLAG_RXNE) == RESET)
-    {
-      if((sEETimeout--) == 0) return sEE_TIMEOUT_UserCallback();
-    }
-    
-    /*!< Read the byte received from the EEPROM */
-    *pBuffer = I2C_ReceiveData(sEE_I2C);
-    
-    /*!< Decrement the read bytes counter */
-    (uint16_t)(*NumByteToRead)--;        
-    
-    /* Wait to make sure that STOP control bit has been cleared */
-    sEETimeout = sEE_FLAG_TIMEOUT;
-    while(sEE_I2C->CR1 & I2C_CR1_STOP)
-    {
-      if((sEETimeout--) == 0) return sEE_TIMEOUT_UserCallback();
-    }  
-    
-    /*!< Re-Enable Acknowledgement to be ready for another reception */
-    I2C_AcknowledgeConfig(sEE_I2C, ENABLE);    
-  }
-  else/* More than one Byte Master Reception procedure (DMA) -----------------*/
-  {
-    /*!< Test on EV6 and clear it */
-    sEETimeout = sEE_FLAG_TIMEOUT;
-    while(!I2C_CheckEvent(sEE_I2C, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED))
-    {
-      if((sEETimeout--) == 0) return sEE_TIMEOUT_UserCallback();
-    }  
-    
-    /* Configure the DMA Rx Channel with the buffer address and the buffer size */
-    sEE_LowLevel_DMAConfig((uint32_t)pBuffer, (uint16_t)(*NumByteToRead), sEE_DIRECTION_RX);
-    
-    /* Inform the DMA that the next End Of Transfer Signal will be the last one */
-    I2C_DMALastTransferCmd(sEE_I2C, ENABLE); 
-    
-    /* Enable the DMA Rx Channel */
-    DMA_Cmd(sEE_I2C_DMA_CHANNEL_RX, ENABLE);    
-  }
-  
-  /* If all operations OK, return sEE_OK (0) */
-  return sEE_OK;
+	/*!< Test on EV8 and clear it */
+	sEETimeout = sEE_FLAG_TIMEOUT;
+	while (I2C_GetFlagStatus(sEE_I2C, I2C_FLAG_BTF) == RESET) {
+		if ((sEETimeout--) == 0)
+			return sEE_TIMEOUT_UserCallback();
+	}
+
+	/*!< Send STRAT condition a second time */
+	I2C_GenerateSTART(sEE_I2C, ENABLE);
+
+	/*!< Test on EV5 and clear it (cleared by reading SR1 then writing to DR) */
+	sEETimeout = sEE_FLAG_TIMEOUT;
+	while (!I2C_CheckEvent(sEE_I2C, I2C_EVENT_MASTER_MODE_SELECT)) {
+		if ((sEETimeout--) == 0)
+			return sEE_TIMEOUT_UserCallback();
+	}
+
+	/*!< Send EEPROM address for read */
+	I2C_Send7bitAddress(sEE_I2C, sEEAddress, I2C_Direction_Receiver);
+
+	/* If number of data to be read is 1, then DMA couldn't be used */
+	/* One Byte Master Reception procedure (POLLING) --------------------------- */
+	if ((uint16_t) (*NumByteToRead) < 2) {
+		/* Wait on ADDR flag to be set (ADDR is still not cleared at this level */
+		sEETimeout = sEE_FLAG_TIMEOUT;
+		while (I2C_GetFlagStatus(sEE_I2C, I2C_FLAG_ADDR) == RESET) {
+			if ((sEETimeout--) == 0)
+				return sEE_TIMEOUT_UserCallback();
+		}
+
+		/*!< Disable Acknowledgement */
+		I2C_AcknowledgeConfig(sEE_I2C, DISABLE);
+
+		/* Clear ADDR register by reading SR1 then SR2 register (SR1 has already been read) */
+		(void)sEE_I2C->SR2;
+
+		/*!< Send STOP Condition */
+		I2C_GenerateSTOP(sEE_I2C, ENABLE);
+
+		/* Wait for the byte to be received */
+		sEETimeout = sEE_FLAG_TIMEOUT;
+		while (I2C_GetFlagStatus(sEE_I2C, I2C_FLAG_RXNE) == RESET) {
+			if ((sEETimeout--) == 0)
+				return sEE_TIMEOUT_UserCallback();
+		}
+
+		/*!< Read the byte received from the EEPROM */
+		*pBuffer = I2C_ReceiveData(sEE_I2C);
+
+		/*!< Decrement the read bytes counter */
+		(uint16_t) (*NumByteToRead)--;
+
+		/* Wait to make sure that STOP control bit has been cleared */
+		sEETimeout = sEE_FLAG_TIMEOUT;
+		while (sEE_I2C->CR1 & I2C_CR1_STOP) {
+			if ((sEETimeout--) == 0)
+				return sEE_TIMEOUT_UserCallback();
+		}
+
+		/*!< Re-Enable Acknowledgement to be ready for another reception */
+		I2C_AcknowledgeConfig(sEE_I2C, ENABLE);
+	} else {		/* More than one Byte Master Reception procedure (DMA) ----------------- */
+
+		/*!< Test on EV6 and clear it */
+		sEETimeout = sEE_FLAG_TIMEOUT;
+		while (!I2C_CheckEvent
+		       (sEE_I2C, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED)) {
+			if ((sEETimeout--) == 0)
+				return sEE_TIMEOUT_UserCallback();
+		}
+
+		/* Configure the DMA Rx Channel with the buffer address and the buffer size */
+		sEE_LowLevel_DMAConfig((uint32_t) pBuffer,
+				       (uint16_t) (*NumByteToRead),
+				       sEE_DIRECTION_RX);
+
+		/* Inform the DMA that the next End Of Transfer Signal will be the last one */
+		I2C_DMALastTransferCmd(sEE_I2C, ENABLE);
+
+		/* Enable the DMA Rx Channel */
+		DMA_Cmd(sEE_I2C_DMA_CHANNEL_RX, ENABLE);
+	}
+
+	/* If all operations OK, return sEE_OK (0) */
+	return sEE_OK;
 }
 
 /**
@@ -393,79 +392,82 @@ uint32_t sEE_ReadBuffer(uint8_t* pBuffer, uint16_t ReadAddr, uint16_t* NumByteTo
   * @retval sEE_OK (0) if operation is correctly performed, else return value 
   *         different from sEE_OK (0) or the timeout user callback.
   */
-uint32_t sEE_WritePage(uint8_t* pBuffer, uint16_t WriteAddr, uint8_t* NumByteToWrite)
-{ 
-  /* Set the pointer to the Number of data to be written. This pointer will be used 
-      by the DMA Transfer Completer interrupt Handler in order to reset the 
-      variable to 0. User should check on this variable in order to know if the 
-      DMA transfer has been complete or not. */
-  sEEDataWritePointer = NumByteToWrite;  
-  
-  /*!< While the bus is busy */
-  sEETimeout = sEE_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(sEE_I2C, I2C_FLAG_BUSY))
-  {
-    if((sEETimeout--) == 0) return sEE_TIMEOUT_UserCallback();
-  }
-  
-  /*!< Send START condition */
-  I2C_GenerateSTART(sEE_I2C, ENABLE);
-  
-  /*!< Test on EV5 and clear it */
-  sEETimeout = sEE_FLAG_TIMEOUT;
-  while(!I2C_CheckEvent(sEE_I2C, I2C_EVENT_MASTER_MODE_SELECT))
-  {
-    if((sEETimeout--) == 0) return sEE_TIMEOUT_UserCallback();
-  }
-  
-  /*!< Send EEPROM address for write */
-  sEETimeout = sEE_FLAG_TIMEOUT;
-  I2C_Send7bitAddress(sEE_I2C, sEEAddress, I2C_Direction_Transmitter);
+uint32_t sEE_WritePage(uint8_t * pBuffer, uint16_t WriteAddr,
+		       uint8_t * NumByteToWrite)
+{
+	/* Set the pointer to the Number of data to be written. This pointer will be used 
+	   by the DMA Transfer Completer interrupt Handler in order to reset the 
+	   variable to 0. User should check on this variable in order to know if the 
+	   DMA transfer has been complete or not. */
+	sEEDataWritePointer = NumByteToWrite;
 
-  /*!< Test on EV6 and clear it */
-  sEETimeout = sEE_FLAG_TIMEOUT;
-  while(!I2C_CheckEvent(sEE_I2C, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED))
-  {
-    if((sEETimeout--) == 0) return sEE_TIMEOUT_UserCallback();
-  }
+	/*!< While the bus is busy */
+	sEETimeout = sEE_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(sEE_I2C, I2C_FLAG_BUSY)) {
+		if ((sEETimeout--) == 0)
+			return sEE_TIMEOUT_UserCallback();
+	}
+
+	/*!< Send START condition */
+	I2C_GenerateSTART(sEE_I2C, ENABLE);
+
+	/*!< Test on EV5 and clear it */
+	sEETimeout = sEE_FLAG_TIMEOUT;
+	while (!I2C_CheckEvent(sEE_I2C, I2C_EVENT_MASTER_MODE_SELECT)) {
+		if ((sEETimeout--) == 0)
+			return sEE_TIMEOUT_UserCallback();
+	}
+
+	/*!< Send EEPROM address for write */
+	sEETimeout = sEE_FLAG_TIMEOUT;
+	I2C_Send7bitAddress(sEE_I2C, sEEAddress, I2C_Direction_Transmitter);
+
+	/*!< Test on EV6 and clear it */
+	sEETimeout = sEE_FLAG_TIMEOUT;
+	while (!I2C_CheckEvent
+	       (sEE_I2C, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED)) {
+		if ((sEETimeout--) == 0)
+			return sEE_TIMEOUT_UserCallback();
+	}
 
 #ifdef sEE_M24C08
-  
-  /*!< Send the EEPROM's internal address to write to : only one byte Address */
-  I2C_SendData(sEE_I2C, WriteAddr);
-  
-#elif defined(sEE_M24C64_32)
-  
-  /*!< Send the EEPROM's internal address to write to : MSB of the address first */
-  I2C_SendData(sEE_I2C, (uint8_t)((WriteAddr & 0xFF00) >> 8));
 
-  /*!< Test on EV8 and clear it */
-  sEETimeout = sEE_FLAG_TIMEOUT;  
-  while(!I2C_CheckEvent(sEE_I2C, I2C_EVENT_MASTER_BYTE_TRANSMITTING))
-  {
-    if((sEETimeout--) == 0) return sEE_TIMEOUT_UserCallback();
-  }  
-  
-  /*!< Send the EEPROM's internal address to write to : LSB of the address */
-  I2C_SendData(sEE_I2C, (uint8_t)(WriteAddr & 0x00FF));
-  
-#endif /*!< sEE_M24C08 */  
-  
-  /*!< Test on EV8 and clear it */
-  sEETimeout = sEE_FLAG_TIMEOUT; 
-  while(!I2C_CheckEvent(sEE_I2C, I2C_EVENT_MASTER_BYTE_TRANSMITTING))
-  {
-    if((sEETimeout--) == 0) return sEE_TIMEOUT_UserCallback();
-  }  
-  
-  /* Configure the DMA Tx Channel with the buffer address and the buffer size */
-  sEE_LowLevel_DMAConfig((uint32_t)pBuffer, (uint8_t)(*NumByteToWrite), sEE_DIRECTION_TX);
-  
-  /* Enable the DMA Tx Channel */
-  DMA_Cmd(sEE_I2C_DMA_CHANNEL_TX, ENABLE);
-  
-  /* If all operations OK, return sEE_OK (0) */
-  return sEE_OK;
+	/*!< Send the EEPROM's internal address to write to : only one byte Address */
+	I2C_SendData(sEE_I2C, WriteAddr);
+
+#elif defined(sEE_M24C64_32)
+
+	/*!< Send the EEPROM's internal address to write to : MSB of the address first */
+	I2C_SendData(sEE_I2C, (uint8_t) ((WriteAddr & 0xFF00) >> 8));
+
+	/*!< Test on EV8 and clear it */
+	sEETimeout = sEE_FLAG_TIMEOUT;
+	while (!I2C_CheckEvent(sEE_I2C, I2C_EVENT_MASTER_BYTE_TRANSMITTING)) {
+		if ((sEETimeout--) == 0)
+			return sEE_TIMEOUT_UserCallback();
+	}
+
+	/*!< Send the EEPROM's internal address to write to : LSB of the address */
+	I2C_SendData(sEE_I2C, (uint8_t) (WriteAddr & 0x00FF));
+
+#endif /*!< sEE_M24C08 */
+
+	/*!< Test on EV8 and clear it */
+	sEETimeout = sEE_FLAG_TIMEOUT;
+	while (!I2C_CheckEvent(sEE_I2C, I2C_EVENT_MASTER_BYTE_TRANSMITTING)) {
+		if ((sEETimeout--) == 0)
+			return sEE_TIMEOUT_UserCallback();
+	}
+
+	/* Configure the DMA Tx Channel with the buffer address and the buffer size */
+	sEE_LowLevel_DMAConfig((uint32_t) pBuffer, (uint8_t) (*NumByteToWrite),
+			       sEE_DIRECTION_TX);
+
+	/* Enable the DMA Tx Channel */
+	DMA_Cmd(sEE_I2C_DMA_CHANNEL_TX, ENABLE);
+
+	/* If all operations OK, return sEE_OK (0) */
+	return sEE_OK;
 }
 
 /**
@@ -476,169 +478,184 @@ uint32_t sEE_WritePage(uint8_t* pBuffer, uint16_t WriteAddr, uint8_t* NumByteToW
   * @param  NumByteToWrite : number of bytes to write to the EEPROM.
   * @retval None
   */
-void sEE_WriteBuffer(uint8_t* pBuffer, uint16_t WriteAddr, uint16_t NumByteToWrite)
+void sEE_WriteBuffer(uint8_t * pBuffer, uint16_t WriteAddr,
+		     uint16_t NumByteToWrite)
 {
-  uint16_t NumOfPage = 0, NumOfSingle = 0, count = 0;
-  uint16_t Addr = 0;
+	uint16_t NumOfPage = 0, NumOfSingle = 0, count = 0;
+	uint16_t Addr = 0;
 
-  Addr = WriteAddr % sEE_PAGESIZE;
-  count = sEE_PAGESIZE - Addr;
-  NumOfPage =  NumByteToWrite / sEE_PAGESIZE;
-  NumOfSingle = NumByteToWrite % sEE_PAGESIZE;
- 
-  /*!< If WriteAddr is sEE_PAGESIZE aligned  */
-  if(Addr == 0) 
-  {
-    /*!< If NumByteToWrite < sEE_PAGESIZE */
-    if(NumOfPage == 0) 
-    {
-      /* Store the number of data to be written */
-      sEEDataNum = NumOfSingle;
-      /* Start writing data */
-      sEE_WritePage(pBuffer, WriteAddr, (uint8_t*)(&sEEDataNum));
-      /* Wait transfer through DMA to be complete */
-      sEETimeout = sEE_LONG_TIMEOUT;
-      while (sEEDataNum > 0)
-      {
-        if((sEETimeout--) == 0) {sEE_TIMEOUT_UserCallback(); return;};
-      }
-      sEE_WaitEepromStandbyState();
-    }
-    /*!< If NumByteToWrite > sEE_PAGESIZE */
-    else  
-    {
-      while(NumOfPage--)
-      {
-        /* Store the number of data to be written */
-        sEEDataNum = sEE_PAGESIZE;        
-        sEE_WritePage(pBuffer, WriteAddr, (uint8_t*)(&sEEDataNum)); 
-        /* Wait transfer through DMA to be complete */
-        sEETimeout = sEE_LONG_TIMEOUT;
-        while (sEEDataNum > 0)
-        {
-          if((sEETimeout--) == 0) {sEE_TIMEOUT_UserCallback(); return;};
-        }      
-        sEE_WaitEepromStandbyState();
-        WriteAddr +=  sEE_PAGESIZE;
-        pBuffer += sEE_PAGESIZE;
-      }
+	Addr = WriteAddr % sEE_PAGESIZE;
+	count = sEE_PAGESIZE - Addr;
+	NumOfPage = NumByteToWrite / sEE_PAGESIZE;
+	NumOfSingle = NumByteToWrite % sEE_PAGESIZE;
 
-      if(NumOfSingle!=0)
-      {
-        /* Store the number of data to be written */
-        sEEDataNum = NumOfSingle;          
-        sEE_WritePage(pBuffer, WriteAddr, (uint8_t*)(&sEEDataNum));
-        /* Wait transfer through DMA to be complete */
-        sEETimeout = sEE_LONG_TIMEOUT;
-        while (sEEDataNum > 0)
-        {
-          if((sEETimeout--) == 0) {sEE_TIMEOUT_UserCallback(); return;};
-        }    
-        sEE_WaitEepromStandbyState();
-      }
-    }
-  }
-  /*!< If WriteAddr is not sEE_PAGESIZE aligned  */
-  else 
-  {
-    /*!< If NumByteToWrite < sEE_PAGESIZE */
-    if(NumOfPage== 0) 
-    {
-      /*!< If the number of data to be written is more than the remaining space 
-      in the current page: */
-      if (NumByteToWrite > count)
-      {
-        /* Store the number of data to be written */
-        sEEDataNum = count;        
-        /*!< Write the data conained in same page */
-        sEE_WritePage(pBuffer, WriteAddr, (uint8_t*)(&sEEDataNum));
-        /* Wait transfer through DMA to be complete */
-        sEETimeout = sEE_LONG_TIMEOUT;
-        while (sEEDataNum > 0)
-        {
-          if((sEETimeout--) == 0) {sEE_TIMEOUT_UserCallback(); return;};
-        }          
-        sEE_WaitEepromStandbyState();      
-        
-        /* Store the number of data to be written */
-        sEEDataNum = (NumByteToWrite - count);          
-        /*!< Write the remaining data in the following page */
-        sEE_WritePage((uint8_t*)(pBuffer + count), (WriteAddr + count), (uint8_t*)(&sEEDataNum));
-        /* Wait transfer through DMA to be complete */
-        sEETimeout = sEE_LONG_TIMEOUT;
-        while (sEEDataNum > 0)
-        {
-          if((sEETimeout--) == 0) {sEE_TIMEOUT_UserCallback(); return;};
-        }     
-        sEE_WaitEepromStandbyState();        
-      }      
-      else      
-      {
-        /* Store the number of data to be written */
-        sEEDataNum = NumOfSingle;         
-        sEE_WritePage(pBuffer, WriteAddr, (uint8_t*)(&sEEDataNum));
-        /* Wait transfer through DMA to be complete */
-        sEETimeout = sEE_LONG_TIMEOUT;
-        while (sEEDataNum > 0)
-        {
-          if((sEETimeout--) == 0) {sEE_TIMEOUT_UserCallback(); return;};
-        }          
-        sEE_WaitEepromStandbyState();        
-      }     
-    }
-    /*!< If NumByteToWrite > sEE_PAGESIZE */
-    else
-    {
-      NumByteToWrite -= count;
-      NumOfPage =  NumByteToWrite / sEE_PAGESIZE;
-      NumOfSingle = NumByteToWrite % sEE_PAGESIZE;
-      
-      if(count != 0)
-      {  
-        /* Store the number of data to be written */
-        sEEDataNum = count;         
-        sEE_WritePage(pBuffer, WriteAddr, (uint8_t*)(&sEEDataNum));
-        /* Wait transfer through DMA to be complete */
-        sEETimeout = sEE_LONG_TIMEOUT;
-        while (sEEDataNum > 0)
-        {
-          if((sEETimeout--) == 0) {sEE_TIMEOUT_UserCallback(); return;};
-        }     
-        sEE_WaitEepromStandbyState();
-        WriteAddr += count;
-        pBuffer += count;
-      } 
-      
-      while(NumOfPage--)
-      {
-        /* Store the number of data to be written */
-        sEEDataNum = sEE_PAGESIZE;          
-        sEE_WritePage(pBuffer, WriteAddr, (uint8_t*)(&sEEDataNum));
-        /* Wait transfer through DMA to be complete */
-        sEETimeout = sEE_LONG_TIMEOUT;
-        while (sEEDataNum > 0)
-        {
-          if((sEETimeout--) == 0) {sEE_TIMEOUT_UserCallback(); return;};
-        }        
-        sEE_WaitEepromStandbyState();
-        WriteAddr +=  sEE_PAGESIZE;
-        pBuffer += sEE_PAGESIZE;  
-      }
-      if(NumOfSingle != 0)
-      {
-        /* Store the number of data to be written */
-        sEEDataNum = NumOfSingle;           
-        sEE_WritePage(pBuffer, WriteAddr, (uint8_t*)(&sEEDataNum)); 
-        /* Wait transfer through DMA to be complete */
-        sEETimeout = sEE_LONG_TIMEOUT;
-        while (sEEDataNum > 0)
-        {
-          if((sEETimeout--) == 0) {sEE_TIMEOUT_UserCallback(); return;};
-        }         
-        sEE_WaitEepromStandbyState();
-      }
-    }
-  }  
+	/*!< If WriteAddr is sEE_PAGESIZE aligned  */
+	if (Addr == 0) {
+		/*!< If NumByteToWrite < sEE_PAGESIZE */
+		if (NumOfPage == 0) {
+			/* Store the number of data to be written */
+			sEEDataNum = NumOfSingle;
+			/* Start writing data */
+			sEE_WritePage(pBuffer, WriteAddr,
+				      (uint8_t *) (&sEEDataNum));
+			/* Wait transfer through DMA to be complete */
+			sEETimeout = sEE_LONG_TIMEOUT;
+			while (sEEDataNum > 0) {
+				if ((sEETimeout--) == 0) {
+					sEE_TIMEOUT_UserCallback();
+					return;
+				};
+			}
+			sEE_WaitEepromStandbyState();
+		}
+		/*!< If NumByteToWrite > sEE_PAGESIZE */
+		else {
+			while (NumOfPage--) {
+				/* Store the number of data to be written */
+				sEEDataNum = sEE_PAGESIZE;
+				sEE_WritePage(pBuffer, WriteAddr,
+					      (uint8_t *) (&sEEDataNum));
+				/* Wait transfer through DMA to be complete */
+				sEETimeout = sEE_LONG_TIMEOUT;
+				while (sEEDataNum > 0) {
+					if ((sEETimeout--) == 0) {
+						sEE_TIMEOUT_UserCallback();
+						return;
+					};
+				}
+				sEE_WaitEepromStandbyState();
+				WriteAddr += sEE_PAGESIZE;
+				pBuffer += sEE_PAGESIZE;
+			}
+
+			if (NumOfSingle != 0) {
+				/* Store the number of data to be written */
+				sEEDataNum = NumOfSingle;
+				sEE_WritePage(pBuffer, WriteAddr,
+					      (uint8_t *) (&sEEDataNum));
+				/* Wait transfer through DMA to be complete */
+				sEETimeout = sEE_LONG_TIMEOUT;
+				while (sEEDataNum > 0) {
+					if ((sEETimeout--) == 0) {
+						sEE_TIMEOUT_UserCallback();
+						return;
+					};
+				}
+				sEE_WaitEepromStandbyState();
+			}
+		}
+	}
+	/*!< If WriteAddr is not sEE_PAGESIZE aligned  */
+	else {
+		/*!< If NumByteToWrite < sEE_PAGESIZE */
+		if (NumOfPage == 0) {
+			/*!< If the number of data to be written is more than the remaining space 
+			   in the current page: */
+			if (NumByteToWrite > count) {
+				/* Store the number of data to be written */
+				sEEDataNum = count;
+				/*!< Write the data conained in same page */
+				sEE_WritePage(pBuffer, WriteAddr,
+					      (uint8_t *) (&sEEDataNum));
+				/* Wait transfer through DMA to be complete */
+				sEETimeout = sEE_LONG_TIMEOUT;
+				while (sEEDataNum > 0) {
+					if ((sEETimeout--) == 0) {
+						sEE_TIMEOUT_UserCallback();
+						return;
+					};
+				}
+				sEE_WaitEepromStandbyState();
+
+				/* Store the number of data to be written */
+				sEEDataNum = (NumByteToWrite - count);
+				/*!< Write the remaining data in the following page */
+				sEE_WritePage((uint8_t *) (pBuffer + count),
+					      (WriteAddr + count),
+					      (uint8_t *) (&sEEDataNum));
+				/* Wait transfer through DMA to be complete */
+				sEETimeout = sEE_LONG_TIMEOUT;
+				while (sEEDataNum > 0) {
+					if ((sEETimeout--) == 0) {
+						sEE_TIMEOUT_UserCallback();
+						return;
+					};
+				}
+				sEE_WaitEepromStandbyState();
+			} else {
+				/* Store the number of data to be written */
+				sEEDataNum = NumOfSingle;
+				sEE_WritePage(pBuffer, WriteAddr,
+					      (uint8_t *) (&sEEDataNum));
+				/* Wait transfer through DMA to be complete */
+				sEETimeout = sEE_LONG_TIMEOUT;
+				while (sEEDataNum > 0) {
+					if ((sEETimeout--) == 0) {
+						sEE_TIMEOUT_UserCallback();
+						return;
+					};
+				}
+				sEE_WaitEepromStandbyState();
+			}
+		}
+		/*!< If NumByteToWrite > sEE_PAGESIZE */
+		else {
+			NumByteToWrite -= count;
+			NumOfPage = NumByteToWrite / sEE_PAGESIZE;
+			NumOfSingle = NumByteToWrite % sEE_PAGESIZE;
+
+			if (count != 0) {
+				/* Store the number of data to be written */
+				sEEDataNum = count;
+				sEE_WritePage(pBuffer, WriteAddr,
+					      (uint8_t *) (&sEEDataNum));
+				/* Wait transfer through DMA to be complete */
+				sEETimeout = sEE_LONG_TIMEOUT;
+				while (sEEDataNum > 0) {
+					if ((sEETimeout--) == 0) {
+						sEE_TIMEOUT_UserCallback();
+						return;
+					};
+				}
+				sEE_WaitEepromStandbyState();
+				WriteAddr += count;
+				pBuffer += count;
+			}
+
+			while (NumOfPage--) {
+				/* Store the number of data to be written */
+				sEEDataNum = sEE_PAGESIZE;
+				sEE_WritePage(pBuffer, WriteAddr,
+					      (uint8_t *) (&sEEDataNum));
+				/* Wait transfer through DMA to be complete */
+				sEETimeout = sEE_LONG_TIMEOUT;
+				while (sEEDataNum > 0) {
+					if ((sEETimeout--) == 0) {
+						sEE_TIMEOUT_UserCallback();
+						return;
+					};
+				}
+				sEE_WaitEepromStandbyState();
+				WriteAddr += sEE_PAGESIZE;
+				pBuffer += sEE_PAGESIZE;
+			}
+			if (NumOfSingle != 0) {
+				/* Store the number of data to be written */
+				sEEDataNum = NumOfSingle;
+				sEE_WritePage(pBuffer, WriteAddr,
+					      (uint8_t *) (&sEEDataNum));
+				/* Wait transfer through DMA to be complete */
+				sEETimeout = sEE_LONG_TIMEOUT;
+				while (sEEDataNum > 0) {
+					if ((sEETimeout--) == 0) {
+						sEE_TIMEOUT_UserCallback();
+						return;
+					};
+				}
+				sEE_WaitEepromStandbyState();
+			}
+		}
+	}
 }
 
 /**
@@ -655,76 +672,72 @@ void sEE_WriteBuffer(uint8_t* pBuffer, uint16_t WriteAddr, uint16_t NumByteToWri
   * @retval sEE_OK (0) if operation is correctly performed, else return value 
   *         different from sEE_OK (0) or the timeout user callback.
   */
-uint32_t sEE_WaitEepromStandbyState(void)      
+uint32_t sEE_WaitEepromStandbyState(void)
 {
-  __IO uint16_t tmpSR1 = 0;
-  __IO uint32_t sEETrials = 0;
+	__IO uint16_t tmpSR1 = 0;
+	__IO uint32_t sEETrials = 0;
 
-  /*!< While the bus is busy */
-  sEETimeout = sEE_LONG_TIMEOUT;
-  while(I2C_GetFlagStatus(sEE_I2C, I2C_FLAG_BUSY))
-  {
-    if((sEETimeout--) == 0) return sEE_TIMEOUT_UserCallback();
-  }
+	/*!< While the bus is busy */
+	sEETimeout = sEE_LONG_TIMEOUT;
+	while (I2C_GetFlagStatus(sEE_I2C, I2C_FLAG_BUSY)) {
+		if ((sEETimeout--) == 0)
+			return sEE_TIMEOUT_UserCallback();
+	}
 
-  /* Keep looping till the slave acknowledge his address or maximum number 
-     of trials is reached (this number is defined by sEE_MAX_TRIALS_NUMBER define
-     in stm32l152_eval_i2c_ee.h file) */
-  while (1)
-  {
-    /*!< Send START condition */
-    I2C_GenerateSTART(sEE_I2C, ENABLE);
+	/* Keep looping till the slave acknowledge his address or maximum number 
+	   of trials is reached (this number is defined by sEE_MAX_TRIALS_NUMBER define
+	   in stm32l152_eval_i2c_ee.h file) */
+	while (1) {
+		/*!< Send START condition */
+		I2C_GenerateSTART(sEE_I2C, ENABLE);
 
-    /*!< Test on EV5 and clear it */
-    sEETimeout = sEE_FLAG_TIMEOUT;
-    while(!I2C_CheckEvent(sEE_I2C, I2C_EVENT_MASTER_MODE_SELECT))
-    {
-      if((sEETimeout--) == 0) return sEE_TIMEOUT_UserCallback();
-    }    
+		/*!< Test on EV5 and clear it */
+		sEETimeout = sEE_FLAG_TIMEOUT;
+		while (!I2C_CheckEvent(sEE_I2C, I2C_EVENT_MASTER_MODE_SELECT)) {
+			if ((sEETimeout--) == 0)
+				return sEE_TIMEOUT_UserCallback();
+		}
 
-    /*!< Send EEPROM address for write */
-    I2C_Send7bitAddress(sEE_I2C, sEEAddress, I2C_Direction_Transmitter);
-    
-    /* Wait for ADDR flag to be set (Slave acknowledged his address) */
-    sEETimeout = sEE_LONG_TIMEOUT;
-    do
-    {     
-      /* Get the current value of the SR1 register */
-      tmpSR1 = sEE_I2C->SR1;
-      
-      /* Update the timeout value and exit if it reach 0 */
-      if((sEETimeout--) == 0) return sEE_TIMEOUT_UserCallback();
-    }
-    /* Keep looping till the Address is acknowledged or the AF flag is 
-       set (address not acknowledged at time) */
-    while((tmpSR1 & (I2C_SR1_ADDR | I2C_SR1_AF)) == 0);
-     
-    /* Check if the ADDR flag has been set */
-    if (tmpSR1 & I2C_SR1_ADDR)
-    {
-      /* Clear ADDR Flag by reading SR1 then SR2 registers (SR1 have already 
-         been read) */
-      (void)sEE_I2C->SR2;
-      
-      /*!< STOP condition */    
-      I2C_GenerateSTOP(sEE_I2C, ENABLE);
-        
-      /* Exit the function */
-      return sEE_OK;
-    }
-    else
-    {
-      /*!< Clear AF flag */
-      I2C_ClearFlag(sEE_I2C, I2C_FLAG_AF);                  
-    }
-    
-    /* Check if the maximum allowed numbe of trials has bee reached */
-    if (sEETrials++ == sEE_MAX_TRIALS_NUMBER)
-    {
-      /* If the maximum number of trials has been reached, exit the function */
-      return sEE_TIMEOUT_UserCallback();
-    }
-  }
+		/*!< Send EEPROM address for write */
+		I2C_Send7bitAddress(sEE_I2C, sEEAddress,
+				    I2C_Direction_Transmitter);
+
+		/* Wait for ADDR flag to be set (Slave acknowledged his address) */
+		sEETimeout = sEE_LONG_TIMEOUT;
+		do {
+			/* Get the current value of the SR1 register */
+			tmpSR1 = sEE_I2C->SR1;
+
+			/* Update the timeout value and exit if it reach 0 */
+			if ((sEETimeout--) == 0)
+				return sEE_TIMEOUT_UserCallback();
+		}
+		/* Keep looping till the Address is acknowledged or the AF flag is 
+		   set (address not acknowledged at time) */
+		while ((tmpSR1 & (I2C_SR1_ADDR | I2C_SR1_AF)) == 0);
+
+		/* Check if the ADDR flag has been set */
+		if (tmpSR1 & I2C_SR1_ADDR) {
+			/* Clear ADDR Flag by reading SR1 then SR2 registers (SR1 have already 
+			   been read) */
+			(void)sEE_I2C->SR2;
+
+			/*!< STOP condition */
+			I2C_GenerateSTOP(sEE_I2C, ENABLE);
+
+			/* Exit the function */
+			return sEE_OK;
+		} else {
+			/*!< Clear AF flag */
+			I2C_ClearFlag(sEE_I2C, I2C_FLAG_AF);
+		}
+
+		/* Check if the maximum allowed numbe of trials has bee reached */
+		if (sEETrials++ == sEE_MAX_TRIALS_NUMBER) {
+			/* If the maximum number of trials has been reached, exit the function */
+			return sEE_TIMEOUT_UserCallback();
+		}
+	}
 }
 
 /**
@@ -734,26 +747,25 @@ uint32_t sEE_WaitEepromStandbyState(void)
   */
 void sEE_I2C_DMA_TX_IRQHandler(void)
 {
-  /* Check if the DMA transfer is complete */
-  if(DMA_GetFlagStatus(sEE_I2C_DMA_FLAG_TX_TC) != RESET)
-  {  
-    /* Disable the DMA Tx Channel and Clear all its Flags */  
-    DMA_Cmd(sEE_I2C_DMA_CHANNEL_TX, DISABLE);
-    DMA_ClearFlag(sEE_I2C_DMA_FLAG_TX_GL);
+	/* Check if the DMA transfer is complete */
+	if (DMA_GetFlagStatus(sEE_I2C_DMA_FLAG_TX_TC) != RESET) {
+		/* Disable the DMA Tx Channel and Clear all its Flags */
+		DMA_Cmd(sEE_I2C_DMA_CHANNEL_TX, DISABLE);
+		DMA_ClearFlag(sEE_I2C_DMA_FLAG_TX_GL);
 
-    /*!< Wait till all data have been physically transferred on the bus */
-    sEETimeout = sEE_LONG_TIMEOUT;
-    while(!I2C_GetFlagStatus(sEE_I2C, I2C_FLAG_BTF))
-    {
-      if((sEETimeout--) == 0) sEE_TIMEOUT_UserCallback();
-    }
-    
-    /*!< Send STOP condition */
-    I2C_GenerateSTOP(sEE_I2C, ENABLE);
-    
-    /* Reset the variable holding the number of data to be written */
-    *sEEDataWritePointer = 0;  
-  }
+		/*!< Wait till all data have been physically transferred on the bus */
+		sEETimeout = sEE_LONG_TIMEOUT;
+		while (!I2C_GetFlagStatus(sEE_I2C, I2C_FLAG_BTF)) {
+			if ((sEETimeout--) == 0)
+				sEE_TIMEOUT_UserCallback();
+		}
+
+		/*!< Send STOP condition */
+		I2C_GenerateSTOP(sEE_I2C, ENABLE);
+
+		/* Reset the variable holding the number of data to be written */
+		*sEEDataWritePointer = 0;
+	}
 }
 
 /**
@@ -763,19 +775,18 @@ void sEE_I2C_DMA_TX_IRQHandler(void)
   */
 void sEE_I2C_DMA_RX_IRQHandler(void)
 {
-  /* Check if the DMA transfer is complete */
-  if(DMA_GetFlagStatus(sEE_I2C_DMA_FLAG_RX_TC) != RESET)
-  {      
-    /*!< Send STOP Condition */
-    I2C_GenerateSTOP(sEE_I2C, ENABLE);    
-    
-    /* Disable the DMA Rx Channel and Clear all its Flags */  
-    DMA_Cmd(sEE_I2C_DMA_CHANNEL_RX, DISABLE);
-    DMA_ClearFlag(sEE_I2C_DMA_FLAG_RX_GL);
-    
-    /* Reset the variable holding the number of data to be read */
-    *sEEDataReadPointer = 0;
-  }
+	/* Check if the DMA transfer is complete */
+	if (DMA_GetFlagStatus(sEE_I2C_DMA_FLAG_RX_TC) != RESET) {
+		/*!< Send STOP Condition */
+		I2C_GenerateSTOP(sEE_I2C, ENABLE);
+
+		/* Disable the DMA Rx Channel and Clear all its Flags */
+		DMA_Cmd(sEE_I2C_DMA_CHANNEL_RX, DISABLE);
+		DMA_ClearFlag(sEE_I2C_DMA_FLAG_RX_GL);
+
+		/* Reset the variable holding the number of data to be read */
+		*sEEDataReadPointer = 0;
+	}
 }
 
 #ifdef USE_DEFAULT_TIMEOUT_CALLBACK
@@ -786,20 +797,15 @@ void sEE_I2C_DMA_RX_IRQHandler(void)
   */
 uint32_t sEE_TIMEOUT_UserCallback(void)
 {
-  /* Block communication and all processes */
-  while (1)
-  {   
-  }
+	/* Block communication and all processes */
+	while (1) {
+	}
 }
 #endif /* USE_DEFAULT_TIMEOUT_CALLBACK */
 
 /**
   * @}
   */
-  
-/**
-  * @}
-  */
 
 /**
   * @}
@@ -811,6 +817,10 @@ uint32_t sEE_TIMEOUT_UserCallback(void)
 
 /**
   * @}
-  */  
+  */
+
+/**
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

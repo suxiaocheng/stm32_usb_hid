@@ -193,9 +193,8 @@ void I2C_Init(I2C_TypeDef * I2Cx, I2C_InitTypeDef * I2C_InitStruct)
 	/* Set ANFOFF bit according to I2C_AnalogFilter value */
 	/* Set DFN bits according to I2C_DigitalFilter value */
 	tmpreg |=
-	    (uint32_t) I2C_InitStruct->I2C_AnalogFilter | (I2C_InitStruct->
-							   I2C_DigitalFilter <<
-							   8);
+	    (uint32_t) I2C_InitStruct->
+	    I2C_AnalogFilter | (I2C_InitStruct->I2C_DigitalFilter << 8);
 
 	/* Write to I2Cx CR1 */
 	I2Cx->CR1 = tmpreg;
@@ -220,9 +219,8 @@ void I2C_Init(I2C_TypeDef * I2Cx, I2C_InitTypeDef * I2C_InitStruct)
 	/* Set OA1MODE bit according to I2C_AcknowledgedAddress value */
 	/* Set OA1 bits according to I2C_OwnAddress1 value */
 	tmpreg =
-	    (uint32_t) ((uint32_t) I2C_InitStruct->
-			I2C_AcknowledgedAddress | (uint32_t) I2C_InitStruct->
-			I2C_OwnAddress1);
+	    (uint32_t) ((uint32_t) I2C_InitStruct->I2C_AcknowledgedAddress |
+			(uint32_t) I2C_InitStruct->I2C_OwnAddress1);
 	/* Write to I2Cx OAR1 */
 	I2Cx->OAR1 = tmpreg;
 	/* Enable Own Address1 acknowledgement */
@@ -845,11 +843,10 @@ void I2C_TransferHandling(I2C_TypeDef * I2Cx, uint16_t Address,
 	tmpreg = I2Cx->CR2;
 
 	/* clear tmpreg specific bits */
-	tmpreg &=
-	    (uint32_t) ~
-	    ((uint32_t)
-	     (I2C_CR2_SADD | I2C_CR2_NBYTES | I2C_CR2_RELOAD | I2C_CR2_AUTOEND |
-	      I2C_CR2_RD_WRN | I2C_CR2_START | I2C_CR2_STOP));
+	tmpreg &= (uint32_t) ~ ((uint32_t)
+				(I2C_CR2_SADD | I2C_CR2_NBYTES | I2C_CR2_RELOAD
+				 | I2C_CR2_AUTOEND | I2C_CR2_RD_WRN |
+				 I2C_CR2_START | I2C_CR2_STOP));
 
 	/* update tmpreg */
 	tmpreg |=

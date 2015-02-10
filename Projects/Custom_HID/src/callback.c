@@ -39,8 +39,13 @@ uint8_t control_state_string[][16] = {"WAIT_SETUP", "SETTING_UP", \
 void CTR_Callback(void)
 {
 	uint8_t *str;
+	uint32_t ep0_ctrl;
+
+	__disable_irq();
+
+	ep0_ctrl = _GetENDPOINT(ENDP0);
     /* dump endpoint transfer status */
-    //usb_printf("e0_E:%x\n", _GetENDPOINT(ENDP0));
+    usb_printf("e0_E1:%x\n", ep0_ctrl);
     
     if(pInformation->ControlState >= sizeof(control_state_string)/sizeof(control_state_string[0])){
 		str = "NULL";
@@ -48,6 +53,11 @@ void CTR_Callback(void)
 		str = control_state_string[pInformation->ControlState];
 	}
 	usb_printf("c_s:%s\n", str);
+
+	ep0_ctrl = _GetENDPOINT(ENDP0);
+	usb_printf("e0_E2:%x\n", ep0_ctrl);
+
+	__enable_irq();
 }
 #endif
 

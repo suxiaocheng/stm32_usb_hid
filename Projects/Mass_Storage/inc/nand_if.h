@@ -25,7 +25,6 @@
   ******************************************************************************
   */
 
-
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __NAND_IF_H
 #define __NAND_IF_H
@@ -49,20 +48,20 @@ typedef struct __SPARE_AREA {
 	uint16_t LogicalIndex;
 	uint16_t DataStatus;
 	uint16_t BlockStatus;
-} SPARE_AREA;	
+} SPARE_AREA;
 
 typedef enum {
-  WRITE_IDLE = 0,
-  POST_WRITE,
-  PRE_WRITE,
-  WRITE_CLEANUP,
-  WRITE_ONGOING  
-}WRITE_STATE;  
+	WRITE_IDLE = 0,
+	POST_WRITE,
+	PRE_WRITE,
+	WRITE_CLEANUP,
+	WRITE_ONGOING
+} WRITE_STATE;
 
 typedef enum {
-  OLD_BLOCK = 0,
-  UNUSED_BLOCK
-}BLOCK_STATE; 
+	OLD_BLOCK = 0,
+	UNUSED_BLOCK
+} BLOCK_STATE;
 
 /* Private macro --------------------------------------------------------------*/
 //#define WEAR_LEVELLING_SUPPORT
@@ -71,10 +70,12 @@ typedef enum {
 /* Private variables ----------------------------------------------------------*/
 /* Private function prototypes ------------------------------------------------*/
 /* exported functions ---------------------------------------------------------*/
-uint16_t NAND_Init (void);
-uint16_t NAND_Write (uint32_t Memory_Offset, uint32_t *Writebuff, uint16_t Transfer_Length);
-uint16_t NAND_Read  (uint32_t Memory_Offset, uint32_t *Readbuff, uint16_t Transfer_Length);
-uint16_t NAND_Format (void);
-SPARE_AREA ReadSpareArea (uint32_t address);
+uint16_t NAND_Init(void);
+uint16_t NAND_Write(uint32_t Memory_Offset, uint32_t * Writebuff,
+		    uint16_t Transfer_Length);
+uint16_t NAND_Read(uint32_t Memory_Offset, uint32_t * Readbuff,
+		   uint16_t Transfer_Length);
+uint16_t NAND_Format(void);
+SPARE_AREA ReadSpareArea(uint32_t address);
 #endif
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -247,15 +247,13 @@ uint8_t CAN_Init(CAN_TypeDef * CANx, CAN_InitTypeDef * CAN_InitStruct)
 
 		/* Set the bit timing register */
 		CANx->BTR =
-		    (uint32_t) ((uint32_t) CAN_InitStruct->
-				CAN_Mode << 30) | ((uint32_t) CAN_InitStruct->
-						   CAN_SJW << 24) | ((uint32_t)
-								     CAN_InitStruct->
-								     CAN_BS1 <<
-								     16) |
-		    ((uint32_t) CAN_InitStruct->
-		     CAN_BS2 << 20) | ((uint32_t) CAN_InitStruct->
-				       CAN_Prescaler - 1);
+		    (uint32_t) ((uint32_t) CAN_InitStruct->CAN_Mode << 30) |
+		    ((uint32_t) CAN_InitStruct->CAN_SJW << 24) | ((uint32_t)
+								  CAN_InitStruct->CAN_BS1
+								  << 16) |
+		    ((uint32_t) CAN_InitStruct->CAN_BS2 << 20) | ((uint32_t)
+								  CAN_InitStruct->CAN_Prescaler
+								  - 1);
 
 		/* Request leave initialisation */
 		CANx->MCR &= ~(uint32_t) CAN_MCR_INRQ;
@@ -317,40 +315,44 @@ void CAN_FilterInit(CAN_FilterInitTypeDef * CAN_FilterInitStruct)
 
 		/* First 16-bit identifier and First 16-bit mask */
 		/* Or First 16-bit identifier and Second 16-bit identifier */
-		CAN1->sFilterRegister[CAN_FilterInitStruct->CAN_FilterNumber].
-		    FR1 =
+		CAN1->sFilterRegister[CAN_FilterInitStruct->
+				      CAN_FilterNumber].FR1 =
 		    ((0x0000FFFF & (uint32_t)
-		      CAN_FilterInitStruct->CAN_FilterMaskIdLow) << 16) |
-		    (0x0000FFFF & (uint32_t)
-		     CAN_FilterInitStruct->CAN_FilterIdLow);
+		      CAN_FilterInitStruct->
+		      CAN_FilterMaskIdLow) << 16) | (0x0000FFFF & (uint32_t)
+						     CAN_FilterInitStruct->
+						     CAN_FilterIdLow);
 
 		/* Second 16-bit identifier and Second 16-bit mask */
 		/* Or Third 16-bit identifier and Fourth 16-bit identifier */
-		CAN1->sFilterRegister[CAN_FilterInitStruct->CAN_FilterNumber].
-		    FR2 =
+		CAN1->sFilterRegister[CAN_FilterInitStruct->
+				      CAN_FilterNumber].FR2 =
 		    ((0x0000FFFF & (uint32_t)
-		      CAN_FilterInitStruct->CAN_FilterMaskIdHigh) << 16) |
-		    (0x0000FFFF & (uint32_t)
-		     CAN_FilterInitStruct->CAN_FilterIdHigh);
+		      CAN_FilterInitStruct->
+		      CAN_FilterMaskIdHigh) << 16) | (0x0000FFFF & (uint32_t)
+						      CAN_FilterInitStruct->
+						      CAN_FilterIdHigh);
 	}
 
 	if (CAN_FilterInitStruct->CAN_FilterScale == CAN_FilterScale_32bit) {
 		/* 32-bit scale for the filter */
 		CAN1->FS1R |= filter_number_bit_pos;
 		/* 32-bit identifier or First 32-bit identifier */
-		CAN1->sFilterRegister[CAN_FilterInitStruct->CAN_FilterNumber].
-		    FR1 =
+		CAN1->sFilterRegister[CAN_FilterInitStruct->
+				      CAN_FilterNumber].FR1 =
 		    ((0x0000FFFF & (uint32_t)
-		      CAN_FilterInitStruct->CAN_FilterIdHigh) << 16) |
-		    (0x0000FFFF & (uint32_t)
-		     CAN_FilterInitStruct->CAN_FilterIdLow);
+		      CAN_FilterInitStruct->
+		      CAN_FilterIdHigh) << 16) | (0x0000FFFF & (uint32_t)
+						  CAN_FilterInitStruct->
+						  CAN_FilterIdLow);
 		/* 32-bit mask or Second 32-bit identifier */
-		CAN1->sFilterRegister[CAN_FilterInitStruct->CAN_FilterNumber].
-		    FR2 =
+		CAN1->sFilterRegister[CAN_FilterInitStruct->
+				      CAN_FilterNumber].FR2 =
 		    ((0x0000FFFF & (uint32_t)
-		      CAN_FilterInitStruct->CAN_FilterMaskIdHigh) << 16) |
-		    (0x0000FFFF & (uint32_t)
-		     CAN_FilterInitStruct->CAN_FilterMaskIdLow);
+		      CAN_FilterInitStruct->
+		      CAN_FilterMaskIdHigh) << 16) | (0x0000FFFF & (uint32_t)
+						      CAN_FilterInitStruct->
+						      CAN_FilterMaskIdLow);
 	}
 
 	/* Filter Mode */
@@ -563,8 +565,8 @@ uint8_t CAN_Transmit(CAN_TypeDef * CANx, CanTxMsg * TxMessage)
 		} else {
 			assert_param(IS_CAN_EXTID(TxMessage->ExtId));
 			CANx->sTxMailBox[transmit_mailbox].TIR |=
-			    ((TxMessage->ExtId << 3) | TxMessage->
-			     IDE | TxMessage->RTR);
+			    ((TxMessage->
+			      ExtId << 3) | TxMessage->IDE | TxMessage->RTR);
 		}
 
 		/* Set up the DLC */
@@ -575,17 +577,17 @@ uint8_t CAN_Transmit(CAN_TypeDef * CANx, CanTxMsg * TxMessage)
 
 		/* Set up the data field */
 		CANx->sTxMailBox[transmit_mailbox].TDLR =
-		    (((uint32_t) TxMessage->
-		      Data[3] << 24) | ((uint32_t) TxMessage->Data[2] << 16) |
-		     ((uint32_t)
-		      TxMessage->Data[1] << 8) | ((uint32_t) TxMessage->
-						  Data[0]));
+		    (((uint32_t) TxMessage->Data[3] << 24) |
+		     ((uint32_t) TxMessage->Data[2] << 16) | ((uint32_t)
+							      TxMessage->
+							      Data[1] << 8) |
+		     ((uint32_t) TxMessage->Data[0]));
 		CANx->sTxMailBox[transmit_mailbox].TDHR =
-		    (((uint32_t) TxMessage->
-		      Data[7] << 24) | ((uint32_t) TxMessage->Data[6] << 16) |
-		     ((uint32_t)
-		      TxMessage->Data[5] << 8) | ((uint32_t) TxMessage->
-						  Data[4]));
+		    (((uint32_t) TxMessage->Data[7] << 24) |
+		     ((uint32_t) TxMessage->Data[6] << 16) | ((uint32_t)
+							      TxMessage->
+							      Data[5] << 8) |
+		     ((uint32_t) TxMessage->Data[4]));
 		/* Request transmission */
 		CANx->sTxMailBox[transmit_mailbox].TIR |= TMIDxR_TXRQ;
 	}
@@ -720,12 +722,13 @@ void CAN_Receive(CAN_TypeDef * CANx, uint8_t FIFONumber, CanRxMsg * RxMessage)
 	RxMessage->IDE = (uint8_t) 0x04 & CANx->sFIFOMailBox[FIFONumber].RIR;
 	if (RxMessage->IDE == CAN_Id_Standard) {
 		RxMessage->StdId =
-		    (uint32_t) 0x000007FF & (CANx->sFIFOMailBox[FIFONumber].
-					     RIR >> 21);
+		    (uint32_t) 0x000007FF & (CANx->
+					     sFIFOMailBox[FIFONumber].RIR >>
+					     21);
 	} else {
 		RxMessage->ExtId =
-		    (uint32_t) 0x1FFFFFFF & (CANx->sFIFOMailBox[FIFONumber].
-					     RIR >> 3);
+		    (uint32_t) 0x1FFFFFFF & (CANx->
+					     sFIFOMailBox[FIFONumber].RIR >> 3);
 	}
 
 	RxMessage->RTR = (uint8_t) 0x02 & CANx->sFIFOMailBox[FIFONumber].RIR;
@@ -914,8 +917,8 @@ uint8_t CAN_Sleep(CAN_TypeDef * CANx)
 
 	/* Request Sleep mode */
 	CANx->MCR =
-	    (((CANx->
-	       MCR) & (uint32_t) (~(uint32_t) CAN_MCR_INRQ)) | CAN_MCR_SLEEP);
+	    (((CANx->MCR) & (uint32_t) (~(uint32_t) CAN_MCR_INRQ)) |
+	     CAN_MCR_SLEEP);
 
 	/* Sleep mode status */
 	if ((CANx->MSR & (CAN_MSR_SLAK | CAN_MSR_INAK)) == CAN_MSR_SLAK) {

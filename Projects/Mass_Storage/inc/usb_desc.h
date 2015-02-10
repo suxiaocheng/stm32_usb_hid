@@ -25,7 +25,6 @@
   ******************************************************************************
   */
 
-
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USB_DESC_H
 #define __USB_DESC_H
@@ -58,5 +57,3 @@ extern const uint8_t MASS_StringInterface[MASS_SIZ_STRING_INTERFACE];
 #endif /* __USB_DESC_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-
-

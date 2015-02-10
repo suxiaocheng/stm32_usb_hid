@@ -133,8 +133,7 @@ void NVIC_Init(NVIC_InitTypeDef * NVIC_InitStruct)
 		tmppre = (0x4 - tmppriority);
 		tmpsub = tmpsub >> tmppriority;
 
-		tmppriority =
-		    (uint32_t)
+		tmppriority = (uint32_t)
 		    NVIC_InitStruct->NVIC_IRQChannelPreemptionPriority <<
 		    tmppre;
 		tmppriority |=

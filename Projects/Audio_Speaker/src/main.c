@@ -25,7 +25,6 @@
   ******************************************************************************
   */
 
-
 /* Includes ------------------------------------------------------------------*/
 #include "hw_config.h"
 #include "usb_lib.h"
@@ -54,13 +53,13 @@ extern uint8_t IT_Clock_Sent;
 *******************************************************************************/
 int main(void)
 {
-  Set_System();
-  Set_USBClock();
-  USB_Config();
-  USB_Init();
-  Speaker_Config();
-  while (1)
-  {}
+	Set_System();
+	Set_USBClock();
+	USB_Config();
+	USB_Init();
+	Speaker_Config();
+	while (1) {
+	}
 }
 
 #ifdef  USE_FULL_ASSERT
@@ -73,14 +72,14 @@ int main(void)
 * Output         : None
 * Return         : None
 *******************************************************************************/
-void assert_failed(uint8_t* file, uint32_t line)
+void assert_failed(uint8_t * file, uint32_t line)
 {
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+	/* User can add his own implementation to report the file name and line number,
+	   ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while (1)
-  {}
+	/* Infinite loop */
+	while (1) {
+	}
 }
 #endif
 

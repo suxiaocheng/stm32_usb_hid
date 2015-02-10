@@ -31,7 +31,7 @@
 #define __STM32F30x_SPI_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -51,64 +51,61 @@
   * @brief  SPI Init structure definition  
   */
 
-typedef struct
-{
-  uint16_t SPI_Direction;           /*!< Specifies the SPI unidirectional or bidirectional data mode.
-                                         This parameter can be a value of @ref SPI_data_direction */
+	typedef struct {
+		uint16_t SPI_Direction;	/*!< Specifies the SPI unidirectional or bidirectional data mode.
+					   This parameter can be a value of @ref SPI_data_direction */
 
-  uint16_t SPI_Mode;                /*!< Specifies the SPI mode (Master/Slave).
-                                         This parameter can be a value of @ref SPI_mode */
-  
-  uint16_t SPI_DataSize;            /*!< Specifies the SPI data size.
-                                         This parameter can be a value of @ref SPI_data_size */
+		uint16_t SPI_Mode;	/*!< Specifies the SPI mode (Master/Slave).
+					   This parameter can be a value of @ref SPI_mode */
 
-  uint16_t SPI_CPOL;                /*!< Specifies the serial clock steady state.
-                                         This parameter can be a value of @ref SPI_Clock_Polarity */
+		uint16_t SPI_DataSize;	/*!< Specifies the SPI data size.
+					   This parameter can be a value of @ref SPI_data_size */
 
-  uint16_t SPI_CPHA;                /*!< Specifies the clock active edge for the bit capture.
-                                         This parameter can be a value of @ref SPI_Clock_Phase */
+		uint16_t SPI_CPOL;	/*!< Specifies the serial clock steady state.
+					   This parameter can be a value of @ref SPI_Clock_Polarity */
 
-  uint16_t SPI_NSS;                 /*!< Specifies whether the NSS signal is managed by
-                                         hardware (NSS pin) or by software using the SSI bit.
-                                         This parameter can be a value of @ref SPI_Slave_Select_management */
- 
-  uint16_t SPI_BaudRatePrescaler;   /*!< Specifies the Baud Rate prescaler value which will be
-                                         used to configure the transmit and receive SCK clock.
-                                         This parameter can be a value of @ref SPI_BaudRate_Prescaler.
-                                         @note The communication clock is derived from the master
-                                               clock. The slave clock does not need to be set. */
+		uint16_t SPI_CPHA;	/*!< Specifies the clock active edge for the bit capture.
+					   This parameter can be a value of @ref SPI_Clock_Phase */
 
-  uint16_t SPI_FirstBit;            /*!< Specifies whether data transfers start from MSB or LSB bit.
-                                         This parameter can be a value of @ref SPI_MSB_LSB_transmission */
+		uint16_t SPI_NSS;	/*!< Specifies whether the NSS signal is managed by
+					   hardware (NSS pin) or by software using the SSI bit.
+					   This parameter can be a value of @ref SPI_Slave_Select_management */
 
-  uint16_t SPI_CRCPolynomial;       /*!< Specifies the polynomial used for the CRC calculation. */
-}SPI_InitTypeDef;
+		uint16_t SPI_BaudRatePrescaler;	/*!< Specifies the Baud Rate prescaler value which will be
+						   used to configure the transmit and receive SCK clock.
+						   This parameter can be a value of @ref SPI_BaudRate_Prescaler.
+						   @note The communication clock is derived from the master
+						   clock. The slave clock does not need to be set. */
 
+		uint16_t SPI_FirstBit;	/*!< Specifies whether data transfers start from MSB or LSB bit.
+					   This parameter can be a value of @ref SPI_MSB_LSB_transmission */
+
+		uint16_t SPI_CRCPolynomial;	/*!< Specifies the polynomial used for the CRC calculation. */
+	} SPI_InitTypeDef;
 
 /** 
   * @brief  I2S Init structure definition  
   */
 
-typedef struct
-{
-  uint16_t I2S_Mode;         /*!< Specifies the I2S operating mode.
-                                  This parameter can be a value of @ref I2S_Mode */
+	typedef struct {
+		uint16_t I2S_Mode;	/*!< Specifies the I2S operating mode.
+					   This parameter can be a value of @ref I2S_Mode */
 
-  uint16_t I2S_Standard;     /*!< Specifies the standard used for the I2S communication.
-                                  This parameter can be a value of @ref I2S_Standard */
+		uint16_t I2S_Standard;	/*!< Specifies the standard used for the I2S communication.
+					   This parameter can be a value of @ref I2S_Standard */
 
-  uint16_t I2S_DataFormat;   /*!< Specifies the data format for the I2S communication.
-                                  This parameter can be a value of @ref I2S_Data_Format */
+		uint16_t I2S_DataFormat;	/*!< Specifies the data format for the I2S communication.
+						   This parameter can be a value of @ref I2S_Data_Format */
 
-  uint16_t I2S_MCLKOutput;   /*!< Specifies whether the I2S MCLK output is enabled or not.
-                                  This parameter can be a value of @ref I2S_MCLK_Output */
+		uint16_t I2S_MCLKOutput;	/*!< Specifies whether the I2S MCLK output is enabled or not.
+						   This parameter can be a value of @ref I2S_MCLK_Output */
 
-  uint32_t I2S_AudioFreq;    /*!< Specifies the frequency selected for the I2S communication.
-                                  This parameter can be a value of @ref I2S_Audio_Frequency */
+		uint32_t I2S_AudioFreq;	/*!< Specifies the frequency selected for the I2S communication.
+					   This parameter can be a value of @ref I2S_Audio_Frequency */
 
-  uint16_t I2S_CPOL;         /*!< Specifies the idle state of the I2S clock.
-                                  This parameter can be a value of @ref I2S_Clock_Polarity */
-}I2S_InitTypeDef;
+		uint16_t I2S_CPOL;	/*!< Specifies the idle state of the I2S clock.
+					   This parameter can be a value of @ref I2S_Clock_Polarity */
+	} I2S_InitTypeDef;
 
 /* Exported constants --------------------------------------------------------*/
 
@@ -140,7 +137,7 @@ typedef struct
 /** @defgroup SPI_data_direction 
   * @{
   */
-  
+
 #define SPI_Direction_2Lines_FullDuplex ((uint16_t)0x0000)
 #define SPI_Direction_2Lines_RxOnly     ((uint16_t)0x0400)
 #define SPI_Direction_1Line_Rx          ((uint16_t)0x8000)
@@ -282,7 +279,7 @@ typedef struct
 /**
   * @}
   */
-  
+
 /** @defgroup I2S_Mode 
   * @{
   */
@@ -476,32 +473,30 @@ typedef struct
   * @}
   */
 
-
 /** @defgroup SPI_transmission_fifo_status_level 
   * @{
-  */ 
+  */
 
 #define SPI_TransmissionFIFOStatus_Empty           ((uint16_t)0x0000)
-#define SPI_TransmissionFIFOStatus_1QuarterFull    ((uint16_t)0x0800) 
-#define SPI_TransmissionFIFOStatus_HalfFull        ((uint16_t)0x1000) 
+#define SPI_TransmissionFIFOStatus_1QuarterFull    ((uint16_t)0x0800)
+#define SPI_TransmissionFIFOStatus_HalfFull        ((uint16_t)0x1000)
 #define SPI_TransmissionFIFOStatus_Full            ((uint16_t)0x1800)
 
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup SPI_reception_fifo_status_level 
   * @{
-  */ 
+  */
 #define SPI_ReceptionFIFOStatus_Empty           ((uint16_t)0x0000)
-#define SPI_ReceptionFIFOStatus_1QuarterFull    ((uint16_t)0x0200) 
-#define SPI_ReceptionFIFOStatus_HalfFull        ((uint16_t)0x0400) 
+#define SPI_ReceptionFIFOStatus_1QuarterFull    ((uint16_t)0x0200)
+#define SPI_ReceptionFIFOStatus_HalfFull        ((uint16_t)0x0400)
 #define SPI_ReceptionFIFOStatus_Full            ((uint16_t)0x0600)
 
 /**
   * @}
-  */ 
-
+  */
 
 /** @defgroup SPI_I2S_flags_definition 
   * @{
@@ -516,8 +511,6 @@ typedef struct
 #define SPI_I2S_FLAG_OVR                ((uint16_t)0x0040)
 #define SPI_I2S_FLAG_BSY                ((uint16_t)0x0080)
 #define SPI_I2S_FLAG_FRE                ((uint16_t)0x0100)
-
-
 
 #define IS_SPI_CLEAR_FLAG(FLAG) (((FLAG) == SPI_FLAG_CRCERR))
 #define IS_SPI_I2S_GET_FLAG(FLAG) (((FLAG) == SPI_I2S_FLAG_BSY) || ((FLAG) == SPI_I2S_FLAG_OVR) || \
@@ -546,61 +539,63 @@ typedef struct
 /* Exported functions ------------------------------------------------------- */
 
 /* Function used to set the SPI configuration to the default reset state*******/
-void SPI_I2S_DeInit(SPI_TypeDef* SPIx);
+	void SPI_I2S_DeInit(SPI_TypeDef * SPIx);
 
 /* Initialization and Configuration functions *********************************/
-void SPI_Init(SPI_TypeDef* SPIx, SPI_InitTypeDef* SPI_InitStruct);
-void I2S_Init(SPI_TypeDef* SPIx, I2S_InitTypeDef* I2S_InitStruct);
-void SPI_StructInit(SPI_InitTypeDef* SPI_InitStruct);
-void I2S_StructInit(I2S_InitTypeDef* I2S_InitStruct);
-void SPI_TIModeCmd(SPI_TypeDef* SPIx, FunctionalState NewState);
-void SPI_NSSPulseModeCmd(SPI_TypeDef* SPIx, FunctionalState NewState);
-void SPI_Cmd(SPI_TypeDef* SPIx, FunctionalState NewState);
-void I2S_Cmd(SPI_TypeDef* SPIx, FunctionalState NewState);
-void SPI_DataSizeConfig(SPI_TypeDef* SPIx, uint16_t SPI_DataSize);
-void SPI_RxFIFOThresholdConfig(SPI_TypeDef* SPIx, uint16_t SPI_RxFIFOThreshold);
-void SPI_BiDirectionalLineConfig(SPI_TypeDef* SPIx, uint16_t SPI_Direction);
-void SPI_NSSInternalSoftwareConfig(SPI_TypeDef* SPIx, uint16_t SPI_NSSInternalSoft);
-void SPI_SSOutputCmd(SPI_TypeDef* SPIx, FunctionalState NewState);
-void I2S_FullDuplexConfig(SPI_TypeDef* I2Sxext, I2S_InitTypeDef* I2S_InitStruct);
+	void SPI_Init(SPI_TypeDef * SPIx, SPI_InitTypeDef * SPI_InitStruct);
+	void I2S_Init(SPI_TypeDef * SPIx, I2S_InitTypeDef * I2S_InitStruct);
+	void SPI_StructInit(SPI_InitTypeDef * SPI_InitStruct);
+	void I2S_StructInit(I2S_InitTypeDef * I2S_InitStruct);
+	void SPI_TIModeCmd(SPI_TypeDef * SPIx, FunctionalState NewState);
+	void SPI_NSSPulseModeCmd(SPI_TypeDef * SPIx, FunctionalState NewState);
+	void SPI_Cmd(SPI_TypeDef * SPIx, FunctionalState NewState);
+	void I2S_Cmd(SPI_TypeDef * SPIx, FunctionalState NewState);
+	void SPI_DataSizeConfig(SPI_TypeDef * SPIx, uint16_t SPI_DataSize);
+	void SPI_RxFIFOThresholdConfig(SPI_TypeDef * SPIx,
+				       uint16_t SPI_RxFIFOThreshold);
+	void SPI_BiDirectionalLineConfig(SPI_TypeDef * SPIx,
+					 uint16_t SPI_Direction);
+	void SPI_NSSInternalSoftwareConfig(SPI_TypeDef * SPIx,
+					   uint16_t SPI_NSSInternalSoft);
+	void SPI_SSOutputCmd(SPI_TypeDef * SPIx, FunctionalState NewState);
+	void I2S_FullDuplexConfig(SPI_TypeDef * I2Sxext,
+				  I2S_InitTypeDef * I2S_InitStruct);
 
 /* Data transfers functions ***************************************************/
-void SPI_SendData8(SPI_TypeDef* SPIx, uint8_t Data);
-void SPI_I2S_SendData16(SPI_TypeDef* SPIx, uint16_t Data);
-uint8_t SPI_ReceiveData8(SPI_TypeDef* SPIx);
-uint16_t SPI_I2S_ReceiveData16(SPI_TypeDef* SPIx);
+	void SPI_SendData8(SPI_TypeDef * SPIx, uint8_t Data);
+	void SPI_I2S_SendData16(SPI_TypeDef * SPIx, uint16_t Data);
+	uint8_t SPI_ReceiveData8(SPI_TypeDef * SPIx);
+	uint16_t SPI_I2S_ReceiveData16(SPI_TypeDef * SPIx);
 
 /* Hardware CRC Calculation functions *****************************************/
-void SPI_CRCLengthConfig(SPI_TypeDef* SPIx, uint16_t SPI_CRCLength);
-void SPI_CalculateCRC(SPI_TypeDef* SPIx, FunctionalState NewState);
-void SPI_TransmitCRC(SPI_TypeDef* SPIx);
-uint16_t SPI_GetCRC(SPI_TypeDef* SPIx, uint8_t SPI_CRC);
-uint16_t SPI_GetCRCPolynomial(SPI_TypeDef* SPIx);
+	void SPI_CRCLengthConfig(SPI_TypeDef * SPIx, uint16_t SPI_CRCLength);
+	void SPI_CalculateCRC(SPI_TypeDef * SPIx, FunctionalState NewState);
+	void SPI_TransmitCRC(SPI_TypeDef * SPIx);
+	uint16_t SPI_GetCRC(SPI_TypeDef * SPIx, uint8_t SPI_CRC);
+	uint16_t SPI_GetCRCPolynomial(SPI_TypeDef * SPIx);
 
 /* DMA transfers management functions *****************************************/
-void SPI_I2S_DMACmd(SPI_TypeDef* SPIx, uint16_t SPI_I2S_DMAReq, FunctionalState NewState);
-void SPI_LastDMATransferCmd(SPI_TypeDef* SPIx, uint16_t SPI_LastDMATransfer);
+	void SPI_I2S_DMACmd(SPI_TypeDef * SPIx, uint16_t SPI_I2S_DMAReq,
+			    FunctionalState NewState);
+	void SPI_LastDMATransferCmd(SPI_TypeDef * SPIx,
+				    uint16_t SPI_LastDMATransfer);
 
 /* Interrupts and flags management functions **********************************/
-void SPI_I2S_ITConfig(SPI_TypeDef* SPIx, uint8_t SPI_I2S_IT, FunctionalState NewState);
-uint16_t SPI_GetTransmissionFIFOStatus(SPI_TypeDef* SPIx);
-uint16_t SPI_GetReceptionFIFOStatus(SPI_TypeDef* SPIx);
-FlagStatus SPI_I2S_GetFlagStatus(SPI_TypeDef* SPIx, uint16_t SPI_I2S_FLAG);
-void SPI_I2S_ClearFlag(SPI_TypeDef* SPIx, uint16_t SPI_I2S_FLAG);
-ITStatus SPI_I2S_GetITStatus(SPI_TypeDef* SPIx, uint8_t SPI_I2S_IT);
+	void SPI_I2S_ITConfig(SPI_TypeDef * SPIx, uint8_t SPI_I2S_IT,
+			      FunctionalState NewState);
+	uint16_t SPI_GetTransmissionFIFOStatus(SPI_TypeDef * SPIx);
+	uint16_t SPI_GetReceptionFIFOStatus(SPI_TypeDef * SPIx);
+	FlagStatus SPI_I2S_GetFlagStatus(SPI_TypeDef * SPIx,
+					 uint16_t SPI_I2S_FLAG);
+	void SPI_I2S_ClearFlag(SPI_TypeDef * SPIx, uint16_t SPI_I2S_FLAG);
+	ITStatus SPI_I2S_GetITStatus(SPI_TypeDef * SPIx, uint8_t SPI_I2S_IT);
 
 #ifdef __cplusplus
 }
 #endif
-
 #endif /*__STM32F30x_SPI_H */
-
 /**
   * @}
-  */
-
-/**
+  *//**
   * @}
-  */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+  *//************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -54,7 +54,7 @@
 /** @defgroup SYSCFG 
   * @brief SYSCFG driver modules
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -68,7 +68,7 @@
 
 /** @defgroup SYSCFG_Private_Functions
   * @{
-  */ 
+  */
 
 /** @defgroup SYSCFG_Group1 SYSCFG Initialization and Configuration functions
  *  @brief   SYSCFG Initialization and Configuration functions 
@@ -94,20 +94,20 @@
   */
 void SYSCFG_DeInit(void)
 {
-  /* Set SYSCFG_CFGR1 register to reset value without affecting MEM_MODE bits */
-  SYSCFG->CFGR1 &= SYSCFG_CFGR1_MEM_MODE;
+	/* Set SYSCFG_CFGR1 register to reset value without affecting MEM_MODE bits */
+	SYSCFG->CFGR1 &= SYSCFG_CFGR1_MEM_MODE;
 
-  /* Set FPU Interrupt Enable bits to default value */
-  SYSCFG->CFGR1 |= 0x7C000000;
+	/* Set FPU Interrupt Enable bits to default value */
+	SYSCFG->CFGR1 |= 0x7C000000;
 
-  /* Set EXTICRx registers to reset value */
-  SYSCFG->EXTICR[0] = 0;
-  SYSCFG->EXTICR[1] = 0;
-  SYSCFG->EXTICR[2] = 0;
-  SYSCFG->EXTICR[3] = 0;
+	/* Set EXTICRx registers to reset value */
+	SYSCFG->EXTICR[0] = 0;
+	SYSCFG->EXTICR[1] = 0;
+	SYSCFG->EXTICR[2] = 0;
+	SYSCFG->EXTICR[3] = 0;
 
-  /* Set CFGR2 register to reset value */
-  SYSCFG->CFGR2 = 0;
+	/* Set CFGR2 register to reset value */
+	SYSCFG->CFGR2 = 0;
 }
 
 /**
@@ -121,22 +121,22 @@ void SYSCFG_DeInit(void)
   */
 void SYSCFG_MemoryRemapConfig(uint32_t SYSCFG_MemoryRemap)
 {
-  uint32_t tmpctrl = 0;
+	uint32_t tmpctrl = 0;
 
-  /* Check the parameter */
-  assert_param(IS_SYSCFG_MEMORY_REMAP(SYSCFG_MemoryRemap));
+	/* Check the parameter */
+	assert_param(IS_SYSCFG_MEMORY_REMAP(SYSCFG_MemoryRemap));
 
-  /* Get CFGR1 register value */
-  tmpctrl = SYSCFG->CFGR1;
+	/* Get CFGR1 register value */
+	tmpctrl = SYSCFG->CFGR1;
 
-  /* Clear MEM_MODE bits */
-  tmpctrl &= (uint32_t) (~SYSCFG_CFGR1_MEM_MODE);
+	/* Clear MEM_MODE bits */
+	tmpctrl &= (uint32_t) (~SYSCFG_CFGR1_MEM_MODE);
 
-  /* Set the new MEM_MODE bits value */
-  tmpctrl |= (uint32_t) SYSCFG_MemoryRemap;
+	/* Set the new MEM_MODE bits value */
+	tmpctrl |= (uint32_t) SYSCFG_MemoryRemap;
 
-  /* Set CFGR1 register with the new memory remap configuration */
-  SYSCFG->CFGR1 = tmpctrl;
+	/* Set CFGR1 register with the new memory remap configuration */
+	SYSCFG->CFGR1 = tmpctrl;
 }
 
 /**
@@ -159,22 +159,20 @@ void SYSCFG_MemoryRemapConfig(uint32_t SYSCFG_MemoryRemap)
   *         TIM17 DMA requests to channel 1 (default mapping)
   * @retval None
   */
-void SYSCFG_DMAChannelRemapConfig(uint32_t SYSCFG_DMARemap, FunctionalState NewState)
+void SYSCFG_DMAChannelRemapConfig(uint32_t SYSCFG_DMARemap,
+				  FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_SYSCFG_DMA_REMAP(SYSCFG_DMARemap));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_SYSCFG_DMA_REMAP(SYSCFG_DMARemap));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Remap the DMA channel */
-    SYSCFG->CFGR1 |= (uint32_t)SYSCFG_DMARemap;
-  }
-  else
-  {
-    /* use the default DMA channel mapping */
-    SYSCFG->CFGR1 &= (uint32_t)(~SYSCFG_DMARemap);
-  }
+	if (NewState != DISABLE) {
+		/* Remap the DMA channel */
+		SYSCFG->CFGR1 |= (uint32_t) SYSCFG_DMARemap;
+	} else {
+		/* use the default DMA channel mapping */
+		SYSCFG->CFGR1 &= (uint32_t) (~SYSCFG_DMARemap);
+	}
 }
 
 /**
@@ -200,22 +198,20 @@ void SYSCFG_DMAChannelRemapConfig(uint32_t SYSCFG_DMARemap, FunctionalState NewS
   *        only by using SYSCFG_I2CFastModePlus_I2C2 parameter
   * @retval None
   */
-void SYSCFG_I2CFastModePlusConfig(uint32_t SYSCFG_I2CFastModePlus, FunctionalState NewState)
+void SYSCFG_I2CFastModePlusConfig(uint32_t SYSCFG_I2CFastModePlus,
+				  FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_SYSCFG_I2C_FMP(SYSCFG_I2CFastModePlus));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_SYSCFG_I2C_FMP(SYSCFG_I2CFastModePlus));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable fast mode plus driving capability for selected I2C pin */
-    SYSCFG->CFGR1 |= (uint32_t)SYSCFG_I2CFastModePlus;
-  }
-  else
-  {
-    /* Disable fast mode plus driving capability for selected I2C pin */
-    SYSCFG->CFGR1 &= (uint32_t)(~SYSCFG_I2CFastModePlus);
-  }
+	if (NewState != DISABLE) {
+		/* Enable fast mode plus driving capability for selected I2C pin */
+		SYSCFG->CFGR1 |= (uint32_t) SYSCFG_I2CFastModePlus;
+	} else {
+		/* Disable fast mode plus driving capability for selected I2C pin */
+		SYSCFG->CFGR1 &= (uint32_t) (~SYSCFG_I2CFastModePlus);
+	}
 }
 
 /**
@@ -228,19 +224,16 @@ void SYSCFG_I2CFastModePlusConfig(uint32_t SYSCFG_I2CFastModePlus, FunctionalSta
   */
 void SYSCFG_VBATMonitoringCmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable VBAT monitoring */
-    SYSCFG->CFGR1 |= SYSCFG_CFGR1_VBAT;
-  }
-  else
-  {
-    /* Disable VBAT monitoring */
-    SYSCFG->CFGR1 &= ((uint32_t)~SYSCFG_CFGR1_VBAT);
-  }
+	if (NewState != DISABLE) {
+		/* Enable VBAT monitoring */
+		SYSCFG->CFGR1 |= SYSCFG_CFGR1_VBAT;
+	} else {
+		/* Disable VBAT monitoring */
+		SYSCFG->CFGR1 &= ((uint32_t) ~ SYSCFG_CFGR1_VBAT);
+	}
 }
 
 /**
@@ -257,22 +250,19 @@ void SYSCFG_VBATMonitoringCmd(FunctionalState NewState)
   *          This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void SYSCFG_ITConfig(uint32_t SYSCFG_IT, FunctionalState NewState)  
+void SYSCFG_ITConfig(uint32_t SYSCFG_IT, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  assert_param(IS_SYSCFG_IT(SYSCFG_IT)); 
+	/* Check the parameters */
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
+	assert_param(IS_SYSCFG_IT(SYSCFG_IT));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the selected SYSCFG interrupts */
-    SYSCFG->CFGR1 |= SYSCFG_IT;
-  }
-  else
-  {
-    /* Disable the selected SYSCFG interrupts */
-    SYSCFG->CFGR1 &= ((uint32_t)~SYSCFG_IT);
-  }
+	if (NewState != DISABLE) {
+		/* Enable the selected SYSCFG interrupts */
+		SYSCFG->CFGR1 |= SYSCFG_IT;
+	} else {
+		/* Disable the selected SYSCFG interrupts */
+		SYSCFG->CFGR1 &= ((uint32_t) ~ SYSCFG_IT);
+	}
 }
 
 /**
@@ -283,17 +273,20 @@ void SYSCFG_ITConfig(uint32_t SYSCFG_IT, FunctionalState NewState)
   *          This parameter can be EXTI_PinSourcex where x can be (0..15)
   * @retval None
   */
-void SYSCFG_EXTILineConfig(uint8_t EXTI_PortSourceGPIOx, uint8_t EXTI_PinSourcex)
+void SYSCFG_EXTILineConfig(uint8_t EXTI_PortSourceGPIOx,
+			   uint8_t EXTI_PinSourcex)
 {
-  uint32_t tmp = 0x00;
+	uint32_t tmp = 0x00;
 
-  /* Check the parameters */
-  assert_param(IS_EXTI_PORT_SOURCE(EXTI_PortSourceGPIOx));
-  assert_param(IS_EXTI_PIN_SOURCE(EXTI_PinSourcex));
-  
-  tmp = ((uint32_t)0x0F) << (0x04 * (EXTI_PinSourcex & (uint8_t)0x03));
-  SYSCFG->EXTICR[EXTI_PinSourcex >> 0x02] &= ~tmp;
-  SYSCFG->EXTICR[EXTI_PinSourcex >> 0x02] |= (((uint32_t)EXTI_PortSourceGPIOx) << (0x04 * (EXTI_PinSourcex & (uint8_t)0x03)));
+	/* Check the parameters */
+	assert_param(IS_EXTI_PORT_SOURCE(EXTI_PortSourceGPIOx));
+	assert_param(IS_EXTI_PIN_SOURCE(EXTI_PinSourcex));
+
+	tmp = ((uint32_t) 0x0F) << (0x04 * (EXTI_PinSourcex & (uint8_t) 0x03));
+	SYSCFG->EXTICR[EXTI_PinSourcex >> 0x02] &= ~tmp;
+	SYSCFG->EXTICR[EXTI_PinSourcex >> 0x02] |=
+	    (((uint32_t) EXTI_PortSourceGPIOx) <<
+	     (0x04 * (EXTI_PinSourcex & (uint8_t) 0x03)));
 }
 
 /**
@@ -309,10 +302,10 @@ void SYSCFG_EXTILineConfig(uint8_t EXTI_PortSourceGPIOx, uint8_t EXTI_PinSourcex
   */
 void SYSCFG_BreakConfig(uint32_t SYSCFG_Break)
 {
-  /* Check the parameter */
-  assert_param(IS_SYSCFG_LOCK_CONFIG(SYSCFG_Break));
+	/* Check the parameter */
+	assert_param(IS_SYSCFG_LOCK_CONFIG(SYSCFG_Break));
 
-  SYSCFG->CFGR2 |= (uint32_t) SYSCFG_Break;
+	SYSCFG->CFGR2 |= (uint32_t) SYSCFG_Break;
 }
 
 /**
@@ -324,24 +317,21 @@ void SYSCFG_BreakConfig(uint32_t SYSCFG_Break)
   */
 FlagStatus SYSCFG_GetFlagStatus(uint32_t SYSCFG_Flag)
 {
-  FlagStatus bitstatus = RESET;
+	FlagStatus bitstatus = RESET;
 
-  /* Check the parameter */
-  assert_param(IS_SYSCFG_FLAG(SYSCFG_Flag));
+	/* Check the parameter */
+	assert_param(IS_SYSCFG_FLAG(SYSCFG_Flag));
 
-  /* Check the status of the specified SPI flag */
-  if ((SYSCFG->CFGR2 & SYSCFG_CFGR2_SRAM_PE) != (uint32_t)RESET)
-  {
-    /* SYSCFG_Flag is set */
-    bitstatus = SET;
-  }
-  else
-  {
-    /* SYSCFG_Flag is reset */
-    bitstatus = RESET;
-  }
-  /* Return the SYSCFG_Flag status */
-  return  bitstatus;
+	/* Check the status of the specified SPI flag */
+	if ((SYSCFG->CFGR2 & SYSCFG_CFGR2_SRAM_PE) != (uint32_t) RESET) {
+		/* SYSCFG_Flag is set */
+		bitstatus = SET;
+	} else {
+		/* SYSCFG_Flag is reset */
+		bitstatus = RESET;
+	}
+	/* Return the SYSCFG_Flag status */
+	return bitstatus;
 }
 
 /**
@@ -353,10 +343,10 @@ FlagStatus SYSCFG_GetFlagStatus(uint32_t SYSCFG_Flag)
   */
 void SYSCFG_ClearFlag(uint32_t SYSCFG_Flag)
 {
-  /* Check the parameter */
-  assert_param(IS_SYSCFG_FLAG(SYSCFG_Flag));
+	/* Check the parameter */
+	assert_param(IS_SYSCFG_FLAG(SYSCFG_Flag));
 
-  SYSCFG->CFGR2 |= (uint32_t) SYSCFG_Flag;
+	SYSCFG->CFGR2 |= (uint32_t) SYSCFG_Flag;
 }
 
 /**
@@ -365,14 +355,13 @@ void SYSCFG_ClearFlag(uint32_t SYSCFG_Flag)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-

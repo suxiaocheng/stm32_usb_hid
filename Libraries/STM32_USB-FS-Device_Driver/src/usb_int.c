@@ -36,8 +36,8 @@ __IO uint16_t SaveRState;
 __IO uint16_t SaveTState;
 
 /* Extern variables ----------------------------------------------------------*/
-extern void (*pEpInt_IN[7])(void);    /*  Handles IN  interrupts   */
-extern void (*pEpInt_OUT[7])(void);   /*  Handles OUT interrupts   */
+extern void (*pEpInt_IN[7]) (void);	/*  Handles IN  interrupts   */
+extern void (*pEpInt_OUT[7]) (void);	/*  Handles OUT interrupts   */
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -52,106 +52,98 @@ extern void (*pEpInt_OUT[7])(void);   /*  Handles OUT interrupts   */
 *******************************************************************************/
 void CTR_LP(void)
 {
-  __IO uint16_t wEPVal = 0;
-  /* stay in loop while pending interrupts */
-  while (((wIstr = _GetISTR()) & ISTR_CTR) != 0)
-  {
-    /* extract highest priority endpoint number */
-    EPindex = (uint8_t)(wIstr & ISTR_EP_ID);
-    if (EPindex == 0)
-    {
-      /* Decode and service control endpoint interrupt */
-      /* calling related service routine */
-      /* (Setup0_Process, In0_Process, Out0_Process) */
+	__IO uint16_t wEPVal = 0;
+	/* stay in loop while pending interrupts */
+	while (((wIstr = _GetISTR()) & ISTR_CTR) != 0) {
+		/* extract highest priority endpoint number */
+		EPindex = (uint8_t) (wIstr & ISTR_EP_ID);
+		if (EPindex == 0) {
+			/* Decode and service control endpoint interrupt */
+			/* calling related service routine */
+			/* (Setup0_Process, In0_Process, Out0_Process) */
 
-      /* save RX & TX status */
-      /* and set both to NAK */
-      
-	    SaveRState = _GetENDPOINT(ENDP0);
+			/* save RX & TX status */
+			/* and set both to NAK */
 
-		usb_printf("e0:%x\n", SaveRState);
-	  
-	    SaveTState = SaveRState & EPTX_STAT;
-	    SaveRState &=  EPRX_STAT;	
+			SaveRState = _GetENDPOINT(ENDP0);
 
-		//no need to do the things here, the usb hardware already done.
-	    _SetEPRxTxStatus(ENDP0,EP_RX_NAK,EP_TX_NAK);
+			usb_printf("e0:%x\n", SaveRState);
 
-      /* DIR bit = origin of the interrupt */
+			SaveTState = SaveRState & EPTX_STAT;
+			SaveRState &= EPRX_STAT;
 
-      if ((wIstr & ISTR_DIR) == 0)
-      {
-        /* DIR = 0 */
+			//no need to do the things here, the usb hardware already done.
+			_SetEPRxTxStatus(ENDP0, EP_RX_NAK, EP_TX_NAK);
 
-        /* DIR = 0      => IN  int */
-        /* DIR = 0 implies that (EP_CTR_TX = 1) always  */
+			/* DIR bit = origin of the interrupt */
 
-        _ClearEP_CTR_TX(ENDP0);
-        In0_Process();
+			if ((wIstr & ISTR_DIR) == 0) {
+				/* DIR = 0 */
 
-           /* before terminate set Tx & Rx status */
+				/* DIR = 0      => IN  int */
+				/* DIR = 0 implies that (EP_CTR_TX = 1) always  */
 
-            _SetEPRxTxStatus(ENDP0,SaveRState,SaveTState);
-		  return;
-      }
-      else
-      {
-        /* DIR = 1 */
+				_ClearEP_CTR_TX(ENDP0);
+				In0_Process();
 
-        /* DIR = 1 & CTR_RX       => SETUP or OUT int */
-        /* DIR = 1 & (CTR_TX | CTR_RX) => 2 int pending */
+				/* before terminate set Tx & Rx status */
 
-        wEPVal = _GetENDPOINT(ENDP0);
-        
-        if ((wEPVal &EP_SETUP) != 0)
-        {
-          _ClearEP_CTR_RX(ENDP0); /* SETUP bit kept frozen while CTR_RX = 1 */
-          Setup0_Process();
-          /* before terminate set Tx & Rx status */
+				_SetEPRxTxStatus(ENDP0, SaveRState, SaveTState);
+				return;
+			} else {
+				/* DIR = 1 */
 
-		      _SetEPRxTxStatus(ENDP0,SaveRState,SaveTState);
-          return;
-        }
+				/* DIR = 1 & CTR_RX       => SETUP or OUT int */
+				/* DIR = 1 & (CTR_TX | CTR_RX) => 2 int pending */
 
-        else if ((wEPVal & EP_CTR_RX) != 0)
-        {
-          _ClearEP_CTR_RX(ENDP0);
-          Out0_Process();
-          /* before terminate set Tx & Rx status */
-     
-		     _SetEPRxTxStatus(ENDP0,SaveRState,SaveTState);
-          return;
-        }
-      }
-    }/* if(EPindex == 0) */
-    else
-    {
-      /* Decode and service non control endpoints interrupt  */
+				wEPVal = _GetENDPOINT(ENDP0);
 
-      /* process related endpoint register */
-      wEPVal = _GetENDPOINT(EPindex);
-      if ((wEPVal & EP_CTR_RX) != 0)
-      {
-        /* clear int flag */
-        _ClearEP_CTR_RX(EPindex);
+				if ((wEPVal & EP_SETUP) != 0) {
+					_ClearEP_CTR_RX(ENDP0);	/* SETUP bit kept frozen while CTR_RX = 1 */
+					Setup0_Process();
+					/* before terminate set Tx & Rx status */
 
-        /* call OUT service function */
-        (*pEpInt_OUT[EPindex-1])();
+					_SetEPRxTxStatus(ENDP0, SaveRState,
+							 SaveTState);
+					return;
+				}
 
-      } /* if((wEPVal & EP_CTR_RX) */
+				else if ((wEPVal & EP_CTR_RX) != 0) {
+					_ClearEP_CTR_RX(ENDP0);
+					Out0_Process();
+					/* before terminate set Tx & Rx status */
 
-      if ((wEPVal & EP_CTR_TX) != 0)
-      {
-        /* clear int flag */
-        _ClearEP_CTR_TX(EPindex);
+					_SetEPRxTxStatus(ENDP0, SaveRState,
+							 SaveTState);
+					return;
+				}
+			}
+		} /* if(EPindex == 0) */
+		else {
+			/* Decode and service non control endpoints interrupt  */
 
-        /* call IN service function */
-        (*pEpInt_IN[EPindex-1])();
-      } /* if((wEPVal & EP_CTR_TX) != 0) */
+			/* process related endpoint register */
+			wEPVal = _GetENDPOINT(EPindex);
+			if ((wEPVal & EP_CTR_RX) != 0) {
+				/* clear int flag */
+				_ClearEP_CTR_RX(EPindex);
 
-    }/* if(EPindex == 0) else */
+				/* call OUT service function */
+				(*pEpInt_OUT[EPindex - 1]) ();
 
-  }/* while(...) */
+			}
+			/* if((wEPVal & EP_CTR_RX) */
+			if ((wEPVal & EP_CTR_TX) != 0) {
+				/* clear int flag */
+				_ClearEP_CTR_TX(EPindex);
+
+				/* call IN service function */
+				(*pEpInt_IN[EPindex - 1]) ();
+			}
+			/* if((wEPVal & EP_CTR_TX) != 0) */
+		}		/* if(EPindex == 0) else */
+
+	}			/* while(...) */
 }
 
 /*******************************************************************************
@@ -164,36 +156,32 @@ void CTR_LP(void)
 *******************************************************************************/
 void CTR_HP(void)
 {
-  uint32_t wEPVal = 0;
+	uint32_t wEPVal = 0;
 
-  while (((wIstr = _GetISTR()) & ISTR_CTR) != 0)
-  {
-    _SetISTR((uint16_t)CLR_CTR); /* clear CTR flag */
-    /* extract highest priority endpoint number */
-    EPindex = (uint8_t)(wIstr & ISTR_EP_ID);
-    /* process related endpoint register */
-    wEPVal = _GetENDPOINT(EPindex);
-    if ((wEPVal & EP_CTR_RX) != 0)
-    {
-      /* clear int flag */
-      _ClearEP_CTR_RX(EPindex);
+	while (((wIstr = _GetISTR()) & ISTR_CTR) != 0) {
+		_SetISTR((uint16_t) CLR_CTR);	/* clear CTR flag */
+		/* extract highest priority endpoint number */
+		EPindex = (uint8_t) (wIstr & ISTR_EP_ID);
+		/* process related endpoint register */
+		wEPVal = _GetENDPOINT(EPindex);
+		if ((wEPVal & EP_CTR_RX) != 0) {
+			/* clear int flag */
+			_ClearEP_CTR_RX(EPindex);
 
-      /* call OUT service function */
-      (*pEpInt_OUT[EPindex-1])();
+			/* call OUT service function */
+			(*pEpInt_OUT[EPindex - 1]) ();
 
-    } /* if((wEPVal & EP_CTR_RX) */
-    else if ((wEPVal & EP_CTR_TX) != 0)
-    {
-      /* clear int flag */
-      _ClearEP_CTR_TX(EPindex);
+		} /* if((wEPVal & EP_CTR_RX) */
+		else if ((wEPVal & EP_CTR_TX) != 0) {
+			/* clear int flag */
+			_ClearEP_CTR_TX(EPindex);
 
-      /* call IN service function */
-      (*pEpInt_IN[EPindex-1])();
+			/* call IN service function */
+			(*pEpInt_IN[EPindex - 1]) ();
 
-
-    } /* if((wEPVal & EP_CTR_TX) != 0) */
-
-  }/* while(...) */
+		}
+		/* if((wEPVal & EP_CTR_TX) != 0) */
+	}			/* while(...) */
 }
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

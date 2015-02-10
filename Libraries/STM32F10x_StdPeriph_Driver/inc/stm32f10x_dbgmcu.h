@@ -31,7 +31,7 @@
 #define __STM32F10x_DBGMCU_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -83,11 +83,11 @@
 #define DBGMCU_TIM9_STOP             ((uint32_t)0x10000000)
 #define DBGMCU_TIM10_STOP            ((uint32_t)0x20000000)
 #define DBGMCU_TIM11_STOP            ((uint32_t)0x40000000)
-                                              
+
 #define IS_DBGMCU_PERIPH(PERIPH) ((((PERIPH) & 0x800000F8) == 0x00) && ((PERIPH) != 0x00))
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup DBGMCU_Exported_Macros
   * @{
@@ -101,25 +101,18 @@
   * @{
   */
 
-uint32_t DBGMCU_GetREVID(void);
-uint32_t DBGMCU_GetDEVID(void);
-void DBGMCU_Config(uint32_t DBGMCU_Periph, FunctionalState NewState);
+	uint32_t DBGMCU_GetREVID(void);
+	uint32_t DBGMCU_GetDEVID(void);
+	void DBGMCU_Config(uint32_t DBGMCU_Periph, FunctionalState NewState);
 
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __STM32F10x_DBGMCU_H */
+#endif				/* __STM32F10x_DBGMCU_H */
 /**
   * @}
-  */
-
-/**
+  *//**
   * @}
-  */
-
-/**
+  *//**
   * @}
-  */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+  *//************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

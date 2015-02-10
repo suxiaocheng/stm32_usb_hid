@@ -26,7 +26,6 @@
   ******************************************************************************
   */
 
-
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __I2S_CODEC_H
 #define __I2S_CODEC_H
@@ -63,39 +62,37 @@ Finally, the data chunk contains the sample data:
 /* Exported types ------------------------------------------------------------*/
 
 /* Audio file information structure */
-typedef struct
-{
-  uint32_t  RIFFchunksize;
-  uint16_t  FormatTag;
-  uint16_t  NumChannels;
-  uint32_t  SampleRate;
-  uint32_t  ByteRate;
-  uint16_t  BlockAlign;
-  uint16_t  BitsPerSample;
-  uint32_t  DataSize;
+typedef struct {
+	uint32_t RIFFchunksize;
+	uint16_t FormatTag;
+	uint16_t NumChannels;
+	uint32_t SampleRate;
+	uint32_t ByteRate;
+	uint16_t BlockAlign;
+	uint16_t BitsPerSample;
+	uint32_t DataSize;
 } WAVE_FormatTypeDef;
 
 /* Error Identification structure */
-typedef enum
-{
-  Valid_WAVE_File = 0,
-  Unvalid_RIFF_ID,
-  Unvalid_WAVE_Format,
-  Unvalid_FormatChunk_ID,
-  Unsupporetd_FormatTag,
-  Unsupporetd_Number_Of_Channel,
-  Unsupporetd_Sample_Rate,
-  Unsupporetd_Bits_Per_Sample,
-  Unvalid_DataChunk_ID,
-  Unsupporetd_ExtraFormatBytes,
-  Unvalid_FactChunk_ID
+typedef enum {
+	Valid_WAVE_File = 0,
+	Unvalid_RIFF_ID,
+	Unvalid_WAVE_Format,
+	Unvalid_FormatChunk_ID,
+	Unsupporetd_FormatTag,
+	Unsupporetd_Number_Of_Channel,
+	Unsupporetd_Sample_Rate,
+	Unsupporetd_Bits_Per_Sample,
+	Unvalid_DataChunk_ID,
+	Unsupporetd_ExtraFormatBytes,
+	Unvalid_FactChunk_ID
 } ErrorCode;
- 
+
 /* Exported constants --------------------------------------------------------*/
 
 /* Codec output DEVICE */
 #define OutputDevice_SPEAKER          1
-#define OutputDevice_HEADPHONE        2  
+#define OutputDevice_HEADPHONE        2
 #define OutputDevice_BOTH             3
 
 /* VOLUME control constants */
@@ -103,11 +100,11 @@ typedef enum
 #define VolumeDirection_HIGH          0xF
 #define VolumeDirection_LOW           0xA
 #define VolumeDirection_LEVEL         0x0
-#define VOLStep                       4 
+#define VOLStep                       4
 
 /* Forward and Rewind constants */
-#define STEP_FORWARD                  2 /* 2% of wave file data length*/
-#define STEP_BACK                     6 /* 6% of wave file data length*/
+#define STEP_FORWARD                  2	/* 2% of wave file data length */
+#define STEP_BACK                     6	/* 6% of wave file data length */
 
 /* Codec POWER DOWN modes */
 #define CodecPowerDown_HW             1
@@ -116,9 +113,9 @@ typedef enum
 /* Audio Play STATUS */
 #define AudioPlayStatus_STOPPED       0
 #define AudioPlayStatus_PLAYING	      1
-#define AudioPlayStatus_PAUSED		    2	 
+#define AudioPlayStatus_PAUSED		    2
 
-/* MUTE commands */ 
+/* MUTE commands */
 #define MUTE_ON                       1
 #define MUTE_OFF							        0
 
@@ -128,7 +125,7 @@ typedef enum
 
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
- 
+
   /* CONFIGURATION */
 uint32_t I2S_CODEC_Init(uint32_t OutputDevice, uint32_t Address);
 void I2S_CODEC_ReplayConfig(uint32_t Repetions);
@@ -136,23 +133,24 @@ void I2S_CODEC_ReplayConfig(uint32_t Repetions);
 	/* AUDIO CONTROL */
 uint32_t I2S_CODEC_Play(uint32_t AudioStartPosition);
 uint32_t I2S_CODEC_Pause(void);
-uint32_t I2S_CODEC_Stop(void);	
+uint32_t I2S_CODEC_Stop(void);
 uint32_t I2S_CODEC_ControlVolume(uint32_t direction, uint8_t volume);
 void I2S_CODEC_Mute(uint32_t Command);
 void I2S_CODEC_ForwardPlay(uint32_t Step);
 void I2S_CODEC_RewindPlay(uint32_t Step);
 
-   /* EXTRA CONTROLS */								 
+   /* EXTRA CONTROLS */
 void I2S_CODEC_PowerDown(uint32_t CodecPowerDown_Mode);
 void I2S_CODEC_Reset(void);
-uint32_t I2S_CODEC_SpeakerHeadphoneSwap(uint32_t CODEC_AudioOutput, uint32_t Address);
+uint32_t I2S_CODEC_SpeakerHeadphoneSwap(uint32_t CODEC_AudioOutput,
+					uint32_t Address);
 uint8_t GetVar_CurrentVolume(void);
 
-/* Medium Layer Codec Functions ----------------------------------------------*/						
+/* Medium Layer Codec Functions ----------------------------------------------*/
 void I2S_CODEC_DataTransfer(void);
 void I2S_CODEC_UpdateStatus(void);
-uint32_t GetVar_DataStartAddr(void);	
-ErrorCode I2S_CODEC_WaveParsing(uint8_t* HeaderTab);
+uint32_t GetVar_DataStartAddr(void);
+ErrorCode I2S_CODEC_WaveParsing(uint8_t * HeaderTab);
 uint32_t GetVar_CurrentOutputDevice(void);
 
 uint32_t GetVar_AudioDataIndex(void);
@@ -176,17 +174,19 @@ uint32_t ResetVar_SendDummyData(void);
 uint32_t GetVar_SendDummyData(void);
 uint32_t AudioFile_Init(void);
 
-void I2S_GPIO_Config(void); 
+void I2S_GPIO_Config(void);
 void I2S_Config(uint16_t Standard, uint16_t MCLKOutput, uint16_t AudioFreq);
-uint32_t CODEC_Config(uint16_t AudioOutput, uint16_t I2S_Standard, uint16_t I2S_MCLKOutput, uint8_t Volume);
+uint32_t CODEC_Config(uint16_t AudioOutput, uint16_t I2S_Standard,
+		      uint16_t I2S_MCLKOutput, uint8_t Volume);
 
 uint32_t Media_Init(void);
-void Media_BufferRead(uint8_t* pBuffer, uint32_t ReadAddr, uint16_t NumByteToRead);
+void Media_BufferRead(uint8_t * pBuffer, uint32_t ReadAddr,
+		      uint16_t NumByteToRead);
 void Media_StartReadSequence(uint32_t ReadAddr);
 uint16_t Media_ReadHalfWord(uint32_t Offset);
 uint8_t Media_ReadByte(uint32_t Offset);
 
-void delay(__IO uint32_t nCount); 
+void delay(__IO uint32_t nCount);
 
 #endif /* __I2S_CODEC_H */
 

@@ -134,8 +134,9 @@ void NVIC_Init(NVIC_InitTypeDef * NVIC_InitStruct)
 		tmpsub = tmpsub >> tmppriority;
 
 		tmppriority =
-		    (uint32_t) NVIC_InitStruct->
-		    NVIC_IRQChannelPreemptionPriority << tmppre;
+		    (uint32_t)
+		    NVIC_InitStruct->NVIC_IRQChannelPreemptionPriority <<
+		    tmppre;
 		tmppriority |=
 		    NVIC_InitStruct->NVIC_IRQChannelSubPriority & tmpsub;
 		tmppriority = tmppriority << 0x04;
@@ -144,13 +145,13 @@ void NVIC_Init(NVIC_InitTypeDef * NVIC_InitStruct)
 
 		/* Enable the Selected IRQ Channels -------------------------------------- */
 		NVIC->ISER[NVIC_InitStruct->NVIC_IRQChannel >> 0x05] =
-		    (uint32_t) 0x01 << (NVIC_InitStruct->
-					NVIC_IRQChannel & (uint8_t) 0x1F);
+		    (uint32_t) 0x01 << (NVIC_InitStruct->NVIC_IRQChannel &
+					(uint8_t) 0x1F);
 	} else {
 		/* Disable the Selected IRQ Channels ------------------------------------- */
 		NVIC->ICER[NVIC_InitStruct->NVIC_IRQChannel >> 0x05] =
-		    (uint32_t) 0x01 << (NVIC_InitStruct->
-					NVIC_IRQChannel & (uint8_t) 0x1F);
+		    (uint32_t) 0x01 << (NVIC_InitStruct->NVIC_IRQChannel &
+					(uint8_t) 0x1F);
 	}
 }
 

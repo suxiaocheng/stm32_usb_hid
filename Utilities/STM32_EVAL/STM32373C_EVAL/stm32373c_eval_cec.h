@@ -31,11 +31,10 @@
 #define __STM32373C_EVAL_CEC_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
-  /* Includes ------------------------------------------------------------------*/
+	/* Includes ------------------------------------------------------------------ */
 #include "stm32f37x.h"
 
 /** @addtogroup Utilities
@@ -57,31 +56,29 @@ extern "C"
 /** @defgroup STM32373C_EVAL_CEC_Exported_Types
   * @{
   */
-typedef enum
-{
-  HDMI_CEC_RX_OVERRUN              = (1),  /*!< CEC Receive overrun Error     */
-  HDMI_CEC_RX_BIT_RISING           = (2),  /*!< CEC Rx Bit Rising Error       */
-  HDMI_CEC_RX_SHORT_BIT_PERIOD     = (3),  /*!< CEC Rx Short Bit Period Error */
-  HDMI_CEC_RX_LONG_BIT_PERIOD      = (4),  /*!< CEC Rx Long Bit Period Error  */
-  HDMI_CEC_RX_ACKNOWLEDGE          = (5),  /*!< CEC RX Acknowledge Error      */
-  HDMI_CEC_ARBITRATION_LOST        = (6),  /*!< Arbitration Lost Error   */
-  HDMI_CEC_TX_UNDERRUN             = (7),  /*!< CEC Transmit Underrun Error */
-  HDMI_CEC_TX_ERROR                = (8),  /*!< CEC Transmit Error */
-  HDMI_CEC_TX_ACKNOWLEDGE          = (9),  /*!< CEC TX Acknowledge Error */
-  HDMI_CEC_DEVICE_UNREGISTRED      = (10), /*!< CEC Device Unregistered */
-  HDMI_CEC_TIMEOUT                 = (11), /*!< CEC TimeOut */
-  HDMI_CEC_OK                      = (12)  /*!< CEC OK */
-}HDMI_CEC_Error;
+	typedef enum {
+		HDMI_CEC_RX_OVERRUN = (1),	/*!< CEC Receive overrun Error     */
+		HDMI_CEC_RX_BIT_RISING = (2),	/*!< CEC Rx Bit Rising Error       */
+		HDMI_CEC_RX_SHORT_BIT_PERIOD = (3),	/*!< CEC Rx Short Bit Period Error */
+		HDMI_CEC_RX_LONG_BIT_PERIOD = (4),	/*!< CEC Rx Long Bit Period Error  */
+		HDMI_CEC_RX_ACKNOWLEDGE = (5),	/*!< CEC RX Acknowledge Error      */
+		HDMI_CEC_ARBITRATION_LOST = (6),	/*!< Arbitration Lost Error   */
+		HDMI_CEC_TX_UNDERRUN = (7),	/*!< CEC Transmit Underrun Error */
+		HDMI_CEC_TX_ERROR = (8),	/*!< CEC Transmit Error */
+		HDMI_CEC_TX_ACKNOWLEDGE = (9),	/*!< CEC TX Acknowledge Error */
+		HDMI_CEC_DEVICE_UNREGISTRED = (10),	/*!< CEC Device Unregistered */
+		HDMI_CEC_TIMEOUT = (11),	/*!< CEC TimeOut */
+		HDMI_CEC_OK = (12)	/*!< CEC OK */
+	} HDMI_CEC_Error;
 
-typedef struct
-{
-  uint8_t PhysicalAddress_A;
-  uint8_t PhysicalAddress_B;
-  uint8_t PhysicalAddress_C;
-  uint8_t PhysicalAddress_D;
-  uint8_t LogicalAddress;
-  uint8_t DeviceType;
-}HDMI_CEC_Map;
+	typedef struct {
+		uint8_t PhysicalAddress_A;
+		uint8_t PhysicalAddress_B;
+		uint8_t PhysicalAddress_C;
+		uint8_t PhysicalAddress_D;
+		uint8_t LogicalAddress;
+		uint8_t DeviceType;
+	} HDMI_CEC_Map;
 
 #define HDMI_CEC_TX_MESSAGE_LENGTH_MAX       ((uint32_t)0x0000000E)
 #define HDMI_CEC_TIMEOUT_VALUE               ((uint32_t)0x001FFFFF)
@@ -89,14 +86,13 @@ typedef struct
 /**
 * @brief  CEC Init Structure definition
 */
-typedef struct
-{
-  __IO uint8_t Header;
-  __IO uint8_t Opcode;
-  __IO uint8_t Operande[HDMI_CEC_TX_MESSAGE_LENGTH_MAX];
-  __IO uint8_t TxMessageLength;
-  __IO uint8_t RxMessageLength;
-}HDMI_CEC_Message;
+	typedef struct {
+		__IO uint8_t Header;
+		__IO uint8_t Opcode;
+		__IO uint8_t Operande[HDMI_CEC_TX_MESSAGE_LENGTH_MAX];
+		__IO uint8_t TxMessageLength;
+		__IO uint8_t RxMessageLength;
+	} HDMI_CEC_Message;
 
 /**
 * @}
@@ -180,7 +176,7 @@ typedef struct
 /**
   * @brief  CEC version: V1.4
   */
-#define HDMI_CEC_VERSION                                    0x05  /*0x04 For CEC version: V1.3.a*/
+#define HDMI_CEC_VERSION                                    0x05	/*0x04 For CEC version: V1.3.a */
 
 /**
   * @brief  Reason for Abort feature
@@ -272,38 +268,27 @@ typedef struct
 /** @defgroup STM32373C_EVAL_CEC_Exported_Functions
   * @{
   */
-HDMI_CEC_Error HDMI_CEC_Init(void);
-HDMI_CEC_Error HDMI_CEC_TransmitMessage(HDMI_CEC_Message *HDMI_CEC_TX_MessageStructure);
-HDMI_CEC_Error HDMI_CEC_GetErrorStatus (void);
-void HDMI_CEC_ProcessIRQSrc(void);
-HDMI_CEC_Error HDMI_CEC_ReportPhysicalAddress(void);
-void HDMI_CEC_CommandCallBack(void);
-HDMI_CEC_Error HDMI_CEC_CheckConnectedDevices(void);
+	HDMI_CEC_Error HDMI_CEC_Init(void);
+	HDMI_CEC_Error HDMI_CEC_TransmitMessage(HDMI_CEC_Message *
+						HDMI_CEC_TX_MessageStructure);
+	HDMI_CEC_Error HDMI_CEC_GetErrorStatus(void);
+	void HDMI_CEC_ProcessIRQSrc(void);
+	HDMI_CEC_Error HDMI_CEC_ReportPhysicalAddress(void);
+	void HDMI_CEC_CommandCallBack(void);
+	HDMI_CEC_Error HDMI_CEC_CheckConnectedDevices(void);
 
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __STM32373C_EVAL_CEC_H */
-
+#endif				/* __STM32373C_EVAL_CEC_H */
 /**
   * @}
-  */
-
-/**
+  *//**
   * @}
-  */
-
-/**
+  *//**
   * @}
-  */
-
-/**
+  *//**
   * @}
-  */
-
-/**
+  *//**
   * @}
-  */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+  *//************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

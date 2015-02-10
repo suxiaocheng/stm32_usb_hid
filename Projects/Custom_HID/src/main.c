@@ -25,7 +25,6 @@
   ******************************************************************************
   */
 
-
 /* Includes ------------------------------------------------------------------*/
 #include "hw_config.h"
 #include "usb_lib.h"
@@ -56,38 +55,37 @@ void Delay(__IO uint32_t nCount);
 *******************************************************************************/
 int main(void)
 {
-    /* if debug in ram, reset the interrupt vectors to ram area */
+	/* if debug in ram, reset the interrupt vectors to ram area */
 #ifdef VECT_TAB_SRAM
-    SCB->VTOR = (uint32_t) & __Vectors | SCB_VTOR_TBLBASE;
+	SCB->VTOR = (uint32_t) & __Vectors | SCB_VTOR_TBLBASE;
 #else
 	SCB->VTOR = (uint32_t) & __Vectors;
 #endif
 
-    /* enable the timer and the uart debug function */
-    init_sys_timer();
-    init_debug_fun();
+	/* enable the timer and the uart debug function */
+	init_sys_timer();
+	init_debug_fun();
 
-    stm_printf("startup\n");
+	stm_printf("startup\n");
 
 #if 0
-    /* test the system clock is OK */
-    {
-       uint32_t count;
-       for(count=0; count < 5; count++){
-       busy_delay_ms(1000);
-       stm_printf("tick\n");
-       }
-    } 
+	/* test the system clock is OK */
+	{
+		uint32_t count;
+		for (count = 0; count < 5; count++) {
+			busy_delay_ms(1000);
+			stm_printf("tick\n");
+		}
+	}
 #endif
 
-    Set_System();
-    Set_USBClock();
-    USB_Interrupts_Config();
-    USB_Init();
+	Set_System();
+	Set_USBClock();
+	USB_Interrupts_Config();
+	USB_Init();
 
-  while (1)
-  {
-  }
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -99,8 +97,8 @@ int main(void)
 *******************************************************************************/
 void Delay(__IO uint32_t nCount)
 {
-  TimingDelay = nCount;
-  for(; nCount!= 0;nCount--);
+	TimingDelay = nCount;
+	for (; nCount != 0; nCount--) ;
 }
 
 #ifdef  USE_FULL_ASSERT
@@ -113,15 +111,14 @@ void Delay(__IO uint32_t nCount)
 * Output         : None
 * Return         : None
 *******************************************************************************/
-void assert_failed(uint8_t* file, uint32_t line)
-{ 
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+void assert_failed(uint8_t * file, uint32_t line)
+{
+	/* User can add his own implementation to report the file name and line number,
+	   ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while(1)
-  {
-  }
+	/* Infinite loop */
+	while (1) {
+	}
 }
 #endif
 

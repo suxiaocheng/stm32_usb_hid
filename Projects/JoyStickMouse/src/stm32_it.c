@@ -27,14 +27,12 @@
   ******************************************************************************
   */
 
-
 /* Includes ------------------------------------------------------------------*/
 #include "stm32_it.h"
 #include "usb_istr.h"
 #include "usb_lib.h"
 #include "usb_pwr.h"
 #include "platform_config.h"
-
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -67,10 +65,9 @@ void NMI_Handler(void)
 *******************************************************************************/
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+	/* Go to infinite loop when Hard Fault exception occurs */
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -82,10 +79,9 @@ void HardFault_Handler(void)
 *******************************************************************************/
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+	/* Go to infinite loop when Memory Manage exception occurs */
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -97,10 +93,9 @@ void MemManage_Handler(void)
 *******************************************************************************/
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+	/* Go to infinite loop when Bus Fault exception occurs */
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -112,10 +107,9 @@ void BusFault_Handler(void)
 *******************************************************************************/
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+	/* Go to infinite loop when Usage Fault exception occurs */
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -178,7 +172,7 @@ void USB_LP_IRQHandler(void)
 void USB_LP_CAN1_RX0_IRQHandler(void)
 #endif
 {
-  USB_Istr();
+	USB_Istr();
 }
 
 #if defined(STM32L1XX_MD) || defined(STM32L1XX_HD)|| defined(STM32L1XX_MD_PLUS)
@@ -192,7 +186,7 @@ void USB_LP_CAN1_RX0_IRQHandler(void)
 *******************************************************************************/
 void USB_FS_WKUP_IRQHandler(void)
 {
-  EXTI_ClearITPendingBit(EXTI_Line18);
+	EXTI_ClearITPendingBit(EXTI_Line18);
 }
 #endif
 /*******************************************************************************
@@ -210,20 +204,18 @@ void EXTI2_TS_IRQHandler(void)
 void EXTI9_5_IRQHandler(void)
 #endif
 {
-  if (EXTI_GetITStatus(KEY_BUTTON_EXTI_LINE) != RESET)
-  {
-    /* Check if the remote wakeup feature is enabled (it could be disabled 
-        by the host through ClearFeature request) */
-    if (pInformation->Current_Feature & 0x20) 
-    {      
-      pInformation->Current_Feature &= ~0x20;  
-      /* Exit low power mode and re-configure clocks */
-      Resume(RESUME_INTERNAL);
-    }
-  
-    /* Clear the EXTI line pending bit */
-    EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
-  }
+	if (EXTI_GetITStatus(KEY_BUTTON_EXTI_LINE) != RESET) {
+		/* Check if the remote wakeup feature is enabled (it could be disabled 
+		   by the host through ClearFeature request) */
+		if (pInformation->Current_Feature & 0x20) {
+			pInformation->Current_Feature &= ~0x20;
+			/* Exit low power mode and re-configure clocks */
+			Resume(RESUME_INTERNAL);
+		}
+
+		/* Clear the EXTI line pending bit */
+		EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
+	}
 }
 
 /*******************************************************************************
@@ -235,7 +227,7 @@ void EXTI9_5_IRQHandler(void)
 *******************************************************************************/
 void USBWakeUp_IRQHandler(void)
 {
-  EXTI_ClearITPendingBit(EXTI_Line18);
+	EXTI_ClearITPendingBit(EXTI_Line18);
 }
 
 /******************************************************************************/
@@ -257,4 +249,3 @@ void USBWakeUp_IRQHandler(void)
 }*/
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-

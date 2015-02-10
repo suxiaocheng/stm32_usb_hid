@@ -25,7 +25,6 @@
   ******************************************************************************
   */
 
-
 /* Includes ------------------------------------------------------------------*/
 #include "usb_lib.h"
 #include "usb_desc.h"
@@ -56,9 +55,9 @@ uint32_t Receive_length;
 * Return         : None.
 *******************************************************************************/
 
-void EP1_IN_Callback (void)
+void EP1_IN_Callback(void)
 {
-  packet_sent = 1;
+	packet_sent = 1;
 }
 
 /*******************************************************************************
@@ -70,9 +69,10 @@ void EP1_IN_Callback (void)
 *******************************************************************************/
 void EP3_OUT_Callback(void)
 {
-  packet_receive = 1;
-  Receive_length = GetEPRxCount(ENDP3);
-  PMAToUserBufferCopy((unsigned char*)Receive_Buffer, ENDP3_RXADDR, Receive_length);
+	packet_receive = 1;
+	Receive_length = GetEPRxCount(ENDP3);
+	PMAToUserBufferCopy((unsigned char *)Receive_Buffer, ENDP3_RXADDR,
+			    Receive_length);
 }
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

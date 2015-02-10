@@ -24,14 +24,14 @@
   * limitations under the License.
   *
   ******************************************************************************
-  */ 
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM3210E_EVAL_FSMC_SRAM_H
 #define __STM3210E_EVAL_FSMC_SRAM_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -40,18 +40,18 @@
 /** @addtogroup Utilities
   * @{
   */
-  
+
 /** @addtogroup STM32_EVAL
   * @{
-  */ 
+  */
 
 /** @addtogroup STM3210E_EVAL
   * @{
   */
-  
+
 /** @addtogroup STM3210E_EVAL_FSMC_SRAM
   * @{
-  */  
+  */
 
 /** @defgroup STM3210E_EVAL_FSMC_SRAM_Exported_Types
   * @{
@@ -59,52 +59,43 @@
 /**
   * @}
   */
-  
+
 /** @defgroup STM3210E_EVAL_FSMC_SRAM_Exported_Constants
   * @{
-  */ 
+  */
 /**
   * @}
-  */ 
-  
+  */
+
 /** @defgroup STM3210E_EVAL_FSMC_SRAM_Exported_Macros
   * @{
-  */ 
+  */
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup STM3210E_EVAL_FSMC_SRAM_Exported_Functions
   * @{
-  */      
+  */
 
-void SRAM_Init(void);
-void SRAM_WriteBuffer(uint16_t* pBuffer, uint32_t WriteAddr, uint32_t NumHalfwordToWrite);
-void SRAM_ReadBuffer(uint16_t* pBuffer, uint32_t ReadAddr, uint32_t NumHalfwordToRead);
+	void SRAM_Init(void);
+	void SRAM_WriteBuffer(uint16_t * pBuffer, uint32_t WriteAddr,
+			      uint32_t NumHalfwordToWrite);
+	void SRAM_ReadBuffer(uint16_t * pBuffer, uint32_t ReadAddr,
+			     uint32_t NumHalfwordToRead);
 
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __STM3210E_EVAL_FSMC_SRAM_H */
+#endif				/* __STM3210E_EVAL_FSMC_SRAM_H */
 /**
   * @}
-  */
-
-/**
+  *//**
   * @}
-  */
-
-/**
+  *//**
   * @}
-  */
-
-/**
+  *//**
   * @}
-  */ 
-
-/**
+  *//**
   * @}
-  */ 
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+  *//************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

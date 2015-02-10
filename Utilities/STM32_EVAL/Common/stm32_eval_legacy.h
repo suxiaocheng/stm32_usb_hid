@@ -23,27 +23,27 @@
   * limitations under the License.
   *
   ******************************************************************************
-  */ 
-  
+  */
+
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32_EVAL_LEGACY_H
 #define __STM32_EVAL_LEGACY_H
 
 #ifdef __cplusplus
- extern "C" {
-#endif 
+extern "C" {
+#endif
 
 /* Includes ------------------------------------------------------------------*/
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
-/* STM322xG_EVAL Defines Legacy */ 
-#ifdef USE_STM3220F_EVAL       
-  #define USE_STM322xG_EVAL
+/* STM322xG_EVAL Defines Legacy */
+#ifdef USE_STM3220F_EVAL
+#define USE_STM322xG_EVAL
 #endif
 #define STM3220F_LCD_Init       STM322xG_LCD_Init
 
-/* Button Defines Legacy */ 
+/* Button Defines Legacy */
 #define Button_WAKEUP        BUTTON_WAKEUP
 #define Button_TAMPER        BUTTON_TAMPER
 #define Button_KEY           BUTTON_KEY
@@ -56,9 +56,9 @@
 #define Mode_EXTI            BUTTON_MODE_EXTI
 #define Button_Mode_TypeDef  ButtonMode_TypeDef
 #define JOY_CENTER           JOY_SEL
-#define JOY_State_TypeDef    JOYState_TypeDef 
+#define JOY_State_TypeDef    JOYState_TypeDef
 
-/* LCD Defines Legacy */ 
+/* LCD Defines Legacy */
 #define LCD_RSNWR_GPIO_CLK  LCD_NWR_GPIO_CLK
 #define LCD_SPI_GPIO_PORT   LCD_SPI_SCK_GPIO_PORT
 #define LCD_SPI_GPIO_CLK    LCD_SPI_SCK_GPIO_CLK
@@ -197,12 +197,10 @@
 #define Vertical            LCD_DIR_VERTICAL
 
 /* Exported macro ------------------------------------------------------------*/
-/* Exported functions --------------------------------------------------------*/ 
+/* Exported functions --------------------------------------------------------*/
 
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __STM32_EVAL_LEGACY_H */
-
+#endif				/* __STM32_EVAL_LEGACY_H */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

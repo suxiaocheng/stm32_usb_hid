@@ -25,7 +25,6 @@
   ******************************************************************************
   */
 
-
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USB_LIB_H
 #define __USB_LIB_H
@@ -48,7 +47,6 @@
 #ifndef true
 #define true 1
 #endif
-
 
 #ifndef DEBUG
 #undef USB_DEBUG

@@ -31,7 +31,7 @@
 #define __STM32L1xx_IWDG_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -106,29 +106,23 @@
 /* Exported functions ------------------------------------------------------- */
 
 /* Prescaler and Counter configuration functions ******************************/
-void IWDG_WriteAccessCmd(uint16_t IWDG_WriteAccess);
-void IWDG_SetPrescaler(uint8_t IWDG_Prescaler);
-void IWDG_SetReload(uint16_t Reload);
-void IWDG_ReloadCounter(void);
+	void IWDG_WriteAccessCmd(uint16_t IWDG_WriteAccess);
+	void IWDG_SetPrescaler(uint8_t IWDG_Prescaler);
+	void IWDG_SetReload(uint16_t Reload);
+	void IWDG_ReloadCounter(void);
 
 /* IWDG activation function ***************************************************/
-void IWDG_Enable(void);
+	void IWDG_Enable(void);
 
 /* Flag management function ***************************************************/
-FlagStatus IWDG_GetFlagStatus(uint16_t IWDG_FLAG);
+	FlagStatus IWDG_GetFlagStatus(uint16_t IWDG_FLAG);
 
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __STM32L1xx_IWDG_H */
-
+#endif				/* __STM32L1xx_IWDG_H */
 /**
   * @}
-  */
-
-/**
+  *//**
   * @}
-  */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+  *//************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -63,10 +63,9 @@ void NMI_Handler(void)
 *******************************************************************************/
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+	/* Go to infinite loop when Hard Fault exception occurs */
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -78,10 +77,9 @@ void HardFault_Handler(void)
 *******************************************************************************/
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+	/* Go to infinite loop when Memory Manage exception occurs */
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -93,10 +91,9 @@ void MemManage_Handler(void)
 *******************************************************************************/
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+	/* Go to infinite loop when Bus Fault exception occurs */
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -108,10 +105,9 @@ void BusFault_Handler(void)
 *******************************************************************************/
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+	/* Go to infinite loop when Usage Fault exception occurs */
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -172,7 +168,7 @@ void USB_LP_IRQHandler(void)
 void USB_LP_CAN1_RX0_IRQHandler(void)
 #endif
 {
-  USB_Istr();
+	USB_Istr();
 }
 
 /*******************************************************************************
@@ -184,17 +180,15 @@ void USB_LP_CAN1_RX0_IRQHandler(void)
 *******************************************************************************/
 void EVAL_COM1_IRQHandler(void)
 {
-  if (USART_GetITStatus(EVAL_COM1, USART_IT_RXNE) != RESET)
-  {
-    /* Send the received data to the PC Host*/
-    USART_To_USB_Send_Data();
-  }
+	if (USART_GetITStatus(EVAL_COM1, USART_IT_RXNE) != RESET) {
+		/* Send the received data to the PC Host */
+		USART_To_USB_Send_Data();
+	}
 
-  /* If overrun condition occurs, clear the ORE flag and recover communication */
-  if (USART_GetFlagStatus(EVAL_COM1, USART_FLAG_ORE) != RESET)
-  {
-    (void)USART_ReceiveData(EVAL_COM1);
-  }
+	/* If overrun condition occurs, clear the ORE flag and recover communication */
+	if (USART_GetFlagStatus(EVAL_COM1, USART_FLAG_ORE) != RESET) {
+		(void)USART_ReceiveData(EVAL_COM1);
+	}
 }
 
 /*******************************************************************************
@@ -211,7 +205,7 @@ void USB_FS_WKUP_IRQHandler(void)
 void USBWakeUp_IRQHandler(void)
 #endif
 {
-  EXTI_ClearITPendingBit(EXTI_Line18);
+	EXTI_ClearITPendingBit(EXTI_Line18);
 }
 
 /******************************************************************************/
@@ -233,4 +227,3 @@ void USBWakeUp_IRQHandler(void)
 }*/
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-

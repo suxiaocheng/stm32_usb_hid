@@ -25,10 +25,9 @@
   ******************************************************************************
   */
 
-
 /* Includes ------------------------------------------------------------------*/
 
-#include "hw_config.h" 
+#include "hw_config.h"
 #include "usb_lib.h"
 #include "usb_conf.h"
 #include "usb_prop.h"
@@ -36,7 +35,7 @@
 #include "dfu_mal.h"
 
 /* Private typedef -----------------------------------------------------------*/
-typedef  void (*pFunction)(void);
+typedef void (*pFunction) (void);
 
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -61,39 +60,38 @@ int main(void)
 {
 
 #if defined (USE_STM32L152D_EVAL)
-  FLASH_Unlock();
-  FLASH_ClearFlag(FLASH_FLAG_OPTVERRUSR);
+	FLASH_Unlock();
+	FLASH_ClearFlag(FLASH_FLAG_OPTVERRUSR);
 #endif
-  DFU_Button_Config();
+	DFU_Button_Config();
 
-  /* Check if the Key push-button on STM3210x-EVAL Board is pressed */
-  if (DFU_Button_Read() != 0x00)
-  { /* Test if user code is programmed starting from address 0x8003000 */
-    if (((*(__IO uint32_t*)ApplicationAddress) & 0x2FFE0000 ) == 0x20000000)
-    { /* Jump to user application */
+	/* Check if the Key push-button on STM3210x-EVAL Board is pressed */
+	if (DFU_Button_Read() != 0x00) {	/* Test if user code is programmed starting from address 0x8003000 */
+		if (((*(__IO uint32_t *) ApplicationAddress) & 0x2FFE0000) == 0x20000000) {	/* Jump to user application */
 
-      JumpAddress = *(__IO uint32_t*) (ApplicationAddress + 4);
-      Jump_To_Application = (pFunction) JumpAddress;
-      /* Initialize user application's Stack Pointer */
-      __set_MSP(*(__IO uint32_t*) ApplicationAddress);
-      Jump_To_Application();
-    }
-  } /* Otherwise enters DFU mode to allow user to program his application */
+			JumpAddress =
+			    *(__IO uint32_t *) (ApplicationAddress + 4);
+			Jump_To_Application = (pFunction) JumpAddress;
+			/* Initialize user application's Stack Pointer */
+			__set_MSP(*(__IO uint32_t *) ApplicationAddress);
+			Jump_To_Application();
+		}
+	}
 
-  /* Enter DFU mode */
-  DeviceState = STATE_dfuERROR;
-  DeviceStatus[0] = STATUS_ERRFIRMWARE;
-  DeviceStatus[4] = DeviceState;
+	/* Otherwise enters DFU mode to allow user to program his application */
+	/* Enter DFU mode */
+	DeviceState = STATE_dfuERROR;
+	DeviceStatus[0] = STATUS_ERRFIRMWARE;
+	DeviceStatus[4] = DeviceState;
 
-  Set_System();
-  Set_USBClock();
-  USB_Init();  
-  
-  /* Main loop */
-  while (1)
-  {}
+	Set_System();
+	Set_USBClock();
+	USB_Init();
+
+	/* Main loop */
+	while (1) {
+	}
 }
-
 
 #ifdef USE_FULL_ASSERT
 /*******************************************************************************
@@ -105,14 +103,14 @@ int main(void)
 * Output         : None
 * Return         : None
 *******************************************************************************/
-void assert_failed(uint8_t* file, uint32_t line)
+void assert_failed(uint8_t * file, uint32_t line)
 {
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+	/* User can add his own implementation to report the file name and line number,
+	   ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while (1)
-  {}
+	/* Infinite loop */
+	while (1) {
+	}
 }
 #endif
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -81,7 +81,7 @@
   * limitations under the License.
   *
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f37x_sdadc.h"
@@ -135,32 +135,27 @@
   * @param  SDADCx: where x can be 1, 2 or 3 to select the SDADC peripheral.
   * @retval None
   */
-void SDADC_DeInit(SDADC_TypeDef* SDADCx)
+void SDADC_DeInit(SDADC_TypeDef * SDADCx)
 {
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
 
-  if(SDADCx == SDADC1)
-  {
-    /* Enable SDADC1 reset state */
-    RCC_APB2PeriphResetCmd(RCC_APB2Periph_SDADC1, ENABLE);
-    /* Release SDADC1 from reset state */
-    RCC_APB2PeriphResetCmd(RCC_APB2Periph_SDADC1, DISABLE);
-  }
-  else if(SDADCx == SDADC2)
-  {
-    /* Enable SDADC2 reset state */
-    RCC_APB2PeriphResetCmd(RCC_APB2Periph_SDADC2, ENABLE);
-    /* Release SDADC2 from reset state */
-    RCC_APB2PeriphResetCmd(RCC_APB2Periph_SDADC2, DISABLE);
-  }
-  else
-  {
-    /* Enable SDADC3 reset state */
-    RCC_APB2PeriphResetCmd(RCC_APB2Periph_SDADC3, ENABLE);
-    /* Release SDADC3 from reset state */
-    RCC_APB2PeriphResetCmd(RCC_APB2Periph_SDADC3, DISABLE);
-  }
+	if (SDADCx == SDADC1) {
+		/* Enable SDADC1 reset state */
+		RCC_APB2PeriphResetCmd(RCC_APB2Periph_SDADC1, ENABLE);
+		/* Release SDADC1 from reset state */
+		RCC_APB2PeriphResetCmd(RCC_APB2Periph_SDADC1, DISABLE);
+	} else if (SDADCx == SDADC2) {
+		/* Enable SDADC2 reset state */
+		RCC_APB2PeriphResetCmd(RCC_APB2Periph_SDADC2, ENABLE);
+		/* Release SDADC2 from reset state */
+		RCC_APB2PeriphResetCmd(RCC_APB2Periph_SDADC2, DISABLE);
+	} else {
+		/* Enable SDADC3 reset state */
+		RCC_APB2PeriphResetCmd(RCC_APB2Periph_SDADC3, ENABLE);
+		/* Release SDADC3 from reset state */
+		RCC_APB2PeriphResetCmd(RCC_APB2Periph_SDADC3, DISABLE);
+	}
 }
 
 /**
@@ -176,33 +171,38 @@ void SDADC_DeInit(SDADC_TypeDef* SDADCx)
   *         the configuration information for the specified SDADC peripheral.
   * @retval None
   */
-void SDADC_Init(SDADC_TypeDef* SDADCx, SDADC_InitTypeDef* SDADC_InitStruct)
+void SDADC_Init(SDADC_TypeDef * SDADCx, SDADC_InitTypeDef * SDADC_InitStruct)
 {
-  uint32_t tmpcr2 = 0;
+	uint32_t tmpcr2 = 0;
 
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
-  assert_param(IS_SDADC_REGULAR_CHANNEL(SDADC_InitStruct->SDADC_Channel)); 
-  assert_param(IS_FUNCTIONAL_STATE(SDADC_InitStruct->SDADC_ContinuousConvMode)); 
-  assert_param(IS_FUNCTIONAL_STATE(SDADC_InitStruct->SDADC_FastConversionMode));
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	assert_param(IS_SDADC_REGULAR_CHANNEL(SDADC_InitStruct->SDADC_Channel));
+	assert_param(IS_FUNCTIONAL_STATE
+		     (SDADC_InitStruct->SDADC_ContinuousConvMode));
+	assert_param(IS_FUNCTIONAL_STATE
+		     (SDADC_InitStruct->SDADC_FastConversionMode));
 
   /*---------------------------- SDADCx CR2 Configuration --------------------*/
-  /* Get the SDADCx_CR2 value */
-  tmpcr2 = SDADCx->CR2;
+	/* Get the SDADCx_CR2 value */
+	tmpcr2 = SDADCx->CR2;
 
-  /* Clear FAST, RCONT and RCH bits */
-  tmpcr2 &= CR2_CLEAR_MASK;
-  /* Configure SDADCx: continuous mode for regular conversion, 
-     regular channel and fast conversion mode */
-  /* Set RCONT bit according to SDADC_ContinuousConvMode value */
-  /* Set FAST bit according to SDADC_FastConversionMode value */
-  /* Select the regular channel according to SDADC_Channel value */
-  tmpcr2 |= (uint32_t)(((uint32_t)SDADC_InitStruct->SDADC_ContinuousConvMode<<22) |
-                       (SDADC_InitStruct->SDADC_FastConversionMode<<(uint32_t)24) |
-                       (SDADC_InitStruct->SDADC_Channel & SDADC_CR2_RCH));
+	/* Clear FAST, RCONT and RCH bits */
+	tmpcr2 &= CR2_CLEAR_MASK;
+	/* Configure SDADCx: continuous mode for regular conversion, 
+	   regular channel and fast conversion mode */
+	/* Set RCONT bit according to SDADC_ContinuousConvMode value */
+	/* Set FAST bit according to SDADC_FastConversionMode value */
+	/* Select the regular channel according to SDADC_Channel value */
+	tmpcr2 |=
+	    (uint32_t) (((uint32_t) SDADC_InitStruct->
+			 SDADC_ContinuousConvMode << 22) | (SDADC_InitStruct->
+							    SDADC_FastConversionMode
+							    << (uint32_t) 24) |
+			(SDADC_InitStruct->SDADC_Channel & SDADC_CR2_RCH));
 
-  /* Write to SDADCx_CR2 */
-  SDADCx->CR2 = tmpcr2;
+	/* Write to SDADCx_CR2 */
+	SDADCx->CR2 = tmpcr2;
 }
 
 /**
@@ -211,18 +211,18 @@ void SDADC_Init(SDADC_TypeDef* SDADCx, SDADC_InitTypeDef* SDADC_InitStruct)
   *         be initialized.
   * @retval None
   */
-void SDADC_StructInit(SDADC_InitTypeDef* SDADC_InitStruct)                            
+void SDADC_StructInit(SDADC_InitTypeDef * SDADC_InitStruct)
 {
-  /* Reset SDADC init structure parameters values */
+	/* Reset SDADC init structure parameters values */
 
-  /* Initialize the SDADC_Channel member */
-  SDADC_InitStruct->SDADC_Channel = SDADC_Channel_0;
+	/* Initialize the SDADC_Channel member */
+	SDADC_InitStruct->SDADC_Channel = SDADC_Channel_0;
 
-  /* Initialize the SDADC_ContinuousConvMode member */
-  SDADC_InitStruct->SDADC_ContinuousConvMode = DISABLE;
+	/* Initialize the SDADC_ContinuousConvMode member */
+	SDADC_InitStruct->SDADC_ContinuousConvMode = DISABLE;
 
-  /* Initialize the SDADC_FastConversionMode member */
-  SDADC_InitStruct->SDADC_FastConversionMode = DISABLE;
+	/* Initialize the SDADC_FastConversionMode member */
+	SDADC_InitStruct->SDADC_FastConversionMode = DISABLE;
 }
 
 /**
@@ -234,29 +234,30 @@ void SDADC_StructInit(SDADC_InitTypeDef* SDADC_InitStruct)
   *         the analog inputs configuration information for the specified SDADC peripheral.
   * @retval None
   */
-void SDADC_AINInit(SDADC_TypeDef* SDADCx, uint32_t SDADC_Conf, SDADC_AINStructTypeDef* SDADC_AINStruct)
+void SDADC_AINInit(SDADC_TypeDef * SDADCx, uint32_t SDADC_Conf,
+		   SDADC_AINStructTypeDef * SDADC_AINStruct)
 {
-  uint32_t tmp = 0;
+	uint32_t tmp = 0;
 
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
-  assert_param(IS_SDADC_CONF(SDADC_Conf));
-  assert_param(IS_SDADC_INPUT_MODE(SDADC_AINStruct->SDADC_InputMode));
-  assert_param(IS_SDADC_GAIN(SDADC_AINStruct->SDADC_Gain));
-  assert_param(IS_SDADC_COMMON_MODE(SDADC_AINStruct->SDADC_CommonMode));
-  assert_param(IS_SDADC_OFFSET_VALUE(SDADC_AINStruct->SDADC_Offset));
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	assert_param(IS_SDADC_CONF(SDADC_Conf));
+	assert_param(IS_SDADC_INPUT_MODE(SDADC_AINStruct->SDADC_InputMode));
+	assert_param(IS_SDADC_GAIN(SDADC_AINStruct->SDADC_Gain));
+	assert_param(IS_SDADC_COMMON_MODE(SDADC_AINStruct->SDADC_CommonMode));
+	assert_param(IS_SDADC_OFFSET_VALUE(SDADC_AINStruct->SDADC_Offset));
 
-  /* Get the ASDACx address */
-  tmp = (uint32_t)((uint32_t)SDADCx + 0x00000020);
-  /* Get the ASDACx CONFxR value: depending SDADC_Conf, analog input configuration
-     is set to CONF0R, CONF1R or CONF2R register */
-  tmp = (uint32_t)(SDADC_Conf << 2) + tmp;
+	/* Get the ASDACx address */
+	tmp = (uint32_t) ((uint32_t) SDADCx + 0x00000020);
+	/* Get the ASDACx CONFxR value: depending SDADC_Conf, analog input configuration
+	   is set to CONF0R, CONF1R or CONF2R register */
+	tmp = (uint32_t) (SDADC_Conf << 2) + tmp;
 
-  /* Set the analog input configuration to the selected CONFxR register */
-  *(__IO uint32_t *) (tmp) = (uint32_t) (SDADC_AINStruct->SDADC_InputMode |
-                                         SDADC_AINStruct->SDADC_Gain |
-                                         SDADC_AINStruct->SDADC_CommonMode |
-                                         SDADC_AINStruct->SDADC_Offset);
+	/* Set the analog input configuration to the selected CONFxR register */
+	*(__IO uint32_t *) (tmp) =
+	    (uint32_t) (SDADC_AINStruct->SDADC_InputMode | SDADC_AINStruct->
+			SDADC_Gain | SDADC_AINStruct->
+			SDADC_CommonMode | SDADC_AINStruct->SDADC_Offset);
 }
 
 /**
@@ -265,21 +266,21 @@ void SDADC_AINInit(SDADC_TypeDef* SDADCx, uint32_t SDADC_Conf, SDADC_AINStructTy
   *         be initialized.
   * @retval None
   */
-void SDADC_AINStructInit(SDADC_AINStructTypeDef* SDADC_AINStruct)
+void SDADC_AINStructInit(SDADC_AINStructTypeDef * SDADC_AINStruct)
 {
-  /* Reset SDADC AIN configuration parameters values */
+	/* Reset SDADC AIN configuration parameters values */
 
-  /* Initialize the SDADC_Input member */
-  SDADC_AINStruct->SDADC_InputMode = SDADC_InputMode_Diff;
+	/* Initialize the SDADC_Input member */
+	SDADC_AINStruct->SDADC_InputMode = SDADC_InputMode_Diff;
 
-  /* Initialize the SDADC_Gain member */
-  SDADC_AINStruct->SDADC_Gain = SDADC_Gain_1;
+	/* Initialize the SDADC_Gain member */
+	SDADC_AINStruct->SDADC_Gain = SDADC_Gain_1;
 
-  /* Initialize the SDADC_CommonMode member */
-  SDADC_AINStruct->SDADC_CommonMode = SDADC_CommonMode_VSSA;
+	/* Initialize the SDADC_CommonMode member */
+	SDADC_AINStruct->SDADC_CommonMode = SDADC_CommonMode_VSSA;
 
-  /* Initialize the SDADC_Offset member */
-  SDADC_AINStruct->SDADC_Offset = 0;
+	/* Initialize the SDADC_Offset member */
+	SDADC_AINStruct->SDADC_Offset = 0;
 }
 
 /**
@@ -307,27 +308,26 @@ void SDADC_AINStructInit(SDADC_AINStructTypeDef* SDADC_AINStruct)
   *         using SDADC_AINInit()
   * @retval None
   */
-void SDADC_ChannelConfig(SDADC_TypeDef* SDADCx, uint32_t SDADC_Channel, uint32_t SDADC_Conf)
+void SDADC_ChannelConfig(SDADC_TypeDef * SDADCx, uint32_t SDADC_Channel,
+			 uint32_t SDADC_Conf)
 {
-  uint32_t channelnum = 0;
+	uint32_t channelnum = 0;
 
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
-  assert_param(IS_SDADC_INJECTED_CHANNEL(SDADC_Channel));
-  assert_param(IS_SDADC_CONF(SDADC_Conf));
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	assert_param(IS_SDADC_INJECTED_CHANNEL(SDADC_Channel));
+	assert_param(IS_SDADC_CONF(SDADC_Conf));
 
   /*----------------------- SDADCx CONFCHRx Configuration --------------------*/
-  if(SDADC_Channel != SDADC_Channel_8)
-  {
-    /* Get channel number */
-    channelnum = (uint32_t)(SDADC_Channel>>16);
-    /* Set the channel configuration */
-    SDADCx->CONFCHR1 |= (uint32_t) (SDADC_Conf << (channelnum << 2));
-  }
-  else
-  {
-    SDADCx->CONFCHR2 = (uint32_t) (SDADC_Conf);
-  }
+	if (SDADC_Channel != SDADC_Channel_8) {
+		/* Get channel number */
+		channelnum = (uint32_t) (SDADC_Channel >> 16);
+		/* Set the channel configuration */
+		SDADCx->CONFCHR1 |=
+		    (uint32_t) (SDADC_Conf << (channelnum << 2));
+	} else {
+		SDADCx->CONFCHR2 = (uint32_t) (SDADC_Conf);
+	}
 }
 
 /**
@@ -339,22 +339,19 @@ void SDADC_ChannelConfig(SDADC_TypeDef* SDADCx, uint32_t SDADC_Channel, uint32_t
   *          This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void SDADC_Cmd(SDADC_TypeDef* SDADCx, FunctionalState NewState)
+void SDADC_Cmd(SDADC_TypeDef * SDADCx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Set the ADON bit to enable the SDADC */
-    SDADCx->CR2 |= (uint32_t)SDADC_CR2_ADON;
-  }
-  else
-  {
-    /* Reset the ADON bit to disable the SDADC */
-    SDADCx->CR2 &= (uint32_t)(~SDADC_CR2_ADON);
-  }
+	if (NewState != DISABLE) {
+		/* Set the ADON bit to enable the SDADC */
+		SDADCx->CR2 |= (uint32_t) SDADC_CR2_ADON;
+	} else {
+		/* Reset the ADON bit to disable the SDADC */
+		SDADCx->CR2 &= (uint32_t) (~SDADC_CR2_ADON);
+	}
 }
 
 /**
@@ -370,22 +367,19 @@ void SDADC_Cmd(SDADC_TypeDef* SDADCx, FunctionalState NewState)
   *         configurations are allowed (regular channel selection, software trigger)
   * @retval None
   */
-void SDADC_InitModeCmd(SDADC_TypeDef* SDADCx, FunctionalState NewState)
+void SDADC_InitModeCmd(SDADC_TypeDef * SDADCx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Set the INIT bit to enter initialization mode */
-    SDADCx->CR1 |= (uint32_t)SDADC_CR1_INIT;
-  }
-  else
-  {
-    /* Reset the INIT bit to exit initialization mode */
-    SDADCx->CR1 &= (uint32_t)(~SDADC_CR1_INIT);
-  }
+	if (NewState != DISABLE) {
+		/* Set the INIT bit to enter initialization mode */
+		SDADCx->CR1 |= (uint32_t) SDADC_CR1_INIT;
+	} else {
+		/* Reset the INIT bit to exit initialization mode */
+		SDADCx->CR1 &= (uint32_t) (~SDADC_CR1_INIT);
+	}
 }
 
 /**
@@ -401,22 +395,19 @@ void SDADC_InitModeCmd(SDADC_TypeDef* SDADCx, FunctionalState NewState)
   *          This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void SDADC_FastConversionCmd(SDADC_TypeDef* SDADCx, FunctionalState NewState)
+void SDADC_FastConversionCmd(SDADC_TypeDef * SDADCx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the fast conversion mode */
-    SDADCx->CR2 |= SDADC_CR2_FAST;
-  }
-  else
-  {
-    /* Disable the fast conversion mode */
-    SDADCx->CR2 &= (uint32_t)(~SDADC_CR2_FAST);
-  }
+	if (NewState != DISABLE) {
+		/* Enable the fast conversion mode */
+		SDADCx->CR2 |= SDADC_CR2_FAST;
+	} else {
+		/* Disable the fast conversion mode */
+		SDADCx->CR2 &= (uint32_t) (~SDADC_CR2_FAST);
+	}
 }
 
 /**
@@ -436,21 +427,21 @@ void SDADC_FastConversionCmd(SDADC_TypeDef* SDADCx, FunctionalState NewState)
   */
 void SDADC_VREFSelect(uint32_t SDADC_VREF)
 {
-uint32_t tmpcr1;
+	uint32_t tmpcr1;
 
-  /* Check the parameter */
-  assert_param(IS_SDADC_VREF(SDADC_VREF));
+	/* Check the parameter */
+	assert_param(IS_SDADC_VREF(SDADC_VREF));
 
-  /* Get SDADC1_CR1 register value */
-  tmpcr1 = SDADC1->CR1;
+	/* Get SDADC1_CR1 register value */
+	tmpcr1 = SDADC1->CR1;
 
-  /* Clear the SDADC1_CR1_REFV bits */
-  tmpcr1 &= (uint32_t) (~SDADC_CR1_REFV);
-  /* Select the reference voltage */
-  tmpcr1 |= SDADC_VREF;
+	/* Clear the SDADC1_CR1_REFV bits */
+	tmpcr1 &= (uint32_t) (~SDADC_CR1_REFV);
+	/* Select the reference voltage */
+	tmpcr1 |= SDADC_VREF;
 
-  /* Write in SDADC_CR1 */
-  SDADC1->CR1 = tmpcr1;
+	/* Write in SDADC_CR1 */
+	SDADC1->CR1 = tmpcr1;
 }
 
 /**
@@ -470,24 +461,25 @@ uint32_t tmpcr1;
   *                                      and OFFSET2[11:0] (offsets that correspond to conf0, conf1 and conf2)
   * @retval None
   */
-void SDADC_CalibrationSequenceConfig(SDADC_TypeDef* SDADCx, uint32_t SDADC_CalibrationSequence)
+void SDADC_CalibrationSequenceConfig(SDADC_TypeDef * SDADCx,
+				     uint32_t SDADC_CalibrationSequence)
 {
-  uint32_t tmpcr2;
+	uint32_t tmpcr2;
 
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
-  assert_param(IS_SDADC_CALIB_SEQUENCE(SDADC_CalibrationSequence));
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	assert_param(IS_SDADC_CALIB_SEQUENCE(SDADC_CalibrationSequence));
 
-  /* Get SDADC_CR2 register value */
-  tmpcr2 = SDADCx->CR2;
+	/* Get SDADC_CR2 register value */
+	tmpcr2 = SDADCx->CR2;
 
-  /* Clear the SDADC_CR2_CALIBCNT bits */
-  tmpcr2 &= (uint32_t) (~SDADC_CR2_CALIBCNT);
-  /* Set the calibration sequence */
-  tmpcr2 |= SDADC_CalibrationSequence;
+	/* Clear the SDADC_CR2_CALIBCNT bits */
+	tmpcr2 &= (uint32_t) (~SDADC_CR2_CALIBCNT);
+	/* Set the calibration sequence */
+	tmpcr2 |= SDADC_CalibrationSequence;
 
-  /* Write in SDADC_CR2 */
-  SDADCx->CR2 = tmpcr2;
+	/* Write in SDADC_CR2 */
+	SDADCx->CR2 = tmpcr2;
 }
 
 /**
@@ -498,13 +490,13 @@ void SDADC_CalibrationSequenceConfig(SDADC_TypeDef* SDADCx, uint32_t SDADC_Calib
   * @param  SDADCx: where x can be 1, 2 or 3 to select the SDADC peripheral.
   * @retval None
   */
-void SDADC_StartCalibration(SDADC_TypeDef* SDADCx)
+void SDADC_StartCalibration(SDADC_TypeDef * SDADCx)
 {
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
 
-  /* Request a start of the calibration sequence */
-  SDADCx->CR2 |= (uint32_t)SDADC_CR2_STARTCALIB;
+	/* Request a start of the calibration sequence */
+	SDADCx->CR2 |= (uint32_t) SDADC_CR2_STARTCALIB;
 }
 
 /**
@@ -558,24 +550,24 @@ void SDADC_StartCalibration(SDADC_TypeDef* SDADCx)
   *            @arg SDADC_Channel_8: SDADC Channel 8 selected
   * @retval None
   */
-void SDADC_ChannelSelect(SDADC_TypeDef* SDADCx, uint32_t SDADC_Channel)
+void SDADC_ChannelSelect(SDADC_TypeDef * SDADCx, uint32_t SDADC_Channel)
 {
-uint32_t tmpcr2;
+	uint32_t tmpcr2;
 
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
-  assert_param(IS_SDADC_REGULAR_CHANNEL(SDADC_Channel));
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	assert_param(IS_SDADC_REGULAR_CHANNEL(SDADC_Channel));
 
-  /* Get SDADC_CR2 register value */
-  tmpcr2 = SDADCx->CR2;
+	/* Get SDADC_CR2 register value */
+	tmpcr2 = SDADCx->CR2;
 
-  /* Clear the RCH[3:0] bits */
-  tmpcr2 &= (uint32_t) (~SDADC_CR2_RCH);
-  /* Select the regular channel */
-  tmpcr2 |= (uint32_t) (SDADC_Channel & 0xFFFF0000);
+	/* Clear the RCH[3:0] bits */
+	tmpcr2 &= (uint32_t) (~SDADC_CR2_RCH);
+	/* Select the regular channel */
+	tmpcr2 |= (uint32_t) (SDADC_Channel & 0xFFFF0000);
 
-  /* Write in SDADC_CR2 register */
-  SDADCx->CR2 = tmpcr2;
+	/* Write in SDADC_CR2 register */
+	SDADCx->CR2 = tmpcr2;
 }
 
 /**
@@ -589,22 +581,19 @@ uint32_t tmpcr2;
   *          This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void SDADC_ContinuousModeCmd(SDADC_TypeDef* SDADCx, FunctionalState NewState)
+void SDADC_ContinuousModeCmd(SDADC_TypeDef * SDADCx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the selected SDADC continuous conversion mode */
-    SDADCx->CR2 |= (uint32_t)SDADC_CR2_RCONT;
-  }
-  else
-  {
-    /* Disable the selected SDADC continuous conversion mode */
-    SDADCx->CR2 &= (uint32_t)(~SDADC_CR2_RCONT);
-  }
+	if (NewState != DISABLE) {
+		/* Enable the selected SDADC continuous conversion mode */
+		SDADCx->CR2 |= (uint32_t) SDADC_CR2_RCONT;
+	} else {
+		/* Disable the selected SDADC continuous conversion mode */
+		SDADCx->CR2 &= (uint32_t) (~SDADC_CR2_RCONT);
+	}
 }
 
 /**
@@ -614,13 +603,13 @@ void SDADC_ContinuousModeCmd(SDADC_TypeDef* SDADCx, FunctionalState NewState)
   * @param  SDADCx: where x can be 1, 2 or 3 to select the SDADC peripheral.
   * @retval None
   */
-void SDADC_SoftwareStartConv(SDADC_TypeDef* SDADCx)
+void SDADC_SoftwareStartConv(SDADC_TypeDef * SDADCx)
 {
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
 
-  /* Enable the selected SDADC conversion for regular group */
-  SDADCx->CR2 |= (uint32_t)SDADC_CR2_RSWSTART;
+	/* Enable the selected SDADC conversion for regular group */
+	SDADCx->CR2 |= (uint32_t) SDADC_CR2_RSWSTART;
 }
 
 /**
@@ -628,13 +617,13 @@ void SDADC_SoftwareStartConv(SDADC_TypeDef* SDADCx)
   * @param  SDADCx: where x can be 1, 2 or 3 to select the SDADC peripheral.
   * @retval The Data conversion value.
   */
-int16_t SDADC_GetConversionValue(SDADC_TypeDef* SDADCx)
+int16_t SDADC_GetConversionValue(SDADC_TypeDef * SDADCx)
 {
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
 
-  /* Return the selected SDADC conversion value for regular channel */
-  return (int16_t) SDADCx->RDATAR;
+	/* Return the selected SDADC conversion value for regular channel */
+	return (int16_t) SDADCx->RDATAR;
 }
 
 /**
@@ -646,22 +635,20 @@ int16_t SDADC_GetConversionValue(SDADC_TypeDef* SDADCx)
   *         When disabled, do not launch a regular conversion synchronously with SDADC1.
   * @retval None
   */
-void SDADC_RegularSynchroSDADC1(SDADC_TypeDef* SDADCx, FunctionalState NewState)
+void SDADC_RegularSynchroSDADC1(SDADC_TypeDef * SDADCx,
+				FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_SDADC_SLAVE_PERIPH(SDADCx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_SDADC_SLAVE_PERIPH(SDADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable synchronization with SDADC1 on regular conversions */
-    SDADCx->CR1 |= SDADC_CR1_RSYNC;
-  }
-  else
-  {
-    /* Disable synchronization with SDADC1 on regular conversions */
-    SDADCx->CR1 &= (uint32_t)~SDADC_CR1_RSYNC;
-  }
+	if (NewState != DISABLE) {
+		/* Enable synchronization with SDADC1 on regular conversions */
+		SDADCx->CR1 |= SDADC_CR1_RSYNC;
+	} else {
+		/* Disable synchronization with SDADC1 on regular conversions */
+		SDADCx->CR1 &= (uint32_t) ~ SDADC_CR1_RSYNC;
+	}
 }
 
 /**
@@ -676,8 +663,8 @@ void SDADC_RegularSynchroSDADC1(SDADC_TypeDef* SDADCx, FunctionalState NewState)
   */
 uint32_t SDADC_GetConversionSDADC12Value(void)
 {
-  /* Return the selected conversion value for regular channel of SDADC1 and SDADC2*/
-  return (uint32_t) SDADC1->RDATA12R;
+	/* Return the selected conversion value for regular channel of SDADC1 and SDADC2 */
+	return (uint32_t) SDADC1->RDATA12R;
 }
 
 /**
@@ -692,8 +679,8 @@ uint32_t SDADC_GetConversionSDADC12Value(void)
   */
 uint32_t SDADC_GetConversionSDADC13Value(void)
 {
-  /* Return the selected conversion value for regular channel of SDADC1 and SDADC3*/
-  return (uint32_t) SDADC1->RDATA13R;
+	/* Return the selected conversion value for regular channel of SDADC1 and SDADC3 */
+	return (uint32_t) SDADC1->RDATA13R;
 }
 
 /**
@@ -732,15 +719,15 @@ uint32_t SDADC_GetConversionSDADC13Value(void)
   * @param  SDADCx: where x can be 1, 2 or 3 to select the SDADC peripheral.
   * @retval None
   */
-void SDADC_SoftwareStartInjectedConv(SDADC_TypeDef* SDADCx)
+void SDADC_SoftwareStartInjectedConv(SDADC_TypeDef * SDADCx)
 {
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
 
-  /* Start a conversion of the injected group of channels */
-  SDADCx->CR2 |= (uint32_t)SDADC_CR2_JSWSTART;
+	/* Start a conversion of the injected group of channels */
+	SDADCx->CR2 |= (uint32_t) SDADC_CR2_JSWSTART;
 }
- 
+
 /**
   * @brief  Selects the SDADC injected channel(s).
   * @note   When selected, the SDADC channel is part of the injected group
@@ -759,14 +746,14 @@ void SDADC_SoftwareStartInjectedConv(SDADC_TypeDef* SDADCx)
   *            @arg SDADC_Channel_8: SDADC Channel 8 selected
   * @retval None
   */
-void SDADC_InjectedChannelSelect(SDADC_TypeDef* SDADCx, uint32_t SDADC_Channel)
+void SDADC_InjectedChannelSelect(SDADC_TypeDef * SDADCx, uint32_t SDADC_Channel)
 {
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
-  assert_param(IS_SDADC_INJECTED_CHANNEL(SDADC_Channel));
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	assert_param(IS_SDADC_INJECTED_CHANNEL(SDADC_Channel));
 
-  /* Select the SDADC injected channel */
-  SDADCx->JCHGR = (uint32_t) (SDADC_Channel & 0x0000FFFF);
+	/* Select the SDADC injected channel */
+	SDADCx->JCHGR = (uint32_t) (SDADC_Channel & 0x0000FFFF);
 }
 
 /**
@@ -780,22 +767,20 @@ void SDADC_InjectedChannelSelect(SDADC_TypeDef* SDADCx, uint32_t SDADC_Channel)
   *         a fixed interval before launching the conversion.
   * @retval None
   */
-void SDADC_DelayStartInjectedConvCmd(SDADC_TypeDef* SDADCx, FunctionalState NewState)
+void SDADC_DelayStartInjectedConvCmd(SDADC_TypeDef * SDADCx,
+				     FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable delay start of injected conversions */
-    SDADCx->CR2 |= (uint32_t) (SDADC_CR2_JDS);
-  }
-  else
-  {
-    /* Disable delay start of injected conversions */
-    SDADCx->CR2 &= (uint32_t) ~(SDADC_CR2_JDS);
-  }
+	if (NewState != DISABLE) {
+		/* Enable delay start of injected conversions */
+		SDADCx->CR2 |= (uint32_t) (SDADC_CR2_JDS);
+	} else {
+		/* Disable delay start of injected conversions */
+		SDADCx->CR2 &= (uint32_t) ~ (SDADC_CR2_JDS);
+	}
 }
 
 /**
@@ -806,22 +791,20 @@ void SDADC_DelayStartInjectedConvCmd(SDADC_TypeDef* SDADCx, FunctionalState NewS
   *         on injected channels. This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void SDADC_InjectedContinuousModeCmd(SDADC_TypeDef* SDADCx, FunctionalState NewState)
+void SDADC_InjectedContinuousModeCmd(SDADC_TypeDef * SDADCx,
+				     FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the SDADC continuous mode for injected channels */
-    SDADCx->CR2 |= (uint32_t)SDADC_CR2_JCONT;
-  }
-  else
-  {
-    /* Disable the SDADC continuous mode for injected channels */
-    SDADCx->CR2 &= (uint32_t)(~SDADC_CR2_JCONT);
-  }
+	if (NewState != DISABLE) {
+		/* Enable the SDADC continuous mode for injected channels */
+		SDADCx->CR2 |= (uint32_t) SDADC_CR2_JCONT;
+	} else {
+		/* Disable the SDADC continuous mode for injected channels */
+		SDADCx->CR2 &= (uint32_t) (~SDADC_CR2_JCONT);
+	}
 }
 
 /**
@@ -852,24 +835,25 @@ void SDADC_InjectedContinuousModeCmd(SDADC_TypeDef* SDADCx, FunctionalState NewS
   *            @arg SDADC_ExternalTrigInjecConv_Ext_IT15: External interrupt line 15 event selected
   * @retval None
   */
-void SDADC_ExternalTrigInjectedConvConfig(SDADC_TypeDef* SDADCx, uint32_t SDADC_ExternalTrigInjecConv)
+void SDADC_ExternalTrigInjectedConvConfig(SDADC_TypeDef * SDADCx,
+					  uint32_t SDADC_ExternalTrigInjecConv)
 {
-  uint32_t tmpreg = 0;
+	uint32_t tmpreg = 0;
 
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
-  assert_param(IS_SDADC_EXT_INJEC_TRIG(SDADC_ExternalTrigInjecConv));
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	assert_param(IS_SDADC_EXT_INJEC_TRIG(SDADC_ExternalTrigInjecConv));
 
-  /* Get the old register value */
-  tmpreg = SDADCx->CR2;
+	/* Get the old register value */
+	tmpreg = SDADCx->CR2;
 
-  /* Clear the old external trigger selection for injected group */
-  tmpreg &= (uint32_t) (~SDADC_CR2_JEXTSEL);
-  /* Set the external event selection for injected group */
-  tmpreg |= SDADC_ExternalTrigInjecConv;
+	/* Clear the old external trigger selection for injected group */
+	tmpreg &= (uint32_t) (~SDADC_CR2_JEXTSEL);
+	/* Set the external event selection for injected group */
+	tmpreg |= SDADC_ExternalTrigInjecConv;
 
-  /* Store the new register value */
-  SDADCx->CR2 = tmpreg;
+	/* Store the new register value */
+	SDADCx->CR2 = tmpreg;
 }
 
 /**
@@ -888,24 +872,27 @@ void SDADC_ExternalTrigInjectedConvConfig(SDADC_TypeDef* SDADCx, uint32_t SDADC_
   *          falling edges on the selected trigger make requests to launch injected conversions.
   * @retval None
   */
-void SDADC_ExternalTrigInjectedConvEdgeConfig(SDADC_TypeDef* SDADCx, uint32_t SDADC_ExternalTrigInjecConvEdge)
+void SDADC_ExternalTrigInjectedConvEdgeConfig(SDADC_TypeDef * SDADCx,
+					      uint32_t
+					      SDADC_ExternalTrigInjecConvEdge)
 {
-  uint32_t tmpreg = 0;
+	uint32_t tmpreg = 0;
 
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
-  assert_param(IS_SDADC_EXT_INJEC_TRIG_EDGE(SDADC_ExternalTrigInjecConvEdge));
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	assert_param(IS_SDADC_EXT_INJEC_TRIG_EDGE
+		     (SDADC_ExternalTrigInjecConvEdge));
 
-  /* Get the old register value */
-  tmpreg = SDADCx->CR2;
+	/* Get the old register value */
+	tmpreg = SDADCx->CR2;
 
-  /* Clear the old external trigger edge for injected group */
-  tmpreg &= (uint32_t) (~SDADC_CR2_JEXTEN);
-  /* Set the new external trigger edge for injected group */
-  tmpreg |= SDADC_ExternalTrigInjecConvEdge;
+	/* Clear the old external trigger edge for injected group */
+	tmpreg &= (uint32_t) (~SDADC_CR2_JEXTEN);
+	/* Set the new external trigger edge for injected group */
+	tmpreg |= SDADC_ExternalTrigInjecConvEdge;
 
-  /* Store the new register value */
-  SDADCx->CR2 = tmpreg;
+	/* Store the new register value */
+	SDADCx->CR2 = tmpreg;
 }
 
 /**
@@ -924,19 +911,19 @@ void SDADC_ExternalTrigInjectedConvEdgeConfig(SDADC_TypeDef* SDADCx, uint32_t SD
   *            @arg 0x00070080: SDADC_Channel_7 is recently converted
   *            @arg 0x00080100: SDADC_Channel_8 is recently converted
   */
-uint32_t SDADC_GetInjectedChannel(SDADC_TypeDef* SDADCx)
+uint32_t SDADC_GetInjectedChannel(SDADC_TypeDef * SDADCx)
 {
-  uint32_t temp = 0;
-  
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	uint32_t temp = 0;
 
-  /* Get the injected channel most recently converted */
-  temp = (uint32_t)(SDADCx->JDATAR>>16);
-  temp = (uint32_t) (((uint32_t)1<<temp) | (temp<<(uint32_t)16));
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
 
-  /* Returns the injected channel most recently converted */
-  return (uint32_t) (temp);
+	/* Get the injected channel most recently converted */
+	temp = (uint32_t) (SDADCx->JDATAR >> 16);
+	temp = (uint32_t) (((uint32_t) 1 << temp) | (temp << (uint32_t) 16));
+
+	/* Returns the injected channel most recently converted */
+	return (uint32_t) (temp);
 }
 
 /**
@@ -955,21 +942,24 @@ uint32_t SDADC_GetInjectedChannel(SDADC_TypeDef* SDADCx)
   *            @arg 0x00080100: SDADC_Channel_8 is recently converted
   * @retval The injected data conversion value.
   */
-int16_t SDADC_GetInjectedConversionValue(SDADC_TypeDef* SDADCx, uint32_t* SDADC_Channel)
+int16_t SDADC_GetInjectedConversionValue(SDADC_TypeDef * SDADCx,
+					 uint32_t * SDADC_Channel)
 {
-  uint32_t tmp = 0;
+	uint32_t tmp = 0;
 
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
 
-  /* Get SDADC_JDATAR register */
-  tmp = (uint32_t)SDADCx->JDATAR;
+	/* Get SDADC_JDATAR register */
+	tmp = (uint32_t) SDADCx->JDATAR;
 
-  /* Get the injected channel most recently converted */
-   *(uint32_t*)SDADC_Channel = (uint32_t) ((uint32_t)((tmp>>8) &0xffff0000) | (((uint32_t)1<<(tmp>>24))));
+	/* Get the injected channel most recently converted */
+	*(uint32_t *) SDADC_Channel =
+	    (uint32_t) ((uint32_t) ((tmp >> 8) & 0xffff0000) |
+			(((uint32_t) 1 << (tmp >> 24))));
 
-  /* Returns the injected channel conversion data */
-  return (int16_t) ((uint32_t)(tmp & 0x0000FFFF));
+	/* Returns the injected channel conversion data */
+	return (int16_t) ((uint32_t) (tmp & 0x0000FFFF));
 }
 
 /**
@@ -983,22 +973,20 @@ int16_t SDADC_GetInjectedConversionValue(SDADC_TypeDef* SDADCx, uint32_t* SDADC_
   *         When disabled, do not launch an injected conversion synchronously with SDADC1.
   * @retval None
   */
-void SDADC_InjectedSynchroSDADC1(SDADC_TypeDef* SDADCx, FunctionalState NewState)
+void SDADC_InjectedSynchroSDADC1(SDADC_TypeDef * SDADCx,
+				 FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_SDADC_SLAVE_PERIPH(SDADCx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_SDADC_SLAVE_PERIPH(SDADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable synchronization with SDADC1 on injected conversions */
-    SDADCx->CR1 |= SDADC_CR1_JSYNC;
-  }
-  else
-  {
-    /* Disable synchronization with SDADC1 on injected conversions */
-    SDADCx->CR1 &= (uint32_t)~SDADC_CR1_JSYNC;
-  }
+	if (NewState != DISABLE) {
+		/* Enable synchronization with SDADC1 on injected conversions */
+		SDADCx->CR1 |= SDADC_CR1_JSYNC;
+	} else {
+		/* Disable synchronization with SDADC1 on injected conversions */
+		SDADCx->CR1 &= (uint32_t) ~ SDADC_CR1_JSYNC;
+	}
 }
 
 /**
@@ -1013,8 +1001,8 @@ void SDADC_InjectedSynchroSDADC1(SDADC_TypeDef* SDADCx, FunctionalState NewState
   */
 uint32_t SDADC_GetInjectedConversionSDADC12Value(void)
 {
-  /* Return the selected conversion value for injected channel of SDADC1 and SDADC2*/
-  return (uint32_t) SDADC1->JDATA12R;
+	/* Return the selected conversion value for injected channel of SDADC1 and SDADC2 */
+	return (uint32_t) SDADC1->JDATA12R;
 }
 
 /**
@@ -1029,8 +1017,8 @@ uint32_t SDADC_GetInjectedConversionSDADC12Value(void)
   */
 uint32_t SDADC_GetInjectedConversionSDADC13Value(void)
 {
-  /* Return the selected conversion value for injected channel of SDADC1 and SDADC3*/
-  return (uint32_t) SDADC1->JDATA13R;
+	/* Return the selected conversion value for injected channel of SDADC1 and SDADC3 */
+	return (uint32_t) SDADC1->JDATA13R;
 }
 
 /**
@@ -1064,22 +1052,19 @@ uint32_t SDADC_GetInjectedConversionSDADC13Value(void)
   *          This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void SDADC_PowerDownCmd(SDADC_TypeDef* SDADCx, FunctionalState NewState)
+void SDADC_PowerDownCmd(SDADC_TypeDef * SDADCx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Enable the SDADC power-down when idle */
-    SDADCx->CR1 |= SDADC_CR1_PDI;
-  }
-  else
-  {
-    /* Disable the SDADCx power-down when idle */
-    SDADCx->CR1 &= (uint32_t)~SDADC_CR1_PDI;
-  }
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+	if (NewState != DISABLE) {
+		/* Enable the SDADC power-down when idle */
+		SDADCx->CR1 |= SDADC_CR1_PDI;
+	} else {
+		/* Disable the SDADCx power-down when idle */
+		SDADCx->CR1 &= (uint32_t) ~ SDADC_CR1_PDI;
+	}
 }
 
 /**
@@ -1093,22 +1078,19 @@ void SDADC_PowerDownCmd(SDADC_TypeDef* SDADCx, FunctionalState NewState)
   *          This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void SDADC_StandbyCmd(SDADC_TypeDef* SDADCx, FunctionalState NewState)
+void SDADC_StandbyCmd(SDADC_TypeDef * SDADCx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Enable the standby mode when idle */
-    SDADCx->CR1 |= SDADC_CR1_SBI;
-  }
-  else
-  {
-    /* Disable the standby mode when idle */
-    SDADCx->CR1 &= (uint32_t)~SDADC_CR1_SBI;
-  }
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+	if (NewState != DISABLE) {
+		/* Enable the standby mode when idle */
+		SDADCx->CR1 |= SDADC_CR1_SBI;
+	} else {
+		/* Disable the standby mode when idle */
+		SDADCx->CR1 &= (uint32_t) ~ SDADC_CR1_SBI;
+	}
 }
 
 /**
@@ -1121,22 +1103,19 @@ void SDADC_StandbyCmd(SDADC_TypeDef* SDADCx, FunctionalState NewState)
   *          This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void SDADC_SlowClockCmd(SDADC_TypeDef* SDADCx, FunctionalState NewState)
+void SDADC_SlowClockCmd(SDADC_TypeDef * SDADCx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the slow clock mode */
-    SDADCx->CR1 |= SDADC_CR1_SLOWCK;
-  }
-  else
-  {
-    /* Disable the slow clock mode */
-    SDADCx->CR1 &= (uint32_t)~SDADC_CR1_SLOWCK;
-  }
+	if (NewState != DISABLE) {
+		/* Enable the slow clock mode */
+		SDADCx->CR1 |= SDADC_CR1_SLOWCK;
+	} else {
+		/* Disable the slow clock mode */
+		SDADCx->CR1 &= (uint32_t) ~ SDADC_CR1_SLOWCK;
+	}
 }
 
 /**
@@ -1177,23 +1156,21 @@ void SDADC_SlowClockCmd(SDADC_TypeDef* SDADCx, FunctionalState NewState)
   *           This parameter can be: ENABLE or DISABLE.  
   * @retval None
   */
-void SDADC_DMAConfig(SDADC_TypeDef* SDADCx, uint32_t SDADC_DMATransfer, FunctionalState NewState)
+void SDADC_DMAConfig(SDADC_TypeDef * SDADCx, uint32_t SDADC_DMATransfer,
+		     FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
-  assert_param(IS_SDADC_DMA_TRANSFER(SDADC_DMATransfer));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	assert_param(IS_SDADC_DMA_TRANSFER(SDADC_DMATransfer));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the DMA transfer */
-    SDADCx->CR1 |= SDADC_DMATransfer;
-  }
-  else
-  {
-    /* Disable the DMA transfer */
-    SDADCx->CR1 &= (uint32_t)(~SDADC_DMATransfer);
-  }
+	if (NewState != DISABLE) {
+		/* Enable the DMA transfer */
+		SDADCx->CR1 |= SDADC_DMATransfer;
+	} else {
+		/* Disable the DMA transfer */
+		SDADCx->CR1 &= (uint32_t) (~SDADC_DMATransfer);
+	}
 }
 
 /**
@@ -1265,7 +1242,7 @@ void SDADC_DMAConfig(SDADC_TypeDef* SDADCx, uint32_t SDADC_DMATransfer, Function
                                         (corresponding Flag). 
 @endverbatim
   * @{
-  */ 
+  */
 
 /**
   * @brief  Enables or disables the specified SDADC interrupts.
@@ -1281,23 +1258,21 @@ void SDADC_DMAConfig(SDADC_TypeDef* SDADCx, uint32_t SDADC_DMATransfer, Function
   *          This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void SDADC_ITConfig(SDADC_TypeDef* SDADCx, uint32_t SDADC_IT, FunctionalState NewState)  
+void SDADC_ITConfig(SDADC_TypeDef * SDADCx, uint32_t SDADC_IT,
+		    FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  assert_param(IS_SDADC_IT(SDADC_IT)); 
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
+	assert_param(IS_SDADC_IT(SDADC_IT));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the selected SDADC interrupts */
-    SDADCx->CR1 |= SDADC_IT;
-  }
-  else
-  {
-    /* Disable the selected SDADC interrupts */
-    SDADCx->CR1 &= ((uint32_t)~SDADC_IT);
-  }
+	if (NewState != DISABLE) {
+		/* Enable the selected SDADC interrupts */
+		SDADCx->CR1 |= SDADC_IT;
+	} else {
+		/* Disable the selected SDADC interrupts */
+		SDADCx->CR1 &= ((uint32_t) ~ SDADC_IT);
+	}
 }
 
 /**
@@ -1317,26 +1292,23 @@ void SDADC_ITConfig(SDADC_TypeDef* SDADCx, uint32_t SDADC_IT, FunctionalState Ne
   *            @arg SDADC_FLAG_INITRDY: Initialization mode is ready
   * @retval The new state of SDADC_FLAG (SET or RESET).
   */
-FlagStatus SDADC_GetFlagStatus(SDADC_TypeDef* SDADCx, uint32_t SDADC_FLAG)
+FlagStatus SDADC_GetFlagStatus(SDADC_TypeDef * SDADCx, uint32_t SDADC_FLAG)
 {
-  FlagStatus bitstatus = RESET;
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
-  assert_param(IS_SDADC_GET_FLAG(SDADC_FLAG));
+	FlagStatus bitstatus = RESET;
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	assert_param(IS_SDADC_GET_FLAG(SDADC_FLAG));
 
-  /* Check the status of the specified SDADC flag */
-  if ((SDADCx->ISR & SDADC_FLAG) != (uint32_t)RESET)
-  {
-    /* SDADC_FLAG is set */
-    bitstatus = SET;
-  }
-  else
-  {
-    /* SDADC_FLAG is reset */
-    bitstatus = RESET;
-  }
-  /* Return the SDADC_FLAG status */
-  return  bitstatus;
+	/* Check the status of the specified SDADC flag */
+	if ((SDADCx->ISR & SDADC_FLAG) != (uint32_t) RESET) {
+		/* SDADC_FLAG is set */
+		bitstatus = SET;
+	} else {
+		/* SDADC_FLAG is reset */
+		bitstatus = RESET;
+	}
+	/* Return the SDADC_FLAG status */
+	return bitstatus;
 }
 
 /**
@@ -1349,14 +1321,14 @@ FlagStatus SDADC_GetFlagStatus(SDADC_TypeDef* SDADCx, uint32_t SDADC_FLAG)
   *            @arg SDADC_FLAG_ROVR: Regular conversion overrun flag
   * @retval None
   */
-void SDADC_ClearFlag(SDADC_TypeDef* SDADCx, uint32_t SDADC_FLAG)
+void SDADC_ClearFlag(SDADC_TypeDef * SDADCx, uint32_t SDADC_FLAG)
 {
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
-  assert_param(IS_SDADC_CLEAR_FLAG(SDADC_FLAG));
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	assert_param(IS_SDADC_CLEAR_FLAG(SDADC_FLAG));
 
-  /* Clear the selected SDADC flags */
-  SDADCx->CLRISR |= (uint32_t)SDADC_FLAG;
+	/* Clear the selected SDADC flags */
+	SDADCx->CLRISR |= (uint32_t) SDADC_FLAG;
 }
 
 /**
@@ -1371,32 +1343,30 @@ void SDADC_ClearFlag(SDADC_TypeDef* SDADCx, uint32_t SDADC_FLAG)
   *            @arg SDADC_IT_ROVR: Regular conversion overrun flag
   * @retval The new state of SDADC_IT (SET or RESET).
   */
-ITStatus SDADC_GetITStatus(SDADC_TypeDef* SDADCx, uint32_t SDADC_IT)
+ITStatus SDADC_GetITStatus(SDADC_TypeDef * SDADCx, uint32_t SDADC_IT)
 {
-  ITStatus bitstatus = RESET;
-  uint32_t itstatus = 0, enablestatus = 0;
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
-  assert_param(IS_SDADC_GET_IT(SDADC_IT));
+	ITStatus bitstatus = RESET;
+	uint32_t itstatus = 0, enablestatus = 0;
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	assert_param(IS_SDADC_GET_IT(SDADC_IT));
 
-  /* Get the SDADC interrupt pending status */
-  itstatus = (uint32_t) (SDADC_IT & SDADCx->ISR);
-  /* Get the SDADC IT enable bit status */
-  enablestatus = (SDADCx->CR1 & (uint32_t)SDADC_IT);
+	/* Get the SDADC interrupt pending status */
+	itstatus = (uint32_t) (SDADC_IT & SDADCx->ISR);
+	/* Get the SDADC IT enable bit status */
+	enablestatus = (SDADCx->CR1 & (uint32_t) SDADC_IT);
 
-  /* Check the status of the specified SDADC interrupt */
-  if ((itstatus != (uint32_t)RESET) && (enablestatus != (uint32_t)RESET))
-  {
-    /* SDADC_IT is set */
-    bitstatus = SET;
-  }
-  else
-  {
-    /* SDADC_IT is reset */
-    bitstatus = RESET;
-  }
-  /* Return the SDADC_IT status */
-  return  bitstatus;
+	/* Check the status of the specified SDADC interrupt */
+	if ((itstatus != (uint32_t) RESET)
+	    && (enablestatus != (uint32_t) RESET)) {
+		/* SDADC_IT is set */
+		bitstatus = SET;
+	} else {
+		/* SDADC_IT is reset */
+		bitstatus = RESET;
+	}
+	/* Return the SDADC_IT status */
+	return bitstatus;
 }
 
 /**
@@ -1409,14 +1379,14 @@ ITStatus SDADC_GetITStatus(SDADC_TypeDef* SDADCx, uint32_t SDADC_IT)
   *            @arg SDADC_IT_ROVR: Regular conversion overrun flag
   * @retval None
   */
-void SDADC_ClearITPendingBit(SDADC_TypeDef* SDADCx, uint32_t SDADC_IT)
+void SDADC_ClearITPendingBit(SDADC_TypeDef * SDADCx, uint32_t SDADC_IT)
 {
-  /* Check the parameters */
-  assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
-  assert_param(IS_SDADC_CLEAR_IT(SDADC_IT));
+	/* Check the parameters */
+	assert_param(IS_SDADC_ALL_PERIPH(SDADCx));
+	assert_param(IS_SDADC_CLEAR_IT(SDADC_IT));
 
-  /* Clear the selected SDADC interrupt pending bits */
-  SDADCx->CLRISR |= (uint32_t)SDADC_IT;
+	/* Clear the selected SDADC interrupt pending bits */
+	SDADCx->CLRISR |= (uint32_t) SDADC_IT;
 }
 
 /**

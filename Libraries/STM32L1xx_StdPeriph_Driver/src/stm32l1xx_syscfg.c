@@ -81,8 +81,8 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-#define TIM_SELECT_MASK             ((uint32_t)0xFFFCFFFF) /*!< TIM select mask */
-#define IC_ROUTING_MASK             ((uint32_t)0x0000000F) /*!< Input Capture routing mask */
+#define TIM_SELECT_MASK             ((uint32_t)0xFFFCFFFF)	/*!< TIM select mask */
+#define IC_ROUTING_MASK             ((uint32_t)0x0000000F)	/*!< Input Capture routing mask */
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -113,8 +113,8 @@
   */
 void SYSCFG_DeInit(void)
 {
-   RCC_APB2PeriphResetCmd(RCC_APB2Periph_SYSCFG, ENABLE);
-   RCC_APB2PeriphResetCmd(RCC_APB2Periph_SYSCFG, DISABLE);
+	RCC_APB2PeriphResetCmd(RCC_APB2Periph_SYSCFG, ENABLE);
+	RCC_APB2PeriphResetCmd(RCC_APB2Periph_SYSCFG, DISABLE);
 }
 
 /**
@@ -124,13 +124,13 @@ void SYSCFG_DeInit(void)
   */
 void SYSCFG_RIDeInit(void)
 {
-  RI->ICR     = ((uint32_t)0x00000000);    /*!< Set RI->ICR to reset value */
-  RI->ASCR1   = ((uint32_t)0x00000000);    /*!< Set RI->ASCR1 to reset value */
-  RI->ASCR2   = ((uint32_t)0x00000000);    /*!< Set RI->ASCR2 to reset value */
-  RI->HYSCR1  = ((uint32_t)0x00000000);    /*!< Set RI->HYSCR1 to reset value */
-  RI->HYSCR2  = ((uint32_t)0x00000000);    /*!< Set RI->HYSCR2 to reset value */
-  RI->HYSCR3  = ((uint32_t)0x00000000);    /*!< Set RI->HYSCR3 to reset value */
-  RI->HYSCR4  = ((uint32_t)0x00000000);    /*!< Set RI->HYSCR4 to reset value */
+	RI->ICR = ((uint32_t) 0x00000000);	/*!< Set RI->ICR to reset value */
+	RI->ASCR1 = ((uint32_t) 0x00000000);	/*!< Set RI->ASCR1 to reset value */
+	RI->ASCR2 = ((uint32_t) 0x00000000);	/*!< Set RI->ASCR2 to reset value */
+	RI->HYSCR1 = ((uint32_t) 0x00000000);	/*!< Set RI->HYSCR1 to reset value */
+	RI->HYSCR2 = ((uint32_t) 0x00000000);	/*!< Set RI->HYSCR2 to reset value */
+	RI->HYSCR3 = ((uint32_t) 0x00000000);	/*!< Set RI->HYSCR3 to reset value */
+	RI->HYSCR4 = ((uint32_t) 0x00000000);	/*!< Set RI->HYSCR4 to reset value */
 }
 
 /**
@@ -145,9 +145,9 @@ void SYSCFG_RIDeInit(void)
   */
 void SYSCFG_MemoryRemapConfig(uint8_t SYSCFG_MemoryRemap)
 {
-  /* Check the parameters */
-  assert_param(IS_SYSCFG_MEMORY_REMAP_CONFING(SYSCFG_MemoryRemap));
-  SYSCFG->MEMRMP = SYSCFG_MemoryRemap;
+	/* Check the parameters */
+	assert_param(IS_SYSCFG_MEMORY_REMAP_CONFING(SYSCFG_MemoryRemap));
+	SYSCFG->MEMRMP = SYSCFG_MemoryRemap;
 }
 
 /**
@@ -162,7 +162,7 @@ void SYSCFG_MemoryRemapConfig(uint8_t SYSCFG_MemoryRemap)
   */
 uint32_t SYSCFG_GetBootMode(void)
 {
-  return (SYSCFG->MEMRMP & SYSCFG_MEMRMP_BOOT_MODE);
+	return (SYSCFG->MEMRMP & SYSCFG_MEMRMP_BOOT_MODE);
 }
 
 /**
@@ -174,19 +174,16 @@ uint32_t SYSCFG_GetBootMode(void)
   */
 void SYSCFG_USBPuCmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Connect internal pull-up on USB DP line */
-    SYSCFG->PMC |= (uint32_t) SYSCFG_PMC_USB_PU;
-  }
-  else
-  {
-    /* Disconnect internal pull-up on USB DP line */
-    SYSCFG->PMC &= (uint32_t)(~SYSCFG_PMC_USB_PU);
-  }
+	if (NewState != DISABLE) {
+		/* Connect internal pull-up on USB DP line */
+		SYSCFG->PMC |= (uint32_t) SYSCFG_PMC_USB_PU;
+	} else {
+		/* Disconnect internal pull-up on USB DP line */
+		SYSCFG->PMC &= (uint32_t) (~SYSCFG_PMC_USB_PU);
+	}
 }
 
 /**
@@ -197,17 +194,20 @@ void SYSCFG_USBPuCmd(FunctionalState NewState)
   *         This parameter can be EXTI_PinSourcex where x can be (0..15).
   * @retval None
   */
-void SYSCFG_EXTILineConfig(uint8_t EXTI_PortSourceGPIOx, uint8_t EXTI_PinSourcex)
+void SYSCFG_EXTILineConfig(uint8_t EXTI_PortSourceGPIOx,
+			   uint8_t EXTI_PinSourcex)
 {
-  uint32_t tmp = 0x00;
+	uint32_t tmp = 0x00;
 
-  /* Check the parameters */
-  assert_param(IS_EXTI_PORT_SOURCE(EXTI_PortSourceGPIOx));
-  assert_param(IS_EXTI_PIN_SOURCE(EXTI_PinSourcex));
-  
-  tmp = ((uint32_t)0x0F) << (0x04 * (EXTI_PinSourcex & (uint8_t)0x03));
-  SYSCFG->EXTICR[EXTI_PinSourcex >> 0x02] &= ~tmp;
-  SYSCFG->EXTICR[EXTI_PinSourcex >> 0x02] |= (((uint32_t)EXTI_PortSourceGPIOx) << (0x04 * (EXTI_PinSourcex & (uint8_t)0x03)));
+	/* Check the parameters */
+	assert_param(IS_EXTI_PORT_SOURCE(EXTI_PortSourceGPIOx));
+	assert_param(IS_EXTI_PIN_SOURCE(EXTI_PinSourcex));
+
+	tmp = ((uint32_t) 0x0F) << (0x04 * (EXTI_PinSourcex & (uint8_t) 0x03));
+	SYSCFG->EXTICR[EXTI_PinSourcex >> 0x02] &= ~tmp;
+	SYSCFG->EXTICR[EXTI_PinSourcex >> 0x02] |=
+	    (((uint32_t) EXTI_PortSourceGPIOx) <<
+	     (0x04 * (EXTI_PinSourcex & (uint8_t) 0x03)));
 }
 
 /**
@@ -240,22 +240,22 @@ void SYSCFG_EXTILineConfig(uint8_t EXTI_PortSourceGPIOx, uint8_t EXTI_PinSourcex
   */
 void SYSCFG_RITIMSelect(uint32_t TIM_Select)
 {
-  uint32_t tmpreg = 0;
+	uint32_t tmpreg = 0;
 
-  /* Check the parameters */
-  assert_param(IS_RI_TIM(TIM_Select));
+	/* Check the parameters */
+	assert_param(IS_RI_TIM(TIM_Select));
 
-  /* Get the old register value */
-  tmpreg = RI->ICR;
+	/* Get the old register value */
+	tmpreg = RI->ICR;
 
-  /* Clear the TIMx select bits */
-  tmpreg &= TIM_SELECT_MASK;
+	/* Clear the TIMx select bits */
+	tmpreg &= TIM_SELECT_MASK;
 
-  /* Select the Timer */
-  tmpreg |= (TIM_Select);
+	/* Select the Timer */
+	tmpreg |= (TIM_Select);
 
-  /* Write to RI->ICR register */
-  RI->ICR = tmpreg;
+	/* Write to RI->ICR register */
+	RI->ICR = tmpreg;
 }
 
 /**
@@ -283,58 +283,55 @@ void SYSCFG_RITIMSelect(uint32_t TIM_Select)
   *       GPIO_PinAFConfig() function.
   * @retval None.
   */
-void SYSCFG_RITIMInputCaptureConfig(uint32_t RI_InputCapture, uint32_t RI_InputCaptureRouting)
+void SYSCFG_RITIMInputCaptureConfig(uint32_t RI_InputCapture,
+				    uint32_t RI_InputCaptureRouting)
 {
-  uint32_t tmpreg = 0;
+	uint32_t tmpreg = 0;
 
-  /* Check the parameters */
-  assert_param(IS_RI_INPUTCAPTURE(RI_InputCapture));
-  assert_param(IS_RI_INPUTCAPTURE_ROUTING(RI_InputCaptureRouting));
+	/* Check the parameters */
+	assert_param(IS_RI_INPUTCAPTURE(RI_InputCapture));
+	assert_param(IS_RI_INPUTCAPTURE_ROUTING(RI_InputCaptureRouting));
 
-  /* Get the old register value */
-  tmpreg = RI->ICR;
+	/* Get the old register value */
+	tmpreg = RI->ICR;
 
-  /* Select input captures to be routed */
-  tmpreg |= (RI_InputCapture);
+	/* Select input captures to be routed */
+	tmpreg |= (RI_InputCapture);
 
-  if((RI_InputCapture & RI_InputCapture_IC1) == RI_InputCapture_IC1)
-  {
-    /* Clear the input capture select bits */
-    tmpreg &= (uint32_t)(~IC_ROUTING_MASK);
+	if ((RI_InputCapture & RI_InputCapture_IC1) == RI_InputCapture_IC1) {
+		/* Clear the input capture select bits */
+		tmpreg &= (uint32_t) (~IC_ROUTING_MASK);
 
-    /* Set RI_InputCaptureRouting bits  */
-    tmpreg |= (uint32_t)( RI_InputCaptureRouting);
-  }
+		/* Set RI_InputCaptureRouting bits  */
+		tmpreg |= (uint32_t) (RI_InputCaptureRouting);
+	}
 
-  if((RI_InputCapture & RI_InputCapture_IC2) == RI_InputCapture_IC2)
-  {
-    /* Clear the input capture select bits */
-    tmpreg &= (uint32_t)(~(IC_ROUTING_MASK << 4));
+	if ((RI_InputCapture & RI_InputCapture_IC2) == RI_InputCapture_IC2) {
+		/* Clear the input capture select bits */
+		tmpreg &= (uint32_t) (~(IC_ROUTING_MASK << 4));
 
-    /* Set RI_InputCaptureRouting bits  */
-    tmpreg |= (uint32_t)( (RI_InputCaptureRouting << 4));
-  }
+		/* Set RI_InputCaptureRouting bits  */
+		tmpreg |= (uint32_t) ((RI_InputCaptureRouting << 4));
+	}
 
-  if((RI_InputCapture & RI_InputCapture_IC3) == RI_InputCapture_IC3)
-  {
-    /* Clear the input capture select bits */
-    tmpreg &= (uint32_t)(~(IC_ROUTING_MASK << 8));
+	if ((RI_InputCapture & RI_InputCapture_IC3) == RI_InputCapture_IC3) {
+		/* Clear the input capture select bits */
+		tmpreg &= (uint32_t) (~(IC_ROUTING_MASK << 8));
 
-    /* Set RI_InputCaptureRouting bits  */
-    tmpreg |= (uint32_t)( (RI_InputCaptureRouting << 8));
-  }
+		/* Set RI_InputCaptureRouting bits  */
+		tmpreg |= (uint32_t) ((RI_InputCaptureRouting << 8));
+	}
 
-  if((RI_InputCapture & RI_InputCapture_IC4) == RI_InputCapture_IC4)
-  {
-    /* Clear the input capture select bits */
-    tmpreg &= (uint32_t)(~(IC_ROUTING_MASK << 12));
+	if ((RI_InputCapture & RI_InputCapture_IC4) == RI_InputCapture_IC4) {
+		/* Clear the input capture select bits */
+		tmpreg &= (uint32_t) (~(IC_ROUTING_MASK << 12));
 
-    /* Set RI_InputCaptureRouting bits  */
-    tmpreg |= (uint32_t)( (RI_InputCaptureRouting << 12));
-  }
+		/* Set RI_InputCaptureRouting bits  */
+		tmpreg |= (uint32_t) ((RI_InputCaptureRouting << 12));
+	}
 
-  /* Write to RI->ICR register */
-  RI->ICR = tmpreg;
+	/* Write to RI->ICR register */
+	RI->ICR = tmpreg;
 }
 
 /**
@@ -356,20 +353,17 @@ void SYSCFG_RITIMInputCaptureConfig(uint32_t RI_InputCapture, uint32_t RI_InputC
   */
 void SYSCFG_RIResistorConfig(uint32_t RI_Resistor, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_RI_RESISTOR(RI_Resistor));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Enable the resistor */
-    COMP->CSR |= (uint32_t) RI_Resistor;
-  }
-  else
-  {
-    /* Disable the Resistor */
-    COMP->CSR &= (uint32_t) (~RI_Resistor);
-  }
+	/* Check the parameters */
+	assert_param(IS_RI_RESISTOR(RI_Resistor));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+	if (NewState != DISABLE) {
+		/* Enable the resistor */
+		COMP->CSR |= (uint32_t) RI_Resistor;
+	} else {
+		/* Disable the Resistor */
+		COMP->CSR &= (uint32_t) (~RI_Resistor);
+	}
 }
 
 /**
@@ -387,20 +381,17 @@ void SYSCFG_RIResistorConfig(uint32_t RI_Resistor, FunctionalState NewState)
   */
 void SYSCFG_RIChannelSpeedConfig(uint32_t RI_Channel, uint32_t RI_ChannelSpeed)
 {
-  /* Check the parameters */
-  assert_param(IS_RI_CHANNEL(RI_Channel));
-  assert_param(IS_RI_CHANNELSPEED(RI_ChannelSpeed));
+	/* Check the parameters */
+	assert_param(IS_RI_CHANNEL(RI_Channel));
+	assert_param(IS_RI_CHANNELSPEED(RI_ChannelSpeed));
 
-  if(RI_ChannelSpeed != RI_ChannelSpeed_Fast)
-  {
-    /* Set the selected channel as a slow ADC channel */
-    COMP->CSR &= (uint32_t) (~RI_Channel);
-  }
-  else
-  {
-    /* Set the selected channel as a fast ADC channel */
-    COMP->CSR |= (uint32_t) (RI_Channel);
-  }
+	if (RI_ChannelSpeed != RI_ChannelSpeed_Fast) {
+		/* Set the selected channel as a slow ADC channel */
+		COMP->CSR &= (uint32_t) (~RI_Channel);
+	} else {
+		/* Set the selected channel as a fast ADC channel */
+		COMP->CSR |= (uint32_t) (RI_Channel);
+	}
 }
 
 /**
@@ -435,44 +426,34 @@ void SYSCFG_RIChannelSpeedConfig(uint32_t RI_Channel, uint32_t RI_ChannelSpeed)
   */
 void SYSCFG_RIIOSwitchConfig(uint32_t RI_IOSwitch, FunctionalState NewState)
 {
-  uint32_t ioswitchmask = 0;
-  
-  /* Check the parameters */
-  assert_param(IS_RI_IOSWITCH(RI_IOSwitch));
-  
-  /* Read Analog switch register index */
-  ioswitchmask = RI_IOSwitch >> 31;
-  
-  /* Get Bits[30:0] of the IO switch */
-  RI_IOSwitch  &= 0x7FFFFFFF;
-  
-  
-  if (NewState != DISABLE)
-  {
-    if (ioswitchmask != 0)
-    {
-      /* Close the analog switches */
-      RI->ASCR1 |= RI_IOSwitch;
-    }
-    else
-    {
-      /* Open the analog switches */
-      RI->ASCR2 |= RI_IOSwitch;
-    }
-  }
-  else
-  {
-    if (ioswitchmask != 0)
-    {
-      /* Close the analog switches */
-      RI->ASCR1 &= (~ (uint32_t)RI_IOSwitch);
-    }
-    else
-    {
-      /* Open the analog switches */
-      RI->ASCR2 &= (~ (uint32_t)RI_IOSwitch);
-    }
-  }
+	uint32_t ioswitchmask = 0;
+
+	/* Check the parameters */
+	assert_param(IS_RI_IOSWITCH(RI_IOSwitch));
+
+	/* Read Analog switch register index */
+	ioswitchmask = RI_IOSwitch >> 31;
+
+	/* Get Bits[30:0] of the IO switch */
+	RI_IOSwitch &= 0x7FFFFFFF;
+
+	if (NewState != DISABLE) {
+		if (ioswitchmask != 0) {
+			/* Close the analog switches */
+			RI->ASCR1 |= RI_IOSwitch;
+		} else {
+			/* Open the analog switches */
+			RI->ASCR2 |= RI_IOSwitch;
+		}
+	} else {
+		if (ioswitchmask != 0) {
+			/* Close the analog switches */
+			RI->ASCR1 &= (~(uint32_t) RI_IOSwitch);
+		} else {
+			/* Open the analog switches */
+			RI->ASCR2 &= (~(uint32_t) RI_IOSwitch);
+		}
+	}
 }
 
 /**
@@ -490,19 +471,16 @@ void SYSCFG_RIIOSwitchConfig(uint32_t RI_IOSwitch, FunctionalState NewState)
   */
 void SYSCFG_RISwitchControlModeCmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    /* Enable the Switch control mode */
-    RI->ASCR1 |= (uint32_t) RI_ASCR1_SCM;
-  }
-  else
-  {
-    /* Disable the Switch control mode */
-    RI->ASCR1 &= (uint32_t)(~RI_ASCR1_SCM);
-  }
+	/* Check the parameters */
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+	if (NewState != DISABLE) {
+		/* Enable the Switch control mode */
+		RI->ASCR1 |= (uint32_t) RI_ASCR1_SCM;
+	} else {
+		/* Disable the Switch control mode */
+		RI->ASCR1 &= (uint32_t) (~RI_ASCR1_SCM);
+	}
 }
 
 /**
@@ -529,109 +507,78 @@ void SYSCFG_RISwitchControlModeCmd(FunctionalState NewState)
   * @retval None
   */
 void SYSCFG_RIHysteresisConfig(uint8_t RI_Port, uint16_t RI_Pin,
-                             FunctionalState NewState)
+			       FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_RI_PORT(RI_Port));
-  assert_param(IS_RI_PIN(RI_Pin));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if(RI_Port == RI_PortA)
-  {  
-    if (NewState != DISABLE)
-    {
-      /* Hysteresis on */
-      RI->HYSCR1 &= (uint32_t)~((uint32_t)RI_Pin);
-    }
-    else
-    {
-      /* Hysteresis off */
-      RI->HYSCR1 |= (uint32_t) RI_Pin;
-    }
-  }
-  
-  else if(RI_Port == RI_PortB)
-  {
-  
-    if (NewState != DISABLE)
-    {
-      /* Hysteresis on */
-      RI->HYSCR1 &= (uint32_t) (~((uint32_t)RI_Pin) << 16);
-    }
-    else
-    {
-      /* Hysteresis off */
-      RI->HYSCR1 |= (uint32_t) ((uint32_t)(RI_Pin) << 16);
-    }
-  }  
- 
-  else if(RI_Port == RI_PortC)
-  {
-  
-    if (NewState != DISABLE)
-    {
-      /* Hysteresis on */
-      RI->HYSCR2 &= (uint32_t) (~((uint32_t)RI_Pin));
-    }
-    else
-    {
-      /* Hysteresis off */
-      RI->HYSCR2 |= (uint32_t) (RI_Pin );
-    }
-  } 
-  else if(RI_Port == RI_PortD)
-  {
-    if (NewState != DISABLE)
-    {
-      /* Hysteresis on */
-      RI->HYSCR2 &= (uint32_t) (~((uint32_t)RI_Pin) << 16);
-    }
-    else
-    {
-      /* Hysteresis off */
-      RI->HYSCR2 |= (uint32_t) ((uint32_t)(RI_Pin) << 16);
+	/* Check the parameters */
+	assert_param(IS_RI_PORT(RI_Port));
+	assert_param(IS_RI_PIN(RI_Pin));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-    }
-  }
-  else if(RI_Port == RI_PortE)
-  {
-    if (NewState != DISABLE)
-    {
-      /* Hysteresis on */
-      RI->HYSCR3 &= (uint32_t) (~((uint32_t)RI_Pin));
-    }
-    else
-    {
-      /* Hysteresis off */
-      RI->HYSCR3 |= (uint32_t) (RI_Pin );
-    }
-  }
-  else if(RI_Port == RI_PortF)
-  {
-    if (NewState != DISABLE)
-    {
-      /* Hysteresis on */
-      RI->HYSCR3 &= (uint32_t) (~((uint32_t)RI_Pin) << 16);
-    }
-    else
-    {
-      /* Hysteresis off */
-      RI->HYSCR3 |= (uint32_t) ((uint32_t)(RI_Pin) << 16);
-    }
-  }
-  else /* RI_Port == RI_PortG */
-  {
-    if (NewState != DISABLE)
-    {
-      /* Hysteresis on */
-      RI->HYSCR4 &= (uint32_t) (~((uint32_t)RI_Pin));
-    }
-    else
-    {
-      /* Hysteresis off */
-      RI->HYSCR4 |= (uint32_t) (RI_Pin);
-    }
-  }
+	if (RI_Port == RI_PortA) {
+		if (NewState != DISABLE) {
+			/* Hysteresis on */
+			RI->HYSCR1 &= (uint32_t) ~ ((uint32_t) RI_Pin);
+		} else {
+			/* Hysteresis off */
+			RI->HYSCR1 |= (uint32_t) RI_Pin;
+		}
+	}
+
+	else if (RI_Port == RI_PortB) {
+
+		if (NewState != DISABLE) {
+			/* Hysteresis on */
+			RI->HYSCR1 &= (uint32_t) (~((uint32_t) RI_Pin) << 16);
+		} else {
+			/* Hysteresis off */
+			RI->HYSCR1 |= (uint32_t) ((uint32_t) (RI_Pin) << 16);
+		}
+	}
+
+	else if (RI_Port == RI_PortC) {
+
+		if (NewState != DISABLE) {
+			/* Hysteresis on */
+			RI->HYSCR2 &= (uint32_t) (~((uint32_t) RI_Pin));
+		} else {
+			/* Hysteresis off */
+			RI->HYSCR2 |= (uint32_t) (RI_Pin);
+		}
+	} else if (RI_Port == RI_PortD) {
+		if (NewState != DISABLE) {
+			/* Hysteresis on */
+			RI->HYSCR2 &= (uint32_t) (~((uint32_t) RI_Pin) << 16);
+		} else {
+			/* Hysteresis off */
+			RI->HYSCR2 |= (uint32_t) ((uint32_t) (RI_Pin) << 16);
+
+		}
+	} else if (RI_Port == RI_PortE) {
+		if (NewState != DISABLE) {
+			/* Hysteresis on */
+			RI->HYSCR3 &= (uint32_t) (~((uint32_t) RI_Pin));
+		} else {
+			/* Hysteresis off */
+			RI->HYSCR3 |= (uint32_t) (RI_Pin);
+		}
+	} else if (RI_Port == RI_PortF) {
+		if (NewState != DISABLE) {
+			/* Hysteresis on */
+			RI->HYSCR3 &= (uint32_t) (~((uint32_t) RI_Pin) << 16);
+		} else {
+			/* Hysteresis off */
+			RI->HYSCR3 |= (uint32_t) ((uint32_t) (RI_Pin) << 16);
+		}
+	} else {		/* RI_Port == RI_PortG */
+
+		if (NewState != DISABLE) {
+			/* Hysteresis on */
+			RI->HYSCR4 &= (uint32_t) (~((uint32_t) RI_Pin));
+		} else {
+			/* Hysteresis off */
+			RI->HYSCR4 |= (uint32_t) (RI_Pin);
+		}
+	}
 }
 
 /**
@@ -640,11 +587,11 @@ void SYSCFG_RIHysteresisConfig(uint8_t RI_Port, uint16_t RI_Pin,
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}

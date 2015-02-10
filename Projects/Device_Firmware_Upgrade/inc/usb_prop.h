@@ -25,7 +25,6 @@
   ******************************************************************************
   */
 
-
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USB_PROP_H
 #define __USB_PROP_H
@@ -38,20 +37,20 @@
 void DFU_init(void);
 void DFU_Reset(void);
 void DFU_SetConfiguration(void);
-void DFU_SetDeviceAddress (void);
-void DFU_Status_In (void);
-void DFU_Status_Out (void);
+void DFU_SetDeviceAddress(void);
+void DFU_Status_In(void);
+void DFU_Status_Out(void);
 RESULT DFU_Data_Setup(uint8_t);
 RESULT DFU_NoData_Setup(uint8_t);
 RESULT DFU_Get_Interface_Setting(uint8_t Interface, uint8_t AlternateSetting);
-uint8_t *DFU_GetDeviceDescriptor(uint16_t );
+uint8_t *DFU_GetDeviceDescriptor(uint16_t);
 uint8_t *DFU_GetConfigDescriptor(uint16_t);
 uint8_t *DFU_GetStringDescriptor(uint16_t);
 uint8_t *UPLOAD(uint16_t Length);
 uint8_t *DNLOAD(uint16_t Length);
 uint8_t *GETSTATE(uint16_t Length);
 uint8_t *GETSTATUS(uint16_t Length);
-void DFU_write_crc (void);
+void DFU_write_crc(void);
 
 /* External variables --------------------------------------------------------*/
 
@@ -74,18 +73,17 @@ void DFU_write_crc (void);
 /**************************************************/
 
 typedef enum _DFU_REQUESTS {
-  DFU_DNLOAD = 1,
-  DFU_UPLOAD,
-  DFU_GETSTATUS,
-  DFU_CLRSTATUS,
-  DFU_GETSTATE,
-  DFU_ABORT
+	DFU_DNLOAD = 1,
+	DFU_UPLOAD,
+	DFU_GETSTATUS,
+	DFU_CLRSTATUS,
+	DFU_GETSTATE,
+	DFU_ABORT
 } DFU_REQUESTS;
 
 /**************************************************/
 /* DFU Requests  DFU states                       */
 /**************************************************/
-
 
 #define STATE_appIDLE                 0
 #define STATE_appDETACH               1
@@ -126,7 +124,6 @@ typedef enum _DFU_REQUESTS {
 
 #define Manifest_complete           0x00
 #define Manifest_In_Progress        0x01
-
 
 /**************************************************/
 /* Special Commands  with Download Request        */

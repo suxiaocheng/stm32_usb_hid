@@ -25,7 +25,6 @@
   ******************************************************************************
   */
 
-
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USB_ISTR_H
 #define __USB_ISTR_H
@@ -41,35 +40,35 @@ void USB_Istr(void);
 /* function prototypes Automatically built defining related macros */
 
 #ifdef CTR_CALLBACK
-  void CTR_Callback(void);
+void CTR_Callback(void);
 #endif
 
 #ifdef DOVR_CALLBACK
-  void DOVR_Callback(void);
+void DOVR_Callback(void);
 #endif
 
 #ifdef ERR_CALLBACK
-  void ERR_Callback(void);
+void ERR_Callback(void);
 #endif
 
 #ifdef WKUP_CALLBACK
-  void WKUP_Callback(void);
+void WKUP_Callback(void);
 #endif
 
 #ifdef SUSP_CALLBACK
-  void SUSP_Callback(void);
+void SUSP_Callback(void);
 #endif
 
 #ifdef RESET_CALLBACK
-  void RESET_Callback(void);
+void RESET_Callback(void);
 #endif
 
 #ifdef SOF_CALLBACK
-  void SOF_Callback(void);
+void SOF_Callback(void);
 #endif
 
 #ifdef ESOF_CALLBACK
-  void ESOF_Callback(void);
+void ESOF_Callback(void);
 #endif
 
 void EP1_IN_Callback(void);

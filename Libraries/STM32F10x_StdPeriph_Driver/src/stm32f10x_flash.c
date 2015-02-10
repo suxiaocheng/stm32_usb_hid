@@ -1442,9 +1442,8 @@ FLASH_Status FLASH_GetBank2Status(void)
 		if ((FLASH->SR2 & (FLASH_FLAG_BANK2_PGERR & 0x7FFFFFFF)) != 0) {
 			flashstatus = FLASH_ERROR_PG;
 		} else {
-			if ((FLASH->
-			     SR2 & (FLASH_FLAG_BANK2_WRPRTERR & 0x7FFFFFFF)) !=
-			    0) {
+			if ((FLASH->SR2 &
+			     (FLASH_FLAG_BANK2_WRPRTERR & 0x7FFFFFFF)) != 0) {
 				flashstatus = FLASH_ERROR_WRP;
 			} else {
 				flashstatus = FLASH_COMPLETE;

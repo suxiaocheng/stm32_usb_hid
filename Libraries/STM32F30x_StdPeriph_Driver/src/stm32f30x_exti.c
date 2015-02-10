@@ -196,13 +196,13 @@ void EXTI_Init(EXTI_InitTypeDef * EXTI_InitStruct)
 		    EXTI_Trigger_Rising_Falling) {
 			/* Rising Falling edge */
 			*(__IO uint32_t *) (((uint32_t) & (EXTI->RTSR)) +
-					    ((EXTI_InitStruct->
-					      EXTI_Line) >> 5) * 0x20) |=
+					    ((EXTI_InitStruct->EXTI_Line) >> 5)
+					    * 0x20) |=
 			    (uint32_t) (1 <<
 					(EXTI_InitStruct->EXTI_Line & 0x1F));
 			*(__IO uint32_t *) (((uint32_t) & (EXTI->FTSR)) +
-					    ((EXTI_InitStruct->
-					      EXTI_Line) >> 5) * 0x20) |=
+					    ((EXTI_InitStruct->EXTI_Line) >> 5)
+					    * 0x20) |=
 			    (uint32_t) (1 <<
 					(EXTI_InitStruct->EXTI_Line & 0x1F));
 		} else {

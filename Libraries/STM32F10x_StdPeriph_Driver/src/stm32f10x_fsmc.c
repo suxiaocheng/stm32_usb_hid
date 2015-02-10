@@ -201,26 +201,26 @@ void FSMC_NORSRAMInit(FSMC_NORSRAMInitTypeDef * FSMC_NORSRAMInitStruct)
 	assert_param(IS_FSMC_WRITE_BURST
 		     (FSMC_NORSRAMInitStruct->FSMC_WriteBurst));
 	assert_param(IS_FSMC_ADDRESS_SETUP_TIME
-		     (FSMC_NORSRAMInitStruct->
-		      FSMC_ReadWriteTimingStruct->FSMC_AddressSetupTime));
+		     (FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->
+		      FSMC_AddressSetupTime));
 	assert_param(IS_FSMC_ADDRESS_HOLD_TIME
-		     (FSMC_NORSRAMInitStruct->
-		      FSMC_ReadWriteTimingStruct->FSMC_AddressHoldTime));
+		     (FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->
+		      FSMC_AddressHoldTime));
 	assert_param(IS_FSMC_DATASETUP_TIME
-		     (FSMC_NORSRAMInitStruct->
-		      FSMC_ReadWriteTimingStruct->FSMC_DataSetupTime));
+		     (FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->
+		      FSMC_DataSetupTime));
 	assert_param(IS_FSMC_TURNAROUND_TIME
-		     (FSMC_NORSRAMInitStruct->
-		      FSMC_ReadWriteTimingStruct->FSMC_BusTurnAroundDuration));
+		     (FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->
+		      FSMC_BusTurnAroundDuration));
 	assert_param(IS_FSMC_CLK_DIV
-		     (FSMC_NORSRAMInitStruct->
-		      FSMC_ReadWriteTimingStruct->FSMC_CLKDivision));
+		     (FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->
+		      FSMC_CLKDivision));
 	assert_param(IS_FSMC_DATA_LATENCY
-		     (FSMC_NORSRAMInitStruct->
-		      FSMC_ReadWriteTimingStruct->FSMC_DataLatency));
+		     (FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->
+		      FSMC_DataLatency));
 	assert_param(IS_FSMC_ACCESS_MODE
-		     (FSMC_NORSRAMInitStruct->
-		      FSMC_ReadWriteTimingStruct->FSMC_AccessMode));
+		     (FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->
+		      FSMC_AccessMode));
 
 	/* Bank1 NOR/SRAM control register configuration */
 	FSMC_Bank1->BTCR[FSMC_NORSRAMInitStruct->FSMC_Bank] =
@@ -244,50 +244,53 @@ void FSMC_NORSRAMInit(FSMC_NORSRAMInitTypeDef * FSMC_NORSRAMInitStruct)
 
 	/* Bank1 NOR/SRAM timing register configuration */
 	FSMC_Bank1->BTCR[FSMC_NORSRAMInitStruct->FSMC_Bank + 1] =
-	    (uint32_t) FSMC_NORSRAMInitStruct->
-	    FSMC_ReadWriteTimingStruct->FSMC_AddressSetupTime |
-	    (FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_AddressHoldTime
-	     << 4) | (FSMC_NORSRAMInitStruct->
-		      FSMC_ReadWriteTimingStruct->FSMC_DataSetupTime << 8) |
-	    (FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_BusTurnAroundDuration
-	     << 16) | (FSMC_NORSRAMInitStruct->
-		       FSMC_ReadWriteTimingStruct->FSMC_CLKDivision << 20) |
-	    (FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_DataLatency
-	     << 24) | FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->
-	    FSMC_AccessMode;
+	    (uint32_t) FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->
+	    FSMC_AddressSetupTime | (FSMC_NORSRAMInitStruct->
+				     FSMC_ReadWriteTimingStruct->
+				     FSMC_AddressHoldTime << 4) |
+	    (FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->
+	     FSMC_DataSetupTime << 8) | (FSMC_NORSRAMInitStruct->
+					 FSMC_ReadWriteTimingStruct->
+					 FSMC_BusTurnAroundDuration << 16) |
+	    (FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->
+	     FSMC_CLKDivision << 20) | (FSMC_NORSRAMInitStruct->
+					FSMC_ReadWriteTimingStruct->
+					FSMC_DataLatency << 24) |
+	    FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_AccessMode;
 
 	/* Bank1 NOR/SRAM timing register for write configuration, if extended mode is used */
 	if (FSMC_NORSRAMInitStruct->FSMC_ExtendedMode ==
 	    FSMC_ExtendedMode_Enable) {
 		assert_param(IS_FSMC_ADDRESS_SETUP_TIME
-			     (FSMC_NORSRAMInitStruct->
-			      FSMC_WriteTimingStruct->FSMC_AddressSetupTime));
+			     (FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->
+			      FSMC_AddressSetupTime));
 		assert_param(IS_FSMC_ADDRESS_HOLD_TIME
-			     (FSMC_NORSRAMInitStruct->
-			      FSMC_WriteTimingStruct->FSMC_AddressHoldTime));
+			     (FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->
+			      FSMC_AddressHoldTime));
 		assert_param(IS_FSMC_DATASETUP_TIME
-			     (FSMC_NORSRAMInitStruct->
-			      FSMC_WriteTimingStruct->FSMC_DataSetupTime));
+			     (FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->
+			      FSMC_DataSetupTime));
 		assert_param(IS_FSMC_CLK_DIV
-			     (FSMC_NORSRAMInitStruct->
-			      FSMC_WriteTimingStruct->FSMC_CLKDivision));
+			     (FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->
+			      FSMC_CLKDivision));
 		assert_param(IS_FSMC_DATA_LATENCY
-			     (FSMC_NORSRAMInitStruct->
-			      FSMC_WriteTimingStruct->FSMC_DataLatency));
+			     (FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->
+			      FSMC_DataLatency));
 		assert_param(IS_FSMC_ACCESS_MODE
-			     (FSMC_NORSRAMInitStruct->
-			      FSMC_WriteTimingStruct->FSMC_AccessMode));
+			     (FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->
+			      FSMC_AccessMode));
 		FSMC_Bank1E->BWTR[FSMC_NORSRAMInitStruct->FSMC_Bank] =
-		    (uint32_t) FSMC_NORSRAMInitStruct->
-		    FSMC_WriteTimingStruct->FSMC_AddressSetupTime |
-		    (FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_AddressHoldTime
-		     << 4) | (FSMC_NORSRAMInitStruct->
-			      FSMC_WriteTimingStruct->FSMC_DataSetupTime << 8) |
-		    (FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_CLKDivision
-		     << 20) | (FSMC_NORSRAMInitStruct->
-			       FSMC_WriteTimingStruct->FSMC_DataLatency << 24) |
-		    FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->
-		    FSMC_AccessMode;
+		    (uint32_t) FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->
+		    FSMC_AddressSetupTime | (FSMC_NORSRAMInitStruct->
+					     FSMC_WriteTimingStruct->
+					     FSMC_AddressHoldTime << 4) |
+		    (FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->
+		     FSMC_DataSetupTime << 8) | (FSMC_NORSRAMInitStruct->
+						 FSMC_WriteTimingStruct->
+						 FSMC_CLKDivision << 20) |
+		    (FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->
+		     FSMC_DataLatency << 24) | FSMC_NORSRAMInitStruct->
+		    FSMC_WriteTimingStruct->FSMC_AccessMode;
 	} else {
 		FSMC_Bank1E->BWTR[FSMC_NORSRAMInitStruct->FSMC_Bank] =
 		    0x0FFFFFFF;
@@ -320,29 +323,29 @@ void FSMC_NANDInit(FSMC_NANDInitTypeDef * FSMC_NANDInitStruct)
 		     (FSMC_NANDInitStruct->FSMC_TCLRSetupTime));
 	assert_param(IS_FSMC_TAR_TIME(FSMC_NANDInitStruct->FSMC_TARSetupTime));
 	assert_param(IS_FSMC_SETUP_TIME
-		     (FSMC_NANDInitStruct->
-		      FSMC_CommonSpaceTimingStruct->FSMC_SetupTime));
+		     (FSMC_NANDInitStruct->FSMC_CommonSpaceTimingStruct->
+		      FSMC_SetupTime));
 	assert_param(IS_FSMC_WAIT_TIME
-		     (FSMC_NANDInitStruct->
-		      FSMC_CommonSpaceTimingStruct->FSMC_WaitSetupTime));
+		     (FSMC_NANDInitStruct->FSMC_CommonSpaceTimingStruct->
+		      FSMC_WaitSetupTime));
 	assert_param(IS_FSMC_HOLD_TIME
-		     (FSMC_NANDInitStruct->
-		      FSMC_CommonSpaceTimingStruct->FSMC_HoldSetupTime));
+		     (FSMC_NANDInitStruct->FSMC_CommonSpaceTimingStruct->
+		      FSMC_HoldSetupTime));
 	assert_param(IS_FSMC_HIZ_TIME
-		     (FSMC_NANDInitStruct->
-		      FSMC_CommonSpaceTimingStruct->FSMC_HiZSetupTime));
+		     (FSMC_NANDInitStruct->FSMC_CommonSpaceTimingStruct->
+		      FSMC_HiZSetupTime));
 	assert_param(IS_FSMC_SETUP_TIME
-		     (FSMC_NANDInitStruct->
-		      FSMC_AttributeSpaceTimingStruct->FSMC_SetupTime));
+		     (FSMC_NANDInitStruct->FSMC_AttributeSpaceTimingStruct->
+		      FSMC_SetupTime));
 	assert_param(IS_FSMC_WAIT_TIME
-		     (FSMC_NANDInitStruct->
-		      FSMC_AttributeSpaceTimingStruct->FSMC_WaitSetupTime));
+		     (FSMC_NANDInitStruct->FSMC_AttributeSpaceTimingStruct->
+		      FSMC_WaitSetupTime));
 	assert_param(IS_FSMC_HOLD_TIME
-		     (FSMC_NANDInitStruct->
-		      FSMC_AttributeSpaceTimingStruct->FSMC_HoldSetupTime));
+		     (FSMC_NANDInitStruct->FSMC_AttributeSpaceTimingStruct->
+		      FSMC_HoldSetupTime));
 	assert_param(IS_FSMC_HIZ_TIME
-		     (FSMC_NANDInitStruct->
-		      FSMC_AttributeSpaceTimingStruct->FSMC_HiZSetupTime));
+		     (FSMC_NANDInitStruct->FSMC_AttributeSpaceTimingStruct->
+		      FSMC_HiZSetupTime));
 
 	/* Set the tmppcr value according to FSMC_NANDInitStruct parameters */
 	tmppcr = (uint32_t) FSMC_NANDInitStruct->FSMC_Waitfeature |
@@ -355,24 +358,25 @@ void FSMC_NANDInit(FSMC_NANDInitTypeDef * FSMC_NANDInitStruct)
 
 	/* Set tmppmem value according to FSMC_CommonSpaceTimingStructure parameters */
 	tmppmem =
-	    (uint32_t) FSMC_NANDInitStruct->
-	    FSMC_CommonSpaceTimingStruct->FSMC_SetupTime |
-	    (FSMC_NANDInitStruct->
-	     FSMC_CommonSpaceTimingStruct->FSMC_WaitSetupTime << 8) |
-	    (FSMC_NANDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_HoldSetupTime
-	     << 16) | (FSMC_NANDInitStruct->
-		       FSMC_CommonSpaceTimingStruct->FSMC_HiZSetupTime << 24);
+	    (uint32_t) FSMC_NANDInitStruct->FSMC_CommonSpaceTimingStruct->
+	    FSMC_SetupTime |
+	    (FSMC_NANDInitStruct->FSMC_CommonSpaceTimingStruct->
+	     FSMC_WaitSetupTime << 8) | (FSMC_NANDInitStruct->
+					 FSMC_CommonSpaceTimingStruct->
+					 FSMC_HoldSetupTime << 16) |
+	    (FSMC_NANDInitStruct->FSMC_CommonSpaceTimingStruct->
+	     FSMC_HiZSetupTime << 24);
 
 	/* Set tmppatt value according to FSMC_AttributeSpaceTimingStructure parameters */
 	tmppatt =
-	    (uint32_t) FSMC_NANDInitStruct->
-	    FSMC_AttributeSpaceTimingStruct->FSMC_SetupTime |
-	    (FSMC_NANDInitStruct->
-	     FSMC_AttributeSpaceTimingStruct->FSMC_WaitSetupTime << 8) |
-	    (FSMC_NANDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_HoldSetupTime
-	     << 16) | (FSMC_NANDInitStruct->
-		       FSMC_AttributeSpaceTimingStruct->FSMC_HiZSetupTime <<
-		       24);
+	    (uint32_t) FSMC_NANDInitStruct->FSMC_AttributeSpaceTimingStruct->
+	    FSMC_SetupTime |
+	    (FSMC_NANDInitStruct->FSMC_AttributeSpaceTimingStruct->
+	     FSMC_WaitSetupTime << 8) | (FSMC_NANDInitStruct->
+					 FSMC_AttributeSpaceTimingStruct->
+					 FSMC_HoldSetupTime << 16) |
+	    (FSMC_NANDInitStruct->FSMC_AttributeSpaceTimingStruct->
+	     FSMC_HiZSetupTime << 24);
 
 	if (FSMC_NANDInitStruct->FSMC_Bank == FSMC_Bank2_NAND) {
 		/* FSMC_Bank2_NAND registers configuration */
@@ -406,42 +410,42 @@ void FSMC_PCCARDInit(FSMC_PCCARDInitTypeDef * FSMC_PCCARDInitStruct)
 		     (FSMC_PCCARDInitStruct->FSMC_TARSetupTime));
 
 	assert_param(IS_FSMC_SETUP_TIME
-		     (FSMC_PCCARDInitStruct->
-		      FSMC_CommonSpaceTimingStruct->FSMC_SetupTime));
+		     (FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->
+		      FSMC_SetupTime));
 	assert_param(IS_FSMC_WAIT_TIME
-		     (FSMC_PCCARDInitStruct->
-		      FSMC_CommonSpaceTimingStruct->FSMC_WaitSetupTime));
+		     (FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->
+		      FSMC_WaitSetupTime));
 	assert_param(IS_FSMC_HOLD_TIME
-		     (FSMC_PCCARDInitStruct->
-		      FSMC_CommonSpaceTimingStruct->FSMC_HoldSetupTime));
+		     (FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->
+		      FSMC_HoldSetupTime));
 	assert_param(IS_FSMC_HIZ_TIME
-		     (FSMC_PCCARDInitStruct->
-		      FSMC_CommonSpaceTimingStruct->FSMC_HiZSetupTime));
+		     (FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->
+		      FSMC_HiZSetupTime));
 
 	assert_param(IS_FSMC_SETUP_TIME
-		     (FSMC_PCCARDInitStruct->
-		      FSMC_AttributeSpaceTimingStruct->FSMC_SetupTime));
+		     (FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->
+		      FSMC_SetupTime));
 	assert_param(IS_FSMC_WAIT_TIME
-		     (FSMC_PCCARDInitStruct->
-		      FSMC_AttributeSpaceTimingStruct->FSMC_WaitSetupTime));
+		     (FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->
+		      FSMC_WaitSetupTime));
 	assert_param(IS_FSMC_HOLD_TIME
-		     (FSMC_PCCARDInitStruct->
-		      FSMC_AttributeSpaceTimingStruct->FSMC_HoldSetupTime));
+		     (FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->
+		      FSMC_HoldSetupTime));
 	assert_param(IS_FSMC_HIZ_TIME
-		     (FSMC_PCCARDInitStruct->
-		      FSMC_AttributeSpaceTimingStruct->FSMC_HiZSetupTime));
+		     (FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->
+		      FSMC_HiZSetupTime));
 	assert_param(IS_FSMC_SETUP_TIME
-		     (FSMC_PCCARDInitStruct->
-		      FSMC_IOSpaceTimingStruct->FSMC_SetupTime));
+		     (FSMC_PCCARDInitStruct->FSMC_IOSpaceTimingStruct->
+		      FSMC_SetupTime));
 	assert_param(IS_FSMC_WAIT_TIME
-		     (FSMC_PCCARDInitStruct->
-		      FSMC_IOSpaceTimingStruct->FSMC_WaitSetupTime));
+		     (FSMC_PCCARDInitStruct->FSMC_IOSpaceTimingStruct->
+		      FSMC_WaitSetupTime));
 	assert_param(IS_FSMC_HOLD_TIME
-		     (FSMC_PCCARDInitStruct->
-		      FSMC_IOSpaceTimingStruct->FSMC_HoldSetupTime));
+		     (FSMC_PCCARDInitStruct->FSMC_IOSpaceTimingStruct->
+		      FSMC_HoldSetupTime));
 	assert_param(IS_FSMC_HIZ_TIME
-		     (FSMC_PCCARDInitStruct->
-		      FSMC_IOSpaceTimingStruct->FSMC_HiZSetupTime));
+		     (FSMC_PCCARDInitStruct->FSMC_IOSpaceTimingStruct->
+		      FSMC_HiZSetupTime));
 
 	/* Set the PCR4 register value according to FSMC_PCCARDInitStruct parameters */
 	FSMC_Bank4->PCR4 = (uint32_t) FSMC_PCCARDInitStruct->FSMC_Waitfeature |
@@ -451,34 +455,35 @@ void FSMC_PCCARDInit(FSMC_PCCARDInitTypeDef * FSMC_PCCARDInitStruct)
 
 	/* Set PMEM4 register value according to FSMC_CommonSpaceTimingStructure parameters */
 	FSMC_Bank4->PMEM4 =
-	    (uint32_t) FSMC_PCCARDInitStruct->
-	    FSMC_CommonSpaceTimingStruct->FSMC_SetupTime |
-	    (FSMC_PCCARDInitStruct->
-	     FSMC_CommonSpaceTimingStruct->FSMC_WaitSetupTime << 8) |
-	    (FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_HoldSetupTime
-	     << 16) | (FSMC_PCCARDInitStruct->
-		       FSMC_CommonSpaceTimingStruct->FSMC_HiZSetupTime << 24);
+	    (uint32_t) FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->
+	    FSMC_SetupTime |
+	    (FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->
+	     FSMC_WaitSetupTime << 8) | (FSMC_PCCARDInitStruct->
+					 FSMC_CommonSpaceTimingStruct->
+					 FSMC_HoldSetupTime << 16) |
+	    (FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->
+	     FSMC_HiZSetupTime << 24);
 
 	/* Set PATT4 register value according to FSMC_AttributeSpaceTimingStructure parameters */
 	FSMC_Bank4->PATT4 =
-	    (uint32_t) FSMC_PCCARDInitStruct->
-	    FSMC_AttributeSpaceTimingStruct->FSMC_SetupTime |
-	    (FSMC_PCCARDInitStruct->
-	     FSMC_AttributeSpaceTimingStruct->FSMC_WaitSetupTime << 8) |
-	    (FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_HoldSetupTime
-	     << 16) | (FSMC_PCCARDInitStruct->
-		       FSMC_AttributeSpaceTimingStruct->FSMC_HiZSetupTime <<
-		       24);
+	    (uint32_t) FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->
+	    FSMC_SetupTime |
+	    (FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->
+	     FSMC_WaitSetupTime << 8) | (FSMC_PCCARDInitStruct->
+					 FSMC_AttributeSpaceTimingStruct->
+					 FSMC_HoldSetupTime << 16) |
+	    (FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->
+	     FSMC_HiZSetupTime << 24);
 
 	/* Set PIO4 register value according to FSMC_IOSpaceTimingStructure parameters */
 	FSMC_Bank4->PIO4 =
-	    (uint32_t) FSMC_PCCARDInitStruct->
-	    FSMC_IOSpaceTimingStruct->FSMC_SetupTime | (FSMC_PCCARDInitStruct->
-							FSMC_IOSpaceTimingStruct->FSMC_WaitSetupTime
-							<< 8) |
-	    (FSMC_PCCARDInitStruct->FSMC_IOSpaceTimingStruct->FSMC_HoldSetupTime
-	     << 16) | (FSMC_PCCARDInitStruct->
-		       FSMC_IOSpaceTimingStruct->FSMC_HiZSetupTime << 24);
+	    (uint32_t) FSMC_PCCARDInitStruct->FSMC_IOSpaceTimingStruct->
+	    FSMC_SetupTime | (FSMC_PCCARDInitStruct->FSMC_IOSpaceTimingStruct->
+			      FSMC_WaitSetupTime << 8) |
+	    (FSMC_PCCARDInitStruct->FSMC_IOSpaceTimingStruct->
+	     FSMC_HoldSetupTime << 16) |
+	    (FSMC_PCCARDInitStruct->FSMC_IOSpaceTimingStruct->
+	     FSMC_HiZSetupTime << 24);
 }
 
 /**
@@ -509,14 +514,14 @@ void FSMC_NORSRAMStructInit(FSMC_NORSRAMInitTypeDef * FSMC_NORSRAMInitStruct)
 	FSMC_NORSRAMInitStruct->FSMC_WaitSignal = FSMC_WaitSignal_Enable;
 	FSMC_NORSRAMInitStruct->FSMC_ExtendedMode = FSMC_ExtendedMode_Disable;
 	FSMC_NORSRAMInitStruct->FSMC_WriteBurst = FSMC_WriteBurst_Disable;
-	FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->
-	    FSMC_AddressSetupTime = 0xF;
-	FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->
-	    FSMC_AddressHoldTime = 0xF;
+	FSMC_NORSRAMInitStruct->
+	    FSMC_ReadWriteTimingStruct->FSMC_AddressSetupTime = 0xF;
+	FSMC_NORSRAMInitStruct->
+	    FSMC_ReadWriteTimingStruct->FSMC_AddressHoldTime = 0xF;
 	FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_DataSetupTime =
 	    0xFF;
-	FSMC_NORSRAMInitStruct->
-	    FSMC_ReadWriteTimingStruct->FSMC_BusTurnAroundDuration = 0xF;
+	FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->
+	    FSMC_BusTurnAroundDuration = 0xF;
 	FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_CLKDivision =
 	    0xF;
 	FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_DataLatency =
@@ -529,8 +534,8 @@ void FSMC_NORSRAMStructInit(FSMC_NORSRAMInitTypeDef * FSMC_NORSRAMInitStruct)
 	    0xF;
 	FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_DataSetupTime =
 	    0xFF;
-	FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->
-	    FSMC_BusTurnAroundDuration = 0xF;
+	FSMC_NORSRAMInitStruct->
+	    FSMC_WriteTimingStruct->FSMC_BusTurnAroundDuration = 0xF;
 	FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_CLKDivision = 0xF;
 	FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_DataLatency = 0xF;
 	FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_AccessMode =
@@ -563,12 +568,12 @@ void FSMC_NANDStructInit(FSMC_NANDInitTypeDef * FSMC_NANDInitStruct)
 	    0xFC;
 	FSMC_NANDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_SetupTime =
 	    0xFC;
-	FSMC_NANDInitStruct->FSMC_AttributeSpaceTimingStruct->
-	    FSMC_WaitSetupTime = 0xFC;
-	FSMC_NANDInitStruct->FSMC_AttributeSpaceTimingStruct->
-	    FSMC_HoldSetupTime = 0xFC;
-	FSMC_NANDInitStruct->FSMC_AttributeSpaceTimingStruct->
-	    FSMC_HiZSetupTime = 0xFC;
+	FSMC_NANDInitStruct->
+	    FSMC_AttributeSpaceTimingStruct->FSMC_WaitSetupTime = 0xFC;
+	FSMC_NANDInitStruct->
+	    FSMC_AttributeSpaceTimingStruct->FSMC_HoldSetupTime = 0xFC;
+	FSMC_NANDInitStruct->
+	    FSMC_AttributeSpaceTimingStruct->FSMC_HiZSetupTime = 0xFC;
 }
 
 /**
@@ -585,20 +590,20 @@ void FSMC_PCCARDStructInit(FSMC_PCCARDInitTypeDef * FSMC_PCCARDInitStruct)
 	FSMC_PCCARDInitStruct->FSMC_TARSetupTime = 0x0;
 	FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_SetupTime =
 	    0xFC;
-	FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->
-	    FSMC_WaitSetupTime = 0xFC;
-	FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->
-	    FSMC_HoldSetupTime = 0xFC;
+	FSMC_PCCARDInitStruct->
+	    FSMC_CommonSpaceTimingStruct->FSMC_WaitSetupTime = 0xFC;
+	FSMC_PCCARDInitStruct->
+	    FSMC_CommonSpaceTimingStruct->FSMC_HoldSetupTime = 0xFC;
 	FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_HiZSetupTime =
 	    0xFC;
 	FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_SetupTime =
 	    0xFC;
-	FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->
-	    FSMC_WaitSetupTime = 0xFC;
-	FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->
-	    FSMC_HoldSetupTime = 0xFC;
-	FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->
-	    FSMC_HiZSetupTime = 0xFC;
+	FSMC_PCCARDInitStruct->
+	    FSMC_AttributeSpaceTimingStruct->FSMC_WaitSetupTime = 0xFC;
+	FSMC_PCCARDInitStruct->
+	    FSMC_AttributeSpaceTimingStruct->FSMC_HoldSetupTime = 0xFC;
+	FSMC_PCCARDInitStruct->
+	    FSMC_AttributeSpaceTimingStruct->FSMC_HiZSetupTime = 0xFC;
 	FSMC_PCCARDInitStruct->FSMC_IOSpaceTimingStruct->FSMC_SetupTime = 0xFC;
 	FSMC_PCCARDInitStruct->FSMC_IOSpaceTimingStruct->FSMC_WaitSetupTime =
 	    0xFC;

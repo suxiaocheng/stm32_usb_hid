@@ -27,9 +27,8 @@
   ******************************************************************************
   */
 
-
 /* Includes ------------------------------------------------------------------*/
-#include "hw_config.h" 
+#include "hw_config.h"
 #include "stm32_it.h"
 #include "usb_lib.h"
 #include "usb_istr.h"
@@ -67,10 +66,9 @@ void NMI_Handler(void)
 *******************************************************************************/
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+	/* Go to infinite loop when Hard Fault exception occurs */
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -82,10 +80,9 @@ void HardFault_Handler(void)
 *******************************************************************************/
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+	/* Go to infinite loop when Memory Manage exception occurs */
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -97,10 +94,9 @@ void MemManage_Handler(void)
 *******************************************************************************/
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+	/* Go to infinite loop when Bus Fault exception occurs */
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -112,10 +108,9 @@ void BusFault_Handler(void)
 *******************************************************************************/
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+	/* Go to infinite loop when Usage Fault exception occurs */
+	while (1) {
+	}
 }
 
 /*******************************************************************************
@@ -178,8 +173,9 @@ void USB_LP_IRQHandler(void)
 void USB_LP_CAN1_RX0_IRQHandler(void)
 #endif
 {
-  USB_Istr();
+	USB_Istr();
 }
+
 /*******************************************************************************
 * Function Name  : EXTI15_10_IRQHandler
 * Description    : This function handles External lines 9 to 5 interrupt request.
@@ -196,16 +192,15 @@ void EXTI2_TS_IRQHandler(void)
 void EXTI15_10_IRQHandler(void)
 #endif
 {
-  if (EXTI_GetITStatus(KEY_BUTTON_EXTI_LINE) != RESET)
-  {
-    if (pInformation->Current_Feature & 0x20) //Remote wake-up enabled
-    {
-      Resume(RESUME_INTERNAL);
-    }
+	if (EXTI_GetITStatus(KEY_BUTTON_EXTI_LINE) != RESET) {
+		if (pInformation->Current_Feature & 0x20)	//Remote wake-up enabled
+		{
+			Resume(RESUME_INTERNAL);
+		}
 
-    /* Clear the EXTI line 9 pending bit */
-    EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
-  }
+		/* Clear the EXTI line 9 pending bit */
+		EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
+	}
 }
 
 /*******************************************************************************
@@ -222,7 +217,7 @@ void USB_FS_WKUP_IRQHandler(void)
 void USBWakeUp_IRQHandler(void)
 #endif
 {
-  EXTI_ClearITPendingBit(EXTI_Line18);
+	EXTI_ClearITPendingBit(EXTI_Line18);
 }
 
 /******************************************************************************/

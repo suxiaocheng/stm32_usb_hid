@@ -53,13 +53,13 @@ extern NOR_IDTypeDef NOR_ID;
 *******************************************************************************/
 uint16_t NOR_If_Init(void)
 {
-  /* Configure FSMC Bank1 NOR/SRAM2 */
-  FSMC_NOR_Init();
+	/* Configure FSMC Bank1 NOR/SRAM2 */
+	FSMC_NOR_Init();
 
-  /* Enable FSMC Bank1 NOR/SRAM2 */
-  FSMC_NORSRAMCmd(FSMC_Bank1_NORSRAM2, ENABLE);
+	/* Enable FSMC Bank1 NOR/SRAM2 */
+	FSMC_NORSRAMCmd(FSMC_Bank1_NORSRAM2, ENABLE);
 
-  return MAL_OK;
+	return MAL_OK;
 }
 
 /*******************************************************************************
@@ -71,10 +71,10 @@ uint16_t NOR_If_Init(void)
 *******************************************************************************/
 uint16_t NOR_If_Erase(uint32_t Address)
 {
-  /* Erase the destination memory */
-  FSMC_NOR_EraseBlock(Address & 0x00FFFFFF);    
+	/* Erase the destination memory */
+	FSMC_NOR_EraseBlock(Address & 0x00FFFFFF);
 
-  return MAL_OK;
+	return MAL_OK;
 }
 
 /*******************************************************************************
@@ -86,15 +86,15 @@ uint16_t NOR_If_Erase(uint32_t Address)
 *******************************************************************************/
 uint16_t NOR_If_Write(uint32_t Address, uint32_t DataLength)
 {
-  if ((DataLength & 1) == 1) /* Not an aligned data */
-  {
-    DataLength += 1;
-    MAL_Buffer[DataLength-1] = 0xFF;
-  }
-  
-  FSMC_NOR_WriteBuffer((uint16_t *)MAL_Buffer, (Address&0x00FFFFFF), DataLength >> 1);  
-  
-  return MAL_OK;
+	if ((DataLength & 1) == 1) {	/* Not an aligned data */
+		DataLength += 1;
+		MAL_Buffer[DataLength - 1] = 0xFF;
+	}
+
+	FSMC_NOR_WriteBuffer((uint16_t *) MAL_Buffer, (Address & 0x00FFFFFF),
+			     DataLength >> 1);
+
+	return MAL_OK;
 }
 
 /*******************************************************************************
@@ -106,7 +106,7 @@ uint16_t NOR_If_Write(uint32_t Address, uint32_t DataLength)
 *******************************************************************************/
 uint8_t *NOR_If_Read(uint32_t Address, uint32_t DataLength)
 {
-  return  (uint8_t*)(Address);
+	return (uint8_t *) (Address);
 }
 
 #endif

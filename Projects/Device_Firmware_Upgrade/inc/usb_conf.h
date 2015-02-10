@@ -25,7 +25,6 @@
   ******************************************************************************
   */
 
-
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USB_CONF_H
 #define __USB_CONF_H
@@ -48,16 +47,16 @@
 #define SPI_FLASH_SECTOR_ERASE_TIME     3000
 #define SPI_FLASH_SECTOR_WRITE_TIME     20
 
-#if defined(STM32L1XX_MD) || defined(STM32L1XX_HD)|| defined(STM32L1XX_MD_PLUS)    
- #define INTERN_FLASH_SECTOR_ERASE_TIME 100
- #define INTERN_FLASH_SECTOR_WRITE_TIME 104   
+#if defined(STM32L1XX_MD) || defined(STM32L1XX_HD)|| defined(STM32L1XX_MD_PLUS)
+#define INTERN_FLASH_SECTOR_ERASE_TIME 100
+#define INTERN_FLASH_SECTOR_WRITE_TIME 104
 #else
- #define INTERN_FLASH_SECTOR_ERASE_TIME 50
- #define INTERN_FLASH_SECTOR_WRITE_TIME 50
-#endif /* STM32L1XX_XD */   
+#define INTERN_FLASH_SECTOR_ERASE_TIME 50
+#define INTERN_FLASH_SECTOR_WRITE_TIME 50
+#endif /* STM32L1XX_XD */
 
 #define M29W128F_SECTOR_ERASE_TIME      1000
-#define M29W128F_SECTOR_WRITE_TIME      25 
+#define M29W128F_SECTOR_WRITE_TIME      25
 
 #define M29W128G_SECTOR_ERASE_TIME      1000
 #define M29W128G_SECTOR_WRITE_TIME      25
@@ -86,7 +85,6 @@
 #define ENDP0_RXADDR        (0x10)
 #define ENDP0_TXADDR        (0x50)
 
-
 /*-------------------------------------------------------------*/
 /* -------------------   ISTR events  -------------------------*/
 /*-------------------------------------------------------------*/
@@ -106,7 +104,6 @@
 #define  EP6_IN_Callback   NOP_Process
 #define  EP7_IN_Callback   NOP_Process
 
-
 #define  EP1_OUT_Callback   NOP_Process
 #define  EP2_OUT_Callback   NOP_Process
 #define  EP3_OUT_Callback   NOP_Process
@@ -118,4 +115,3 @@
 #endif /*__USB_CONF_H*/
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-

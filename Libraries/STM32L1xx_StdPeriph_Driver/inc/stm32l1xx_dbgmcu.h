@@ -31,7 +31,7 @@
 #define __STM32L1xx_DBGMCU_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -77,29 +77,25 @@
 
 /**
   * @}
-  */ 
+  */
 
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 
-uint32_t DBGMCU_GetREVID(void);
-uint32_t DBGMCU_GetDEVID(void);
-void DBGMCU_Config(uint32_t DBGMCU_Periph, FunctionalState NewState);
-void DBGMCU_APB1PeriphConfig(uint32_t DBGMCU_Periph, FunctionalState NewState);
-void DBGMCU_APB2PeriphConfig(uint32_t DBGMCU_Periph, FunctionalState NewState);
+	uint32_t DBGMCU_GetREVID(void);
+	uint32_t DBGMCU_GetDEVID(void);
+	void DBGMCU_Config(uint32_t DBGMCU_Periph, FunctionalState NewState);
+	void DBGMCU_APB1PeriphConfig(uint32_t DBGMCU_Periph,
+				     FunctionalState NewState);
+	void DBGMCU_APB2PeriphConfig(uint32_t DBGMCU_Periph,
+				     FunctionalState NewState);
 
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __STM32L1xx_DBGMCU_H */
-
+#endif				/* __STM32L1xx_DBGMCU_H */
 /**
   * @}
-  */
-
-/**
+  *//**
   * @}
-  */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+  *//************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

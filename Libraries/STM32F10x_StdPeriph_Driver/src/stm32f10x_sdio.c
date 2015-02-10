@@ -211,11 +211,11 @@ void SDIO_Init(SDIO_InitTypeDef * SDIO_InitStruct)
 	/* Set NEGEDGE bits according to SDIO_ClockEdge value */
 	/* Set HWFC_EN bits according to SDIO_HardwareFlowControl value */
 	tmpreg |=
-	    (SDIO_InitStruct->
-	     SDIO_ClockDiv | SDIO_InitStruct->SDIO_ClockPowerSave |
-	     SDIO_InitStruct->SDIO_ClockBypass | SDIO_InitStruct->
-	     SDIO_BusWide | SDIO_InitStruct->SDIO_ClockEdge | SDIO_InitStruct->
-	     SDIO_HardwareFlowControl);
+	    (SDIO_InitStruct->SDIO_ClockDiv | SDIO_InitStruct->
+	     SDIO_ClockPowerSave | SDIO_InitStruct->
+	     SDIO_ClockBypass | SDIO_InitStruct->SDIO_BusWide |
+	     SDIO_InitStruct->
+	     SDIO_ClockEdge | SDIO_InitStruct->SDIO_HardwareFlowControl);
 
 	/* Write to SDIO CLKCR */
 	SDIO->CLKCR = tmpreg;
@@ -375,9 +375,9 @@ void SDIO_SendCommand(SDIO_CmdInitTypeDef * SDIO_CmdInitStruct)
 	/* Set WAITINT and WAITPEND bits according to SDIO_Wait value */
 	/* Set CPSMEN bits according to SDIO_CPSM value */
 	tmpreg |=
-	    (uint32_t) SDIO_CmdInitStruct->
-	    SDIO_CmdIndex | SDIO_CmdInitStruct->SDIO_Response |
-	    SDIO_CmdInitStruct->SDIO_Wait | SDIO_CmdInitStruct->SDIO_CPSM;
+	    (uint32_t) SDIO_CmdInitStruct->SDIO_CmdIndex | SDIO_CmdInitStruct->
+	    SDIO_Response | SDIO_CmdInitStruct->SDIO_Wait | SDIO_CmdInitStruct->
+	    SDIO_CPSM;
 
 	/* Write to SDIO CMD */
 	SDIO->CMD = tmpreg;
@@ -470,10 +470,9 @@ void SDIO_DataConfig(SDIO_DataInitTypeDef * SDIO_DataInitStruct)
 	/* Set DTDIR bit according to SDIO_TransferDir value */
 	/* Set DBCKSIZE bits according to SDIO_DataBlockSize value */
 	tmpreg |=
-	    (uint32_t) SDIO_DataInitStruct->
-	    SDIO_DataBlockSize | SDIO_DataInitStruct->SDIO_TransferDir |
-	    SDIO_DataInitStruct->SDIO_TransferMode | SDIO_DataInitStruct->
-	    SDIO_DPSM;
+	    (uint32_t) SDIO_DataInitStruct->SDIO_DataBlockSize |
+	    SDIO_DataInitStruct->SDIO_TransferDir | SDIO_DataInitStruct->
+	    SDIO_TransferMode | SDIO_DataInitStruct->SDIO_DPSM;
 
 	/* Write to SDIO DCTRL */
 	SDIO->DCTRL = tmpreg;

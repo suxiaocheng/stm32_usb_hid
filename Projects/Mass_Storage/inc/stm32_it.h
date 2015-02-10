@@ -25,7 +25,6 @@
   ******************************************************************************
   */
 
-
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32_IT_H
 #define __STM32_IT_H
@@ -54,8 +53,7 @@ void USB_LP_CAN1_RX0_IRQHandler(void);
 void SDIO_IRQHandler(void);
 void SD_SDIO_DMA_IRQHANDLER(void);
 #endif /* STM32F10X_HD | STM32F10X_XL */
-					 
+
 #endif /* __STM32_IT_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-

@@ -25,7 +25,6 @@
   ******************************************************************************
   */
 
-
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __HW_CONFIG_H
 #define __HW_CONFIG_H
@@ -49,12 +48,12 @@ void Set_USBClock(void);
 void Enter_LowPowerMode(void);
 void Leave_LowPowerMode(void);
 void USB_Interrupts_Config(void);
-void USB_Cable_Config (FunctionalState NewState);
+void USB_Cable_Config(FunctionalState NewState);
 void Get_SerialNum(void);
 void LCD_Control(void);
-uint32_t CDC_Send_DATA (uint8_t *ptrBuffer, uint8_t Send_length);
+uint32_t CDC_Send_DATA(uint8_t * ptrBuffer, uint8_t Send_length);
 uint32_t CDC_Receive_DATA(void);
 /* External variables --------------------------------------------------------*/
 
-#endif  /*__HW_CONFIG_H*/
+#endif	/*__HW_CONFIG_H*/
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

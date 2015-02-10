@@ -107,7 +107,6 @@
 #define MUX_SEG_BitNumber            0x07
 #define CR_MUX_SEG_BB                (PERIPH_BB_BASE + (CR_OFFSET * 32) + (MUX_SEG_BitNumber * 4))
 
-
 /* --- FCR Register ---*/
 
 /* Alias word address of HD bit */
@@ -122,12 +121,12 @@
 #define UDR_BitNumber                0x02
 #define SR_UDR_BB                    (PERIPH_BB_BASE + (SR_OFFSET * 32) + (UDR_BitNumber * 4))
 
-#define FCR_MASK                     ((uint32_t)0xFC03FFFF)  /* LCD FCR Mask */
-#define CR_MASK                      ((uint32_t)0xFFFFFF81)  /* LCD CR Mask */
-#define PON_MASK                     ((uint32_t)0xFFFFFF8F)  /* LCD PON Mask */
-#define DEAD_MASK                    ((uint32_t)0xFFFFFC7F)  /* LCD DEAD Mask */
-#define BLINK_MASK                   ((uint32_t)0xFFFC1FFF)  /* LCD BLINK Mask */
-#define CONTRAST_MASK                ((uint32_t)0xFFFFE3FF)  /* LCD CONTRAST Mask */
+#define FCR_MASK                     ((uint32_t)0xFC03FFFF)	/* LCD FCR Mask */
+#define CR_MASK                      ((uint32_t)0xFFFFFF81)	/* LCD CR Mask */
+#define PON_MASK                     ((uint32_t)0xFFFFFF8F)	/* LCD PON Mask */
+#define DEAD_MASK                    ((uint32_t)0xFFFFFC7F)	/* LCD DEAD Mask */
+#define BLINK_MASK                   ((uint32_t)0xFFFC1FFF)	/* LCD BLINK Mask */
+#define CONTRAST_MASK                ((uint32_t)0xFFFFE3FF)	/* LCD CONTRAST Mask */
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -158,10 +157,10 @@
   */
 void LCD_DeInit(void)
 {
-  /* Enable LCD reset state */
-  RCC_APB1PeriphResetCmd(RCC_APB1Periph_LCD, ENABLE);
-  /* Release LCD from reset state */
-  RCC_APB1PeriphResetCmd(RCC_APB1Periph_LCD, DISABLE);
+	/* Enable LCD reset state */
+	RCC_APB1PeriphResetCmd(RCC_APB1Periph_LCD, ENABLE);
+	/* Release LCD from reset state */
+	RCC_APB1PeriphResetCmd(RCC_APB1Periph_LCD, DISABLE);
 }
 
 /**
@@ -172,23 +171,26 @@ void LCD_DeInit(void)
   *         the configuration information for the specified LCD peripheral.
   * @retval None
   */
-void LCD_Init(LCD_InitTypeDef* LCD_InitStruct)
+void LCD_Init(LCD_InitTypeDef * LCD_InitStruct)
 {
-  /* Check function parameters */
-  assert_param(IS_LCD_PRESCALER(LCD_InitStruct->LCD_Prescaler));
-  assert_param(IS_LCD_DIVIDER(LCD_InitStruct->LCD_Divider));
-  assert_param(IS_LCD_DUTY(LCD_InitStruct->LCD_Duty));
-  assert_param(IS_LCD_BIAS(LCD_InitStruct->LCD_Bias));
-  assert_param(IS_LCD_VOLTAGE_SOURCE(LCD_InitStruct->LCD_VoltageSource));
+	/* Check function parameters */
+	assert_param(IS_LCD_PRESCALER(LCD_InitStruct->LCD_Prescaler));
+	assert_param(IS_LCD_DIVIDER(LCD_InitStruct->LCD_Divider));
+	assert_param(IS_LCD_DUTY(LCD_InitStruct->LCD_Duty));
+	assert_param(IS_LCD_BIAS(LCD_InitStruct->LCD_Bias));
+	assert_param(IS_LCD_VOLTAGE_SOURCE(LCD_InitStruct->LCD_VoltageSource));
 
-  LCD->FCR &= (uint32_t)FCR_MASK;
-  LCD->FCR |= (uint32_t)(LCD_InitStruct->LCD_Prescaler | LCD_InitStruct->LCD_Divider);
+	LCD->FCR &= (uint32_t) FCR_MASK;
+	LCD->FCR |=
+	    (uint32_t) (LCD_InitStruct->LCD_Prescaler | LCD_InitStruct->
+			LCD_Divider);
 
-  LCD_WaitForSynchro();
+	LCD_WaitForSynchro();
 
-  LCD->CR &= (uint32_t)CR_MASK;
-  LCD->CR |= (uint32_t)(LCD_InitStruct->LCD_Duty | LCD_InitStruct->LCD_Bias | \
-                        LCD_InitStruct->LCD_VoltageSource);
+	LCD->CR &= (uint32_t) CR_MASK;
+	LCD->CR |=
+	    (uint32_t) (LCD_InitStruct->LCD_Duty | LCD_InitStruct->
+			LCD_Bias | LCD_InitStruct->LCD_VoltageSource);
 
 }
 
@@ -198,18 +200,18 @@ void LCD_Init(LCD_InitTypeDef* LCD_InitStruct)
   *         be initialized.
   * @retval None
   */
-void LCD_StructInit(LCD_InitTypeDef* LCD_InitStruct)
+void LCD_StructInit(LCD_InitTypeDef * LCD_InitStruct)
 {
 /*--------------- Reset LCD init structure parameters values -----------------*/
-  LCD_InitStruct->LCD_Prescaler = LCD_Prescaler_1; /*!< Initialize the LCD_Prescaler member */
-  
-  LCD_InitStruct->LCD_Divider = LCD_Divider_16; /*!< Initialize the LCD_Divider member */
-  
-  LCD_InitStruct->LCD_Duty = LCD_Duty_Static; /*!< Initialize the LCD_Duty member */
-  
-  LCD_InitStruct->LCD_Bias = LCD_Bias_1_4; /*!< Initialize the LCD_Bias member */
-  
-  LCD_InitStruct->LCD_VoltageSource = LCD_VoltageSource_Internal; /*!< Initialize the LCD_VoltageSource member */
+	LCD_InitStruct->LCD_Prescaler = LCD_Prescaler_1;	/*!< Initialize the LCD_Prescaler member */
+
+	LCD_InitStruct->LCD_Divider = LCD_Divider_16;	/*!< Initialize the LCD_Divider member */
+
+	LCD_InitStruct->LCD_Duty = LCD_Duty_Static;	/*!< Initialize the LCD_Duty member */
+
+	LCD_InitStruct->LCD_Bias = LCD_Bias_1_4;	/*!< Initialize the LCD_Bias member */
+
+	LCD_InitStruct->LCD_VoltageSource = LCD_VoltageSource_Internal;	/*!< Initialize the LCD_VoltageSource member */
 }
 
 /**
@@ -220,12 +222,12 @@ void LCD_StructInit(LCD_InitTypeDef* LCD_InitStruct)
   */
 void LCD_Cmd(FunctionalState NewState)
 {
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  *(__IO uint32_t *) CR_LCDEN_BB = (uint32_t)NewState;
+	*(__IO uint32_t *) CR_LCDEN_BB = (uint32_t) NewState;
 }
 
 /**
@@ -236,10 +238,9 @@ void LCD_Cmd(FunctionalState NewState)
   */
 void LCD_WaitForSynchro(void)
 {
-  /* Loop until FCRSF flag is set */
-  while ((LCD->SR & LCD_FLAG_FCRSF) == (uint32_t)RESET)
-  {
-  }
+	/* Loop until FCRSF flag is set */
+	while ((LCD->SR & LCD_FLAG_FCRSF) == (uint32_t) RESET) {
+	}
 }
 
 /**
@@ -255,10 +256,10 @@ void LCD_WaitForSynchro(void)
   */
 void LCD_HighDriveCmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  *(__IO uint32_t *) FCR_HD_BB = (uint32_t)NewState;
+	*(__IO uint32_t *) FCR_HD_BB = (uint32_t) NewState;
 }
 
 /**
@@ -270,10 +271,10 @@ void LCD_HighDriveCmd(FunctionalState NewState)
   */
 void LCD_MuxSegmentCmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+	/* Check the parameters */
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  *(__IO uint32_t *) CR_MUX_SEG_BB = (uint32_t)NewState;
+	*(__IO uint32_t *) CR_MUX_SEG_BB = (uint32_t) NewState;
 }
 
 /**
@@ -293,11 +294,11 @@ void LCD_MuxSegmentCmd(FunctionalState NewState)
   */
 void LCD_PulseOnDurationConfig(uint32_t LCD_PulseOnDuration)
 {
-  /* Check the parameters */
-  assert_param(IS_LCD_PULSE_ON_DURATION(LCD_PulseOnDuration));
+	/* Check the parameters */
+	assert_param(IS_LCD_PULSE_ON_DURATION(LCD_PulseOnDuration));
 
-  LCD->FCR &= (uint32_t)PON_MASK;
-  LCD->FCR |= (uint32_t)(LCD_PulseOnDuration);
+	LCD->FCR &= (uint32_t) PON_MASK;
+	LCD->FCR |= (uint32_t) (LCD_PulseOnDuration);
 }
 
 /**
@@ -316,11 +317,11 @@ void LCD_PulseOnDurationConfig(uint32_t LCD_PulseOnDuration)
   */
 void LCD_DeadTimeConfig(uint32_t LCD_DeadTime)
 {
-  /* Check the parameters */
-  assert_param(IS_LCD_DEAD_TIME(LCD_DeadTime));
+	/* Check the parameters */
+	assert_param(IS_LCD_DEAD_TIME(LCD_DeadTime));
 
-  LCD->FCR &= (uint32_t)DEAD_MASK;
-  LCD->FCR |= (uint32_t)(LCD_DeadTime);
+	LCD->FCR &= (uint32_t) DEAD_MASK;
+	LCD->FCR |= (uint32_t) (LCD_DeadTime);
 }
 
 /**
@@ -347,12 +348,12 @@ void LCD_DeadTimeConfig(uint32_t LCD_DeadTime)
   */
 void LCD_BlinkConfig(uint32_t LCD_BlinkMode, uint32_t LCD_BlinkFrequency)
 {
-  /* Check the parameters */
-  assert_param(IS_LCD_BLINK_MODE(LCD_BlinkMode));
-  assert_param(IS_LCD_BLINK_FREQUENCY(LCD_BlinkFrequency));
-  
-  LCD->FCR &= (uint32_t)BLINK_MASK;
-  LCD->FCR |= (uint32_t)(LCD_BlinkMode | LCD_BlinkFrequency);
+	/* Check the parameters */
+	assert_param(IS_LCD_BLINK_MODE(LCD_BlinkMode));
+	assert_param(IS_LCD_BLINK_FREQUENCY(LCD_BlinkFrequency));
+
+	LCD->FCR &= (uint32_t) BLINK_MASK;
+	LCD->FCR |= (uint32_t) (LCD_BlinkMode | LCD_BlinkFrequency);
 }
 
 /**
@@ -371,11 +372,11 @@ void LCD_BlinkConfig(uint32_t LCD_BlinkMode, uint32_t LCD_BlinkFrequency)
   */
 void LCD_ContrastConfig(uint32_t LCD_Contrast)
 {
-  /* Check the parameters */
-  assert_param(IS_LCD_CONTRAST(LCD_Contrast));
+	/* Check the parameters */
+	assert_param(IS_LCD_CONTRAST(LCD_Contrast));
 
-  LCD->FCR &= (uint32_t)CONTRAST_MASK;
-  LCD->FCR |= (uint32_t)(LCD_Contrast);
+	LCD->FCR &= (uint32_t) CONTRAST_MASK;
+	LCD->FCR |= (uint32_t) (LCD_Contrast);
 }
 
 /**
@@ -443,11 +444,11 @@ void LCD_ContrastConfig(uint32_t LCD_Contrast)
   */
 void LCD_Write(uint32_t LCD_RAMRegister, uint32_t LCD_Data)
 {
-  /* Check the parameters */
-  assert_param(IS_LCD_RAM_REGISTER(LCD_RAMRegister));
+	/* Check the parameters */
+	assert_param(IS_LCD_RAM_REGISTER(LCD_RAMRegister));
 
-  /* Copy data bytes to RAM register */
-  LCD->RAM[LCD_RAMRegister] = (uint32_t)LCD_Data;
+	/* Copy data bytes to RAM register */
+	LCD->RAM[LCD_RAMRegister] = (uint32_t) LCD_Data;
 }
 
 /**
@@ -466,7 +467,7 @@ void LCD_Write(uint32_t LCD_RAMRegister, uint32_t LCD_Data)
   */
 void LCD_UpdateDisplayRequest(void)
 {
-  *(__IO uint32_t *) SR_UDR_BB = (uint32_t)0x01;
+	*(__IO uint32_t *) SR_UDR_BB = (uint32_t) 0x01;
 }
 
 /**
@@ -497,18 +498,15 @@ void LCD_UpdateDisplayRequest(void)
   */
 void LCD_ITConfig(uint32_t LCD_IT, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_LCD_IT(LCD_IT));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
-  if (NewState != DISABLE)
-  {
-    LCD->FCR |= LCD_IT;
-  }
-  else
-  {
-    LCD->FCR &= (uint32_t)~LCD_IT;
-  }
+	/* Check the parameters */
+	assert_param(IS_LCD_IT(LCD_IT));
+	assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+	if (NewState != DISABLE) {
+		LCD->FCR |= LCD_IT;
+	} else {
+		LCD->FCR &= (uint32_t) ~ LCD_IT;
+	}
 }
 
 /**
@@ -533,20 +531,17 @@ void LCD_ITConfig(uint32_t LCD_IT, FunctionalState NewState)
   */
 FlagStatus LCD_GetFlagStatus(uint32_t LCD_FLAG)
 {
-  FlagStatus bitstatus = RESET;
-  
-  /* Check the parameters */
-  assert_param(IS_LCD_GET_FLAG(LCD_FLAG));
-  
-  if ((LCD->SR & LCD_FLAG) != (uint32_t)RESET)
-  {
-    bitstatus = SET;
-  }
-  else
-  {
-    bitstatus = RESET;
-  }
-  return bitstatus;
+	FlagStatus bitstatus = RESET;
+
+	/* Check the parameters */
+	assert_param(IS_LCD_GET_FLAG(LCD_FLAG));
+
+	if ((LCD->SR & LCD_FLAG) != (uint32_t) RESET) {
+		bitstatus = SET;
+	} else {
+		bitstatus = RESET;
+	}
+	return bitstatus;
 }
 
 /**
@@ -559,11 +554,11 @@ FlagStatus LCD_GetFlagStatus(uint32_t LCD_FLAG)
   */
 void LCD_ClearFlag(uint32_t LCD_FLAG)
 {
-  /* Check the parameters */
-  assert_param(IS_LCD_CLEAR_FLAG(LCD_FLAG));
-    
-  /* Clear the corresponding LCD flag */
-  LCD->CLR = (uint32_t)LCD_FLAG;
+	/* Check the parameters */
+	assert_param(IS_LCD_CLEAR_FLAG(LCD_FLAG));
+
+	/* Clear the corresponding LCD flag */
+	LCD->CLR = (uint32_t) LCD_FLAG;
 }
 
 /**
@@ -579,29 +574,24 @@ void LCD_ClearFlag(uint32_t LCD_FLAG)
   */
 ITStatus LCD_GetITStatus(uint32_t LCD_IT)
 {
-  ITStatus bitstatus = RESET;
-  
-  /* Check the parameters */
-  assert_param(IS_LCD_GET_IT(LCD_IT));
-    
-  if ((LCD->SR & LCD_IT) != (uint16_t)RESET)
-  {
-    bitstatus = SET;
-  }
-  else
-  {
-    bitstatus = RESET;
-  }
-  
-  if (((LCD->FCR & LCD_IT) != (uint16_t)RESET) && (bitstatus != (uint32_t)RESET))
-  {
-    bitstatus = SET;
-  }
-  else
-  {
-    bitstatus = RESET;
-  }
-  return bitstatus;
+	ITStatus bitstatus = RESET;
+
+	/* Check the parameters */
+	assert_param(IS_LCD_GET_IT(LCD_IT));
+
+	if ((LCD->SR & LCD_IT) != (uint16_t) RESET) {
+		bitstatus = SET;
+	} else {
+		bitstatus = RESET;
+	}
+
+	if (((LCD->FCR & LCD_IT) != (uint16_t) RESET)
+	    && (bitstatus != (uint32_t) RESET)) {
+		bitstatus = SET;
+	} else {
+		bitstatus = RESET;
+	}
+	return bitstatus;
 }
 
 /**
@@ -614,11 +604,11 @@ ITStatus LCD_GetITStatus(uint32_t LCD_IT)
   */
 void LCD_ClearITPendingBit(uint32_t LCD_IT)
 {
-  /* Check the parameters */
-  assert_param(IS_LCD_IT(LCD_IT));
-  
-  /* Clear the corresponding LCD pending bit */
-  LCD->CLR = (uint32_t)LCD_IT;
+	/* Check the parameters */
+	assert_param(IS_LCD_IT(LCD_IT));
+
+	/* Clear the corresponding LCD pending bit */
+	LCD->CLR = (uint32_t) LCD_IT;
 }
 
 /**

@@ -31,7 +31,7 @@
 #define __STM32L152D_EVAL_FSMC_SRAM_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -40,18 +40,18 @@
 /** @addtogroup Utilities
   * @{
   */
-  
+
 /** @addtogroup STM32_EVAL
   * @{
-  */ 
+  */
 
 /** @addtogroup STM32L152D_EVAL
   * @{
   */
-  
+
 /** @addtogroup STM32L152D_EVAL_FSMC_SRAM
   * @{
-  */  
+  */
 
 /** @defgroup STM32L152D_EVAL_FSMC_SRAM_Exported_Types
   * @{
@@ -59,52 +59,43 @@
 /**
   * @}
   */
-  
+
 /** @defgroup STM32L152D_EVAL_FSMC_SRAM_Exported_Constants
   * @{
-  */ 
+  */
 /**
   * @}
-  */ 
-  
+  */
+
 /** @defgroup STM32L152D_EVAL_FSMC_SRAM_Exported_Macros
   * @{
-  */ 
+  */
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup STM32L152D_EVAL_FSMC_SRAM_Exported_Functions
   * @{
-  */      
+  */
 
-void SRAM_Init(void);
-void SRAM_WriteBuffer(uint16_t* pBuffer, uint32_t WriteAddr, uint32_t NumHalfwordToWrite);
-void SRAM_ReadBuffer(uint16_t* pBuffer, uint32_t ReadAddr, uint32_t NumHalfwordToRead);
+	void SRAM_Init(void);
+	void SRAM_WriteBuffer(uint16_t * pBuffer, uint32_t WriteAddr,
+			      uint32_t NumHalfwordToWrite);
+	void SRAM_ReadBuffer(uint16_t * pBuffer, uint32_t ReadAddr,
+			     uint32_t NumHalfwordToRead);
 
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __STM32L152D_EVAL_FSMC_SRAM_H */
+#endif				/* __STM32L152D_EVAL_FSMC_SRAM_H */
 /**
   * @}
-  */
-
-/**
+  *//**
   * @}
-  */
-
-/**
+  *//**
   * @}
-  */
-
-/**
+  *//**
   * @}
-  */ 
-
-/**
+  *//**
   * @}
-  */ 
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+  *//************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

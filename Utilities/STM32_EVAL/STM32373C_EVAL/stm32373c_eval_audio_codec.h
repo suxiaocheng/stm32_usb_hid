@@ -39,52 +39,51 @@
 
 /** @addtogroup STM32_EVAL
   * @{
-  */ 
+  */
 
 /** @addtogroup STM32373C_EVAL
   * @{
   */
-    
+
 /** @defgroup STM32373C_EVAL_AUDIO_CODEC 
   * @{
-  */    
-
+  */
 
 /** @defgroup STM32373C_EVAL_AUDIO_CODEC_Exported_Types
   * @{
   */
-  
+
 /**
   * @}
   */
 
 /** @defgroup STM32373C_EVAL_AUDIO_CODEC_Exported_Constants
   * @{
-  */ 
+  */
 
 /*----------------------------------------------------------------------------
              CONFIGURATION: Audio Codec Driver Configuration parameters
   ----------------------------------------------------------------------------*/
 /* Audio Transfer mode (DMA, Interrupt or Polling) */
-#define AUDIO_MAL_MODE_NORMAL         /* Uncomment this line to enable the audio 
-                                         Transfer using DMA */
-/* #define AUDIO_MAL_MODE_CIRCULAR */ /* Uncomment this line to enable the audio 
-                                         Transfer using DMA */
+#define AUDIO_MAL_MODE_NORMAL	/* Uncomment this line to enable the audio 
+				   Transfer using DMA */
+				      /* #define AUDIO_MAL_MODE_CIRCULAR *//* Uncomment this line to enable the audio 
+				         Transfer using DMA */
 
 /* For the DMA modes select the interrupt that will be used */
-#define AUDIO_MAL_DMA_IT_TC_EN   /* Uncomment this line to enable DMA Transfer Complete interrupt */
-/* #define AUDIO_MAL_DMA_IT_HT_EN */  /* Uncomment this line to enable DMA Half Transfer Complete interrupt */
-/* #define AUDIO_MAL_DMA_IT_TE_EN */  /* Uncomment this line to enable DMA Transfer Error interrupt */
+#define AUDIO_MAL_DMA_IT_TC_EN	/* Uncomment this line to enable DMA Transfer Complete interrupt */
+				      /* #define AUDIO_MAL_DMA_IT_HT_EN *//* Uncomment this line to enable DMA Half Transfer Complete interrupt */
+				      /* #define AUDIO_MAL_DMA_IT_TE_EN *//* Uncomment this line to enable DMA Transfer Error interrupt */
 
 /* Select the interrupt preemption priority and subpriority for the DMA interrupt */
-#define EVAL_AUDIO_IRQ_PREPRIO           0   /* Select the preemption priority level(0 is the highest) */
-#define EVAL_AUDIO_IRQ_SUBRIO            0   /* Select the sub-priority level (0 is the highest) */
+#define EVAL_AUDIO_IRQ_PREPRIO           0	/* Select the preemption priority level(0 is the highest) */
+#define EVAL_AUDIO_IRQ_SUBRIO            0	/* Select the sub-priority level (0 is the highest) */
 
 /* Uncomment the following line to use the default Codec_TIMEOUT_UserCallback() 
    function implemented in stm32373c_eval_audio_codec.c file.
    Codec_TIMEOUT_UserCallback() function is called whenever a timeout condition 
    occurs during communication (waiting on an event that doesn't occur, bus 
-   errors, busy devices ...). */   
+   errors, busy devices ...). */
 /* #define USE_DEFAULT_TIMEOUT_CALLBACK */
 /*----------------------------------------------------------------------------*/
 
@@ -114,7 +113,7 @@
 
 /* Uncomment this line to enable verifying data sent to codec after each write 
   operation */
-#define VERIFY_WRITTENDATA 
+#define VERIFY_WRITTENDATA
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------
@@ -171,7 +170,7 @@
    not based on accurate values, they just guarantee that the application will 
    not remain stuck if the I2C communication is corrupted.
    You may modify these timeout values depending on CPU frequency and application
-   conditions (interrupts routines ...). */   
+   conditions (interrupts routines ...). */
 #define CODEC_FLAG_TIMEOUT             ((uint32_t)0x1000)
 #define CODEC_LONG_TIMEOUT             ((uint32_t)(300 * CODEC_FLAG_TIMEOUT))
 /*----------------------------------------------------------------------------*/
@@ -203,25 +202,26 @@
 /*----------------------------------------------------------------------------*/
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup STM32373C_EVAL_AUDIO_CODEC_Exported_Macros
   * @{
-  */ 
+  */
 #define VOLUME_CONVERT(x)    ((Volume > 100)? 100:((uint8_t)((Volume * 255) / 100)))
 #define DMA_MAX(x)           (((x) <= DMA_MAX_SZE)? (x):DMA_MAX_SZE)
 
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup STM32373C_EVAL_AUDIO_CODEC_Exported_Functions
   * @{
-  */ 
+  */
 
-uint32_t EVAL_AUDIO_Init(uint16_t OutputDevice, uint8_t Volume, uint32_t AudioFreq);
+uint32_t EVAL_AUDIO_Init(uint16_t OutputDevice, uint8_t Volume,
+			 uint32_t AudioFreq);
 uint32_t EVAL_AUDIO_DeInit(void);
-uint32_t EVAL_AUDIO_Play(uint16_t* pBuffer, uint32_t Size);
+uint32_t EVAL_AUDIO_Play(uint16_t * pBuffer, uint32_t Size);
 uint32_t EVAL_AUDIO_PauseResume(uint32_t Cmd);
 uint32_t EVAL_AUDIO_Stop(uint32_t CodecPowerDown_Mode);
 uint32_t EVAL_AUDIO_VolumeCtl(uint8_t Volume);
@@ -246,7 +246,7 @@ void EVAL_AUDIO_HalfTransfer_CallBack(uint32_t pBuffer, uint32_t Size);
 
 /* This function is called when an Interrupt due to transfer error on or peripheral
    error occurs. */
-void EVAL_AUDIO_Error_CallBack(void* pData);
+void EVAL_AUDIO_Error_CallBack(void *pData);
 
 /* Codec_TIMEOUT_UserCallback() function is called whenever a timeout condition 
    occurs during communication (waiting on an event that doesn't occur, bus 
@@ -258,16 +258,8 @@ void EVAL_AUDIO_Error_CallBack(void* pData);
 uint32_t Codec_TIMEOUT_UserCallback(void);
 void Audio_MAL_IRQHandler(void);
 void Audio_MAL_Play(uint32_t Addr, uint32_t Size);
- 
+
 #endif /* __STM32373C_EVAL_AUDIOCODEC_H */
-
-/**
-  * @}
-  */ 
-
-/**
-  * @}
-  */ 
 
 /**
   * @}
@@ -275,10 +267,18 @@ void Audio_MAL_Play(uint32_t Addr, uint32_t Size);
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */    
+  */
+
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

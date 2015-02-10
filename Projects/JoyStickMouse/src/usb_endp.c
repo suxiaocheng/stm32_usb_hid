@@ -25,7 +25,6 @@
   ******************************************************************************
   */
 
-
 /* Includes ------------------------------------------------------------------*/
 #include "hw_config.h"
 #include "usb_lib.h"
@@ -48,10 +47,9 @@ extern __IO uint8_t PrevXferComplete;
 *******************************************************************************/
 void EP1_IN_Callback(void)
 {
-  /* Set the transfer complete token to inform upper layer that the current 
-  transfer has been complete */
-  PrevXferComplete = 1; 
+	/* Set the transfer complete token to inform upper layer that the current 
+	   transfer has been complete */
+	PrevXferComplete = 1;
 }
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-

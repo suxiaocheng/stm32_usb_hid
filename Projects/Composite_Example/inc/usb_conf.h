@@ -25,7 +25,6 @@
   ******************************************************************************
   */
 
-
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USB_CONF_H
 #define __USB_CONF_H
@@ -96,4 +95,3 @@
 #endif /*__USB_CONF_H*/
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-
