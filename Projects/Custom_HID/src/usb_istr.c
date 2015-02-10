@@ -72,7 +72,6 @@ void USB_Istr(void)
 
 	wIstr = _GetISTR();
 
-	usb_printf("ISR:%x->%x\n", wIstr, bIntPackSOF);
 #if (IMR_MSK & ISTR_CTR)
 	if (wIstr & ISTR_CTR & wInterrupt_Mask) {
 		/* servicing of the endpoint correct transfer interrupt */
@@ -86,7 +85,6 @@ void USB_Istr(void)
   /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
 #if (IMR_MSK & ISTR_RESET)
 	if (wIstr & ISTR_RESET & wInterrupt_Mask) {
-		usb_printf("ISTR_RESET\n");
 		_SetISTR((uint16_t) CLR_RESET);
 		Device_Property.Reset();
 #ifdef RESET_CALLBACK

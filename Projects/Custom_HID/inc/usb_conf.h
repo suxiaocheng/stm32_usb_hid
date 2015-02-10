@@ -89,8 +89,8 @@
 #define  EP6_OUT_Callback   NOP_Process
 #define  EP7_OUT_Callback   NOP_Process
 
-#define CTR_CALLBACK
-#define RESET_CALLBACK
+//#define CTR_CALLBACK
+//#define RESET_CALLBACK
 
 #endif /*__USB_CONF_H*/
 

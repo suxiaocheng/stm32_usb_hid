@@ -1,5 +1,7 @@
 #include "misc_lib.h"
 
+//#define HEXTOASCII_ADD_PREFIX_EN		//Enable to add "0x" prefix before the hex number
+
 char *DECToASCII(uint32_t dat, char *str)
 {
 	char tmp[12], *stmp = tmp;
@@ -26,8 +28,10 @@ char *HexToASCII(uint32_t dat, char *str)
 	int i;
 
 	*stmp++ = 0;
+#ifdef HEXTOASCII_ADD_PREFIX_EN
 	*str++ = '0';
 	*str++ = 'x';
+#endif
 
 	if (dat == 0)
 		*str++ = '0';

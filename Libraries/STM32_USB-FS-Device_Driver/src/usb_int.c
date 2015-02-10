@@ -67,8 +67,6 @@ void CTR_LP(void)
 
 			SaveRState = _GetENDPOINT(ENDP0);
 
-			usb_printf("e0:%x\n", SaveRState);
-
 			SaveTState = SaveRState & EPTX_STAT;
 			SaveRState &= EPRX_STAT;
 

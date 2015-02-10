@@ -201,7 +201,6 @@ void USB_LP_IRQHandler(void)
 void USB_LP_CAN1_RX0_IRQHandler(void)
 #endif
 {
-	//stm_printf("USB_LP_IRQHandler\n");
 	USB_Istr();
 }
 
